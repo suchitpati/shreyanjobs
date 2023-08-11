@@ -52,10 +52,10 @@
             v-model="admin.password"
           />
         </div>
-        <div class="mt-2">
+        <!-- <div class="mt-2">
             <input type="checkbox" v-model="showPassword" />
             Show Password
-        </div>
+        </div> -->
         <button
           class="bg-[#1890da] hover:bg-blue-500 text-white font-bold py-2 px-8 mb-[20px] rounded focus:outline-none focus:shadow-outline mt-[20px]"
           @click="editData(admin)"
@@ -91,21 +91,14 @@ export default {
 
     const fetchAdminData = async () => {
       try {
-        const authToken = localStorage.getItem("accessToken");
 
         if (!authToken) {
           console.log("Authentication token is missing.");
           return;
         }
 
-        const config = {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        };
-        const response = await axios.post(
-          `${apiUrl}/admin/getAdmin/`,
-          null,
+        const response = await axios.get(
+          `${apiUrl}/admin/getAdmin`,
           config
         );
         admins.value = response.data;

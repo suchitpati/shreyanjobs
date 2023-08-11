@@ -24,7 +24,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('admin/login', [AdminController::class, 'login']);
 Route::post('admin/logout', [AdminController::class, 'logout'])->middleware('auth:sanctum');
 Route::post('admin/passwordChange/{id}', [AdminController::class, 'changePassword'])->middleware('auth:sanctum');
-Route::post('admin/getAdmin', [AdminController::class, 'getAdmin'])->middleware('auth:sanctum');
+Route::get('admin/getAdmin', [AdminController::class, 'getAdmin'])->middleware('auth:sanctum');
 
 
 Route::resource('admin-jobs', AdminJobController::class)->except(['create', 'edit'])->middleware([]);

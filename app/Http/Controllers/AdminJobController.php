@@ -15,65 +15,75 @@ class AdminJobController extends Controller
      */
     public function index(Request $request)
     {
-        $query = AdminJob::query();
+        $adminJobs= AdminJob::query();
 
+        // $query = AdminJob::orderBy('created_at', 'DESC');
+        // $adminJobs = $query->get();
 
-        $query->when($request->has('country'), function ($query) use ($request) {
-            $query->where('country', $request->country);
+     
+        $adminJobs->when($request->has('country'), function ($adminJobs) use ($request) {
+            $adminJobs->where('country', $request->country);
         });
 
-        $query->when($request->has('state'), function ($query) use ($request) {
-            $query->where('state', $request->state);
+        $adminJobs->when($request->has('state'), function ($adminJobs) use ($request) {
+            $adminJobs->where('state', $request->state);
         });
 
-        $query->when($request->has('remote'), function ($query) use ($request) {
-            // dd($request->remote == 'true');
-            $query->where('remote', $request->remote == 'true'? true: false);
+        $adminJobs->when($request->has('remote'), function ($adminJobs) use ($request) {
+            $adminJobs->where('remote', $request->remote == 'true'? true: false);
         });
 
-        $query->when($request->has('skill'), function ($query) use ($request) {
-            $query->where('skill', 'like', '%' . $request->skill . '%');
+        $adminJobs->when($request->has('skill'), function ($adminJobs) use ($request) {
+            $adminJobs->where('skill', 'like', '%' . $request->skill . '%');
         });
 
-        $query->when($request->has('year_of_experience'), function ($query) use ($request) {
-            $query->where('year_of_experience', $request->year_of_experience);
+        $adminJobs->when($request->has('year_of_experience'), function ($adminJobs) use ($request) {
+            $adminJobs->where('year_of_experience', $request->year_of_experience);
         });
 
-        $query->when($request->has('search'), function ($query) use ($request) {
+        $adminJobs->when($request->has('search'), function ($adminJobs) use ($request) {
             $search = $request->search;
 
-            $query->where('job_title', 'like', '%' . $search . '%')
-                ->orWhere('short_description', 'like', '%' . $search . '%');
-        });
+            $adminJobs->where('job_title', 'like', '%' . $search . '%')
+            ->orWhere('short_description', 'like', '%' . $search . '%');
 
-        // $query->when($request->has('short_description'), function ($query) use ($request) {
-        //     $query->where('short_description', $request->short_description);
+        });
+        
+
+        // $adminJobs->when($request->has('search'), function ($adminJobs) use ($request) {
+        //     $search = $request->search;
+        //     $adminJobs->where('short_description', 'like', '%' . $search . '%');
+        // });
+        // dd($adminJobs);
+
+        // $adminJobs->when($request->has('short_description'), function ($adminJobs) use ($request) {
+        //     $adminJobs->where('short_description', $request->short_description);
         // });
 
-        // $query->when($request->has('job_title'), function ($query) use ($request) {
-        //     $query->where('job_title', $request->job_title);
+        // $adminJobs->when($request->has('job_title'), function ($adminJobs) use ($request) {
+        //     $adminJobs->where('job_title', $request->job_title);
         // });
 
 
-        $query->when($request->has('detailed_description'), function ($query) use ($request) {
-            $query->where('detailed_description', $request->detailed_description);
+        $adminJobs->when($request->has('detailed_description'), function ($adminJobs) use ($request) {
+            $adminJobs->where('detailed_description', $request->detailed_description);
         });
 
-        $query->when($request->has('employment_type'), function ($query) use ($request) {
-            $query->where('employment_type', $request->employment_type);
+        $adminJobs->when($request->has('employment_type'), function ($adminJobs) use ($request) {
+            $adminJobs->where('employment_type', $request->employment_type);
         });
-        $query->when($request->has('created_at'), function ($query) use ($request) {
+        $adminJobs->when($request->has('created_at'), function ($adminJobs) use ($request) {
             $startDate = Carbon::parse($request->created_at);
             $formattedStartDate = $startDate->format('Y-m-d H:i:s');
-            $query->where('created_at', '>=', $formattedStartDate)->orderByDesc('created_at');;
+            $adminJobs->where('created_at', '>=', $formattedStartDate)->orderByDesc('created_at');
         });
 
 
-        $query->increment('search_count', 1);
+        $adminJobs->increment('search_count', 1);
+        
+        $jobs = $adminJobs->orderByDesc('created_at')->get();
 
-        $jobs = $query->get();
-
-
+        
         return response()->json($jobs);
     }
 
