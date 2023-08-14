@@ -313,11 +313,12 @@ export default {
         };
 
         const setSelectedState = async () => {
+          console.log(selectedState.value,"selectedState.value");
             const selectedStateObj = states.value.find((statess) => {
                 return statess.isoCode == selectedState.value;
             });
 
-            console.log("state.value", state.value);
+            console.log("state.value,selectedStateObj", selectedStateObj);
             selectedState_main.value = JSON.parse(
                 JSON.stringify(selectedStateObj)
             ).name;
@@ -370,7 +371,7 @@ export default {
                 };
                 const requestData = {
                     country: country.value,
-                    state: state.value,
+                    state: selectedState_main.value,
                     remote: remote.value,
                     skill: skill.value,
                     year_of_experience: year_of_experience.value,

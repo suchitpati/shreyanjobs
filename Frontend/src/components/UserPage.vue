@@ -266,7 +266,7 @@
                                             >{{ job.country }}</span
                                         >
                                     </div>
-                                    ,
+                                   <div v-if="job.state">,</div> 
                                     <h3
                                         class="text-[#474d6a] capitalize text-[16px]"
                                     >
@@ -395,8 +395,9 @@
                                     <div
                                         v-for="(
                                             point, index
-                                        ) in getDetailedDescriptionPoints(
-                                            job.detailed_description
+                                        ) in getTruncatedPoints(
+                                            job.detailed_description,
+                                            20
                                         )"
                                         :key="index"
                                     >
@@ -423,7 +424,6 @@
                                     >
                                         {{ point }}
                                     </div>
-                                    <!-- {{ getDetailedDescriptionPoints(job.detailed_description) }} -->
                                 </div>
                                 <!-- Display full description when job is expanded -->
                                 <!-- <div
@@ -453,8 +453,7 @@
                                         Posted Date
                                         {{ formateDate(job.created_at) }}
                                         (Searched for
-                                        {{ job.search_count }} times
-                                        )
+                                        {{ job.search_count }} times )
                                     </p>
                                 </div>
                             </div>
@@ -471,7 +470,7 @@
 
 <script>
 import { reactive, ref, watch, onMounted, computed } from "vue";
-// import { useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 import apiUrl from "../api";
 import { debounce } from "lodash";
 import moment from "moment";
@@ -500,7 +499,7 @@ export default {
         const totalJobCount = ref(0);
         const countries_state = ref([]);
         const remote = ref(false);
-        // const router = useRouter();
+        const router = useRouter();
 
         const onCountryChange = async () => {
             const selectedCountryObj = await countries_state.value.find(
@@ -558,6 +557,15 @@ export default {
                 .split("\n")
                 .filter((point) => point.trim() !== "");
         };
+
+        const getTruncatedPoints = (description, limit) => {
+            const points = getDetailedDescriptionPoints(description);
+            return points.map((point) => truncateDescription(point, limit));
+        };
+
+        const handleButtonClick =()=>{
+              router.push("/admin-login")
+        }
 
         const fetchCountries = debounce(async () => {
             await axios
@@ -648,7 +656,7 @@ export default {
         return {
             data,
             countries_state,
-            // handleButtonClick,
+            handleButtonClick,
             searchInput,
             fetchJobs,
             jobs,
@@ -673,6 +681,7 @@ export default {
             toggleExpand,
             setSelectedState,
             getDetailedDescriptionPoints,
+            getTruncatedPoints,
         };
     },
 };
