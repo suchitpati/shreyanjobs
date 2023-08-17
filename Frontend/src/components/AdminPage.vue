@@ -61,6 +61,7 @@
                                         :key="country.isoCode"
                                         :value="country.isoCode"
                                         class="flex items-center"
+                                        :selected="country.isoCode === 'US'"
                                     >
                                         <span
                                             class="flag-icon flag-icon-{{ country.isoCode.toLowerCase() }} inline-block w-4 h-4 mr-2"
@@ -69,7 +70,10 @@
                                         <div>{{ country.name }}</div>
                                     </option>
                                 </select>
-                                <div class="text-red-600 block text-[14px] text-left" v-if="err_country != ''">
+                                <div
+                                    class="text-red-600 block text-[14px] text-left"
+                                    v-if="err_country != ''"
+                                >
                                     {{ err_country }}
                                 </div>
                             </div>
@@ -111,7 +115,10 @@
                                         >Remote</label
                                     >
                                 </div>
-                                <div class="text-red-600 block text-[14px] text-left" v-if="err_remote != ''">
+                                <div
+                                    class="text-red-600 block text-[14px] text-left"
+                                    v-if="err_remote != ''"
+                                >
                                     {{ err_remote }}
                                 </div>
                             </div>
@@ -127,12 +134,17 @@
                                     Skill
                                 </label>
                                 <input
-                                    class="border border-gray-400 rounded-lg py-2 px-4  outline-[#264dd9] focus:shadow-outline w-full"
+                                    class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
                                     type="text"
                                     id="field1"
                                     v-model="skill"
                                 />
-                                <div class="text-red-600 block text-[14px] text-left" v-if="err_skill != '' ">{{ err_skill }}</div>
+                                <div
+                                    class="text-red-600 block text-[14px] text-left"
+                                    v-if="err_skill != ''"
+                                >
+                                    {{ err_skill }}
+                                </div>
                             </div>
 
                             <div class="sm:w-[50%] mb-4">
@@ -143,12 +155,17 @@
                                     Min Years of Exp
                                 </label>
                                 <input
-                                    class="border border-gray-400 rounded-lg py-2 px-4  outline-[#264dd9] focus:shadow-outline w-full"
+                                    class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
                                     type="number"
                                     id="field1"
                                     v-model="year_of_experience"
                                 />
-                                <div class="text-red-600 block text-[14px] text-left" v-if="err_exp != ''">{{ err_exp }}</div>
+                                <div
+                                    class="text-red-600 block text-[14px] text-left"
+                                    v-if="err_exp != ''"
+                                >
+                                    {{ err_exp }}
+                                </div>
                             </div>
                         </div>
                         <div
@@ -162,10 +179,10 @@
                                     Employee Type
                                 </label>
                                 <select
-                                    class="border border-gray-400 rounded-lg bg-white py-[10px] px-4  outline-[#264dd9] focus:shadow-outline w-full"
+                                    class="border border-gray-400 rounded-lg bg-white py-[10px] px-4 outline-[#264dd9] focus:shadow-outline w-full"
                                     id="field2"
                                     v-model="employment_type"
-                                >   
+                                >
                                     <option value="">Select</option>
                                     <option value="fulltime">Fulltime</option>
                                     <option value="parttime">Parttime</option>
@@ -174,10 +191,15 @@
                                         Third-Party Contract
                                     </option> -->
                                 </select>
-                                <div class="text-red-600 block text-[14px] text-left" v-if="err_emp != ''">{{ err_emp }}</div>
+                                <div
+                                    class="text-red-600 block text-[14px] text-left"
+                                    v-if="err_emp != ''"
+                                >
+                                    {{ err_emp }}
+                                </div>
                             </div>
 
-                            <div class="sm:w-[50%]  mb-4">
+                            <div class="sm:w-[50%] mb-4">
                                 <label
                                     class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
                                     for="field1"
@@ -190,10 +212,15 @@
                                     id="field1"
                                     v-model="job_title"
                                 />
-                                <div class="text-red-600 block text-[14px] text-left" v-if="err_job != ''">{{ err_job }}</div>
+                                <div
+                                    class="text-red-600 block text-[14px] text-left"
+                                    v-if="err_job != ''"
+                                >
+                                    {{ err_job }}
+                                </div>
                             </div>
                         </div>
-                        <div class="sm:w-[calc(50%-15px)]  mb-4">
+                        <div class="sm:w-[calc(50%-15px)] mb-4">
                             <label
                                 class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
                                 for="field1"
@@ -201,12 +228,17 @@
                                 Short Description
                             </label>
                             <input
-                                class="border border-gray-400 rounded-lg py-2 px-4  outline-[#264dd9] focus:shadow-outline w-full"
+                                class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
                                 type="text"
                                 id="field1"
                                 v-model="short_description"
                             />
-                            <div class="text-red-600 block text-[14px] text-left" v-if="err_short != ''">{{ err_short }}</div>
+                            <div
+                                class="text-red-600 block text-[14px] text-left"
+                                v-if="err_short != ''"
+                            >
+                                {{ err_short }}
+                            </div>
                         </div>
                     </div>
                     <div>
@@ -223,7 +255,12 @@
                             maxlength="1000"
                         >
                         </textarea>
-                        <div class="text-red-600 block text-[14px] text-left" v-if="err_detail != ''">{{ err_detail }}</div>
+                        <div
+                            class="text-red-600 block text-[14px] text-left"
+                            v-if="err_detail != ''"
+                        >
+                            {{ err_detail }}
+                        </div>
 
                         <div class="text-end">
                             <span class="text-blue-700 text-[16px]"
@@ -258,7 +295,7 @@ export default {
     },
     setup() {
         const data = reactive({});
-        const selectedCountry = ref("");
+        const selectedCountry = ref("US");
         const country = ref("");
         const state = ref("");
         const remote = ref(false);
@@ -313,7 +350,7 @@ export default {
         };
 
         const setSelectedState = async () => {
-          console.log(selectedState.value,"selectedState.value");
+            console.log(selectedState.value, "selectedState.value");
             const selectedStateObj = states.value.find((statess) => {
                 return statess.isoCode == selectedState.value;
             });
@@ -325,43 +362,50 @@ export default {
         };
 
         const addJob = async () => {
-         
-          if( country.value == null || country.value == ''  )
-          {
-            err_country.value = "The country field is required";
-            return false;
-          }
-          
-          if( skill.value == null || skill.value == '' )
-          {
-            err_skill.value = "The skill field is required";
-            return false;
-          }
-          if( year_of_experience.value == null || year_of_experience.value == '' )
-          {
-            err_exp.value = "The year of experience field is required";
-            return false;
-          }
-          if( employment_type.value == null || employment_type.value == '' )
-          {
-            err_emp.value = "The employment type field is required";
-            return false;
-          }
-          if( short_description.value == null || short_description.value == '' )
-          {
-            err_short.value = "The short description field is required";
-            return false;
-          }
-          if( detailed_description.value == null || detailed_description.value == '' )
-          {
-            err_detail.value = "The detailed description field is required";
-            return false;
-          }
-          if( job_title.value == null || job_title.value == '' )
-          {
-            err_job.value = "The job title field is required";
-            return false;
-          }
+            if (selectedCountry.value == null || selectedCountry.value == "") {
+                err_country.value = "The country field is required";
+                return false;
+            }
+
+            if (skill.value == null || skill.value == "") {
+                err_skill.value = "The skill field is required";
+                return false;
+            }
+            if (
+                year_of_experience.value == null ||
+                year_of_experience.value == ""
+            ) {
+                err_exp.value = "The year of experience field is required";
+                return false;
+            }
+            if (employment_type.value == null || employment_type.value == "") {
+                err_emp.value = "The employment type field is required";
+                return false;
+            }
+            if (
+                short_description.value == null ||
+                short_description.value == ""
+            ) {
+                err_short.value = "The short description field is required";
+                return false;
+            }
+            if (
+                detailed_description.value == null ||
+                detailed_description.value == ""
+            ) {
+                err_detail.value = "The detailed description field is required";
+                return false;
+            }
+            if (job_title.value == null || job_title.value == "") {
+                err_job.value = "The job title field is required";
+                return false;
+            }
+            const selectedCountryObj = await countries_state.value.find(
+                (countrys) => countrys.isoCode === selectedCountry.value
+            );
+            country.value = selectedCountryObj
+                ? JSON.parse(JSON.stringify(selectedCountryObj)).name
+                : "";
             try {
                 const authToken = localStorage.getItem("accessToken");
                 const config = {
@@ -387,20 +431,23 @@ export default {
                     config
                 );
                 console.log(response, "job ===>");
-                (country.value = ""),
-                    (state.value = ""),
-                    (remote.value = ""),
-                    (skill.value = ""),
-                    (year_of_experience.value = ""),
-                    (employment_type.value = ""),
-                    (short_description.value = ""),
-                    (detailed_description.value = ""),
-                    (selectedState.value = ""),
-                    (selectedCountry.value = ""),
-                    (selectedState_main.value = ""),
-                    (job_title.value = "");
+                // (country.value = ""),
+                //     (state.value = ""),
+                //     (remote.value = false),
+                //     (skill.value = ""),
+                //     (year_of_experience.value = ""),
+                //     (employment_type.value = ""),
+                //     (short_description.value = ""),
+                //     (detailed_description.value = ""),
+                //     (selectedState.value = ""),
+                //     (selectedCountry.value = ""),
+                //     (selectedState_main.value = ""),
+                //     (job_title.value = "");
 
                 showSuccessModal.value = true;
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
             } catch (error) {
                 console.error(error.response.data.errors);
             }
@@ -464,17 +511,29 @@ export default {
             remaining.value = 2000 - newValue.length;
         });
 
-        watch([country,employment_type,skill,year_of_experience,job_title,short_description,short_description,detailed_description] , (newValue) => {
-          if(newValue != ''  ){
-            err_emp.value = '',
-            err_skill.value = '',
-            err_exp.value = '',
-            err_job.value ='',
-            err_short.value ='',
-            err_detail.value = '',
-            err_country.value = ''
-          }
-        });
+        watch(
+            [
+                country,
+                employment_type,
+                skill,
+                year_of_experience,
+                job_title,
+                short_description,
+                short_description,
+                detailed_description,
+            ],
+            (newValue) => {
+                if (newValue != "") {
+                    (err_emp.value = ""),
+                        (err_skill.value = ""),
+                        (err_exp.value = ""),
+                        (err_job.value = ""),
+                        (err_short.value = ""),
+                        (err_detail.value = ""),
+                        (err_country.value = "");
+                }
+            }
+        );
 
         onMounted(() => {
             countries_state.value = Country.getAllCountries();

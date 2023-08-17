@@ -56,6 +56,7 @@
                         placeholder="Job Search"
                         @input="handleSearch"
                     />
+
                     <img
                         src="../assets/search.svg"
                         alt="search"
@@ -220,7 +221,7 @@
                 >
                     <div class="text-start">
                         <h1 class="text-[#414552] text-[20px] font-semibold">
-                            Search More Result
+                            Job Search Result
                         </h1>
                         <div v-if="jobs.length">
                             <div
@@ -238,40 +239,68 @@
                                 >
                                     {{ job.short_description }}
                                 </p>
-                                <div class="flex items-center gap-1 mt-2">
-                                    <svg
-                                        stroke="currentColor"
-                                        fill="none"
-                                        stroke-width="2"
-                                        viewBox="0 0 24 24"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        height="1em"
-                                        width="1em"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                        <path
-                                            stroke="none"
-                                            d="M0 0h24v24H0z"
+                                <div
+                                    class="flex items-center gap-1 mt-2 justify-between"
+                                >
+                                    <div class="flex gap-1 items-center">
+                                        <svg
+                                            stroke="currentColor"
                                             fill="none"
-                                        ></path>
-                                        <path
-                                            d="M21 3l-6.5 18a.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5"
-                                        ></path>
-                                    </svg>
-                                    <div class="flex items-center">
-                                        <!-- <span class="text-gray-500 mr-2">State:</span> -->
-                                        <span
-                                            class="text-[#474d6a] capitalize text-[16px]"
-                                            >{{ job.country }}</span
+                                            stroke-width="2"
+                                            viewBox="0 0 24 24"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            height="1em"
+                                            width="1em"
+                                            xmlns="http://www.w3.org/2000/svg"
                                         >
+                                            <path
+                                                stroke="none"
+                                                d="M0 0h24v24H0z"
+                                                fill="none"
+                                            ></path>
+                                            <path
+                                                d="M21 3l-6.5 18a.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5"
+                                            ></path>
+                                        </svg>
+                                        <div class="flex items-center">
+                                            <!-- <span class="text-gray-500 mr-2">State:</span> -->
+                                            <span
+                                                class="text-[#474d6a] capitalize text-[16px]"
+                                                >{{ job.country }}</span
+                                            >
+                                        </div>
+                                        <div v-if="job.state">,</div>
+                                        <h3
+                                            class="text-[#474d6a] capitalize text-[16px]"
+                                        >
+                                            {{ job.state }}
+                                        </h3>
                                     </div>
-                                   <div v-if="job.state">,</div> 
-                                    <h3
-                                        class="text-[#474d6a] capitalize text-[16px]"
-                                    >
-                                        {{ job.state }}
-                                    </h3>
+                                    <div class="flex items-center">
+                                        <svg
+                                            stroke="currentColor"
+                                            fill="currentColor"
+                                            stroke-width="0"
+                                            viewBox="0 0 16 16"
+                                            height="1em"
+                                            width="1em"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path
+                                                d="M11 6.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-5 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z"
+                                            ></path>
+                                            <path
+                                                d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"
+                                            ></path>
+                                        </svg>
+                                        <p
+                                            class="text-[14px] text-[#717b9e] ml-[5px]"
+                                        >
+                                            Posted Date :
+                                            {{ formateDate(job.created_at) }}
+                                        </p>
+                                    </div>
                                 </div>
                                 <div class="flex gap-2 w-full mt-2 flex-wrap">
                                     <div
@@ -388,6 +417,7 @@
                                         job.skill
                                     }}</span>
                                 </div>
+
                                 <div
                                     v-if="!expandedJobs.includes(job.id)"
                                     class="text-[#474d6a] bg-[#fff] py-1 px-2 mt-2 capitalize text-[14px]"
@@ -396,8 +426,11 @@
                                         v-for="(
                                             point, index
                                         ) in getTruncatedPoints(
-                                            job.detailed_description,
-                                            20
+                                            job.detailed_description.slice(
+                                                0,
+                                                100
+                                            ),
+                                            50
                                         )"
                                         :key="index"
                                     >
@@ -414,15 +447,8 @@
                                     v-else
                                     class="text-[#474d6a] bg-[#fff] py-1 px-2 mt-2 capitalize text-[14px]"
                                 >
-                                    <div
-                                        v-for="(
-                                            point, index
-                                        ) in getDetailedDescriptionPoints(
-                                            job.detailed_description
-                                        )"
-                                        :key="index"
-                                    >
-                                        {{ point }}
+                                    <div style="white-space: pre-wrap">
+                                        {{ job.detailed_description }}
                                     </div>
                                 </div>
                                 <!-- Display full description when job is expanded -->
@@ -433,25 +459,10 @@
                                     {{ job.detailed_description }}
                                 </div> -->
                                 <div class="flex gap-2 items-center px-2 mt-2">
-                                    <svg
-                                        stroke="currentColor"
-                                        fill="currentColor"
-                                        stroke-width="0"
-                                        viewBox="0 0 16 16"
-                                        height="1em"
-                                        width="1em"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                        <path
-                                            d="M11 6.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-5 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z"
-                                        ></path>
-                                        <path
-                                            d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"
-                                        ></path>
-                                    </svg>
                                     <p class="text-[14px] text-[#717b9e]">
-                                        Posted Date
-                                        {{ formateDate(job.created_at) }}
+                                        <!-- Posted Date
+                                        {{ formateDate(job.created_at) }} -->
+
                                         (Searched for
                                         {{ job.search_count }} times )
                                     </p>
@@ -513,7 +524,7 @@ export default {
             states.value = selectedCountryObj
                 ? State.getStatesOfCountry(selectedCountryObj.isoCode)
                 : "";
-            selectedState.value = "";
+            // selectedState.value = "";
             selectedState_main.value = "";
         };
 
@@ -523,9 +534,9 @@ export default {
             });
 
             console.log("state.value", state.value);
-            selectedState_main.value = JSON.parse(
-                JSON.stringify(selectedStateObj)
-            ).name;
+            selectedState_main.value = selectedStateObj
+                ? JSON.parse(JSON.stringify(selectedStateObj)).name
+                : "";
         };
 
         const stringYearOfExperience = computed(() =>
@@ -559,13 +570,15 @@ export default {
         };
 
         const getTruncatedPoints = (description, limit) => {
+            console.log(description, "-------------------------------------");
             const points = getDetailedDescriptionPoints(description);
+            // console.log(points,"sfsfsfsfsfsfsfsfs");
             return points.map((point) => truncateDescription(point, limit));
         };
 
-        const handleButtonClick =()=>{
-              router.push("/admin-login")
-        }
+        const handleButtonClick = () => {
+            router.push("/admin-login");
+        };
 
         const fetchCountries = debounce(async () => {
             await axios
@@ -682,6 +695,7 @@ export default {
             setSelectedState,
             getDetailedDescriptionPoints,
             getTruncatedPoints,
+            // handleSearch
         };
     },
 };

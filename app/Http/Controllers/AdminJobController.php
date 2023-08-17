@@ -41,29 +41,26 @@ class AdminJobController extends Controller
             $adminJobs->where('year_of_experience', $request->year_of_experience);
         });
 
-        $adminJobs->when($request->has('search'), function ($adminJobs) use ($request) {
-            $search = $request->search;
+        // $adminJobs->when($request->has('search'), function ($adminJobs) use ($request) {
+        //     $search = $request->search;
 
-            $adminJobs->where('job_title', 'like', '%' . $search . '%')
-            ->orWhere('short_description', 'like', '%' . $search . '%');
+        //     $adminJobs->where('job_title', 'like', '%' . $search . '%')
+        //     ->orWhere('short_description', 'like', '%' . $search . '%');
 
-        });
+        // });
         
 
         // $adminJobs->when($request->has('search'), function ($adminJobs) use ($request) {
         //     $search = $request->search;
         //     $adminJobs->where('short_description', 'like', '%' . $search . '%');
-        // });
-        // dd($adminJobs);
-
-        // $adminJobs->when($request->has('short_description'), function ($adminJobs) use ($request) {
-        //     $adminJobs->where('short_description', $request->short_description);
+           
         // });
 
-        // $adminJobs->when($request->has('job_title'), function ($adminJobs) use ($request) {
-        //     $adminJobs->where('job_title', $request->job_title);
-        // });
-
+        $adminJobs->when($request->has('search'), function ($adminJobs) use ($request) {
+            $search = $request->search;
+            $adminJobs->where('job_title', 'like', '%' . $search . '%');
+        });
+       
 
         $adminJobs->when($request->has('detailed_description'), function ($adminJobs) use ($request) {
             $adminJobs->where('detailed_description', $request->detailed_description);
