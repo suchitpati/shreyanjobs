@@ -138,6 +138,7 @@
                                     type="text"
                                     id="field1"
                                     v-model="skill"
+                                    placeholder="Enter skill"
                                 />
                                 <div
                                     class="text-red-600 block text-[14px] text-left"
@@ -159,6 +160,8 @@
                                     type="number"
                                     id="field1"
                                     v-model="year_of_experience"
+                                    placeholder="Enter Experience"
+
                                 />
                                 <div
                                     class="text-red-600 block text-[14px] text-left"
@@ -176,7 +179,7 @@
                                     class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
                                     for="field2"
                                 >
-                                    Employee Type
+                                Employment Type
                                 </label>
                                 <select
                                     class="border border-gray-400 rounded-lg bg-white py-[10px] px-4 outline-[#264dd9] focus:shadow-outline w-full"
@@ -187,6 +190,7 @@
                                     <option value="fulltime">Fulltime</option>
                                     <option value="parttime">Parttime</option>
                                     <option value="contract">Contract</option>
+                                    <option value="contracttohire">Contract to Hire</option>
                                     <!-- <option value="third-party contract">
                                         Third-Party Contract
                                     </option> -->
@@ -211,6 +215,8 @@
                                     type="text"
                                     id="field1"
                                     v-model="job_title"
+                                    placeholder="Enter job Title"
+
                                 />
                                 <div
                                     class="text-red-600 block text-[14px] text-left"
@@ -220,18 +226,58 @@
                                 </div>
                             </div>
                         </div>
+                        <div
+                            class="w-full flex sm:flex-row flex-col justify-between sm:gap-6 gap-2"
+                        >
+                            <div class="sm:w-[50%] mb-4">
+                                <label
+                                    class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
+                                    for="email"
+                                >
+                                Employer Email
+                                </label>
+                                <input
+                                class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
+                                type="email"
+                                id="email"
+                                placeholder="Enter Email"
+                                v-model="email"
+                            />
+
+                            </div>
+
+                            <div class="sm:w-[50%] mb-4">
+                                <label
+                                    class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
+                                    for="contact_number"
+                                >
+                                Employer Contact Number
+                                </label>
+                                <input
+                                    class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
+                                    type="text"
+                                    id="contact_number"
+                                    v-model="contact_number"
+                                    placeholder="Enter contact number"
+
+                                />
+
+                            </div>
+                        </div>
                         <div class="sm:w-[calc(50%-15px)] mb-4">
                             <label
                                 class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
-                                for="field1"
+                                for="short_description"
                             >
                                 Short Description
                             </label>
                             <input
                                 class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
                                 type="text"
-                                id="field1"
+                                id="short_description"
                                 v-model="short_description"
+                                placeholder="Enter short description"
+
                             />
                             <div
                                 class="text-red-600 block text-[14px] text-left"
@@ -253,6 +299,8 @@
                             v-model="detailed_description"
                             rows="4"
                             maxlength="1000"
+                            placeholder="Enter description"
+
                         >
                         </textarea>
                         <div
@@ -321,6 +369,9 @@ export default {
         const err_detail = ref("");
         const err_job = ref("");
         const err_remote = ref("");
+        const email = ref("");
+        const contact_number = ref("");
+
 
         const states = ref([]);
 
@@ -382,6 +433,10 @@ export default {
                 err_emp.value = "The employment type field is required";
                 return false;
             }
+            if (job_title.value == null || job_title.value == "") {
+                err_job.value = "The job title field is required";
+                return false;
+            }
             if (
                 short_description.value == null ||
                 short_description.value == ""
@@ -396,10 +451,7 @@ export default {
                 err_detail.value = "The detailed description field is required";
                 return false;
             }
-            if (job_title.value == null || job_title.value == "") {
-                err_job.value = "The job title field is required";
-                return false;
-            }
+
             const selectedCountryObj = await countries_state.value.find(
                 (countrys) => countrys.isoCode === selectedCountry.value
             );
@@ -413,6 +465,7 @@ export default {
                         Authorization: `Bearer ${authToken}`,
                     },
                 };
+                console.log('');
                 const requestData = {
                     country: country.value,
                     state: selectedState_main.value,
@@ -423,8 +476,10 @@ export default {
                     short_description: short_description.value,
                     detailed_description: detailed_description.value,
                     job_title: job_title.value,
+                    email : email.value,
+                    contact_number : contact_number.value
                 };
-
+                console.log('requestData',requestData);
                 const response = await axios.post(
                     `${apiUrl}/admin-jobs`,
                     requestData,
@@ -521,6 +576,8 @@ export default {
                 short_description,
                 short_description,
                 detailed_description,
+                email,
+                contact_number
             ],
             (newValue) => {
                 if (newValue != "") {
@@ -580,6 +637,8 @@ export default {
             err_detail,
             err_job,
             err_remote,
+            email,
+            contact_number
         };
     },
 };

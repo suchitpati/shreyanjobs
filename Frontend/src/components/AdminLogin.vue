@@ -4,7 +4,7 @@
   <div class="p-4 h-[calc(100vh-62px)] flex justify-center flex-col gap-6 items-center overflow-y-auto">
       <div
         class="rounded-lg flex items-center justify-center max-w-[1120px] sm:px-[20px] bg-img w-full"
-      > 
+      >
         <div
           v-if="showSuccessModal"
           class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-75"
@@ -29,21 +29,27 @@
             <h1 class="sm:text-[28px] text-[22px] font-bold mt-[20px] sm:mb-[50px] mb-[30px] text-[#1890da]">
               Sign in to your account
             </h1>
+            <div v-if="validationError" class="text-red-600 block text-[20px] text-center">
+                {{validationError}}
+            </div>
             <div class="mt-4">
               <div class="w-full">
                 <label
                   class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
                   for="field2"
                 >
-                  Your email
+                  Email
                 </label>
                 <input
-                  class="border border-gray-400 rounded-lg py-2 px-4 mb-4 outline-[#264dd9] focus:shadow-outline w-full"
+                  class="border border-gray-400 rounded-lg py-2 px-4 mb-1 outline-[#264dd9] focus:shadow-outline w-full"
                   type="text"
                   id="field1"
                   placeholder="Email"
                   v-model="email"
                 />
+                <div v-if="emailError" class="text-red-600 block text-[14px] text-left">
+                    {{emailError}}
+                </div>
               </div>
               <div class="w-full mt-[10px]">
                 <label
@@ -53,12 +59,15 @@
                   Password
                 </label>
                 <input
-                  class="border border-gray-400 rounded-lg py-2 px-4 mb-4 outline-[#264dd9] focus:shadow-outline w-full"
+                  class="border border-gray-400 rounded-lg py-2 px-4 mb-1 outline-[#264dd9] focus:shadow-outline w-full"
                   type="password"
                   id="field1"
                   placeholder="Password"
                   v-model="password"
                 />
+                <div v-if="passwordError" class="text-red-600 block text-[14px] text-left">
+                    {{passwordError}}
+                </div>
               </div>
               <button
                 class="bg-[#1890da] hover:bg-blue-500 text-white font-bold py-2 px-8 mb-[20px] rounded focus:outline-none focus:shadow-outline mt-[40px]"
@@ -85,6 +94,10 @@ export default {
     const data = reactive({});
 
     const email = ref("");
+    const emailError = ref("");
+    const passwordError = ref("");
+    const validationError = ref("");
+
     const password = ref("");
     const showSuccessModal = ref(false);
 
@@ -96,19 +109,46 @@ export default {
     };
 
     const adminPage = async () => {
-      try {
+        try {
+            console.log(email.value,'email.value');
+        if(email.value == null || email.value == '' )
+        {
+            emailError.value = "Please Enter Email";
+            return false;
+        }
+        else
+        {
+            emailError.value ='';
+        }
+        if(password.value == null || password.value == '' )
+        {
+            passwordError.value = "Please Enter Password";
+            return false;
+        }
+        else
+        {
+            passwordError.value ='';
+        }
+
         const response = await axios.post(`${apiUrl}/admin/login`, {
           email: email.value,
           password: password.value,
         });
 
-        const token = response.data.token;
-        localStorage.setItem("accessToken", token);
-        showSuccessModal.value = true;
+        if(response.data.code == 100)
+        {
+            validationError.value = response.data.message;
+        }
+        else{
 
-        setTimeout(() => {
-          router.push("/admin");
-        }, 1000);
+            const token = response.data.token;
+            localStorage.setItem("accessToken", token);
+            showSuccessModal.value = true;
+
+            setTimeout(() => {
+                router.push("/admin");
+            }, 1000);
+        }
       } catch (error) {
         console.error(error);
       }
@@ -123,6 +163,9 @@ export default {
       closeSuccessModal,
       router,
       route,
+      emailError,
+      passwordError,
+      validationError
     };
   },
 };

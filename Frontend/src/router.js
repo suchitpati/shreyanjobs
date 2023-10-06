@@ -4,6 +4,9 @@ import Admin from './components/AdminPage.vue';
 import User from './components/UserPage.vue';
 import AdminLogin from './components/AdminLogin.vue';
 import AdminProfile from './components/AdminProfile.vue';
+import SeekerLogin from './components/SeekerLogin.vue'
+import SeekerRegister from './components/SeekerRegister.vue'
+
 
 
 
@@ -28,7 +31,17 @@ const routes = [
     name: 'admin-profile',
     component: AdminProfile,
   },
- 
+  {
+    path: '/seeker-login',
+    name: 'seeker-login',
+    component: SeekerLogin,
+  },
+  {
+    path: '/seeker-register',
+    name: 'seeker-register',
+    component: SeekerRegister,
+  },
+
 ];
 
 const router = createRouter({

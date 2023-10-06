@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
+use App\Models\Subscription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -12,14 +13,17 @@ class AdminController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'email' => 'required|email',
+            'email' => 'required',
             'password' => 'required',
         ]);
 
         $admin = Admin::where('email', $request->email)->first();
-
+        // dd($admin);
         if (!$admin || !Hash::check($request->password, $admin->password)) {
-            return response()->json(['message' => 'Invalid credentials'], 401);
+            return response()->json([
+                'message' => 'Invalid credentials',
+                'code' => 100
+            ]);
         }
 
         $token = $admin->createToken('AdminToken')->plainTextToken;
@@ -62,4 +66,5 @@ class AdminController extends Controller
 
         return response()->json(['message' => 'Password changed successfully'], 200);
     }
+
 }

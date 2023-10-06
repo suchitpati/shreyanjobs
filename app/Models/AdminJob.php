@@ -19,6 +19,8 @@ class AdminJob extends Model
         'short_description',
         'detailed_description',
         'job_title',
-        'search_count'
+        'search_count',
+        'email',
+        'contact_number'
     ];
 }

@@ -20,7 +20,7 @@ class AdminJobController extends Controller
         // $query = AdminJob::orderBy('created_at', 'DESC');
         // $adminJobs = $query->get();
 
-     
+
         $adminJobs->when($request->has('country'), function ($adminJobs) use ($request) {
             $adminJobs->where('country', $request->country);
         });
@@ -48,19 +48,19 @@ class AdminJobController extends Controller
         //     ->orWhere('short_description', 'like', '%' . $search . '%');
 
         // });
-        
+
 
         // $adminJobs->when($request->has('search'), function ($adminJobs) use ($request) {
         //     $search = $request->search;
         //     $adminJobs->where('short_description', 'like', '%' . $search . '%');
-           
+
         // });
 
         $adminJobs->when($request->has('search'), function ($adminJobs) use ($request) {
             $search = $request->search;
             $adminJobs->where('job_title', 'like', '%' . $search . '%');
         });
-       
+
 
         $adminJobs->when($request->has('detailed_description'), function ($adminJobs) use ($request) {
             $adminJobs->where('detailed_description', $request->detailed_description);
@@ -77,10 +77,11 @@ class AdminJobController extends Controller
 
 
         $adminJobs->increment('search_count', 1);
-        
+        $adminJobs->where('created_at', '>', now()->subDays(60)->endOfDay());
+
         $jobs = $adminJobs->orderByDesc('created_at')->get();
 
-        
+
         return response()->json($jobs);
     }
 
@@ -112,9 +113,10 @@ class AdminJobController extends Controller
             'employment_type' => 'required|string',
             'short_description' => 'required|string',
             'detailed_description' => 'required|string',
-            'job_title' => 'required|string'
+            'job_title' => 'required|string',
+            'email' => 'nullable|string',
+            'contact_number'  => 'nullable|string'
         ]);
-
         $job = AdminJob::create($validatedData);
         return response()->json($job, 201);
     }
