@@ -30,6 +30,8 @@ class CreateSeekersTable extends Migration
             $table->string('secondary_skill')->nullable();
             $table->integer('secondary_skill_experience')->nullable();
             $table->string('resume')->nullable();
+            $table->string('otp')->nullable();
+            $table->integer('is_active')->nullable();
             $table->timestamps();
         });
     }

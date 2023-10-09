@@ -31,7 +31,11 @@ Route::post('sendOtp', [UserSubscriptionController::class, 'sendOtp']);
 Route::post('addSubscriber', [UserSubscriptionController::class, 'addSubscriber']);
 
 //Seeker Routes
+Route::post('/validateOtp', [SeekerController::class, 'validateOtp']);
 Route::post('/registerSeeker', [SeekerController::class, 'registerSeeker']);
+Route::post('/addSeekerDetails', [SeekerController::class, 'addSeekerDetails']);
+
+
 
 
 //Admin Routes

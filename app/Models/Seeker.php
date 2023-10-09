@@ -11,5 +11,5 @@ class Seeker extends Model
 
     protected $table = "seekers";
 
-    protected $fillable = ['fullname','email','password','gender'];
+    protected $fillable = ['fullname','email','password','gender','is_active','otp'];
 }

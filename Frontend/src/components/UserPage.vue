@@ -638,10 +638,10 @@
       </div>
     </div>
 
-    <div
-      v-if="showOtpModel"
-      class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-75"
-    >
+        <div
+        v-if="showOtpModel"
+        class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-75"
+        >
             <div class="absolute right-[41%] top-[34.5%]" @click="closeOtpModel">
                 <svg
                 version="1.0"

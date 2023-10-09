@@ -1,6 +1,15 @@
 <template>
     <div class="bg-[#eaf4ff]">
-      <div class="w-full flex justify-end pt-4 pr-4"><router-link to="/" class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[10px] py-[7px] px-[18px] md:px-[26px] rounded-[26px] focus:outline-none">Job search page</router-link > </div>
+      <div class="w-full flex justify-end pt-4 pr-4 pl-4">
+        <!-- <div class="sm:w-full xs:w-auto w-[50%]">
+        </div> -->
+        <img
+          class="w-[150px]"
+          src="../assets/logo-no-background.png"
+          alt=""
+        />
+        <router-link to="/" class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[10px] py-[7px] px-[18px] md:px-[26px] rounded-[26px] focus:outline-none">Job search page</router-link >
+        </div>
     <div class="p-4 h-[calc(100vh-62px)] flex justify-center flex-col gap-6 items-center overflow-y-auto">
         <div
           class="rounded-lg flex items-center justify-center max-w-[1120px] sm:px-[20px] bg-img w-full"
