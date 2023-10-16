@@ -88,6 +88,8 @@
                                     v-model="selectedState"
                                     class="block w-full bg-white border text-sm rounded-lg p-2"
                                     :disabled="remote"
+                                                                            :selected="country.isoCode === 'US'"
+
                                     @change="setSelectedState"
                                 >
                                     <option value="">Select State</option>
@@ -384,6 +386,7 @@ export default {
         const route = useRouter();
 
         const onCountryChange = async () => {
+            console.log('selectedCountry.value',selectedCountry.value);
             const selectedCountryObj = await countries_state.value.find(
                 (countrys) => countrys.isoCode === selectedCountry.value
             );
@@ -410,6 +413,12 @@ export default {
             selectedState_main.value = JSON.parse(
                 JSON.stringify(selectedStateObj)
             ).name;
+        };
+
+        const defaultSelectedState = async () => {
+            states.value = countries.value
+                ? State.getStatesOfCountry("US")
+                : "";
         };
 
         const addJob = async () => {
@@ -455,6 +464,7 @@ export default {
             const selectedCountryObj = await countries_state.value.find(
                 (countrys) => countrys.isoCode === selectedCountry.value
             );
+
             country.value = selectedCountryObj
                 ? JSON.parse(JSON.stringify(selectedCountryObj)).name
                 : "";
@@ -595,6 +605,7 @@ export default {
         onMounted(() => {
             countries_state.value = Country.getAllCountries();
             fetchCountries();
+            defaultSelectedState();
         });
 
         return {
@@ -638,7 +649,8 @@ export default {
             err_job,
             err_remote,
             email,
-            contact_number
+            contact_number,
+            defaultSelectedState
         };
     },
 };

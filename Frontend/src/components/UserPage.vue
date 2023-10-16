@@ -27,7 +27,7 @@
           <router-link to="/seeker-login">  <button
               class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[10px] py-[7px] px-[18px] md:px-[26px] rounded-[26px] focus:outline-none focus:shadow-outline"
             >
-           Seeker Login
+            Job Seeker Login
             </button>
         </router-link>
           </div>
@@ -41,6 +41,7 @@
           >Please Subscribe to receive email when new jobs are added for your
           skill</span
         >
+        <div class="text-[11px]">Please leave the skill field blank if you want to subscribe for all skills</div>
         <div class="flex gap-4 mt-2 justify-center items-center">
           <div class="flex gap-1 items-center relative">
             <label class="text-[18px]">skill :-</label>
@@ -90,14 +91,14 @@
       </div>
 
       <div
-        class="flex items-center max-w-[1080px] px-[20px] gap-6 w-[65%] mx-auto md:pt-[28px] pt-5 sm:mb-1 mb-10"
+        class="flex items-center max-w-[1080px] px-[20px] gap-6 w-[65%] mx-auto md:pt-[28px] pt-5 sm:mb-1 mb-10 md:w-full"
       >
         <div class="flex items-center justify-center w-[29%] relative">
           <input
             class="rounded-[40px] md:py-[16px] sm:py-[15px] py-[12px] px-4 sm:pl-[60px] pl-[40px] focus:shadow-outline w-full shadow-[0_25px_60px_rgba(113,106,147,.2)]"
             type="text"
             v-model="searchInput"
-            placeholder="Job Search"
+            placeholder="Search jobs by skill of job Role"
           />
           <!-- @input="handleSearch" -->
 
@@ -120,7 +121,7 @@
         <div
           class="rounded-2xl p-4 sm:p-7 sticky top-[10px] m-auto max-w-[300px] w-full bg-[#d3ddff4f] sm:mt-6 shadow-[0px_0px_14px_0px_rgba(255,255,255,1);] transition-[.5s]"
         >
-          <div class="grid grid-cols-1 md:gap-6 gap-3 items-center">
+          <div class="grid grid-cols-1 md:gap-4 gap-3 items-center">
             <div class="">
               <label
                 class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
@@ -258,12 +259,13 @@
             </div>
             <div>
                 <label
-                class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
-                for="field1"  @click="handleButtonClick"
-              >
-                Admin? login
-              </label>
-            </div>
+                  class="block text-blue-500 font-bold mb-1 text-start text-[14px] cursor-pointer"
+                  for="field1"
+                  @click="handleButtonClick"
+                >
+                  Admin? login
+                </label>
+              </div>
             <div class="w-full flex justify-between gap-6"></div>
           </div>
         </div>
@@ -525,7 +527,7 @@
                           />
                         </g>
                       </svg>
-                      Email:
+                      Employer Email:
                     </span>
                     <span class="text-[#474d6a]">{{
                       job.email ? job.email : "-"
@@ -564,8 +566,8 @@
                           />
                         </g>
                       </svg>
-                      Contact No
-                    </span>
+                      Employer Contact
+                                        </span>
                     <span class="text-[#474d6a]">{{
                       job.contact_number ? job.contact_number : "-"
                     }}</span>
@@ -628,7 +630,7 @@
       class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-75"
     >
       <div class="bg-white p-8 rounded-lg shadow-lg">
-        <h2 class="text-2xl font-bold mb-4">Thank you for subcribed</h2>
+        <h2 class="text-2xl font-bold mb-4">Thank you for your subscription</h2>
         <button
           @click="closeSuccessSubscrber"
           class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -672,50 +674,15 @@
 
       <div class="bg-white p-8 rounded-lg shadow-lg">
         <h2 class="text-2xl font-bold mb-4">Enter OTP</h2>
-        <div v-if="otpError">OTP invalid</div>
+        <div class="text-[11px]">Please check your spam/ junk folder</div>
+
+        <div v-if="otpError" class="text-red-500">OTP invalid</div>
 
         <div class="flex space-x-2">
-          <input
-            type="text"
-            class="border border-gray-400 p-2 rounded-md w-10 text-center"
-            maxlength="1"
-            v-model="otp1"
-          />
-          <input
-            type="text"
-            class="border border-gray-400 p-2 rounded-md w-10 text-center"
-            maxlength="1"
-            v-model="otp2"
-
-          />
-          <input
-            type="text"
-            class="border border-gray-400 p-2 rounded-md w-10 text-center"
-            maxlength="1"
-            v-model="otp3"
-
-          />
-          <input
-            type="text"
-            class="border border-gray-400 p-2 rounded-md w-10 text-center"
-            maxlength="1"
-            v-model="otp4"
-
-          />
-          <input
-            type="text"
-            class="border border-gray-400 p-2 rounded-md w-10 text-center"
-            maxlength="1"
-            v-model="otp5"
-
-          />
-          <input
-            type="text"
-            class="border border-gray-400 p-2 rounded-md w-10 text-center"
-            maxlength="1"
-            v-model="otp6"
-
-          />
+            <input type="text"
+            class="border border-gray-400 rounded-lg py-2 px-4 mb-1 outline-[#264dd9] focus:shadow-outline w-full"
+            placeholder="Enter OTP"
+            v-model="enter_otp">
         </div>
         <button
           @click="addSubscriber"
@@ -724,6 +691,14 @@
           Submit
         </button>
       </div>
+    </div>
+    <div
+      class="absolute inset-0 flex items-center justify-center"
+      v-if="isLoading"
+    >
+      <div
+        class="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"
+      ></div>
     </div>
   </div>
 </template>
@@ -764,18 +739,13 @@ export default {
     const subscribe_email = ref("");
     const showSuccessSubscrber = ref(false);
     const showOtpModel = ref(false);
-    const otp1 = ref('');
-    const otp2 = ref('');
-    const otp3 = ref('');
-    const otp4 = ref('');
-    const otp5 = ref('');
-    const otp6 = ref('');
     const final_otp = ref('');
     const subscription_id = ref('');
     const otpError = ref(false);
     const subscribe_skillError = ref(false);
     const subscribe_emailError = ref(false);
-
+    const enter_otp = ref('');
+    const isLoading = ref(false);
 
 
     const onCountryChange = async () => {
@@ -858,6 +828,7 @@ export default {
       else{
         subscribe_emailError.value = "";
       }
+      isLoading.value = true;
 
       await axios
         .post(`${apiUrl}/sendOtp`, {
@@ -865,6 +836,7 @@ export default {
           'skill' : subscribe_skill.value
         })
         .then((response) => {
+            isLoading.value = false;
             subscription_id.value = response.data.subscription_data.id
             showOtpModel.value = true;
             console.log("subscription_id", subscription_id.value);
@@ -899,15 +871,18 @@ export default {
     });
 
     const addSubscriber = debounce(async () => {
-        final_otp.value = otp1.value+otp2.value+otp3.value+otp4.value+otp5.value+otp6.value;
+        final_otp.value = enter_otp.value;
         // final_otp.value = final_otp.value.trim();
         console.log("final_otp",final_otp.value);
+        isLoading.value = true;
+
       await axios
         .post(`${apiUrl}/addSubscriber`, {
           'otp' : final_otp.value,
           'subscription_id' : subscription_id.value
         })
         .then((response) => {
+            isLoading.value = false;
         if(response.data.success)
         {
             console.log("response", response);
@@ -1036,17 +1011,13 @@ export default {
       openOtpModel,
       showOtpModel,
       closeOtpModel,
-      otp1,
-      otp2,
-      otp3,
-      otp4,
-      otp5,
-      otp6,
       subscription_id,
       otpError,
       seekerLogin,
       subscribe_skillError,
-      subscribe_emailError
+      subscribe_emailError,
+      enter_otp,
+      isLoading
       // handleSearch
     };
   },
