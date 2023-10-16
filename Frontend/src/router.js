@@ -8,6 +8,7 @@ import SeekerLogin from './components/SeekerLogin.vue'
 import SeekerRegister from './components/SeekerRegister.vue'
 
 
+const loggedIn = localStorage.getItem('accessToken');
 
 
 const routes = [
@@ -30,6 +31,13 @@ const routes = [
     path: '/admin-profile/',
     name: 'admin-profile',
     component: AdminProfile,
+    beforeEnter: (to, from, next) => {
+        if (!loggedIn) {
+            return next('/admin-login');
+        } else {
+            next();
+        }
+      }
   },
   {
     path: '/seeker-login',
@@ -49,15 +57,14 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach((to, from, next) => {
-  const publicPages = ['/', '/admin-login'];
-  const authRequired = !publicPages.includes(to.path);
-  const loggedIn = localStorage.getItem('accessToken');
-  console.log(loggedIn);
-  if (authRequired && !loggedIn) {
-    return next('/admin-login');
-  }
-  next();
-});
+// router.beforeEach((to, from, next) => {
+//   const publicPages = ['/', '/admin-login'];
+//   const authRequired = !publicPages.includes(to.path);
+//   console.log(loggedIn);
+//   if (authRequired && !loggedIn) {
+//     return next('/admin-login');
+//   }
+//   next();
+// });
 
 export default router;

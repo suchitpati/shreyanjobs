@@ -1,11 +1,7 @@
 <template>
   <div class="bg-[#eaf4ff]">
     <div class="w-full flex justify-end pt-4 pr-4 pl-4">
-        <img
-        class="w-[150px]"
-        src="../assets/logo-no-background.png"
-        alt=""
-      />
+      <img class="w-[150px]" src="../assets/logo-no-background.png" alt="" />
       <a
         href="/"
         class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[10px] py-[7px] px-[18px] md:px-[26px] rounded-[26px] focus:outline-none"
@@ -140,7 +136,7 @@
               </div>
               <button
                 class="bg-[#1890da] hover:bg-blue-500 text-white font-bold py-2 px-8 mb-[20px] rounded focus:outline-none focus:shadow-outline mt-[40px]"
-                @click="seekerRegister"
+                @click.prevent="seekerRegister"
               >
                 Register
               </button>
@@ -150,45 +146,17 @@
         <div v-else-if="steps == 2">
           <div class="fixed inset-0 flex items-center justify-center">
             <div class="bg-white p-8 rounded-lg shadow-lg">
-              <h2 class="text-2xl font-bold mb-4">Enter OTP</h2>
-              <div v-if="otpError">OTP invalid</div>
+              <h2 class="text-2xl font-bold mb-2">Enter OTP</h2>
+              <div class="text-[11px]">Please check your spam/ junk folder</div>
+
+              <div v-if="otpError" class="text-red-500">OTP invalid</div>
 
               <div class="flex space-x-2">
                 <input
                   type="text"
-                  class="border border-gray-400 p-2 rounded-md w-10 text-center"
-                  maxlength="1"
-                  v-model="otp1"
-                />
-                <input
-                  type="text"
-                  class="border border-gray-400 p-2 rounded-md w-10 text-center"
-                  maxlength="1"
-                  v-model="otp2"
-                />
-                <input
-                  type="text"
-                  class="border border-gray-400 p-2 rounded-md w-10 text-center"
-                  maxlength="1"
-                  v-model="otp3"
-                />
-                <input
-                  type="text"
-                  class="border border-gray-400 p-2 rounded-md w-10 text-center"
-                  maxlength="1"
-                  v-model="otp4"
-                />
-                <input
-                  type="text"
-                  class="border border-gray-400 p-2 rounded-md w-10 text-center"
-                  maxlength="1"
-                  v-model="otp5"
-                />
-                <input
-                  type="text"
-                  class="border border-gray-400 p-2 rounded-md w-10 text-center"
-                  maxlength="1"
-                  v-model="otp6"
+                  class="border border-gray-400 rounded-lg py-2 px-4 mb-1 outline-[#264dd9] focus:shadow-outline w-full"
+                  placeholder="Enter OTP"
+                  v-model="enter_otp"
                 />
               </div>
               <button
@@ -502,7 +470,7 @@
                     class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-8 mb-4 mt-4 rounded-full focus:outline-none focus:shadow-outline"
                     @click="addSeekerDetails"
                   >
-                    Completer Register
+                    Complete Registration
                   </button>
                 </div>
               </div>
@@ -510,6 +478,14 @@
           </div>
         </div>
       </div>
+    </div>
+    <div
+      class="absolute inset-0 flex items-center justify-center"
+      v-if="isLoading"
+    >
+      <div
+        class="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"
+      ></div>
     </div>
   </div>
 </template>
@@ -521,6 +497,7 @@ import { useRouter } from "vue-router";
 import axios from "axios";
 import { debounce } from "lodash";
 import { Country, State } from "country-state-city";
+import "vue-loading-overlay/dist/css/index.css";
 
 import apiUrl from "../api";
 
@@ -553,12 +530,8 @@ export default {
     const selectedState_main = ref("");
 
     const steps = ref(1);
-    const otp1 = ref("");
-    const otp2 = ref("");
-    const otp3 = ref("");
-    const otp4 = ref("");
-    const otp5 = ref("");
-    const otp6 = ref("");
+    const enter_otp = ref("");
+
     const final_otp = ref("");
     const seeker_id = ref("");
 
@@ -582,6 +555,9 @@ export default {
     const err_city = ref("");
     const file = ref("");
     const err_file = ref("");
+    const fullPage = ref(true);
+    const formContainer = ref(null);
+    const isLoading = ref(false);
 
     const closeSuccessModal = () => {
       showSuccessModal.value = false;
@@ -616,28 +592,36 @@ export default {
         } else {
           genderError.value = "";
         }
+        isLoading.value = true;
 
-        const response = await axios.post(`${apiUrl}/registerSeeker`, {
-          fullname: fullname.value,
-          email: email.value,
-          password: password.value,
-          gender: gender.value,
-        });
+        await axios
+          .post(`${apiUrl}/registerSeeker`, {
+            fullname: fullname.value,
+            email: email.value,
+            password: password.value,
+            gender: gender.value,
+          })
+          .then((response) => {
+            console.log(response);
+            isLoading.value = false;
+            if (response.data.error == 100) {
+              validationError.value = response.data.message;
+              return false;
+            } else {
+              steps.value = 2;
+              seeker_id.value = response.data.seeker_id;
+              //   const token = response.data.token;
+              //   localStorage.setItem("accessToken", token);
+              //   showSuccessModal.value = true;
 
-        if (response.data.error == 100) {
-          validationError.value = response.data.message;
-          return false;
-        } else {
-          steps.value = 2;
-          seeker_id.value = response.data.seeker_id;
-          //   const token = response.data.token;
-          //   localStorage.setItem("accessToken", token);
-          //   showSuccessModal.value = true;
-
-          //   setTimeout(() => {
-          //       router.push("/");
-          //   }, 1000);
-        }
+              //   setTimeout(() => {
+              //       router.push("/");
+              //   }, 1000);
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+          });
       } catch (error) {
         console.error(error);
       }
@@ -649,25 +633,28 @@ export default {
 
     const validateOtp = async () => {
       try {
-        final_otp.value =
-          otp1.value +
-          otp2.value +
-          otp3.value +
-          otp4.value +
-          otp5.value +
-          otp6.value;
+        isLoading.value = true;
 
-        const response = await axios.post(`${apiUrl}/validateOtp`, {
-          otp: final_otp.value,
-          seeker_id: seeker_id.value,
-        });
+        final_otp.value = enter_otp.value;
 
-        if (response.data.error == 100) {
-          otpError.value = true;
-          return false;
-        } else {
-          steps.value = 3;
-        }
+        await axios
+          .post(`${apiUrl}/validateOtp`, {
+            otp: final_otp.value,
+            seeker_id: seeker_id.value,
+          })
+          .then((response) => {
+            console.log(response);
+            isLoading.value = false;
+            if (response.data.error == 100) {
+              otpError.value = true;
+              return false;
+            } else {
+              steps.value = 3;
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+          });
       } catch (error) {
         console.error(error);
       }
@@ -761,25 +748,27 @@ export default {
       formData.append("seeker_id", seeker_id.value);
 
       try {
-        const response = await axios.post(
-          `${apiUrl}/addSeekerDetails`,
-          formData,
-          {
+        await axios
+          .post(`${apiUrl}/addSeekerDetails`, formData, {
             headers: {
               "Content-Type": "multipart/form-data",
             },
-          }
-        );
-        if(response.data.error == 100)
-        {
-            alert('Something wrong');
-        }
-        else
-        {
-            setTimeout(() => {
-                  router.push("/");
-              }, 1000);
-        }
+          })
+          .then((response) => {
+            console.log(response);
+            isLoading.value = false;
+            if (response.data.error == 100) {
+              alert("Something wrong");
+            } else {
+              showSuccessModal.value = true;
+              setTimeout(() => {
+                router.push("/");
+              }, 3000);
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+          });
       } catch (error) {
         console.error(error);
       }
@@ -812,15 +801,19 @@ export default {
           console.error(error);
         });
     });
-
+    const defaultSelectedState = async () => {
+      states.value = countries.value ? State.getStatesOfCountry("US") : "";
+    };
     watch([country]);
     onMounted(() => {
       countries_state.value = Country.getAllCountries();
       console.log(countries_state.value, "countries_state.value");
       fetchCountries();
+      defaultSelectedState();
     });
 
     return {
+      isLoading,
       state,
       country,
       countries_state,
@@ -847,12 +840,6 @@ export default {
       selectedCountry,
       states,
       validateOtp,
-      otp1,
-      otp2,
-      otp3,
-      otp4,
-      otp5,
-      otp6,
       seeker_id,
       otpError,
       city,
@@ -877,6 +864,10 @@ export default {
       image_details,
       file,
       err_file,
+      enter_otp,
+      fullPage,
+
+      formContainer,
     };
   },
 };

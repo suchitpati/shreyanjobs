@@ -1,14 +1,21 @@
 <template>
   <div class="bg-[#eaf4ff]">
-    <div class="w-full flex justify-end pt-4 pr-4"><a href="/" class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[10px] py-[7px] px-[18px] md:px-[26px] rounded-[26px] focus:outline-none">Job search page </a></div>
-  <div class="p-4 h-[calc(100vh-62px)] flex justify-center flex-col gap-6 items-center overflow-y-auto">
+    <div class="w-full flex justify-end pt-4 pr-4">
+      <a
+        href="/"
+        class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[10px] py-[7px] px-[18px] md:px-[26px] rounded-[26px] focus:outline-none"
+        >Job search page
+      </a>
+    </div>
+    <div
+      class="p-4 h-[calc(100vh-62px)] flex justify-center flex-col gap-6 items-center overflow-y-auto"
+    >
       <div
         class="rounded-lg flex items-center justify-center max-w-[1120px] sm:px-[20px] bg-img w-full"
       >
         <div
           v-if="showSuccessModal"
-          class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-75"
-        >
+          class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-75">
           <div class="bg-white p-8 rounded-lg shadow-lg">
             <h2 class="text-2xl font-bold mb-4">Logged in Successfully!</h2>
             <button
@@ -26,11 +33,16 @@
           <div
             class="w-full bg-white rounded-lg py-4 sm:px-8 px-4 lg:ml-[20px] shadow-[rgba(100,_100,_111,_0.2)_0px_5px_30px_0px]"
           >
-            <h1 class="sm:text-[28px] text-[22px] font-bold mt-[20px] sm:mb-[50px] mb-[30px] text-[#1890da]">
+            <h1
+              class="sm:text-[28px] text-[22px] font-bold mt-[20px] sm:mb-[50px] mb-[30px] text-[#1890da]"
+            >
               Sign in to your account
             </h1>
-            <div v-if="validationError" class="text-red-600 block text-[20px] text-center">
-                {{validationError}}
+            <div
+              v-if="validationError"
+              class="text-red-600 block text-[20px] text-center"
+            >
+              {{ validationError }}
             </div>
             <div class="mt-4">
               <div class="w-full">
@@ -47,8 +59,11 @@
                   placeholder="Email"
                   v-model="email"
                 />
-                <div v-if="emailError" class="text-red-600 block text-[14px] text-left">
-                    {{emailError}}
+                <div
+                  v-if="emailError"
+                  class="text-red-600 block text-[14px] text-left"
+                >
+                  {{ emailError }}
                 </div>
               </div>
               <div class="w-full mt-[10px]">
@@ -65,8 +80,11 @@
                   placeholder="Password"
                   v-model="password"
                 />
-                <div v-if="passwordError" class="text-red-600 block text-[14px] text-left">
-                    {{passwordError}}
+                <div
+                  v-if="passwordError"
+                  class="text-red-600 block text-[14px] text-left"
+                >
+                  {{ passwordError }}
                 </div>
               </div>
               <button
@@ -109,25 +127,19 @@ export default {
     };
 
     const adminPage = async () => {
-        try {
-            console.log(email.value,'email.value');
-        if(email.value == null || email.value == '' )
-        {
-            emailError.value = "Please Enter Email";
-            return false;
+      try {
+        console.log(email.value, "email.value");
+        if (email.value == null || email.value == "") {
+          emailError.value = "Please Enter Email";
+          return false;
+        } else {
+          emailError.value = "";
         }
-        else
-        {
-            emailError.value ='';
-        }
-        if(password.value == null || password.value == '' )
-        {
-            passwordError.value = "Please Enter Password";
-            return false;
-        }
-        else
-        {
-            passwordError.value ='';
+        if (password.value == null || password.value == "") {
+          passwordError.value = "Please Enter Password";
+          return false;
+        } else {
+          passwordError.value = "";
         }
 
         const response = await axios.post(`${apiUrl}/admin/login`, {
@@ -135,19 +147,16 @@ export default {
           password: password.value,
         });
 
-        if(response.data.code == 100)
-        {
-            validationError.value = response.data.message;
-        }
-        else{
+        if (response.data.code == 100) {
+          validationError.value = response.data.message;
+        } else {
+          const token = response.data.token;
+          localStorage.setItem("accessToken", token);
+          showSuccessModal.value = true;
 
-            const token = response.data.token;
-            localStorage.setItem("accessToken", token);
-            showSuccessModal.value = true;
-
-            setTimeout(() => {
-                router.push("/admin");
-            }, 1000);
+          setTimeout(() => {
+            router.push("/admin");
+          }, 1000);
         }
       } catch (error) {
         console.error(error);
@@ -165,7 +174,7 @@ export default {
       route,
       emailError,
       passwordError,
-      validationError
+      validationError,
     };
   },
 };
