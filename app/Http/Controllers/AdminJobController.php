@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendJobNotification;
 use App\Models\AdminJob;
+use App\Models\Subscription;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -118,7 +120,21 @@ class AdminJobController extends Controller
             'contact_number'  => 'nullable|string'
         ]);
         $job = AdminJob::create($validatedData);
-        return response()->json($job, 201);
+        $subscription_data = Subscription::where('skill','LIKE','%'.$request->skill.'%')->get();
+
+        if(isset($subscription_data))
+        {
+
+            foreach($subscription_data as $sub)
+            {
+
+                SendJobNotification::dispatch($sub->email,$request->job_title);
+            }
+        }
+
+            // SendJobNotification::dispatch($subscription_data,$request->job_title);
+
+        return response()->json($subscription_data, 201);
     }
 
     /**

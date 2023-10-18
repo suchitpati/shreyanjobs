@@ -19,7 +19,7 @@
           class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-75"
         >
           <div class="bg-white p-8 rounded-lg shadow-lg">
-            <h2 class="text-2xl font-bold mb-4">Register Successfully!</h2>
+            <h2 class="text-2xl font-bold mb-4">Registration Completed Successfully</h2>
             <button
               @click="closeSuccessModal"
               class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
