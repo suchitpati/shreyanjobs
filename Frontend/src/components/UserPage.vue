@@ -41,7 +41,7 @@
           >Please Subscribe to receive email when new jobs are added for your
           skill</span
         >
-        <div class="text-[11px]">Please leave the skill field blank if you want to subscribe for all skills</div>
+        <!-- <div class="text-[11px]">Please leave the skill field blank if you want to subscribe for all skills</div> -->
         <div class="flex gap-4 mt-2 justify-center items-center">
           <div class="flex gap-1 items-center relative">
             <label class="text-[18px]">skill :-</label>
@@ -98,6 +98,7 @@
             class="rounded-[40px] md:py-[16px] sm:py-[15px] py-[12px] px-4 sm:pl-[60px] pl-[40px] focus:shadow-outline w-full shadow-[0_25px_60px_rgba(113,106,147,.2)]"
             type="text"
             v-model="searchInput"
+            @keyup.enter = "fetchJobs"
             placeholder="Search jobs by skill of job Role"
           />
           <!-- @input="handleSearch" -->
@@ -320,7 +321,7 @@
                     </div>
                     <!-- <div v-if="job.state">,</div> -->
                     <h3 class="text-[#474d6a] capitalize text-[16px]">
-                        <div v-if="job.remote == 1 &&  job.state">,Remote</div>
+                        <div v-if="job.remote == 1 &&  job.state">(Remote)</div>
                         <div v-else-if="job.remote == 0 &&  job.state">,{{job.state}}</div>
                         <div v-else></div>
 
