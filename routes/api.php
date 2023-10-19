@@ -44,6 +44,6 @@ Route::post('admin/passwordChange/{id}', [AdminController::class, 'changePasswor
 Route::get('admin/getAdmin', [AdminController::class, 'getAdmin'])->middleware('auth:sanctum');
 
 
-Route::resource('admin-jobs', AdminJobController::class)->except(['create', 'edit'])->middleware([]);
+Route::resource('admin-jobs', AdminJobController::class);
 Route::get('/countries', [CountryController::class, 'index']);
 Route::get('/countries/{country}/states', [CountryController::class, 'states']);

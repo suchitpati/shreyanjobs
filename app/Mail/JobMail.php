@@ -31,6 +31,6 @@ class JobMail extends Mailable
      */
     public function build()
     {
-        return $this->view('jobEmail')->with(['title'=> $this->title] );;
+        return $this->view('jobEmail')->with(['title'=> $this->title] )->subject('Job added to shreyanjobs.com. Job Title :' .$this->title);
     }
 }
