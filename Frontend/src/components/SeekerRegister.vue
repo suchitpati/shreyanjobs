@@ -147,8 +147,8 @@
           <div class="fixed inset-0 flex items-center justify-center">
             <div class="bg-white p-8 rounded-lg shadow-lg">
               <h2 class="text-2xl font-bold mb-2">Enter OTP</h2>
+              <div class="text-[14px]">OTP has been sent to your email ID</div>
               <div class="text-[11px]">Please check your spam/ junk folder</div>
-
               <div v-if="otpError" class="text-red-500">OTP invalid</div>
 
               <div class="flex space-x-2">

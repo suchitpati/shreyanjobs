@@ -321,7 +321,7 @@
                     </div>
                     <!-- <div v-if="job.state">,</div> -->
                     <h3 class="text-[#474d6a] capitalize text-[16px]">
-                        <div v-if="job.remote == 1 &&  job.state">(Remote)</div>
+                        <div v-if="job.remote == 1">(Remote)</div>
                         <div v-else-if="job.remote == 0 &&  job.state">,{{job.state}}</div>
                         <div v-else></div>
 
@@ -675,6 +675,7 @@
 
       <div class="bg-white p-8 rounded-lg shadow-lg">
         <h2 class="text-2xl font-bold mb-4">Enter OTP</h2>
+        <div class="text-[14px]">OTP has been sent to your email ID</div>
         <div class="text-[11px]">Please check your spam/ junk folder</div>
 
         <div v-if="otpError" class="text-red-500">OTP invalid</div>

@@ -300,7 +300,7 @@
                             id="textArea1"
                             v-model="detailed_description"
                             rows="4"
-                            maxlength="1000"
+                            maxlength="2000"
                             placeholder="Enter description"
 
                         >
@@ -314,7 +314,7 @@
 
                         <div class="text-end">
                             <span class="text-blue-700 text-[16px]"
-                                >Characters left: {{ remaining }}/1000</span
+                                >Characters left: {{ remaining }}/2000</span
                             >
                         </div>
                     </div>
@@ -356,7 +356,7 @@ export default {
         const job_title = ref("");
         const detailed_description = ref("");
         const showSuccessModal = ref(false);
-        const remaining = ref(1000);
+        const remaining = ref(2000);
         const showLogoutModal = ref(false);
         const successMessage = ref("");
         const countries = ref([]);
