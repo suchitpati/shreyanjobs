@@ -23,12 +23,11 @@ class EmployerController extends Controller
 
         Employer::create([
             'companyname' => $request->companyname,
-            'companyurl' => $request->companyurl,
+            'companyurl' => $request->companywebsite,
             'employername' => $request->employername,
-            'emailid' => $request->emailid,
+            'emailid' => $request->email,
             'password' => $request->password,
-            'confirmpassword' => $request->confirmpassword,
-            'contactno' => $request->contactno,
+            'contactno' => $request->contact_no,
             'country' => $request->country,
             'state' => $request->state,
             'city' => $request->city,

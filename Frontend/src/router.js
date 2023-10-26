@@ -6,6 +6,10 @@ import AdminLogin from './components/AdminLogin.vue';
 import AdminProfile from './components/AdminProfile.vue';
 import SeekerLogin from './components/SeekerLogin.vue'
 import SeekerRegister from './components/SeekerRegister.vue'
+import EmployerLogin from './components/EmployerLogin.vue'
+import EmployerRegister from './components/EmployerRegister.vue'
+
+
 
 
 const loggedIn = localStorage.getItem('accessToken');
@@ -48,6 +52,16 @@ const routes = [
     path: '/seeker-register',
     name: 'seeker-register',
     component: SeekerRegister,
+  },
+  {
+    path: '/employer-login',
+    name: 'employer-login',
+    component: EmployerLogin,
+  },
+  {
+    path: '/employer-register',
+    name: 'employer-register',
+    component: EmployerRegister,
   },
 
 ];

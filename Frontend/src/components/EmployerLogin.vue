@@ -36,15 +36,15 @@
               class="w-full bg-white rounded-lg py-4 sm:px-8 px-4 lg:ml-[20px] shadow-[rgba(100,_100,_111,_0.2)_0px_5px_30px_0px]"
             >
               <h1 class="sm:text-[28px] text-[22px] font-bold mt-[20px] sm:mb-[5px] mb-[30px] text-[#1890da]">
-                Sign in to your Accounts
+                Sign in to your account
               </h1>
               <div class="flex justify-center gap-[5px]">Don't have account ?
-                <router-link to="/seeker-register" class="hover:underline hover:decoration-[#FF0000] text-[#FF0000]">Register here</router-link>
+                <router-link to="/employer-register" class="hover:underline hover:decoration-[#FF0000] text-[#FF0000]">Register here</router-link>
               </div>
               <div v-if="validationError" class="text-red-600 block text-[20px] text-center">
                   {{validationError}}
               </div>
-              <div class="mt-4">
+              <div class="mt-4"></div>
                 <div class="w-full">
                   <label
                     class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
