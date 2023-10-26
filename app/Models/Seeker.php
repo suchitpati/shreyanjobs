@@ -9,7 +9,9 @@ class Seeker extends Model
 {
     use HasFactory;
 
+    protected $guard = 'seeker';
+
     protected $table = "seekers";
 
-    protected $fillable = ['fullname','email','password','gender','is_active','otp'];
+    protected $fillable = ['fullname', 'email', 'password', 'gender', 'is_active', 'otp'];
 }

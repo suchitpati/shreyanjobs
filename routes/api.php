@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminJobController;
 use App\Http\Controllers\CountryController;
+use App\Http\Controllers\EmployerController;
 use App\Http\Controllers\SeekerController;
 use App\Http\Controllers\UserSubscriptionController;
 use App\Models\Seeker;
@@ -35,7 +36,11 @@ Route::post('/validateOtp', [SeekerController::class, 'validateOtp']);
 Route::post('/registerSeeker', [SeekerController::class, 'registerSeeker']);
 Route::post('/addSeekerDetails', [SeekerController::class, 'addSeekerDetails']);
 
+Route::post('/seeker-login',[SeekerController::class,'loginSeeker']);
 
+//Employer Routes
+Route::post('/employeregister', [EmployerController::class, 'employe_register']);
+Route::post('/verifyotp', [EmployerController::class, 'verifyotp']);
 
 
 //Admin Routes
@@ -47,3 +52,4 @@ Route::get('admin/getAdmin', [AdminController::class, 'getAdmin'])->middleware('
 Route::resource('admin-jobs', AdminJobController::class);
 Route::get('/countries', [CountryController::class, 'index']);
 Route::get('/countries/{country}/states', [CountryController::class, 'states']);
+

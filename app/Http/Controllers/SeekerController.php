@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\SeekerOtp;
 use App\Models\Seeker;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
@@ -13,10 +14,9 @@ class SeekerController extends Controller
     public function registerSeeker(Request $request)
     {
         $email = $request->email;
-        $otp = rand(100000,999999);
+        $otp = rand(100000, 999999);
 
-        if(!Seeker::where(['email' => $request->email,'is_active' => 1])->exists())
-        {
+        if (!Seeker::where(['email' => $request->email, 'is_active' => 1])->exists()) {
 
             Mail::to($email)->send(new SeekerOtp($otp));
 
@@ -33,9 +33,7 @@ class SeekerController extends Controller
                 'success' => 200,
                 'seeker_id' => $seeker_details->id
             ]);
-        }
-        else
-        {
+        } else {
             return response()->json([
                 'message' => 'Account Already exist',
                 'error' => 100
@@ -45,24 +43,20 @@ class SeekerController extends Controller
     public function validateOtp(Request $request)
     {
 
-        if(Seeker::where(['id' => $request->seeker_id,'otp' => $request->otp])->exists())
-        {
-            Seeker::where('id' , $request->seeker_id)
-                    ->update(['is_active' => 1]);
+        if (Seeker::where(['id' => $request->seeker_id, 'otp' => $request->otp])->exists()) {
+            Seeker::where('id', $request->seeker_id)
+                ->update(['is_active' => 1]);
 
             return response()->json([
-                        'message' => 'Otp verified sucessfully',
-                        'success' => 200,
-                    ]);
-        }
-        else
-        {
+                'message' => 'Otp verified sucessfully',
+                'success' => 200,
+            ]);
+        } else {
             return response()->json([
                 'message' => 'Invalid OTP',
                 'error' => 100
             ]);
         }
-
     }
 
     public function addSeekerDetails(Request $request)
@@ -72,7 +66,7 @@ class SeekerController extends Controller
             $fileName = time() . '.' . $request->file('pdf')->extension();
             $request->file('pdf')->move(public_path('pdf'), $fileName);
 
-            Seeker::where('id',$request->seeker_id)
+            Seeker::where('id', $request->seeker_id)
                 ->update([
                     'country' => $request->country,
                     'state' => $request->state,
@@ -104,5 +98,45 @@ class SeekerController extends Controller
         }
     }
 
+    public function loginSeeker(Request $request)
+    {
 
+        // $request->validate([
+        //     'email' => 'required',
+        //     'password' => 'required',
+        // ]);
+        // $seeker = Seeker::where('email', $request->email)->first();
+        // // dd($seeker);
+        // if (!$seeker || !Hash::check($request->password, $seeker->password)) {
+        //     return response()->json([
+        //         'message' => 'Invalid credentials',
+        //         'code' => 100
+        //     ]);
+        // }
+        // $token = $seeker->createToken('SeekerToken')->plainTextToken;
+
+        // return response()->json([
+        //     'message' => 'Login successful',
+        //     'token' => $token
+        // ], 200);
+
+
+
+        $request->validate([
+            'email' => 'required',
+            'password' => 'required',
+        ]);
+
+        if (Auth::guard('seeker')->attempt(['email' => $request->email, 'password'  => $request->password])) {
+
+            return response()->json([
+                'message' => 'Login successfull',
+                'success' => 200,
+            ]);
+        }
+        return response()->json([
+            'message' => 'Please try agian letter',
+            'success' => 100,
+        ]);
+    }
 }
