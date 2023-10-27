@@ -16,8 +16,26 @@ class SeekerController extends Controller
         $email = $request->email;
         $otp = rand(100000, 999999);
 
-        if (!Seeker::where(['email' => $request->email, 'is_active' => 1])->exists()) {
+        if (Seeker::where(['email' => $request->email, 'is_active' => 1])->exists()) {
 
+            return response()->json([
+                'message' => 'Account Already exist',
+                'error' => 100
+            ]);
+        }
+        elseif (Seeker  ::where(['email' => $request->email, 'is_active' => 0])->exists()) {
+            Mail::to($request->emailid)->send(new SeekerOtp($otp));
+
+
+            Seeker::where('email', $request->email)->update([
+                'fullname' => $request->fullname,
+                'password' => Hash::make($request->password),
+                'gender' => $request->gender,
+                'is_active' => 0,
+                'otp' => $otp
+            ]);
+        }
+        else {
             Mail::to($email)->send(new SeekerOtp($otp));
 
             $seeker_details = Seeker::create([
@@ -32,11 +50,6 @@ class SeekerController extends Controller
                 'message' => 'Seeker OTP send successfully',
                 'success' => 200,
                 'seeker_id' => $seeker_details->id
-            ]);
-        } else {
-            return response()->json([
-                'message' => 'Account Already exist',
-                'error' => 100
             ]);
         }
     }
@@ -100,13 +113,16 @@ class SeekerController extends Controller
 
     public function loginSeeker(Request $request)
     {
-
-        // $request->validate([
-        //     'email' => 'required',
-        //     'password' => 'required',
-        // ]);
-        // $seeker = Seeker::where('email', $request->email)->first();
-        // // dd($seeker);
+        $request->validate([
+            'email' => 'required',
+            'password' => 'required',
+        ]);
+        $seeker = Seeker::where('email', $request->email)->first();
+        // dd($seeker);
+        return response()->json([
+            'message' => 'Invalid credentials',
+            'code' => 100
+        ]);
         // if (!$seeker || !Hash::check($request->password, $seeker->password)) {
         //     return response()->json([
         //         'message' => 'Invalid credentials',
@@ -122,21 +138,21 @@ class SeekerController extends Controller
 
 
 
-        $request->validate([
-            'email' => 'required',
-            'password' => 'required',
-        ]);
+        // $request->validate([
+        //     'email' => 'required',
+        //     'password' => 'required',
+        // ]);
 
-        if (Auth::guard('seeker')->attempt(['email' => $request->email, 'password'  => $request->password])) {
+        // if (Auth::guard('seeker')->attempt(['email' => $request->email, 'password'  => $request->password])) {
 
-            return response()->json([
-                'message' => 'Login successfull',
-                'success' => 200,
-            ]);
-        }
-        return response()->json([
-            'message' => 'Please try agian letter',
-            'success' => 100,
-        ]);
+        //     return response()->json([
+        //         'message' => 'Login successfull',
+        //         'success' => 200,
+        //     ]);
+        // }
+        // return response()->json([
+        //     'message' => 'Please try agian letter',
+        //     'success' => 100,
+        // ]);
     }
 }

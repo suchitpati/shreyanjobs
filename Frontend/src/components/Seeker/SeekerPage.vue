@@ -12,7 +12,7 @@
                     <div class="sm:w-full xs:w-auto w-[50%] order-1">
                         <img
                             class="md:w-[230px] w-[150px]"
-                            src="../assets/logo-no-background.png"
+                            src="../../assets/logo-no-background.png"
                             alt=""
                         />
                     </div>
@@ -64,7 +64,7 @@
                     <!-- @input="handleSearch" -->
 
                     <img
-                        src="../assets/search.svg"
+                        src="../../assets/search.svg"
                         alt="search"
                         class="sm:w-[24px] w-[20px] absolute sm:left-[24px] left-[14px] top-[50%] translate-y-[-50%] opacity-50"
                     />
@@ -750,7 +750,7 @@
 <script>
 import { reactive, ref, watch, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
-import apiUrl from "../api";
+import apiUrl from "../../api";
 import { debounce } from "lodash";
 import moment from "moment";
 import { Country, State } from "country-state-city";
@@ -790,6 +790,56 @@ export default {
         const subscribe_emailError = ref(false);
         const enter_otp = ref("");
         const isLoading = ref(false);
+        const someCountry = ref([]);
+
+        someCountry.value = [
+            {
+                name : "United States",
+                isoCode : "US"
+            },
+            {
+                name : "Canada",
+                isoCode : "CA"
+            },
+            {
+                name : "United Kingdom",
+                isoCode : "GB"
+            },
+            {
+                name : "Australia",
+                isoCode : "AU"
+            }, {
+                name : "Singapore",
+                isoCode : "SG"
+            }, {
+                name : "France",
+                isoCode : "FR"
+            }, {
+                name : "Germany",
+                isoCode : "DE"
+            },
+            {
+                name : "China",
+                isoCode : "CN"
+            },
+            {
+                name : "India",
+                isoCode : "IN"
+            },
+            {
+                name : "Japan",
+                isoCode : "JP"
+            },
+            {
+                name : "Saudi Arabia",
+                isoCode : "SA"
+            },
+            {
+                name : "Brazil",
+                isoCode : "BR"
+            },
+        ];
+
 
         const onCountryChange = async () => {
             const selectedCountryObj = await countries_state.value.find(
@@ -1012,7 +1062,11 @@ export default {
         );
 
         onMounted(() => {
-            countries_state.value = Country.getAllCountries();
+            // countries_state.value = Country.getAllCountries();
+            countries_state.value = someCountry.value;
+
+
+            console.log(countries_state.value,'countries_state');
             fetchCountries();
             fetchJobs();
         });

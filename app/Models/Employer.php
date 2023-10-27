@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Sanctum\HasApiTokens;
 
 class Employer extends Model
 {
-    use HasFactory;
+     use HasApiTokens, HasFactory;
 
     protected $table = 'employer';
     protected $fillable = [
@@ -22,5 +23,6 @@ class Employer extends Model
         'state',
         'city',
         'otp',
+        'is_active'
     ];
 }

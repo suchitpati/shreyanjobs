@@ -39,8 +39,14 @@ Route::post('/addSeekerDetails', [SeekerController::class, 'addSeekerDetails']);
 Route::post('/seeker-login',[SeekerController::class,'loginSeeker']);
 
 //Employer Routes
-Route::post('/employeregister', [EmployerController::class, 'employe_register']);
-Route::post('/verifyotp', [EmployerController::class, 'verifyotp']);
+Route::post('/employer-register', [EmployerController::class, 'employe_register']);
+Route::post('/verify-register-otp', [EmployerController::class, 'verifyRegisterOtp']);
+Route::post('/employer-login',[EmployerController::class,'login']);
+Route::post('/send-forgot-email-otp',[EmployerController::class,'sendForgotEmailOtp']);
+Route::post('/check-forgot-otp',[EmployerController::class,'checkForgotOtp']);
+Route::post('/update-forgot-password',[EmployerController::class,'updateForgotPassword']);
+
+
 
 
 //Admin Routes

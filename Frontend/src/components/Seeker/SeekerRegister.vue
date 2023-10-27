@@ -1,7 +1,7 @@
 <template>
   <div class="bg-[#eaf4ff]">
     <div class="w-full flex justify-end pt-4 pr-4 pl-4">
-      <img class="w-[150px]" src="../assets/logo-no-background.png" alt="" />
+      <img class="w-[150px]" src="../../assets/logo-no-background.png" alt="" />
       <a
         href="/"
         class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[10px] py-[7px] px-[18px] md:px-[26px] rounded-[26px] focus:outline-none"
@@ -19,9 +19,7 @@
           class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-75"
         >
           <div class="bg-white p-8 rounded-lg shadow-lg">
-            <h2 class="text-2xl font-bold mb-4">
-              Registration Completed Successfully
-            </h2>
+            <h2 class="text-2xl font-bold mb-4">Registration Completed Successfully</h2>
             <button
               @click="closeSuccessModal"
               class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -57,63 +55,20 @@
                   class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
                   for="field2"
                 >
-                  Company Name
+                  Full Name
                 </label>
                 <input
                   class="border border-gray-400 rounded-lg py-2 px-4 mb-1 outline-[#264dd9] focus:shadow-outline w-full"
                   type="text"
                   id="field1"
-                  placeholder="Enter Company Name"
-                  v-model="companyname"
+                  placeholder="Full Name"
+                  v-model="fullname"
                 />
                 <div
-                  v-if="companynameError"
+                  v-if="fullnameError"
                   class="text-red-600 block text-[14px] text-left"
                 >
-                  {{ companynameError }}
-                </div>
-              </div>
-
-              <div class="w-full">
-                <label
-                  class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
-                  for="field2"
-                >
-                  Company Website URL
-                </label>
-                <input
-                  class="border border-gray-400 rounded-lg py-2 px-4 mb-1 outline-[#264dd9] focus:shadow-outline w-full"
-                  type="text"
-                  id="field1"
-                  placeholder="Enter Website Url"
-                  v-model="companywebsite"
-                />
-                <div
-                  v-if="companywebsiteError"
-                  class="text-red-600 block text-[14px] text-left"
-                >
-                  {{ companywebsiteError }}
-                </div>
-              </div>
-              <div class="w-full">
-                <label
-                  class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
-                  for="field2"
-                >
-                  Employer Name
-                </label>
-                <input
-                  class="border border-gray-400 rounded-lg py-2 px-4 mb-1 outline-[#264dd9] focus:shadow-outline w-full"
-                  type="text"
-                  id="field1"
-                  placeholder="Enter Employer Name"
-                  v-model="employername"
-                />
-                <div
-                  v-if="employernameError"
-                  class="text-red-600 block text-[14px] text-left"
-                >
-                  {{ employernameError }}
+                  {{ fullnameError }}
                 </div>
               </div>
 
@@ -128,7 +83,7 @@
                   class="border border-gray-400 rounded-lg py-2 px-4 mb-1 outline-[#264dd9] focus:shadow-outline w-full"
                   type="text"
                   id="field1"
-                  placeholder="Enter Email"
+                  placeholder="Email"
                   v-model="email"
                 />
                 <div
@@ -149,7 +104,7 @@
                   class="border border-gray-400 rounded-lg py-2 px-4 mb-1 outline-[#264dd9] focus:shadow-outline w-full"
                   type="password"
                   id="field1"
-                  placeholder="Enter Password"
+                  placeholder="Password"
                   v-model="password"
                 />
                 <div
@@ -159,150 +114,29 @@
                   {{ passwordError }}
                 </div>
               </div>
-              <div class="w-full mt-[10px]">
+              <div class="w-full mt-[10px] flex gap-2 items-center">
                 <label
-                  class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
+                  class="block text-gray-700 font-bold text-start text-[14px]"
                   for="field2"
                 >
-                  Confirm Password
+                  Gender
                 </label>
-                <input
-                  class="border border-gray-400 rounded-lg py-2 px-4 mb-1 outline-[#264dd9] focus:shadow-outline w-full"
-                  type="password"
-                  id="field1"
-                  placeholder="Enter Confirm Password"
-                  v-model="confirmpassword"
-                />
-                <div
-                  v-if="confirmpasswordError"
-                  class="text-red-600 block text-[14px] text-left"
-                >
-                  {{ confirmpasswordError }}
-                </div>
-              </div>
-              <div class="w-full mt-[10px]">
-                <label
-                  class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
-                  for="field2"
-                >
-                  Contact No
-                </label>
-                <input
-                  class="border border-gray-400 rounded-lg py-2 px-4 mb-1 outline-[#264dd9] focus:shadow-outline w-full"
-                  type="password"
-                  id="field1"
-                  placeholder="Enter Contact number"
-                  v-model="contact_no"
-                />
-                <div class="flex gap-[15px] mt-3">
-                  <div class="w-[33.33%]">
-                    <div
-                      class="w-full flex sm:flex-row flex-col justify-between md:gap-6 gap-3 sm:mb-4 mb-7"
-                    >
-                      <div class="">
-                        <label
-                          class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
-                          for="field2"
-                        >
-                          Country
-                        </label>
-                        <select
-                          v-model="selectedCountry"
-                          @change="onCountryChange"
-                          class="block w-full bg-white border text-sm rounded-lg p-2"
-                        >
-                          <option value="">Select Country</option>
-                          <option
-                            v-for="country in countries_state"
-                            :key="country.isoCode"
-                            :value="country.isoCode"
-                            class="flex items-center"
-                            :selected="country.isoCode === 'US'"
-                          >
-                            <span
-                              class="flag-icon flag-icon-{{ country.isoCode.toLowerCase() }} inline-block w-4 h-4 mr-2"
-                            ></span>
-                            <!-- <div class="mr-2">{{ country.flag }}</div> -->
-                            <div>{{ country.name }}</div>
-                          </option>
-                        </select>
-                        <div
-                          class="text-red-600 block text-[14px] text-left"
-                          v-if="err_country != ''"
-                        >
-                          {{ err_country }}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="w-[33.33%]">
-                    <!-- <div class="sm:w-[80%]"> -->
-                    <label
-                      class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
-                      for="field2"
-                    >
-                      State
-                    </label>
-                    <select
-                      v-model="selectedState"
-                      class="block w-full bg-white border text-sm rounded-lg p-2"
-                      :disabled="remote"
-                      :selected="country.isoCode === 'US'"
-                      @change="setSelectedState"
-                    >
-                      <option value="">Select State</option>
-                      <option
-                        v-for="state in states"
-                        :key="state.isoCode"
-                        :value="state.isoCode"
-                      >
-                        {{ state.name }}
-                      </option>
-                    </select>
-                    <!-- </div> -->
-                  </div>
-                  <div class="w-[33.33%]">
-                    <!-- <div class="sm:w-[80%]"> -->
-                    <label
-                      class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
-                      for="field2"
-                    >
-                      City
-                    </label>
-                    <input
-                    v-model="city"
-                      placeholder="City Name"
-                      class="bg-[#FFFFFF] border placeholder:text-[#2C3E50] w-full p-2 rounded-lg text-sm"
-                    />
-                    <!-- <select
-                        v-model="selectedState"
-                        class="block w-full bg-white border text-sm rounded-lg p-2"
-                        :disabled="remote"
-                        :selected="country.isoCode === 'US'"
-                        @change="setSelectedState"
-                      >
-                        <option value="">Select State</option>
-                        <option
-                          v-for="state in states"
-                          :key="state.isoCode"
-                          :value="state.isoCode"
-                        >
-                          {{ state.name }}
-                        </option>
-                      </select> -->
-                    <!-- </div> -->
-                  </div>
+                <div class="flex items-center gap-1">
+                  <input class="" type="radio" value="1" v-model="gender" />
+                  <label for="">Male</label>
+                  <input class="" type="radio" value="2" v-model="gender" />
+                  <label for="">Female</label>
                 </div>
                 <div
-                  v-if="contact_noError"
+                  v-if="genderError"
                   class="text-red-600 block text-[14px] text-left"
                 >
-                  {{ contact_noError }}
+                  {{ genderError }}
                 </div>
               </div>
               <button
                 class="bg-[#1890da] hover:bg-blue-500 text-white font-bold py-2 px-8 mb-[20px] rounded focus:outline-none focus:shadow-outline mt-[40px]"
-                @click.prevent="registerEmployer"
+                @click.prevent="seekerRegister"
               >
                 Register
               </button>
@@ -460,20 +294,181 @@
                     </div>
                     <div
                       class="w-full flex sm:flex-row flex-col justify-between sm:gap-6 gap-2"
-                    ></div>
+                    >
+                      <div class="sm:w-[50%] mb-4">
+                        <label
+                          class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
+                          for="field1"
+                        >
+                          Work authorization
+                        </label>
+                        <input
+                          class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
+                          type="text"
+                          id="field1"
+                          v-model="work_authorization"
+                          placeholder="Enter skill"
+                        />
+                        <div
+                          class="text-red-600 block text-[14px] text-left"
+                          v-if="err_work_authorization != ''"
+                        >
+                          {{ err_work_authorization }}
+                        </div>
+                        <div
+                          class="text-red-600 block text-[14px] text-left"
+                          v-if="err_skill != ''"
+                        >
+                          {{ err_skill }}
+                        </div>
+                      </div>
+
+                      <div class="sm:w-[50%] mb-4">
+                        <label
+                          class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
+                          for="field1"
+                        >
+                          Total IT Yrs of Experience
+                        </label>
+                        <input
+                          class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
+                          type="number"
+                          id="field1"
+                          v-model="total_experience"
+                          placeholder="Enter Experience"
+                        />
+                        <div
+                          class="text-red-600 block text-[14px] text-left"
+                          v-if="err_total_experience != ''"
+                        >
+                          {{ err_total_experience }}
+                        </div>
+                      </div>
+                    </div>
                     <div
                       class="w-full flex sm:flex-row flex-col justify-between sm:gap-6 gap-2"
-                    ></div>
+                    >
+                      <div class="sm:w-[50%] mb-4">
+                        <label
+                          class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
+                          for="field2"
+                        >
+                          Primary skill
+                        </label>
+                        <input
+                          class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
+                          type="text"
+                          id="field1"
+                          v-model="primary_skill"
+                          placeholder="Enter  Primary skill"
+                        />
+                        <div
+                          class="text-red-600 block text-[14px] text-left"
+                          v-if="err_primary_skill != ''"
+                        >
+                          {{ err_primary_skill }}
+                        </div>
+                      </div>
+
+                      <div class="sm:w-[50%] mb-4">
+                        <label
+                          class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
+                          for="field1"
+                        >
+                          Yrs. Of experience in Primary skill
+                        </label>
+                        <input
+                          class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
+                          type="number"
+                          id="field1"
+                          v-model="primary_experience"
+                          placeholder="Enter Yrs. Of experience in Primary skill"
+                        />
+                        <div
+                          class="text-red-600 block text-[14px] text-left"
+                          v-if="err_primary_experience != ''"
+                        >
+                          {{ err_primary_experience }}
+                        </div>
+                      </div>
+                    </div>
                     <div
                       class="w-full flex sm:flex-row flex-col justify-between sm:gap-6 gap-2"
-                    ></div>
+                    >
+                      <div class="sm:w-[50%] mb-4">
+                        <label
+                          class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
+                          for="field2"
+                        >
+                          Secondary skill
+                        </label>
+                        <input
+                          class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
+                          type="text"
+                          id="field1"
+                          v-model="secondary_skill"
+                          placeholder="Enter  Secondary skill"
+                        />
+                        <div
+                          class="text-red-600 block text-[14px] text-left"
+                          v-if="err_secondary_skill != ''"
+                        >
+                          {{ err_secondary_skill }}
+                        </div>
+                      </div>
+
+                      <div class="sm:w-[50%] mb-4">
+                        <label
+                          class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
+                          for="field1"
+                        >
+                          Yrs. Of experience in Secondary skill
+                        </label>
+                        <input
+                          class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
+                          type="number"
+                          id="field1"
+                          v-model="secondary_experience"
+                          placeholder="Enter Yrs. Of experience in Secondary skill"
+                        />
+                        <div
+                          class="text-red-600 block text-[14px] text-left"
+                          v-if="err_secondary_experience != ''"
+                        >
+                          {{ err_secondary_experience }}
+                        </div>
+                      </div>
+                    </div>
                     <div
                       class="w-full flex sm:flex-row flex-col justify-between sm:gap-6 gap-2"
-                    ></div>
+                    >
+                      <div class="sm:w-[100%] mb-4">
+                        <label
+                          class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
+                          for="email"
+                        >
+                          Resume
+                        </label>
+
+                        <input
+                          class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
+                          type="file"
+                          id="file"
+                          placeholder="Enter Email"
+                          @change="image_details"
+                        />
+                        <div
+                          class="text-red-600 block text-[14px] text-left"
+                          v-if="err_file != ''"
+                        >
+                          {{ err_file }}
+                        </div>
+                      </div>
+                    </div>
                   </div>
                   <button
                     class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-8 mb-4 mt-4 rounded-full focus:outline-none focus:shadow-outline"
-                    @click="registerEmployer"
+                    @click="addSeekerDetails"
                   >
                     Complete Registration
                   </button>
@@ -502,35 +497,22 @@ import { useRouter } from "vue-router";
 import axios from "axios";
 import { debounce } from "lodash";
 import { Country, State } from "country-state-city";
-
 // import "vue-loading-overlay/dist/css/index.css";
 
-import apiUrl from "../api";
+import apiUrl from "../../api";
 
 export default {
   setup() {
     const data = reactive({});
-    const companyname = ref("");
-    const companynameError = ref("");
 
-    const companywebsite = ref("");
-    const companywebsiteError = ref("");
-
-    const employername = ref("");
-    const employernameError = ref("");
-
+    const fullname = ref("");
+    const fullnameError = ref("");
     const email = ref("");
     const emailError = ref("");
-
-    const password = ref("");
     const passwordError = ref("");
-
-    const confirmpassword = ref("");
-    const confirmpasswordError = ref("");
-
-    const contact_no = ref("");
-    const contact_noError = ref("");
-
+    const password = ref("");
+    const gender = ref("");
+    const genderError = ref("");
     const validationError = ref("");
     const showSuccessModal = ref(false);
     const otpError = ref(false);
@@ -555,10 +537,25 @@ export default {
 
     const city = ref("");
     const contact_number = ref("");
+    const work_authorization = ref("");
+    const total_experience = ref("");
+    const primary_skill = ref("");
+    const primary_experience = ref("");
+    const secondary_skill = ref("");
+    const secondary_experience = ref("");
     const err_country = ref("");
     const err_state = ref("");
     const err_contact_number = ref("");
+    const err_work_authorization = ref("");
+    const err_total_experience = ref("");
+    const err_primary_skill = ref("");
+    const err_primary_experience = ref("");
+    const err_secondary_skill = ref("");
+    const err_secondary_experience = ref("");
     const err_city = ref("");
+    const file = ref("");
+    const err_file = ref("");
+    const fullPage = ref(true);
     const formContainer = ref(null);
     const isLoading = ref(false);
 
@@ -566,21 +563,14 @@ export default {
       showSuccessModal.value = false;
     };
 
-    const registerEmployer = async () => {
+    const seekerRegister = async () => {
       try {
-        if (companyname.value == null || companyname.value == "") {
-          companynameError.value = "Please Enter Comapany Name";
+        console.log(gender.value, "gender.value");
+        if (fullname.value == null || fullname.value == "") {
+          fullnameError.value = "Please Enter FullName";
           return false;
         } else {
-          companynameError.value = "";
-        }
-
-
-        if (employername.value == null || employername.value == "") {
-          employernameError.value = "Please Enter Employer Name";
-          return false;
-        } else {
-          employernameError.value = "";
+          fullnameError.value = "";
         }
 
         if (email.value == null || email.value == "") {
@@ -589,7 +579,6 @@ export default {
         } else {
           emailError.value = "";
         }
-
         if (password.value == null || password.value == "") {
           passwordError.value = "Please Enter Password";
           return false;
@@ -597,28 +586,21 @@ export default {
           passwordError.value = "";
         }
 
-        if (confirmpassword.value == null || confirmpassword.value == "") {
-          confirmpasswordError.value = "Please Enter Confirm Password";
+        if (gender.value == null || gender.value == "") {
+          genderError.value = "Please select Gender";
           return false;
         } else {
-          confirmpasswordError.value = "";
+          genderError.value = "";
         }
-
-
-        const formData = new FormData();
-        formData.append("companyname", companyname.value);
-        formData.append("companywebsite", companywebsite.value);
-        formData.append("employername", employername.value);
-        formData.append("email", email.value);
-        formData.append("password", password.value);
-        formData.append("contact_no", contact_no.value);
-        formData.append("country", selectedCountry.value);
-        formData.append("state", selectedState.value);
-        formData.append("city", city.value);
         isLoading.value = true;
 
         await axios
-          .post(`${apiUrl}/employeregister`, formData)
+          .post(`${apiUrl}/registerSeeker`, {
+            fullname: fullname.value,
+            email: email.value,
+            password: password.value,
+            gender: gender.value,
+          })
           .then((response) => {
             console.log(response);
             isLoading.value = false;
@@ -643,6 +625,10 @@ export default {
       } catch (error) {
         console.error(error);
       }
+    };
+
+    const image_details = async (event) => {
+      file.value = event.target.files[0]; // Get the first selected file
     };
 
     const validateOtp = async () => {
@@ -673,7 +659,7 @@ export default {
         console.error(error);
       }
     };
-    const registerEmployer1 = async () => {
+    const addSeekerDetails = async () => {
       if (selectedCountry.value == null || selectedCountry.value == "") {
         err_country.value = "The country field is required";
         return false;
@@ -692,17 +678,78 @@ export default {
       } else {
         err_city.value = "";
       }
+      if (contact_number.value == null || contact_number.value == "") {
+        err_contact_number.value = "The field is required";
+        return false;
+      } else {
+        err_contact_number.value = "";
+      }
+      if (work_authorization.value == null || work_authorization.value == "") {
+        err_work_authorization.value =
+          "The work authorization field is required";
+        return false;
+      } else {
+        err_work_authorization.value = "";
+      }
+      if (total_experience.value == null || total_experience.value == "") {
+        err_total_experience.value = "The Total Experience field is required";
+        return false;
+      } else {
+        err_total_experience.value = "";
+      }
+      if (primary_skill.value == null || primary_skill.value == "") {
+        err_primary_skill.value = "The Primary skill is required";
+        return false;
+      } else {
+        err_primary_skill.value = "";
+      }
+      if (primary_experience.value == null || primary_experience.value == "") {
+        err_primary_experience.value =
+          "The primary experience field is required";
+        return false;
+      } else {
+        err_primary_experience.value = "";
+      }
+      if (secondary_skill.value == null || secondary_skill.value == "") {
+        err_secondary_skill.value = "The secondary skill field is required";
+        return false;
+      } else {
+        err_secondary_skill.value = "";
+      }
+      if (
+        secondary_experience.value == null ||
+        secondary_experience.value == ""
+      ) {
+        err_secondary_experience.value =
+          "The secondary experience field is required";
+        return false;
+      } else {
+        err_secondary_experience.value = "";
+      }
 
+      if (file.value == null || file.value == "") {
+        err_file.value = "Pleas select file";
+        return false;
+      } else {
+        err_file.value = "";
+      }
       const formData = new FormData();
+      formData.append("pdf", file.value);
       formData.append("country", selectedCountry.value);
       formData.append("state", selectedState.value);
       formData.append("city", city.value);
       formData.append("contact_number", contact_number.value);
+      formData.append("work_authorization", work_authorization.value);
+      formData.append("total_experience", total_experience.value);
+      formData.append("primary_skill", primary_skill.value);
+      formData.append("primary_experience", primary_experience.value);
+      formData.append("secondary_skill", secondary_skill.value);
+      formData.append("secondary_experience", secondary_experience.value);
       formData.append("seeker_id", seeker_id.value);
 
       try {
         await axios
-          .post(`${apiUrl}/employeregister`, formData, {
+          .post(`${apiUrl}/addSeekerDetails`, formData, {
             headers: {
               "Content-Type": "multipart/form-data",
             },
@@ -766,31 +813,24 @@ export default {
     });
 
     return {
-      companyname,
-      companynameError,
-      companywebsite,
-      companywebsiteError,
-      employername,
-      employernameError,
-      email,
-      emailError,
-      password,
-      passwordError,
-      confirmpassword,
-      confirmpasswordError,
-      contact_no,
-      contact_noError,
       isLoading,
       state,
       country,
       countries_state,
+      fullname,
+      fullnameError,
       data,
+      email,
+      password,
+      gender,
+      genderError,
       showSuccessModal,
       closeSuccessModal,
       router,
       route,
       emailError,
       passwordError,
+      seekerRegister,
       validationError,
       steps,
       fetchCountries,
@@ -804,12 +844,28 @@ export default {
       otpError,
       city,
       contact_number,
-      registerEmployer,
+      work_authorization,
+      total_experience,
+      primary_skill,
+      primary_experience,
+      secondary_skill,
+      secondary_experience,
+      addSeekerDetails,
       err_country,
       err_state,
       err_contact_number,
+      err_work_authorization,
+      err_total_experience,
+      err_primary_skill,
+      err_secondary_skill,
+      err_primary_experience,
+      err_secondary_experience,
       err_city,
+      image_details,
+      file,
+      err_file,
       enter_otp,
+      fullPage,
 
       formContainer,
     };

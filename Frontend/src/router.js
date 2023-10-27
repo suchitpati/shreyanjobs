@@ -1,13 +1,15 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
-import Admin from './components/AdminPage.vue';
-import User from './components/UserPage.vue';
-import AdminLogin from './components/AdminLogin.vue';
-import AdminProfile from './components/AdminProfile.vue';
-import SeekerLogin from './components/SeekerLogin.vue'
-import SeekerRegister from './components/SeekerRegister.vue'
-import EmployerLogin from './components/EmployerLogin.vue'
-import EmployerRegister from './components/EmployerRegister.vue'
+import Admin from './components/Admin/AdminPage.vue';
+import AdminLogin from './components/Admin/AdminLogin.vue';
+import AdminProfile from './components/Admin/AdminProfile.vue';
+
+import SeekerPage from './components/Seeker/SeekerPage.vue';
+import SeekerLogin from './components/Seeker/SeekerLogin.vue'
+import SeekerRegister from './components/Seeker/SeekerRegister.vue'
+
+import EmployerLogin from './components/Employer/EmployerLogin.vue'
+import EmployerRegister from './components/Employer/EmployerRegister.vue'
 
 
 
@@ -23,8 +25,8 @@ const routes = [
   },
   {
     path: '/',
-    name: 'User',
-    component: User,
+    name: 'SeekerPage',
+    component: SeekerPage,
   },
   {
     path: '/admin-login',

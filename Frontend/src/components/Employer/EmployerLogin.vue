@@ -5,7 +5,7 @@
         </div> -->
         <img
           class="w-[150px]"
-          src="../assets/logo-no-background.png"
+          src="../../assets/logo-no-background.png"
           alt=""
         />
         <router-link to="/" class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[10px] py-[7px] px-[18px] md:px-[26px] rounded-[26px] focus:outline-none">Job search page</router-link >
@@ -29,7 +29,7 @@
             </div>
           </div>
           <div class="w-[50%] md:block hidden">
-            <img src="../assets/illustration.svg" alt="" class="m-auto mr-0" />
+            <img src="../../assets/illustration.svg" alt="" class="m-auto mr-0" />
           </div>
           <div class="md:w-[50%] w-full md:max-w-[100%] max-w-[500px]">
             <div
@@ -39,7 +39,7 @@
                 Sign in to your Accounts
               </h1>
               <div class="flex justify-center gap-[5px]">Don't have account ?
-                <router-link to="/seeker-register" class="hover:underline hover:decoration-[#FF0000] text-[#FF0000]">Register here</router-link>
+                <router-link to="/employer-register" class="hover:underline hover:decoration-[#FF0000] text-[#FF0000]">Register here</router-link>
               </div>
               <div v-if="validationError" class="text-red-600 block text-[20px] text-center">
                   {{validationError}}
@@ -83,7 +83,7 @@
                 </div>
                 <button
                   class="bg-[#1890da] hover:bg-blue-500 text-white font-bold py-2 px-8 mb-[20px] rounded focus:outline-none focus:shadow-outline mt-[40px]"
-                  @click="adminPage"
+                  @click="employerLogin"
                 >
                   Sign in
 
@@ -105,7 +105,7 @@
   import { reactive, ref } from "vue";
   import { useRouter } from "vue-router";
   import axios from "axios";
-  import apiUrl from "../api";
+  import apiUrl from "../../api";
 
   export default {
     setup() {
@@ -126,7 +126,7 @@
         showSuccessModal.value = false;
       };
 
-      const adminPage = async () => {
+      const employerLogin = async () => {
           try {
               console.log(email.value,'email.value');
           if(email.value == null || email.value == '' )
@@ -148,7 +148,7 @@
               passwordError.value ='';
           }
 
-          const response = await axios.post(`${apiUrl}/admin/login`, {
+          const response = await axios.post(`${apiUrl}/employer-login`, {
             email: email.value,
             password: password.value,
           });
@@ -174,7 +174,7 @@
 
       return {
         data,
-        adminPage,
+        employerLogin,
         email,
         password,
         showSuccessModal,
