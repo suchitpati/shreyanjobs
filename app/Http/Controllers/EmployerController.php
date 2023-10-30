@@ -76,6 +76,17 @@ class EmployerController extends Controller
         }
     }
 
+    public function employe_profile(Request $request)
+    {
+        $employer = Employer::find($request->employer_id);
+        return response()->json([
+            'message' => 'Details fetch successfully',
+            'success' => 200,
+            'employer_details' => $employer
+
+        ]);
+
+    }
     public function sendForgotEmailOtp(Request $request)
     {
         $otp = rand(100000, 999999);
@@ -86,13 +97,16 @@ class EmployerController extends Controller
         ];
 
         if (Employer::where(['emailid' => $request->email])->exists()) {
-
+            Employer::where(['emailid' => $request->email])
+            ->update(['otp' => $otp]);
             Mail::to($request->email)->send(new EmployerOtpMail($maildata));
 
 
             return response()->json([
                 'message' => 'Otp send sucessfully',
                 'success' => 200,
+                'email' => $request->email
+
             ]);
         } else {
             return response()->json([
@@ -104,7 +118,7 @@ class EmployerController extends Controller
 
     public function checkForgotOtp(Request $request)
     {
-        if (Employer::where(['emailid' => $request->email, 'otp' => $request->otp])->exists()) {
+        if (Employer::where(['emailid' => $request->employer_email, 'otp' => $request->otp])->exists()) {
             return response()->json([
                 'message' => 'Otp verified sucessfully',
                 'success' => 200,
@@ -119,8 +133,8 @@ class EmployerController extends Controller
 
     public function updateForgotPassword(Request $request)
     {
-        if (Employer::where(['emailid' => $request->email])->exists()) {
-            Employer::where('emailid', $request->email)
+        if (Employer::where(['emailid' => $request->employer_email])->exists()) {
+            Employer::where('emailid', $request->employer_email)
                 ->update(['password' => Hash::make($request->password)]);
             return response()->json([
                 'message' => 'password updated sucessfully',
@@ -150,25 +164,22 @@ class EmployerController extends Controller
 
     public function login(Request $request)
     {
-        $request->validate([
-            'email' => 'required',
-            'password' => 'required',
-        ]);
 
-        $admin = Employer::where('emailid', $request->email)->first();
+        $employer = Employer::where('emailid', $request->data['email'])->first();
         // dd($admin);
-        if (!$admin || !Hash::check($request->password, $admin->password)) {
+        if (!$employer || !Hash::check($request->data['password'], $employer->password)) {
             return response()->json([
                 'message' => 'Invalid credentials',
                 'code' => 100
             ]);
         }
 
-        $token = $admin->createToken('AdminToken')->plainTextToken;
+        $token = $employer->createToken('AdminToken')->plainTextToken;
 
         return response()->json([
             'message' => 'Login successful',
-            'token' => $token
+            'token' => $token,
+            'employer_id' => $employer->id
         ], 200);
     }
 }

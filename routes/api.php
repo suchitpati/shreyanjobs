@@ -35,16 +35,22 @@ Route::post('addSubscriber', [UserSubscriptionController::class, 'addSubscriber'
 Route::post('/validateOtp', [SeekerController::class, 'validateOtp']);
 Route::post('/registerSeeker', [SeekerController::class, 'registerSeeker']);
 Route::post('/addSeekerDetails', [SeekerController::class, 'addSeekerDetails']);
+Route::post('/seeker-send-forgot-email-otp',[SeekerController::class,'sendForgotEmailOtp']);
+Route::post('/seeker-check-forgot-otp',[SeekerController::class,'checkForgotOtp']);
+Route::post('/seeker-update-forgot-password',[SeekerController::class,'updateForgotPassword']);
+
+
 
 Route::post('/seeker-login',[SeekerController::class,'loginSeeker']);
 
 //Employer Routes
+Route::post('/employer-profile', [EmployerController::class, 'employe_profile']);
 Route::post('/employer-register', [EmployerController::class, 'employe_register']);
 Route::post('/verify-register-otp', [EmployerController::class, 'verifyRegisterOtp']);
 Route::post('/employer-login',[EmployerController::class,'login']);
-Route::post('/send-forgot-email-otp',[EmployerController::class,'sendForgotEmailOtp']);
-Route::post('/check-forgot-otp',[EmployerController::class,'checkForgotOtp']);
-Route::post('/update-forgot-password',[EmployerController::class,'updateForgotPassword']);
+Route::post('/employer-send-forgot-email-otp',[EmployerController::class,'sendForgotEmailOtp']);
+Route::post('/employer-check-forgot-otp',[EmployerController::class,'checkForgotOtp']);
+Route::post('/employer-update-forgot-password',[EmployerController::class,'updateForgotPassword']);
 
 
 

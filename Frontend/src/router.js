@@ -7,9 +7,15 @@ import AdminProfile from './components/Admin/AdminProfile.vue';
 import SeekerPage from './components/Seeker/SeekerPage.vue';
 import SeekerLogin from './components/Seeker/SeekerLogin.vue'
 import SeekerRegister from './components/Seeker/SeekerRegister.vue'
+import ForgotPassword from './components/Seeker/ForgotPassword.vue'
+
 
 import EmployerLogin from './components/Employer/EmployerLogin.vue'
 import EmployerRegister from './components/Employer/EmployerRegister.vue'
+import EmployerForgotPassword from './components/Employer/ForgotPassword.vue'
+import EmployerProfile from './components/Employer/EmployerProfile.vue'
+
+
 
 
 
@@ -56,6 +62,11 @@ const routes = [
     component: SeekerRegister,
   },
   {
+    path: '/seeker-forgot-password',
+    name: 'seeker-forgot-password',
+    component: ForgotPassword,
+  },
+  {
     path: '/employer-login',
     name: 'employer-login',
     component: EmployerLogin,
@@ -64,6 +75,16 @@ const routes = [
     path: '/employer-register',
     name: 'employer-register',
     component: EmployerRegister,
+  },
+  {
+    path: '/employer-forgot-password',
+    name: 'employer-forgot-password',
+    component: EmployerForgotPassword,
+  },
+  {
+    path: '/employer-profile',
+    name: 'employer-profile',
+    component: EmployerProfile,
   },
 
 ];

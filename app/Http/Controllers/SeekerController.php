@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\SeekerOtp;
+use App\Mail\SeekerOtpMail;
 use App\Models\Seeker;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -111,30 +112,78 @@ class SeekerController extends Controller
         }
     }
 
+    public function sendForgotEmailOtp(Request $request)
+    {
+        $otp = rand(100000, 999999);
+
+        $maildata = [
+            'title' => 'mail from webappfix',
+            'body' => 'Your forgot password is' . $otp,
+        ];
+
+        if (Seeker::where(['email' => $request->email])->exists()) {
+            Seeker::where(['email' => $request->email])
+                ->update(['otp' => $otp]);
+            Mail::to($request->email)->send(new SeekerOtpMail($maildata));
+
+
+            return response()->json([
+                'message' => 'Otp send sucessfully',
+                'success' => 200,
+                'email' => $request->email
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'email id not found',
+                'error' => 100,
+            ]);
+        }
+    }
+
+    public function checkForgotOtp(Request $request)
+    {
+        if (Seeker::where(['email' => $request->seeker_email, 'otp' => $request->otp])->exists()) {
+            return response()->json([
+                'message' => 'Otp verified sucessfully',
+                'success' => 200,
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'please enter valid creadiantials',
+                'error' => 100,
+            ]);
+        }
+    }
+
+    public function updateForgotPassword(Request $request)
+    {
+            Seeker::where('email', $request->seeker_email)
+                ->update(['password' => Hash::make($request->password)]);
+            return response()->json([
+                'message' => 'password updated sucessfully',
+                'success' => 200,
+            ]);
+
+    }
+
     public function loginSeeker(Request $request)
     {
-        $request->validate([
-            'email' => 'required',
-            'password' => 'required',
-        ]);
-        $seeker = Seeker::where('email', $request->email)->first();
-        // dd($seeker);
-        return response()->json([
-            'message' => 'Invalid credentials',
-            'code' => 100
-        ]);
-        // if (!$seeker || !Hash::check($request->password, $seeker->password)) {
-        //     return response()->json([
-        //         'message' => 'Invalid credentials',
-        //         'code' => 100
-        //     ]);
-        // }
-        // $token = $seeker->createToken('SeekerToken')->plainTextToken;
 
-        // return response()->json([
-        //     'message' => 'Login successful',
-        //     'token' => $token
-        // ], 200);
+        $seeker = Seeker::where('email', $request->data['email'])->first();
+        // dd($seeker);
+
+        if (!$seeker || !Hash::check($request->data['password'], $seeker->password)) {
+            return response()->json([
+                'message' => 'Invalid credentials',
+                'code' => 100
+            ]);
+        }
+        $token = $seeker->createToken('SeekerToken')->plainTextToken;
+
+        return response()->json([
+            'message' => 'Login successful',
+            'token' => $token
+        ], 200);
 
 
 

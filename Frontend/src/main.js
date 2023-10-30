@@ -5,7 +5,7 @@ import router from './router';
 import axios from 'axios';
 
 import { createPinia } from 'pinia'
-const pinia = createPinia()
+const pinia = createPinia();
 
 const app = createApp(App);
 app.config.globalProperties.$http = axios;

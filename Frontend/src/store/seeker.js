@@ -1,32 +1,27 @@
-import {defineStore} from 'pinia';
+import { defineStore } from "pinia";
 import { ref } from "vue";
 import axios from "axios";
 
 import apiUrl from "../api";
 
-export const useSeekerStore = defineStore('Seeker', () => {
-    const count = ref(10)
+export const useSeekerStore = defineStore("Seeker", () => {
+    const count = ref(10);
+    const seekerTocken = ref("");
+    const seekerLoginStatus = ref(false);
+    async function loginSeeker(data) {
+        console.log("loginSeeker", data);
+        const response = await axios.post(`${apiUrl}/seeker-login`, { data });
 
-   async function registerSeeker(data)
-    {
-        console.log('registerSeeker',data.value);
-        // const response = await axios.post(`${apiUrl}/seeker-login`, {formData});
+        if (response.data.code == 100) {
+            seekerLoginStatus.value = false;
+            return false;
+        } else {
+            seekerTocken.value = response.data.token;
+            seekerLoginStatus.value = true;
+            return true;
 
-        // if(response.data.code == 100)
-        // {
-        //   validationError.value = response.data.message;
-        // }
-        // else{
-
-        //   const token = response.data.token;
-        //   localStorage.setItem("accessToken", token);
-        //   showSuccessModal.value = true;
-
-        //   setTimeout(() => {
-        //       router.push("/admin");
-        //     }, 1000);
-        // }
+        }
     }
 
-    return { count ,registerSeeker}
-  })
+    return { count, loginSeeker, seekerTocken, seekerLoginStatus };
+});

@@ -337,7 +337,7 @@ import axios from "axios";
 import apiUrl from "../../api";
 import SuccessModal from "../SuccessModal.vue";
 import { debounce } from "lodash";
-import { Country, State } from "country-state-city";
+import {  State } from "country-state-city";
 
 export default {
     components: {
