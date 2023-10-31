@@ -611,7 +611,18 @@ export default {
         } else {
           confirmpasswordError.value = "";
         }
+             const regex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
 
+            if(regex.test(password.value) == false )
+            {
+                confirmpasswordError.value = "Enter At least 8 characters long with one capital and one number "
+                return false;
+
+            }
+            else
+            {
+                confirmpasswordError.value = "";
+            }
         if (password.value != confirmpassword.value && confirmpassword.value != null) {
             matchpasswordError.value = "Please match password and Confirm Password";
           return false;
@@ -756,8 +767,6 @@ export default {
       closeSuccessModal,
       router,
       route,
-      emailError,
-      passwordError,
       validationError,
       steps,
       fetchCountries,

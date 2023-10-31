@@ -12,6 +12,25 @@ use Illuminate\Support\Facades\Mail;
 
 class SeekerController extends Controller
 {
+    public function getSeeker(Request $request)
+    {
+        if($request->searchInput != null )
+        {
+            $seeker_details = Seeker::where('fullname','LIKE','%'.$request->searchInput.'%')
+                                    ->orWhere('primary_skill','LIKE','%'.$request->searchInput.'%')
+                                    ->orWhere('secondary_skill','LIKE','%'.$request->searchInput.'%')
+                                ->get();
+        }
+        else
+        {
+            $seeker_details = Seeker::all();
+        }
+
+        return response()->json([
+            'success' => 200,
+            'seeker_details' => $seeker_details
+        ]);
+    }
     public function registerSeeker(Request $request)
     {
         $email = $request->email;
@@ -23,8 +42,7 @@ class SeekerController extends Controller
                 'message' => 'Account Already exist',
                 'error' => 100
             ]);
-        }
-        elseif (Seeker  ::where(['email' => $request->email, 'is_active' => 0])->exists()) {
+        } elseif (Seeker::where(['email' => $request->email, 'is_active' => 0])->exists()) {
             Mail::to($request->emailid)->send(new SeekerOtp($otp));
 
 
@@ -33,10 +51,10 @@ class SeekerController extends Controller
                 'password' => Hash::make($request->password),
                 'gender' => $request->gender,
                 'is_active' => 0,
+                'relocate' => $request->relocate,
                 'otp' => $otp
             ]);
-        }
-        else {
+        } else {
             Mail::to($email)->send(new SeekerOtp($otp));
 
             $seeker_details = Seeker::create([
@@ -45,6 +63,7 @@ class SeekerController extends Controller
                 'password' => Hash::make($request->password),
                 'gender' => $request->gender,
                 'is_active' => 0,
+                'relocate' => $request->relocate,
                 'otp' => $otp
             ]);
             return response()->json([
@@ -117,8 +136,8 @@ class SeekerController extends Controller
         $otp = rand(100000, 999999);
 
         $maildata = [
-            'title' => 'mail from webappfix',
-            'body' => 'Your forgot password is' . $otp,
+            'title' => 'mail from Shreyanjobs',
+            'body' => 'Your otp for forgot password is ' . $otp,
         ];
 
         if (Seeker::where(['email' => $request->email])->exists()) {
@@ -157,13 +176,39 @@ class SeekerController extends Controller
 
     public function updateForgotPassword(Request $request)
     {
-            Seeker::where('email', $request->seeker_email)
-                ->update(['password' => Hash::make($request->password)]);
-            return response()->json([
-                'message' => 'password updated sucessfully',
-                'success' => 200,
-            ]);
+        Seeker::where('email', $request->seeker_email)
+            ->update(['password' => Hash::make($request->password)]);
+        return response()->json([
+            'message' => 'password updated sucessfully',
+            'success' => 200,
+        ]);
+    }
 
+    public function updateseeker_profile(Request $request)
+    {
+
+        $fileName = time() . '.' . $request->file('pdf');
+
+
+        if (Seeker::where(['email' => $request->email])->exists()) {
+            Seeker::where('email', $request->email)->update([
+                'country' => $request->country,
+                'state' => $request->state,
+                'city' => $request->city,
+                'contact_number' => $request->contact_number,
+                'work_authorization' => $request->work_authorization,
+                'total_experience' => $request->total_experience,
+                'primary_skill' => $request->primary_skill,
+                'primary_skill_experience' => $request->primary_experience,
+                'secondary_skill' => $request->secondary_skill,
+                'secondary_skill_experience' => $request->secondary_experience,
+                'resume' =>  $fileName,
+            ]);
+        }
+        return response()->json([
+            'message' => 'Details added successfully',
+            'success' => 200,
+        ]);
     }
 
     public function loginSeeker(Request $request)

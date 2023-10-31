@@ -32,18 +32,25 @@ Route::post('sendOtp', [UserSubscriptionController::class, 'sendOtp']);
 Route::post('addSubscriber', [UserSubscriptionController::class, 'addSubscriber']);
 
 //Seeker Routes
+
+
+
 Route::post('/validateOtp', [SeekerController::class, 'validateOtp']);
 Route::post('/registerSeeker', [SeekerController::class, 'registerSeeker']);
 Route::post('/addSeekerDetails', [SeekerController::class, 'addSeekerDetails']);
 Route::post('/seeker-send-forgot-email-otp',[SeekerController::class,'sendForgotEmailOtp']);
 Route::post('/seeker-check-forgot-otp',[SeekerController::class,'checkForgotOtp']);
 Route::post('/seeker-update-forgot-password',[SeekerController::class,'updateForgotPassword']);
-
-
-
+Route::post('/seeker-update-profile',[SeekerController::class,'updateseeker_profile']);
 Route::post('/seeker-login',[SeekerController::class,'loginSeeker']);
+Route::post('/seeker-all',[SeekerController::class,'getSeeker'])->middleware('auth:sanctum');;
+
 
 //Employer Routes
+
+Route::group(['middleware' => ['auth:sanctum']], function() {
+    Route::post('/employer-logout',[EmployerController::class,'logout']);
+  });
 Route::post('/employer-profile', [EmployerController::class, 'employe_profile']);
 Route::post('/employer-register', [EmployerController::class, 'employe_register']);
 Route::post('/verify-register-otp', [EmployerController::class, 'verifyRegisterOtp']);
@@ -51,6 +58,8 @@ Route::post('/employer-login',[EmployerController::class,'login']);
 Route::post('/employer-send-forgot-email-otp',[EmployerController::class,'sendForgotEmailOtp']);
 Route::post('/employer-check-forgot-otp',[EmployerController::class,'checkForgotOtp']);
 Route::post('/employer-update-forgot-password',[EmployerController::class,'updateForgotPassword']);
+Route::post('/employer-update-profile',[EmployerController::class,'updateemployer_profile']);
+
 
 
 

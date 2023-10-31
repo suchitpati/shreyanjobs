@@ -125,12 +125,11 @@
 import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
+
 import apiUrl from "../../api";
-import { useEmployerStore } from "../../store/employer";
 
 export default {
   setup() {
-    const store = useEmployerStore();
 
     const data = reactive({});
 
@@ -165,24 +164,23 @@ export default {
           passwordError.value = "";
         }
 
-        const formData = {
+
+
+        const response = await axios.post(`${apiUrl}/employer-login`, {
           email: email.value,
           password: password.value,
-        };
-        const result = await store.loginEmployer(formData);
+        });
+        localStorage.setItem('employer_id',response.data.employer_id)
+        localStorage.setItem('employer_tocken',response.data.token)
 
-        // const response = await axios.post(`${apiUrl}/employer-login`, {
-        //   email: email.value,
-        //   password: password.value,
-        // });
 
-        if (result == false) {
+        if (response.data.code == 100) {
           validationError.value = "Invalid credentials";
         } else {
           showSuccessModal.value = true;
 
           setTimeout(() => {
-            router.push("/employer-profile");
+            router.push("/employer-dashboard");
           }, 1000);
         }
       } catch (error) {

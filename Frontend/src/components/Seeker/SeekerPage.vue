@@ -21,7 +21,7 @@
                     >
                         IT jobs Portal
                     </h1> -->
-                    <div
+                    <div v-if="isLogged == false"
                         class="sm:w-full xs:w-auto w-[50%] xs:order-3 order-2 flex justify-end gap-[10px]"
                     >
                         <router-link to="/employer-login">
@@ -38,6 +38,19 @@
                                 class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[10px] py-[7px] px-[18px] md:px-[26px] rounded-[26px] focus:outline-none focus:shadow-outline"
                             >
                                 Job Seeker Login
+                            </button>
+                        </router-link>
+
+                    </div>
+                    <div v-else
+                    class="sm:w-full xs:w-auto w-[50%] xs:order-3 order-2 flex justify-end gap-[10px]"
+                >
+
+                        <router-link to="/employer-dashboard">
+                            <button
+                                class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[10px] py-[7px] px-[18px] md:px-[26px] rounded-[26px] focus:outline-none focus:shadow-outline"
+                            >
+                              Dashboard
                             </button>
                         </router-link>
                     </div>
@@ -552,9 +565,11 @@
                                             </svg>
                                             Employer Email & Contact :
                                         </span>
-                                        <span class="text-[#474d6a]">{{
+
+                                        <span v-if="isLogged" class="text-[#474d6a]">{{
                                             job.email ? job.email : "-"
                                         }}</span>
+                                           <span v-else class="text-[#474d6a]"><b>Login to View</b> </span>
                                     </div>
 
                                     <!-- <div
@@ -790,6 +805,8 @@ export default {
         const subscribe_emailError = ref(false);
         const enter_otp = ref("");
         const isLoading = ref(false);
+        const isLogged = ref(false);
+
         const someCountry = ref([]);
 
         someCountry.value = [
@@ -840,7 +857,10 @@ export default {
             },
         ];
 
-
+        if(localStorage.getItem('employer_tocken') != null)
+        {
+            isLogged.value = true
+        }
         const onCountryChange = async () => {
             const selectedCountryObj = await countries_state.value.find(
                 (countrys) => countrys.isoCode === selectedCountry.value
@@ -1114,6 +1134,7 @@ export default {
             subscribe_emailError,
             enter_otp,
             isLoading,
+            isLogged
             // handleSearch
         };
     },

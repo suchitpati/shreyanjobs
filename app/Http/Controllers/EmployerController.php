@@ -29,7 +29,7 @@ class EmployerController extends Controller
             Mail::to($request->email)->send(new EmployerOtpMail($maildata));
 
 
-           $employer = Employer::where('emailid', $request->email)->update([
+            $employer = Employer::where('emailid', $request->email)->update([
                 'companyname' => $request->companyname,
                 'companyurl' => $request->companywebsite,
                 'employername' => $request->employername,
@@ -85,20 +85,19 @@ class EmployerController extends Controller
             'employer_details' => $employer
 
         ]);
-
     }
     public function sendForgotEmailOtp(Request $request)
     {
         $otp = rand(100000, 999999);
 
         $maildata = [
-            'title' => 'mail from webappfix',
-            'body' => 'Your forgot password is' . $otp,
+            'title' => 'mail from Shreyanjobs',
+            'body' => 'Your otp for forgot password is' . $otp,
         ];
 
         if (Employer::where(['emailid' => $request->email])->exists()) {
             Employer::where(['emailid' => $request->email])
-            ->update(['otp' => $otp]);
+                ->update(['otp' => $otp]);
             Mail::to($request->email)->send(new EmployerOtpMail($maildata));
 
 
@@ -162,24 +161,48 @@ class EmployerController extends Controller
         }
     }
 
+    public function updateemployer_profile(Request $request)
+    {
+        Employer::where('id', $request->employer_id)->update([
+            'employername' => $request->employername,
+            'contactno' => $request->contactno,
+            'country' => $request->country,
+            'state' => $request->state,
+            'city' => $request->city,
+        ]);
+
+        return response()->json([
+            'message' => 'Details added successfully',
+            'success' => 200,
+        ]);
+    }
     public function login(Request $request)
     {
 
-        $employer = Employer::where('emailid', $request->data['email'])->first();
+        $employer = Employer::where('emailid', $request->email)->first();
         // dd($admin);
-        if (!$employer || !Hash::check($request->data['password'], $employer->password)) {
+        if (!$employer || !Hash::check($request->password, $employer->password)) {
             return response()->json([
                 'message' => 'Invalid credentials',
                 'code' => 100
             ]);
         }
 
-        $token = $employer->createToken('AdminToken')->plainTextToken;
+        $token = $employer->createToken('EmployerToken')->plainTextToken;
 
         return response()->json([
             'message' => 'Login successful',
             'token' => $token,
             'employer_id' => $employer->id
         ], 200);
+    }
+
+    public function logout(Request $request)
+    {
+        $user = $request->user();
+
+        $user->tokens()->where('name', 'EmployerToken')->delete();
+
+        return response()->json(['message' => 'Logged out successfully'], 200);
     }
 }

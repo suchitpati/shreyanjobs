@@ -16,233 +16,198 @@
       </div>
     </div>
     <EmployerNev/>
-
     <div class="bg-[#ebf4ff] py-7 h-[calc(100vh-80px)] overflow-y-auto">
-      <div class="max-w-[1080px] w-full mx-auto px-[20px]">
+      <div class="w-full mx-auto px-[20px]">
         <!-- <h1
-                    class="text-[#1890da] sm:text-[26px] text-[22px] font-semibold mt-[30px] sm:mb-[40px] mb-[25px]"
-                >
-                    Admin Page - Post Job Requirement
-                </h1> -->
+                      class="text-[#1890da] sm:text-[26px] text-[22px] font-semibold mt-[30px] sm:mb-[40px] mb-[25px]"
+                  >
+                      Admin Page - Post Job Requirement
+                  </h1> -->
         <div
           class="bg-[#d3ddff4f] rounded-lg py-4 sm:px-8 px-4 w-full shadow-[rgba(100,_100,_111,_0.2)_0px_0px_10px_0px] hover:shadow-[rgba(100,_100,_111,_0.2)_0px_0px_20px_0px] transition-[.5s]"
         >
-          <div class="mt-4">
-            <div
-              class="w-full flex sm:flex-row flex-col justify-between sm:gap-6 gap-2"
-            >
-              <div class="sm:w-[100%] mb-4">
-                <label
-                  class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
-                  for="field1"
-                >
-                  Company Name
-                </label>
-                <input
-                  class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
-                  type="text"
-                  id="field1"
-                  v-model="company_name"
-                  disabled
-                />
-              </div>
-            </div>
-            <div
-              class="w-full flex sm:flex-row flex-col justify-between sm:gap-6 gap-2"
-            >
-              <div class="sm:w-[100%] mb-4">
-                <label
-                  class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
-                  for="field1"
-                >
-                  Company Website URL
-                </label>
-                <input
-                  class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
-                  type="text"
-                  id="field1"
-                  v-model="companyurl"
-                  disabled
-                />
-              </div>
-            </div>
-            <div
-              class="w-full flex sm:flex-row flex-col justify-between sm:gap-6 gap-2"
-            >
-              <div class="sm:w-[100%] mb-4">
-                <label
-                  class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
-                  for="field1"
-                >
-                  Employer Name
-                </label>
-                <input
-                  class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
-                  type="text"
-                  id="field1"
-                  v-model="employername"
-                  placeholder="Enter Employer Name"
-                />
-                <div
-                  class="text-red-600 block text-[14px] text-left"
-                  v-if="employernameError != ''"
-                >
-                  {{ employernameError }}
-                </div>
-              </div>
-            </div>
-            <div
-              class="w-full flex sm:flex-row flex-col justify-between sm:gap-6 gap-2"
-            >
-              <div class="sm:w-[100%] mb-4">
-                <label
-                  class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
-                  for="field1"
-                >
-                  Email ID
-                </label>
-                <div class="flex items-center gap-[10px]">
+          <div class="px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+              <div
+                class="flex items-center justify-center px-[20px] gap-6 w-[65%] mx-auto md:pt-[28px] pt-5 sm:mb-1 mb-10 md:w-full"
+              >
+                <div class="flex items-center justify-center w-[29%] relative">
                   <input
-                    class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-[70%]"
+                    class="rounded-[40px] md:py-[16px] sm:py-[15px] py-[12px] px-4 sm:pl-[60px] pl-[40px] focus:shadow-outline w-full shadow-[0_25px_60px_rgba(113,106,147,.2)]"
                     type="text"
-                    id="field1"
-                    v-model="emailid"
-                    disabled
+                    v-model="searchInput"
+                    @keyup.enter="fetchSeeker"
+                    placeholder="Search seeker profile"
                   />
-                  <div>
-                    <router-link
-                      to="/employer-forgot-password"
-                      class="hover:underline hover:decoration-[#FF0000] text-[#FF0000]"
-                      >Change Password</router-link
-                    >
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div
-              class="w-full flex sm:flex-row flex-col justify-between sm:gap-6 gap-2"
-            >
-              <div class="sm:w-[100%] mb-4">
-                <label
-                  class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
-                  for="field1"
-                >
-                  Contact No
-                </label>
-                <input
-                  class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
-                  type="text"
-                  id="field1"
-                  v-model="contactno"
-                  placeholder="Enter Contact No"
-                />
-                <div
-                  class="text-red-600 block text-[14px] text-left"
-                  v-if="contactnoError != ''"
-                >
-                  {{ contactnoError }}
-                </div>
-              </div>
-            </div>
+                  <!-- @input="handleSearch" -->
 
-            <div
-              class="w-full flex sm:flex-row flex-col justify-between md:gap-6 gap-3 sm:mb-4 mb-7"
-            >
-              <div class="sm:w-[33%]">
-                <label
-                  class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
-                  for="field2"
-                >
-                  Country
-                </label>
-                <select
-                  v-model="selectedCountry"
-                  @change="onCountryChange"
-                  class="block w-full bg-white border text-sm rounded-lg p-2"
-                >
-                  <option value="">Select Country</option>
-                  <option
-                    v-for="country in countries_state"
-                    :key="country.isoCode"
-                    :value="country.isoCode"
-                    class="flex items-center"
-                  >
-                    <span
-                      class="flag-icon flag-icon-{{ country.isoCode.toLowerCase() }} inline-block w-4 h-4 mr-2"
-                    ></span>
-                    <!-- <div class="mr-2">{{ country.flag }}</div> -->
-                    <div>{{ country.name }}</div>
-                  </option>
-                </select>
-                <div
-                  class="text-red-600 block text-[14px] text-left"
-                  v-if="err_country != ''"
-                >
-                  {{ err_country }}
+                  <img
+                    src="../../assets/search.svg"
+                    alt="search"
+                    class="sm:w-[24px] w-[20px] absolute sm:left-[24px] left-[14px] top-[50%] translate-y-[-50%] opacity-50"
+                  />
                 </div>
+                <button
+                  class="bg-blue-700 rounded-[30px] text-white md:p-[13px_30px] sm:p-[7px_20px] p-[5px_14px]"
+                  @click="fetchSeeker"
+                >
+                  Search
+                </button>
+
+                <button
+                  class="bg-blue-700 rounded-[30px] text-white md:p-[13px_30px] sm:p-[7px_20px] p-[5px_14px]"
+                  @click="fetchSeeker"
+                >
+                  Add post
+                </button>
               </div>
-              <div class="sm:w-[33%]">
-                <label
-                  class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
-                  for="field2"
+            </div>
+            <div class="mt-8 flow-root">
+              <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                <div
+                  class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8"
                 >
-                  State
-                </label>
-                <select
-                  v-model="selectedState"
-                  class="block w-full bg-white border text-sm rounded-lg p-2"
-                  :disabled="remote"
-                  :selected="country.isoCode === 'US'"
-                  @change="setSelectedState"
-                >
-                  <option value="">Select State</option>
-                  <option
-                    v-for="state in states"
-                    :key="state.isoCode"
-                    :value="state.isoCode"
-                  >
-                    {{ state.name }}
-                  </option>
-                </select>
-              </div>
-              <div class="sm:w-[34%]">
-                <label
-                  class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
-                  for="field2"
-                >
-                  City
-                </label>
-                <input
-                  type="text"
-                  class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
-                  v-model="city"
-                />
+                  <table class="min-w-full divide-y divide-gray-300">
+                    <thead>
+                      <tr class="divide-x divide-gray-200">
+                        <th
+                          scope="col"
+                          class="py-3.5 pl-4 pr-4 text-left text-sm font-semibold text-gray-900 sm:pl-0"
+                        >
+                          Name
+                        </th>
+                        <th
+                          scope="col"
+                          class="px-4 py-3.5 text-left text-sm font-semibold text-gray-900"
+                        >
+                          Primary skill
+                        </th>
+                        <th
+                          scope="col"
+                          class="px-4 py-3.5 text-left text-sm font-semibold text-gray-900"
+                        >
+                          Yrs of Exp
+                        </th>
+                        <th
+                          scope="col"
+                          class="py-3.5 pl-4 pr-4 text-left text-sm font-semibold text-gray-900 sm:pr-0"
+                        >
+                          Secondary skill
+                        </th>
+                        <th
+                          scope="col"
+                          class="py-3.5 pl-4 pr-4 text-left text-sm font-semibold text-gray-900 sm:pr-0"
+                        >
+                          Yrs of Exp
+                        </th>
+                        <th
+                          scope="col"
+                          class="py-3.5 pl-4 pr-4 text-left text-sm font-semibold text-gray-900 sm:pr-0"
+                        >
+                          Location (City, State (Country))
+                        </th>
+                        <th
+                          scope="col"
+                          class="py-3.5 pl-4 pr-4 text-left text-sm font-semibold text-gray-900 sm:pr-0"
+                        >
+                          Relocate
+                        </th>
+                        <th
+                          scope="col"
+                          class="py-3.5 pl-4 pr-4 text-left text-sm font-semibold text-gray-900 sm:pr-0"
+                        >
+                          Work Visa
+                        </th>
+                        <th
+                          scope="col"
+                          class="py-3.5 pl-4 pr-4 text-left text-sm font-semibold text-gray-900 sm:pr-0"
+                        >
+                          Job Seeker Contact Detail & Resume
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200 bg-white">
+                      <tr
+                        v-for="person in allSeeker"
+                        :key="person.email"
+                        class="divide-x divide-gray-200"
+                      >
+                        <td
+                          class="whitespace-nowrap py-4 pl-4 pr-4 text-sm font-medium text-gray-900 sm:pl-0"
+                        >
+                          {{ person.fullname }}
+                        </td>
+                        <td class="whitespace-nowrap p-4 text-sm text-gray-500">
+                          {{ person.primary_skill }}
+                        </td>
+                        <td class="whitespace-nowrap p-4 text-sm text-gray-500">
+                          {{ person.primary_skill_experience }}
+                        </td>
+                        <td
+                          class="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-gray-500 sm:pr-0"
+                        >
+                          {{ person.secondary_skill }}
+                        </td>
+                        <td
+                          class="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-gray-500 sm:pr-0"
+                        >
+                          {{ person.secondary_skill_experience }}
+                        </td>
+                        <td
+                          class="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-gray-500 sm:pr-0"
+                        >
+                          {{
+                            person.country +
+                            "," +
+                            person.state +
+                            "," +
+                            person.city
+                          }}
+                        </td>
+                        <td
+                          class="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-gray-500 sm:pr-0"
+                        >
+                          {{ person.relocate ? "Yes" : "No" }}
+                        </td>
+                        <td
+                          class="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-gray-500 sm:pr-0"
+                        >
+                          {{ person.work_authorization }}
+                        </td>
+                        <td
+                          class="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-gray-500 sm:pr-0"
+                        >
+                          {{ person.contact_number }}
+                        </td>
+                      </tr>
+                      <tr v-if="allSeeker == null || allSeeker == ''">
+                        <td colspan="9"
+                          class="whitespace-nowrap py-4 pl-4 pr-4 text-sm font-medium text-gray-900 sm:pl-0"
+                        >
+                          No Profile match
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </div>
-
-          <button
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-8 mb-4 mt-4 rounded-full focus:outline-none focus:shadow-outline"
-            @click="updateProfile"
-          >
-            Update
-          </button>
         </div>
       </div>
     </div>
   </div>
 </template>
 
-<script>
+  <script>
 import { reactive, ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
 import apiUrl from "../../api";
 import SuccessModal from "../SuccessModal.vue";
+import EmployerNev from "../Employer/EmployerNavbar.vue"
 import { debounce } from "lodash";
 import { State } from "country-state-city";
-import EmployerNev from "../Employer/EmployerNavbar.vue"
-
 
 export default {
   components: {
@@ -250,7 +215,6 @@ export default {
     EmployerNev
   },
   setup() {
-
     const data = reactive({});
     const selectedCountry = ref("");
     const country = ref("");
@@ -287,12 +251,15 @@ export default {
     const emailid = ref("");
     const contactno = ref("");
     const contactnoError = ref("");
+    const searchInput = ref("");
 
     const city = ref("");
 
     const empCountry = ref("");
     const empState = ref("");
     const employernameError = ref("");
+
+    const allSeeker = ref({});
 
     someCountry.value = [
       {
@@ -366,15 +333,16 @@ export default {
       formData.append("country", selectedCountry.value);
       formData.append("state", selectedState.value);
       formData.append("city", city.value);
-      formData.append("employer_id", localStorage.getItem('employer_id'));
-
-
-
+      formData.append("employer_id", localStorage.getItem("employer_id"));
+      showLogoutModal.value = true;
 
       await axios
-        .post(`${apiUrl}/employer-update-profile`, formData )
+        .post(`${apiUrl}/employer-update-profile`, formData)
         .then((response) => {
-          countries.value = response.data;
+        //   countries.value = response.data;
+        console.log(response);
+        successMessage.value = response.data.message;
+          showLogoutModal.value = true;
         })
         .catch((error) => {
           console.error(error);
@@ -436,40 +404,26 @@ export default {
       router.push("/employer-profile");
     };
 
-    const adminLogout = async () => {
+
+    const fetchSeeker = debounce(async () => {
       try {
-        const authToken = localStorage.getItem("accessToken");
+        const authToken = localStorage.getItem("employer_tocken");
 
-        if (!authToken) {
-          console.log("Authentication token is missing.");
-          return;
-        }
-
-        const config = {
+        const formData = new FormData();
+        formData.append("searchInput", searchInput.value);
+        const response = await axios.post(`${apiUrl}/seeker-all`, formData, {
           headers: {
             Authorization: `Bearer ${authToken}`,
           },
-        };
-        const response = await axios.post(
-          `${apiUrl}/admin/logout`,
-          null,
-          config
-        );
-        localStorage.removeItem("accessToken");
-        if (response.data.message) {
-          successMessage.value = response.data.message;
-          showLogoutModal.value = true;
+        });
 
-          setTimeout(() => {
-            router.push("/admin-login");
-          }, 1000);
-        }
-
-        console.log(response);
+        console.log(response, "response");
+        allSeeker.value = response.data.seeker_details;
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
-    };
+    }, 500);
+
     const getEmployerDeatails = async () => {
       const employer_id = localStorage.getItem("employer_id");
       const response = await axios.post(`${apiUrl}/employer-profile`, {
@@ -495,10 +449,14 @@ export default {
 
       getEmployerDeatails();
       fetchCountries();
+      fetchSeeker();
       //   defaultSelectedState();
     });
 
     return {
+      fetchSeeker,
+      searchInput,
+      allSeeker,
       employernameError,
       contactnoError,
       updateProfile,
@@ -523,7 +481,6 @@ export default {
       closeSuccessModal,
       showLogoutModal,
       successMessage,
-      adminLogout,
       employerProfile,
       router,
       remaining,
@@ -553,4 +510,4 @@ export default {
 };
 </script>
 
-<style></style>
+  <style></style>

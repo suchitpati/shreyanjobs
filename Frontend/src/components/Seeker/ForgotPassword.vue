@@ -212,10 +212,9 @@
 
 
     <script>
-import { reactive, ref, onMounted, watch } from "vue";
+import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
-import { debounce } from "lodash";
 // import "vue-loading-overlay/dist/css/index.css";
 
 import apiUrl from "../../api";
@@ -349,6 +348,9 @@ export default {
             confirmPasswordError.value = "Enter At least 8 characters long with one capital and one number "
             return false;
 
+         }
+         else {
+            confirmPasswordError.value = ""
          }
 
       const formData = new FormData();

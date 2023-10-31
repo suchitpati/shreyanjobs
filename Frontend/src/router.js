@@ -14,6 +14,8 @@ import EmployerLogin from './components/Employer/EmployerLogin.vue'
 import EmployerRegister from './components/Employer/EmployerRegister.vue'
 import EmployerForgotPassword from './components/Employer/ForgotPassword.vue'
 import EmployerProfile from './components/Employer/EmployerProfile.vue'
+import EmployerDashboard from './components/Employer/EmployerDashboard.vue'
+
 
 
 
@@ -22,7 +24,7 @@ import EmployerProfile from './components/Employer/EmployerProfile.vue'
 
 const loggedIn = localStorage.getItem('accessToken');
 
-
+const isEmployerLogged = localStorage.getItem('employer_tocken');
 const routes = [
   {
     path: '/admin',
@@ -85,6 +87,26 @@ const routes = [
     path: '/employer-profile',
     name: 'employer-profile',
     component: EmployerProfile,
+    beforeEnter: (to, from, next) => {
+        if (!isEmployerLogged) {
+            return next('/employer-login');
+        } else {
+            next();
+        }
+      }
+  },
+  {
+    path: '/employer-dashboard',
+    name: 'employer-dashboard',
+    component: EmployerDashboard,
+    beforeEnter: (to, from, next) => {
+        if (!isEmployerLogged) {
+            return next('/employer-login');
+        } else {
+            next();
+        }
+      }
+
   },
 
 ];
