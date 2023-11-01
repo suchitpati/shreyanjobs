@@ -8,6 +8,7 @@ import SeekerPage from './components/Seeker/SeekerPage.vue';
 import SeekerLogin from './components/Seeker/SeekerLogin.vue'
 import SeekerRegister from './components/Seeker/SeekerRegister.vue'
 import ForgotPassword from './components/Seeker/ForgotPassword.vue'
+import SeekerProfile from './components/Seeker/SeekerProfile.vue'
 
 
 import EmployerLogin from './components/Employer/EmployerLogin.vue'
@@ -30,11 +31,23 @@ const routes = [
     path: '/admin',
     name: 'Admin',
     component: Admin,
+    beforeEnter: (to, from, next) => {
+        if (!loggedIn) {
+            return next('/admin-login');
+        } else {
+            next();
+        }
+      }
   },
   {
     path: '/',
     name: 'SeekerPage',
     component: SeekerPage,
+  },
+  {
+    path: '/seeker-profile',
+    name: 'SeekerProfile',
+    component: SeekerProfile,
   },
   {
     path: '/admin-login',

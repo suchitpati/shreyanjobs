@@ -44,6 +44,13 @@ Route::post('/seeker-update-forgot-password',[SeekerController::class,'updateFor
 Route::post('/seeker-update-profile',[SeekerController::class,'updateseeker_profile']);
 Route::post('/seeker-login',[SeekerController::class,'loginSeeker']);
 Route::post('/seeker-all',[SeekerController::class,'getSeeker'])->middleware('auth:sanctum');;
+Route::post('/seeker-profile', [SeekerController::class, 'seeker_profile']);
+Route::post('/seeker-skill', [SeekerController::class, 'seeker_skill']);
+Route::post('/seeker-skill-add', [SeekerController::class, 'seeker_addskill']);
+Route::post('/seeker-skill-delete', [SeekerController::class, 'seeker_deleteskill']);
+
+
+
 
 
 //Employer Routes

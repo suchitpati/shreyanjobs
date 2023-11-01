@@ -124,13 +124,13 @@
   <script>
 import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
-//   import axios from "axios";
-//   import apiUrl from "../../api";
-import { useSeekerStore } from "../../store/seeker";
+  import axios from "axios";
+  import apiUrl from "../../api";
+// import { useSeekerStore } from "../../store/seeker";
 
 export default {
   setup() {
-    const store = useSeekerStore();
+    // const store = useSeekerStore();
     const data = reactive({});
 
     const email = ref("");
@@ -164,19 +164,20 @@ export default {
           passwordError.value = "";
         }
 
-        const formData = {
-          email: email.value,
-          password: password.value,
-        };
-        const result = await store.loginSeeker(formData);
 
-        if (result == false) {
+        const response = await axios.post(`${apiUrl}/seeker-login`, { email: email.value,
+          password: password.value, });
+
+        // const result = await store.loginSeeker(formData);
+
+        if (response.data.code == 100) {
           validationError.value = "Invalid credentials";
         } else {
           showSuccessModal.value = true;
-
+        localStorage.setItem('seeker_id',response.data.seeker_id)
+        localStorage.setItem('seeker_tocken',response.data.token)
           setTimeout(() => {
-            router.push("/admin");
+            router.push("/seeker-profile");
           }, 1000);
         }
       } catch (error) {

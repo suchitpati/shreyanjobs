@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\SeekerOtp;
 use App\Mail\SeekerOtpMail;
 use App\Models\Seeker;
+use App\Models\Subscription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -12,6 +13,65 @@ use Illuminate\Support\Facades\Mail;
 
 class SeekerController extends Controller
 {
+
+    public function seeker_profile(Request $request)
+    {
+            $seeker = Seeker::find($request->seeker_id);
+            return response()->json([
+                'message' => 'Details fetch successfully',
+                'success' => 200,
+                'seeker_details' => $seeker
+
+            ]);
+
+    }
+    public function seeker_skill(Request $request)
+    {
+            $skill_details = Subscription::where('seeker_id' ,$request->seeker_id)->get();
+            return response()->json([
+                'message' => 'Details fetch successfully',
+                'success' => 200,
+                'skill_details' => $skill_details
+
+            ]);
+
+    }
+    public function seeker_addskill(Request $request)
+    {
+        if(!Subscription::where(['seeker_id' => $request->seeker_id,'skill' => $request->skill] )->exists())
+        {
+            $seeker = Subscription::create([
+                'seeker_id' => $request->seeker_id,
+                'skill' => $request->skill,
+            ]);
+
+            return response()->json([
+                'message' => 'Skill added successfully',
+                'code' => 200,
+            ]);
+        }
+        else
+        {
+            return response()->json([
+                'message' => 'Skill Already Exist   ',
+                'code' => 100,
+            ]);
+        }
+
+    }
+
+    public function seeker_deleteskill(Request $request)
+    {
+
+           Subscription::where([
+                'id' => $request->id,
+            ])->delete();
+
+            return response()->json([
+                'message' => 'Skill Deleted successfully',
+                'code' => 200,
+            ]);
+   }
     public function getSeeker(Request $request)
     {
         if($request->searchInput != null )
@@ -214,10 +274,10 @@ class SeekerController extends Controller
     public function loginSeeker(Request $request)
     {
 
-        $seeker = Seeker::where('email', $request->data['email'])->first();
+        $seeker = Seeker::where('email', $request->email)->first();
         // dd($seeker);
 
-        if (!$seeker || !Hash::check($request->data['password'], $seeker->password)) {
+        if (!$seeker || !Hash::check($request->password,$seeker->password)) {
             return response()->json([
                 'message' => 'Invalid credentials',
                 'code' => 100
@@ -227,7 +287,8 @@ class SeekerController extends Controller
 
         return response()->json([
             'message' => 'Login successful',
-            'token' => $token
+            'token' => $token,
+            'seeker_id'=> $seeker->id
         ], 200);
 
 
