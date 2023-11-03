@@ -248,23 +248,33 @@ class SeekerController extends Controller
     {
 
         $fileName = time() . '.' . $request->file('pdf');
+        if ($request->hasFile('pdf')) {
+            $fileName = time() . '.' . $request->file('pdf')->extension();
+            $request->file('pdf')->move(public_path('pdf'), $fileName);
+        }
+        else
+        {
+            $fileName = $request->resume;
+        }
 
 
-        if (Seeker::where(['email' => $request->email])->exists()) {
-            Seeker::where('email', $request->email)->update([
+
+            Seeker::where('id', $request->seeker_id)->update([
                 'country' => $request->country,
                 'state' => $request->state,
                 'city' => $request->city,
-                'contact_number' => $request->contact_number,
+                'contact_number' => $request->contactno,
                 'work_authorization' => $request->work_authorization,
                 'total_experience' => $request->total_experience,
                 'primary_skill' => $request->primary_skill,
-                'primary_skill_experience' => $request->primary_experience,
+                'primary_skill_experience' => $request->primary_skill_experience,
                 'secondary_skill' => $request->secondary_skill,
-                'secondary_skill_experience' => $request->secondary_experience,
+                'secondary_skill_experience' => $request->secondary_skill_experience,
+                'relocate' => $request->relocate,
+                'gender' => $request->gender,
                 'resume' =>  $fileName,
             ]);
-        }
+
         return response()->json([
             'message' => 'Details added successfully',
             'success' => 200,
@@ -309,5 +319,14 @@ class SeekerController extends Controller
         //     'message' => 'Please try agian letter',
         //     'success' => 100,
         // ]);
+    }
+
+    public function seekerLogout(Request $request)
+    {
+        $user = $request->user();
+
+        $user->tokens()->where('name', 'SeekerToken')->delete();
+
+        return response()->json(['message' => 'Logged out successfully'], 200);
     }
 }

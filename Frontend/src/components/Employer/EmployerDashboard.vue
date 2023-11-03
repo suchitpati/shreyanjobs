@@ -56,7 +56,7 @@
 
                 <button
                   class="bg-blue-700 rounded-[30px] text-white md:p-[13px_30px] sm:p-[7px_20px] p-[5px_14px]"
-                  @click="fetchSeeker"
+                  @click="addPost"
                 >
                   Add post
                 </button>
@@ -314,7 +314,10 @@ export default {
     const states = ref([]);
 
     const router = useRouter();
+    const addJob = async () => {
+        router.push("/seeker-profile");
 
+    }
     const updateProfile = async () => {
       if (employername.value == null || employername.value == "") {
         employernameError.value = "Enter name";
@@ -454,6 +457,7 @@ export default {
     });
 
     return {
+        addJob,
       fetchSeeker,
       searchInput,
       allSeeker,

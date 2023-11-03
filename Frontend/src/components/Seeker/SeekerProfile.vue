@@ -15,7 +15,7 @@
         </button>
       </div>
     </div>
-    <EmployerNev />
+    <SeekerNavbar />
 
     <div class="bg-[#ebf4ff] py-7 h-[calc(100vh-80px)] overflow-y-auto">
       <div class="max-w-[1080px] w-full mx-auto px-[20px]">
@@ -97,23 +97,23 @@
                 <input
                   class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline mr-2"
                   type="radio"
-                  id="field1"
                   v-model="gender"
-                  placeholder="Enter Contact No"
+                  value="1"
+                  :checked="gender === 1"
                 />Male
                 <input
                   class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline mr-2 ml-2"
                   type="radio"
-                  id="field1"
                   v-model="gender"
-                  placeholder="Enter Contact No"
+                  value="0"
+                  :checked="gender === 0"
                 />Female
-                <div
-                  class="text-red-600 block text-[14px] text-left"
-                  v-if="contactnoError != ''"
-                >
-                  {{ contactnoError }}
-                </div>
+              </div>
+              <div
+                class="text-red-600 block text-[14px] text-left"
+                v-if="err_gender != ''"
+              >
+                {{ err_gender }}
               </div>
             </div>
 
@@ -164,7 +164,6 @@
                   v-model="selectedState"
                   class="block w-full bg-white border text-sm rounded-lg p-2"
                   :disabled="remote"
-                  :selected="country.isoCode === 'US'"
                   @change="setSelectedState"
                 >
                   <option value="">Select State</option>
@@ -176,6 +175,12 @@
                     {{ state.name }}
                   </option>
                 </select>
+                <div
+                  class="text-red-600 block text-[14px] text-left"
+                  v-if="err_state != ''"
+                >
+                  {{ err_state }}
+                </div>
               </div>
               <div class="sm:w-[34%]">
                 <label
@@ -189,6 +194,12 @@
                   class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
                   v-model="city"
                 />
+              </div>
+              <div
+                class="text-red-600 block text-[14px] text-left"
+                v-if="err_city != ''"
+              >
+                {{ err_city }}
               </div>
             </div>
             <div
@@ -231,9 +242,9 @@
                 />
                 <div
                   class="text-red-600 block text-[14px] text-left"
-                  v-if="contactnoError != ''"
+                  v-if="err_work_authorization != ''"
                 >
-                  {{ contactnoError }}
+                  {{ err_work_authorization }}
                 </div>
               </div>
               <div class="sm:w-[33%] mb-4">
@@ -252,9 +263,9 @@
                 />
                 <div
                   class="text-red-600 block text-[14px] text-left"
-                  v-if="contactnoError != ''"
+                  v-if="err_total_experience != ''"
                 >
-                  {{ contactnoError }}
+                  {{ err_total_experience }}
                 </div>
               </div>
             </div>
@@ -278,9 +289,9 @@
                 />
                 <div
                   class="text-red-600 block text-[14px] text-left"
-                  v-if="contactnoError != ''"
+                  v-if="err_primary_skill != ''"
                 >
-                  {{ contactnoError }}
+                  {{ err_primary_skill }}
                 </div>
               </div>
               <div class="sm:w-[50%] mb-4">
@@ -299,9 +310,9 @@
                 />
                 <div
                   class="text-red-600 block text-[14px] text-left"
-                  v-if="contactnoError != ''"
+                  v-if="err_primary_skill_experience != ''"
                 >
-                  {{ contactnoError }}
+                  {{ err_primary_skill_experience }}
                 </div>
               </div>
             </div>
@@ -324,9 +335,9 @@
                 />
                 <div
                   class="text-red-600 block text-[14px] text-left"
-                  v-if="contactnoError != ''"
+                  v-if="err_secondary_skill != ''"
                 >
-                  {{ contactnoError }}
+                  {{ err_secondary_skill }}
                 </div>
               </div>
               <div class="sm:w-[50%] mb-4">
@@ -345,9 +356,9 @@
                 />
                 <div
                   class="text-red-600 block text-[14px] text-left"
-                  v-if="contactnoError != ''"
+                  v-if="err_secondary_skill_experience != ''"
                 >
-                  {{ contactnoError }}
+                  {{ err_secondary_skill_experience }}
                 </div>
               </div>
             </div>
@@ -365,7 +376,8 @@
                   class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline mr-2"
                   type="checkbox"
                   id="field1"
-                  v-model="gender"
+                  v-model="relocate"
+                  :checked="relocate == 1"
                 />
               </div>
             </div>
@@ -380,11 +392,13 @@
                   Resume
                 </label>
                 <input
-                  class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
-                  type="file"
-                  id="field1"
-                  disabled
-                />
+                          class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
+                          type="file"
+                          id="file"
+                          placeholder="Enter Email"
+                          @change="image_details"
+                        />
+                        {{ resume }}
               </div>
             </div>
             <button
@@ -406,10 +420,19 @@
                 >
                   Skills subscribed for email
                 </label>
-                <div class="text-left flex" v-for="(skill,index) in all_skill" :key="skill.id">
-                  <span class="mr-2"> {{index+1}}.</span>
-                  {{skill.skill}}
-                  <div @click="deleteSkill(skill.id)" class="ml-2 underline cursor-pointer">delete</div>
+                <div
+                  class="text-left flex"
+                  v-for="(skill, index) in all_skill"
+                  :key="skill.id"
+                >
+                  <span class="mr-2"> {{ index + 1 }}.</span>
+                  {{ skill.skill }}
+                  <div
+                    @click="deleteSkill(skill.id)"
+                    class="ml-2 underline cursor-pointer"
+                  >
+                    delete
+                  </div>
                 </div>
                 <div class="text-left mt-2">
                   <input
@@ -417,11 +440,19 @@
                     v-model="skill"
                     class="min-h-[30px] border-gray-400 rounded-lg border"
                   />
-                  <button @click="addSkill"
+
+                  <button
+                    @click="addSkill"
                     class="ml-1 border px-2 rounded min-h-[30px] bg-blue-500 text-white"
                   >
                     Subscribe
                   </button>
+                </div>
+                <div
+                  class="text-red-600 block text-[14px] text-left"
+                  v-if="skillError"
+                >
+                  {{ skillError }}
                 </div>
               </div>
             </div>
@@ -440,12 +471,12 @@ import apiUrl from "../../api";
 import SuccessModal from "../SuccessModal.vue";
 import { debounce } from "lodash";
 import { State } from "country-state-city";
-import EmployerNev from "../Employer/EmployerNavbar.vue";
+import SeekerNavbar from "../Seeker/SeekerNavbar.vue";
 
 export default {
   components: {
     SuccessModal,
-    EmployerNev,
+    SeekerNavbar,
   },
   setup() {
     const data = reactive({});
@@ -455,11 +486,11 @@ export default {
     const total_experience = ref("");
     const primary_skill = ref("");
     const primary_skill_experience = ref("");
-    const all_skill = ref('');
+    const all_skill = ref("");
     const secondary_skill = ref("");
     const secondary_skill_experience = ref("");
     const section = ref(1);
-
+    const err_gender = ref("");
     const selectedCountry = ref("");
     const country = ref("");
     const state = ref("");
@@ -479,6 +510,8 @@ export default {
     const selectedState = ref("");
     const selectedState_main = ref("");
     const err_country = ref("");
+    const err_city = ref("");
+    const err_state = ref("");
     const err_skill = ref("");
     const err_exp = ref("");
     const err_emp = ref("");
@@ -486,6 +519,7 @@ export default {
     const err_detail = ref("");
     const err_job = ref("");
     const err_remote = ref("");
+
     const email = ref("");
     const contact_number = ref("");
     const someCountry = ref([]);
@@ -497,10 +531,20 @@ export default {
     const contactnoError = ref("");
 
     const city = ref("");
-
+    const resume = ref("");
+    const err_work_authorization = ref("");
+    const err_total_experience = ref("");
+    const err_primary_skill = ref("");
+    const err_primary_skill_experience = ref("");
+    const err_secondary_skill = ref("");
+    const err_secondary_skill_experience = ref("");
     const empCountry = ref("");
     const empState = ref("");
     const employernameError = ref("");
+
+    const skillError = ref("");
+    const relocate = ref(0);
+    const file = ref("");
 
     someCountry.value = [
       {
@@ -555,35 +599,8 @@ export default {
     const states = ref([]);
 
     const router = useRouter();
-
-    const updateProfile = async () => {
-      if (employername.value == null || employername.value == "") {
-        employernameError.value = "Enter name";
-      } else {
-        employernameError.value = "";
-      }
-      if (contactno.value == null || contactno.value == "") {
-        contactnoError.value = "Enter Contact no";
-      } else {
-        contactnoError.value = "";
-      }
-
-      const formData = new FormData();
-      formData.append("employername", employername.value);
-      formData.append("contactno", contactno.value);
-      formData.append("country", selectedCountry.value);
-      formData.append("state", selectedState.value);
-      formData.append("city", city.value);
-      formData.append("employer_id", localStorage.getItem("employer_id"));
-
-      await axios
-        .post(`${apiUrl}/employer-update-profile`, formData)
-        .then((response) => {
-          countries.value = response.data;
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+    const image_details = async (event) => {
+      file.value = event.target.files[0]; // Get the first selected file
     };
     const onCountryChange = async () => {
       console.log("selectedCountry.value", selectedCountry.value);
@@ -604,15 +621,17 @@ export default {
     };
 
     const setSelectedState = async () => {
-      console.log(selectedState.value, "selectedState.value");
-      const selectedStateObj = states.value.find((statess) => {
-        return statess.isoCode == selectedState.value;
-      });
+      if (selectedState.value != "") {
+        const selectedStateObj = states.value.find((statess) => {
+          return statess.isoCode == selectedState.value;
+        });
 
-      console.log("state.value,selectedStateObj", selectedStateObj);
-      selectedState_main.value = JSON.parse(
-        JSON.stringify(selectedStateObj)
-      ).name;
+        selectedState_main.value = JSON.parse(
+          JSON.stringify(selectedStateObj)
+        ).name;
+      } else {
+        selectedState.value = "";
+      }
     };
 
     const defaultSelectedState = async () => {
@@ -637,44 +656,6 @@ export default {
         });
     });
 
-    const employerProfile = async () => {
-      router.push("/employer-profile");
-    };
-
-    const adminLogout = async () => {
-      try {
-        const authToken = localStorage.getItem("accessToken");
-
-        if (!authToken) {
-          console.log("Authentication token is missing.");
-          return;
-        }
-
-        const config = {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        };
-        const response = await axios.post(
-          `${apiUrl}/admin/logout`,
-          null,
-          config
-        );
-        localStorage.removeItem("accessToken");
-        if (response.data.message) {
-          successMessage.value = response.data.message;
-          showLogoutModal.value = true;
-
-          setTimeout(() => {
-            router.push("/admin-login");
-          }, 1000);
-        }
-
-        console.log(response);
-      } catch (error) {
-        console.log(error);
-      }
-    };
     const getSeekerDeatails = async () => {
       const seeker_id = localStorage.getItem("seeker_id");
       const response = await axios.post(`${apiUrl}/seeker-profile`, {
@@ -694,7 +675,13 @@ export default {
       secondary_skill.value = response.data.seeker_details.secondary_skill;
       secondary_skill_experience.value =
         response.data.seeker_details.secondary_skill_experience;
+      gender.value = response.data.seeker_details.gender;
+      selectedCountry.value = response.data.seeker_details.country;
 
+      selectedState.value = response.data.seeker_details.state;
+      city.value = response.data.seeker_details.city;
+      relocate.value = response.data.seeker_details.relocate;
+      resume.value =  response.data.seeker_details.resume;
       states.value = countries.value
         ? State.getStatesOfCountry(selectedCountry.value)
         : "";
@@ -703,30 +690,36 @@ export default {
     const fetchSkill = async () => {
       const seeker_id = localStorage.getItem("seeker_id");
       const response = await axios.post(`${apiUrl}/seeker-skill`, {
-        'seeker_id' :  seeker_id    });
-        all_skill.value = response.data.skill_details;
-      console.log(response.data,'responseresponseresponse');
+        seeker_id: seeker_id,
+      });
+      all_skill.value = response.data.skill_details;
+      console.log(response.data, "responseresponseresponse");
     };
 
     const addSkill = async () => {
-        const seeker_id = localStorage.getItem("seeker_id");
+      const seeker_id = localStorage.getItem("seeker_id");
 
       const response = await axios.post(`${apiUrl}/seeker-skill-add`, {
-        'seeker_id' :  seeker_id,
-        'skill' :  skill.value,
+        seeker_id: seeker_id,
+        skill: skill.value,
       });
+      if (response.data.code == 100) {
+        skillError.value = response.data.message;
+      } else {
+        skillError.value = "";
+      }
 
-      console.log(response.data,'responseresponseresponse');
+      console.log(response.data, "responseresponseresponse");
       skill.value = "";
       fetchSkill();
     };
     const deleteSkill = async (id) => {
-        console.log(id);
+      console.log(id);
       const response = await axios.post(`${apiUrl}/seeker-skill-delete`, {
-        'id' :  id,
+        id: id,
       });
 
-      console.log(response.data,'responseresponseresponse');
+      console.log(response.data, "responseresponseresponse");
       skill.value = "";
       fetchSkill();
     };
@@ -737,6 +730,128 @@ export default {
         section.value = 1;
       }
     }
+
+    const updateProfile = async () => {
+      if (gender.value == null || gender.value == "") {
+        err_gender.value = "Enter name";
+      } else {
+        err_gender.value = "";
+      }
+      if (selectedCountry.value == null || selectedCountry.value == "") {
+        err_country.value = "The country field is required";
+        return false;
+      } else {
+        err_country.value = "";
+      }
+      if (selectedState.value == null || selectedState.value == "") {
+        err_state.value = "The State field is required";
+        return false;
+      } else {
+        err_state.value = "";
+      }
+      if (city.value == null || city.value == "") {
+        err_city.value = "The City field is required";
+        return false;
+      } else {
+        err_city.value = "";
+      }
+      if (contactno.value == null || contactno.value == "") {
+        contactnoError.value = "The Contact no field is required";
+        return false;
+      } else {
+        contactnoError.value = "";
+      }
+      if (work_authorization.value == null || work_authorization.value == "") {
+        err_work_authorization.value =
+          "The work authorization field is required";
+        return false;
+      } else {
+        err_work_authorization.value = "";
+      }
+      if (total_experience.value == null || total_experience.value == "") {
+        err_total_experience.value = "The Total Experience field is required";
+        return false;
+      } else {
+        err_total_experience.value = "";
+      }
+      if (primary_skill.value == null || primary_skill.value == "") {
+        err_primary_skill.value = "The Primary skill is required";
+        return false;
+      } else {
+        err_primary_skill.value = "";
+      }
+      if (
+        primary_skill_experience.value == null ||
+        primary_skill_experience.value == ""
+      ) {
+        err_primary_skill_experience.value =
+          "The primary experience field is required";
+        return false;
+      } else {
+        err_primary_skill_experience.value = "";
+      }
+      if (secondary_skill.value == null || secondary_skill.value == "") {
+        err_secondary_skill.value = "The secondary skill field is required";
+        return false;
+      } else {
+        err_secondary_skill.value = "";
+      }
+      if (
+        secondary_skill_experience.value == null ||
+        secondary_skill_experience.value == ""
+      ) {
+        err_secondary_skill_experience.value =
+          "The secondary experience field is required";
+        return false;
+      } else {
+        err_secondary_skill_experience.value = "";
+      }
+      if(relocate.value == true)
+        {
+            relocate.value = 1;
+        }
+        else{
+            relocate.value = 0;
+
+        }
+
+    //   if (file.value == null || file.value == "") {
+    //     err_file.value = "Pleas select file";
+    //     return false;
+    //   } else {
+    //     err_file.value = "";
+    //   }
+
+      const formData = new FormData();
+      formData.append("contactno", contactno.value);
+      formData.append("country", selectedCountry.value);
+      formData.append("state", selectedState.value);
+      formData.append("city", city.value);
+      formData.append("work_authorization", work_authorization.value);
+      formData.append("total_experience", total_experience.value);
+      formData.append("primary_skill", primary_skill.value);
+      formData.append("primary_skill_experience", primary_skill_experience.value);
+      formData.append("secondary_skill", secondary_skill.value);
+      formData.append("secondary_skill_experience", secondary_skill_experience.value);
+      formData.append("relocate", relocate.value);
+      formData.append("gender", gender.value);
+      formData.append("seeker_id", localStorage.getItem("seeker_id"));
+      formData.append("pdf", file.value);
+      formData.append("resume", resume.value);
+
+
+      await axios
+        .post(`${apiUrl}/seeker-update-profile`, formData)
+        .then((response) => {
+            console.log(response,'response');
+            file.value = "";
+          getSeekerDeatails();
+
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    };
     onMounted(() => {
       countries_state.value = someCountry.value;
 
@@ -747,9 +862,15 @@ export default {
     });
 
     return {
-        addSkill,
-        deleteSkill,
-        all_skill,
+        resume,
+        image_details,
+        relocate,
+      err_city,
+      err_gender,
+      skillError,
+      addSkill,
+      deleteSkill,
+      all_skill,
       changeSection,
       section,
       fullname,
@@ -784,8 +905,6 @@ export default {
       closeSuccessModal,
       showLogoutModal,
       successMessage,
-      adminLogout,
-      employerProfile,
       router,
       remaining,
       job_title,
@@ -806,6 +925,13 @@ export default {
       err_detail,
       err_job,
       err_remote,
+      err_state,
+      err_work_authorization,
+      err_total_experience,
+      err_primary_skill,
+      err_primary_skill_experience,
+      err_secondary_skill,
+      err_secondary_skill_experience,
       email,
       contact_number,
       defaultSelectedState,

@@ -15,4 +15,12 @@ class Seeker extends Model
     protected $table = "seekers";
 
     protected $fillable = ['fullname', 'email', 'password', 'gender', 'is_active', 'otp','relocate'];
+
+    public function subscription()
+    {
+        return $this->hasOne(Subscription::class);
+    }
 }
+
+
+

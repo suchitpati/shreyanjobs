@@ -53,10 +53,13 @@ Route::post('/seeker-skill-delete', [SeekerController::class, 'seeker_deleteskil
 
 
 
+
 //Employer Routes
 
 Route::group(['middleware' => ['auth:sanctum']], function() {
     Route::post('/employer-logout',[EmployerController::class,'logout']);
+Route::post('/seeker-logout', [SeekerController::class, 'seekerLogout']);
+
   });
 Route::post('/employer-profile', [EmployerController::class, 'employe_profile']);
 Route::post('/employer-register', [EmployerController::class, 'employe_register']);

@@ -119,16 +119,19 @@ class AdminJobController extends Controller
             'email' => 'nullable|string',
             'contact_number'  => 'nullable|string'
         ]);
-        $job = AdminJob::create($validatedData);
-        $subscription_data = Subscription::where('skill','LIKE','%'.$request->skill.'%')->get();
+        $job_title = $request->job_title;
+        $detailed_description = $request->detailed_description;
 
+        $job = AdminJob::create($validatedData);
+        $subscription_data = Subscription::with('seeker')->where('skill','LIKE','%'.$request->skill.'%')->get();
+        // return response()->json($subscription_data, 201);
         if(isset($subscription_data))
         {
 
             foreach($subscription_data as $sub)
             {
 
-                SendJobNotification::dispatch($sub->email,$request->job_title);
+                SendJobNotification::dispatch($sub->seeker->email,$job_title,$detailed_description);
             }
         }
 

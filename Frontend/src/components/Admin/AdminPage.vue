@@ -557,9 +557,9 @@ export default {
                 //     (job_title.value = "");
 
                 showSuccessModal.value = true;
-                setTimeout(() => {
-                    window.location.reload();
-                }, 2000);
+                // setTimeout(() => {
+                //     window.location.reload();
+                // }, 2000);
             } catch (error) {
                 console.error(error.response.data.errors);
             }

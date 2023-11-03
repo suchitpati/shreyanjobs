@@ -11,4 +11,9 @@ class Subscription extends Model
     protected $table = "subscription";
 
     protected $fillable = ['skill','seeker_id'];
+
+    public function seeker()
+    {
+        return $this->belongsTo(Seeker::class);
+    }
 }
