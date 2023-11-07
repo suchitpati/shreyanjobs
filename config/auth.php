@@ -44,6 +44,11 @@ return [
             'driver' => 'sanctum', // Assuming you're using Sanctum for API authentication
             'provider' => 'admins',
         ],
+        'seeker' => [
+            'driver' => 'session',
+            'provider' => 'seekers',
+        ],
+
     ],
 
     /*
@@ -72,7 +77,10 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\Admin::class,
         ],
-
+        'seekers' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Seeker::class,
+        ],
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',

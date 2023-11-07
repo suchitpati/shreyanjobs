@@ -10,5 +10,10 @@ class Subscription extends Model
     use HasFactory;
     protected $table = "subscription";
 
-    protected $fillable = ['skill','email','status','otp'];
+    protected $fillable = ['skill','seeker_id'];
+
+    public function seeker()
+    {
+        return $this->belongsTo(Seeker::class);
+    }
 }

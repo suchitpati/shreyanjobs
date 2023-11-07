@@ -70,7 +70,7 @@
 <script>
 import { ref, onMounted } from "vue";
 import axios from "axios";
-import apiUrl from "../api";
+import apiUrl from "../../api";
 
 export default {
   setup() {

@@ -27,7 +27,7 @@
           </div>
         </div>
         <div class="w-[50%] md:block hidden">
-          <img src="../assets/illustration.svg" alt="" class="m-auto mr-0" />
+          <img src="../../assets/illustration.svg" alt="" class="m-auto mr-0" />
         </div>
         <div class="md:w-[50%] w-full md:max-w-[100%] max-w-[500px]">
           <div
@@ -105,7 +105,7 @@
 import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
-import apiUrl from "../api";
+import apiUrl from "../../api";
 
 export default {
   setup() {

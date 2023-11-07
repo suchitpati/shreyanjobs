@@ -43,7 +43,7 @@
                         <div
                             class="w-full flex sm:flex-row flex-col justify-between md:gap-6 gap-3 sm:mb-4 mb-7"
                         >
-                            <div class="">
+                            <div class="sm:w-[25%]">
                                 <label
                                     class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
                                     for="field2"
@@ -77,7 +77,7 @@
                                     {{ err_country }}
                                 </div>
                             </div>
-                            <div class="sm:w-[80%]">
+                            <div class="sm:w-[50%]">
                                 <label
                                     class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
                                     for="field2"
@@ -334,10 +334,10 @@
 import { reactive, ref, watch, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
-import apiUrl from "../api";
-import SuccessModal from "./SuccessModal.vue";
+import apiUrl from "../../api";
+import SuccessModal from "../SuccessModal.vue";
 import { debounce } from "lodash";
-import { Country, State } from "country-state-city";
+import {  State } from "country-state-city";
 
 export default {
     components: {
@@ -373,8 +373,55 @@ export default {
         const err_remote = ref("");
         const email = ref("");
         const contact_number = ref("");
+        const someCountry = ref([]);
 
-
+        someCountry.value = [
+            {
+                name : "United States",
+                isoCode : "US"
+            },
+            {
+                name : "Canada",
+                isoCode : "CA"
+            },
+            {
+                name : "United Kingdom",
+                isoCode : "GB"
+            },
+            {
+                name : "Australia",
+                isoCode : "AU"
+            }, {
+                name : "Singapore",
+                isoCode : "SG"
+            }, {
+                name : "France",
+                isoCode : "FR"
+            }, {
+                name : "Germany",
+                isoCode : "DE"
+            },
+            {
+                name : "China",
+                isoCode : "CN"
+            },
+            {
+                name : "India",
+                isoCode : "IN"
+            },
+            {
+                name : "Japan",
+                isoCode : "JP"
+            },
+            {
+                name : "Saudi Arabia",
+                isoCode : "SA"
+            },
+            {
+                name : "Brazil",
+                isoCode : "BR"
+            },
+        ];
         const states = ref([]);
 
         const countryNames = ["Country 1", "Country 2", "Country 3"];
@@ -496,18 +543,18 @@ export default {
                     config
                 );
                 console.log(response, "job ===>");
-                // (country.value = ""),
-                //     (state.value = ""),
-                //     (remote.value = false),
-                //     (skill.value = ""),
-                //     (year_of_experience.value = ""),
-                //     (employment_type.value = ""),
-                //     (short_description.value = ""),
-                //     (detailed_description.value = ""),
-                //     (selectedState.value = ""),
-                //     (selectedCountry.value = ""),
-                //     (selectedState_main.value = ""),
-                //     (job_title.value = "");
+                (country.value = ""),
+                    (state.value = ""),
+                    (remote.value = false),
+                    (skill.value = ""),
+                    (year_of_experience.value = ""),
+                    (employment_type.value = ""),
+                    (short_description.value = ""),
+                    (detailed_description.value = ""),
+                    (selectedState.value = ""),
+                    (selectedCountry.value = ""),
+                    (selectedState_main.value = ""),
+                    (job_title.value = "");
 
                 showSuccessModal.value = true;
                 setTimeout(() => {
@@ -603,7 +650,9 @@ export default {
         );
 
         onMounted(() => {
-            countries_state.value = Country.getAllCountries();
+            // countries_state.value = Country.getAllCountries();
+            countries_state.value = someCountry.value;
+
             fetchCountries();
             defaultSelectedState();
         });

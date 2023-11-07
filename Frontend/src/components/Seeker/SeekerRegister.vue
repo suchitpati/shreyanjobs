@@ -1,7 +1,7 @@
 <template>
   <div class="bg-[#eaf4ff]">
     <div class="w-full flex justify-end pt-4 pr-4 pl-4">
-      <img class="w-[150px]" src="../assets/logo-no-background.png" alt="" />
+      <img class="w-[150px]" src="../../assets/logo-no-background.png" alt="" />
       <a
         href="/"
         class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[10px] py-[7px] px-[18px] md:px-[26px] rounded-[26px] focus:outline-none"
@@ -126,6 +126,24 @@
                   <label for="">Male</label>
                   <input class="" type="radio" value="2" v-model="gender" />
                   <label for="">Female</label>
+                </div>
+                <div
+                  v-if="genderError"
+                  class="text-red-600 block text-[14px] text-left"
+                >
+                  {{ genderError }}
+                </div>
+              </div>
+
+              <div class="w-full mt-[10px] flex gap-2 items-center">
+                <label
+                  class="block text-gray-700 font-bold text-start text-[14px]"
+                  for="field2"
+                >
+                  Relocate
+                </label>
+                <div class="flex items-center gap-1">
+                 <input type="checkbox" v-model="relocate" >
                 </div>
                 <div
                   v-if="genderError"
@@ -497,9 +515,9 @@ import { useRouter } from "vue-router";
 import axios from "axios";
 import { debounce } from "lodash";
 import { Country, State } from "country-state-city";
-import "vue-loading-overlay/dist/css/index.css";
+// import "vue-loading-overlay/dist/css/index.css";
 
-import apiUrl from "../api";
+import apiUrl from "../../api";
 
 export default {
   setup() {
@@ -558,6 +576,7 @@ export default {
     const fullPage = ref(true);
     const formContainer = ref(null);
     const isLoading = ref(false);
+    const relocate = ref(0);
 
     const closeSuccessModal = () => {
       showSuccessModal.value = false;
@@ -565,8 +584,8 @@ export default {
 
     const seekerRegister = async () => {
       try {
-        console.log(gender.value, "gender.value");
-        if (fullname.value == null || fullname.value == "") {
+          console.log(gender.value, "gender.value");
+          if (fullname.value == null || fullname.value == "") {
           fullnameError.value = "Please Enter FullName";
           return false;
         } else {
@@ -574,32 +593,49 @@ export default {
         }
 
         if (email.value == null || email.value == "") {
-          emailError.value = "Please Enter Email";
-          return false;
+            emailError.value = "Please Enter Email";
+            return false;
         } else {
-          emailError.value = "";
+            emailError.value = "";
         }
         if (password.value == null || password.value == "") {
-          passwordError.value = "Please Enter Password";
+            passwordError.value = "Please Enter Password";
           return false;
         } else {
           passwordError.value = "";
         }
+        const regex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
 
+            if(regex.test(password.value) == false )
+            {
+                passwordError.value = "Enter At least 8 characters long with one capital and one number "
+                return false;
+
+            }
+            else
+            {
+                passwordError.value = "";
+            }
         if (gender.value == null || gender.value == "") {
           genderError.value = "Please select Gender";
           return false;
         } else {
-          genderError.value = "";
+            genderError.value = "";
         }
-        isLoading.value = true;
+        if(relocate.value == true)
+        {
+            relocate.value = 1;
+        }
+        console.log(relocate.value,'relocaterelocate');
 
+        isLoading.value = true;
         await axios
-          .post(`${apiUrl}/registerSeeker`, {
+        .post(`${apiUrl}/registerSeeker`, {
             fullname: fullname.value,
             email: email.value,
             password: password.value,
             gender: gender.value,
+            relocate : relocate.value
           })
           .then((response) => {
             console.log(response);
@@ -762,7 +798,7 @@ export default {
             } else {
               showSuccessModal.value = true;
               setTimeout(() => {
-                router.push("/");
+                router.push("/seeker-login");
               }, 3000);
             }
           })
@@ -866,6 +902,7 @@ export default {
       err_file,
       enter_otp,
       fullPage,
+      relocate,
 
       formContainer,
     };

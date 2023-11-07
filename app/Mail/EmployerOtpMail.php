@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class JobMail extends Mailable
+class EmployerOtpMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -16,16 +16,12 @@ class JobMail extends Mailable
      *
      * @return void
      */
-    protected $title;
-    protected $description;
 
+    public $mailData;
 
-    public function __construct($title,$description)
+    public function __construct($mailData)
     {
-        $this->title = $title;
-        $this->description = $description;
-
-
+        $this->mailData = $mailData;
     }
 
     /**
@@ -35,6 +31,6 @@ class JobMail extends Mailable
      */
     public function build()
     {
-        return $this->view('jobEmail')->with(['title'=> $this->title,'description'=> $this->description] )->subject('Job added to shreyanjobs.com. Job Title :' .$this->title);
+        return $this->view('employerOtp');
     }
 }
