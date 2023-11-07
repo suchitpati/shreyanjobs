@@ -28,12 +28,12 @@ const loggedIn = localStorage.getItem('accessToken');
 const isEmployerLogged = localStorage.getItem('employer_tocken');
 const routes = [
   {
-    path: '/admin',
-    name: 'Admin',
+    path: '/add-job',
+    name: 'AddJob',
     component: Admin,
     beforeEnter: (to, from, next) => {
-        if (!loggedIn) {
-            return next('/admin-login');
+        if (!isEmployerLogged) {
+            return next('/employer-login');
         } else {
             next();
         }

@@ -56,7 +56,7 @@
 
                 <button
                   class="bg-blue-700 rounded-[30px] text-white md:p-[13px_30px] sm:p-[7px_20px] p-[5px_14px]"
-                  @click="addPost"
+                  @click="addJob"
                 >
                   Add post
                 </button>
@@ -315,7 +315,7 @@ export default {
 
     const router = useRouter();
     const addJob = async () => {
-        router.push("/seeker-profile");
+        router.push("/add-job");
 
     }
     const updateProfile = async () => {

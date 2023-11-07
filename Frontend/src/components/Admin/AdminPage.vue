@@ -543,23 +543,23 @@ export default {
                     config
                 );
                 console.log(response, "job ===>");
-                // (country.value = ""),
-                //     (state.value = ""),
-                //     (remote.value = false),
-                //     (skill.value = ""),
-                //     (year_of_experience.value = ""),
-                //     (employment_type.value = ""),
-                //     (short_description.value = ""),
-                //     (detailed_description.value = ""),
-                //     (selectedState.value = ""),
-                //     (selectedCountry.value = ""),
-                //     (selectedState_main.value = ""),
-                //     (job_title.value = "");
+                (country.value = ""),
+                    (state.value = ""),
+                    (remote.value = false),
+                    (skill.value = ""),
+                    (year_of_experience.value = ""),
+                    (employment_type.value = ""),
+                    (short_description.value = ""),
+                    (detailed_description.value = ""),
+                    (selectedState.value = ""),
+                    (selectedCountry.value = ""),
+                    (selectedState_main.value = ""),
+                    (job_title.value = "");
 
                 showSuccessModal.value = true;
-                // setTimeout(() => {
-                //     window.location.reload();
-                // }, 2000);
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
             } catch (error) {
                 console.error(error.response.data.errors);
             }

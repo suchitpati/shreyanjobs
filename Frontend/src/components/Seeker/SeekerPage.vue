@@ -46,7 +46,7 @@
             </router-link>
           </div>
           <div
-            v-else
+                v-if="isSeekerLogged == false && isEmployerLogged == false"
             class="sm:w-full xs:w-auto w-[50%] xs:order-3 order-2 flex justify-end gap-[10px]"
           >
             <router-link to="/employer-login">
