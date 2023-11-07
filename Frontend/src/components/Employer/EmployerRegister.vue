@@ -195,12 +195,18 @@
                 </label>
                 <input
                   class="border border-gray-400 rounded-lg py-2 px-4 mb-1 outline-[#264dd9] focus:shadow-outline w-full"
-                  type="password"
+                  type="text"
                   id="field1"
                   placeholder="Enter Contact number"
                   v-model="contact_no"
                 />
-                <div class="flex gap-[15px] mt-3">
+                <div
+                v-if="contact_noError"
+                class="text-red-600 block text-[14px] text-left"
+              >
+                {{ contact_noError }}
+              </div>
+                <div class="flex gap-[15px]">
                   <div class="w-[33.33%]">
                     <div
                       class="w-full flex sm:flex-row flex-col justify-between md:gap-6 gap-3 sm:mb-4 mb-7"
@@ -265,8 +271,12 @@
                         {{ state.name }}
                       </option>
                     </select>
-                    <!-- </div> -->
-                  </div>
+                    <div
+                    class="text-red-600 block text-[14px] text-left"
+                    v-if="err_state"
+                  >
+                    {{ err_state }}
+                  </div>                  </div>
                   <div class="w-[33.33%]">
                     <!-- <div class="sm:w-[80%]"> -->
                     <label
@@ -280,30 +290,13 @@
                       placeholder="City Name"
                       class="bg-[#FFFFFF] border placeholder:text-[#2C3E50] w-full p-2 rounded-lg text-sm"
                     />
-                    <!-- <select
-                        v-model="selectedState"
-                        class="block w-full bg-white border text-sm rounded-lg p-2"
-                        :disabled="remote"
-                        :selected="country.isoCode === 'US'"
-                        @change="setSelectedState"
-                      >
-                        <option value="">Select State</option>
-                        <option
-                          v-for="state in states"
-                          :key="state.isoCode"
-                          :value="state.isoCode"
-                        >
-                          {{ state.name }}
-                        </option>
-                      </select> -->
-                    <!-- </div> -->
+                    <div
+                      v-if="err_city"
+                      class="text-red-600 block text-[14px] text-left"
+                    >
+                      {{ err_city }}
+                    </div>
                   </div>
-                </div>
-                <div
-                  v-if="contact_noError"
-                  class="text-red-600 block text-[14px] text-left"
-                >
-                  {{ contact_noError }}
                 </div>
               </div>
               <button
@@ -315,8 +308,8 @@
             </div>
           </div>
         </div>
-        <div v-else-if="steps == 2">
-          <div class="fixed inset-0 flex items-center justify-center">
+        <div v-else>
+          <div class="fixed inset-0 flex items-center justify-center enter_otp_class">
             <div class="bg-white p-8 rounded-lg shadow-lg">
               <h2 class="text-2xl font-bold mb-2">Enter OTP</h2>
               <div class="text-[14px]">OTP has been sent to your email ID</div>
@@ -340,154 +333,7 @@
             </div>
           </div>
         </div>
-        <div v-else>
-          <div class="bg-[#eaf4ff]">
-            <div
-              class="bg-[#ebf4ff] py-7 h-[calc(100vh_-_62px)] overflow-y-auto"
-            >
-              <div class="max-w-[1080px] w-full mx-auto px-[20px]">
-                <div
-                  class="bg-[#fff] rounded-lg py-4 sm:px-8 px-4 w-full shadow-[rgba(100,_100,_111,_0.2)_0px_0px_10px_0px] hover:shadow-[rgba(100,_100,_111,_0.2)_0px_0px_20px_0px] transition-[.5s]"
-                >
-                  <h1
-                    class="text-[#1890da] sm:text-[26px] text-[22px] font-semibold mt-[30px] sm:mb-[40px] mb-[25px]"
-                  >
-                    Few more details to complete your profile (Will take less
-                    than a minute to complete)
-                  </h1>
-                  <div class="mt-4">
-                    <div
-                      class="w-full flex sm:flex-row flex-col justify-between md:gap-6 gap-3 sm:mb-4 mb-7"
-                    >
-                      <div class="w-[25%]">
-                        <label
-                          class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
-                          for="field2"
-                        >
-                          Country
-                        </label>
-                        <select
-                          v-model="selectedCountry"
-                          @change="onCountryChange"
-                          class="block w-full bg-white border text-sm rounded-lg p-2"
-                        >
-                          <option value="">Select Country</option>
-                          <option
-                            v-for="country in countries_state"
-                            :key="country.isoCode"
-                            :value="country.isoCode"
-                            class="flex items-center"
-                            :selected="country.isoCode == 'US'"
-                          >
-                            <span
-                              class="flag-icon flag-icon-{{ country.isoCode.toLowerCase() }} inline-block w-4 h-4 mr-2"
-                            ></span>
-                            <div>{{ country.name }}</div>
-                          </option>
-                        </select>
-                        <div
-                          class="text-red-600 block text-[14px] text-left"
-                          v-if="err_country != ''"
-                        >
-                          {{ err_country }}
-                        </div>
-                      </div>
-                      <div class="w-[25%]">
-                        <label
-                          class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
-                          for="field2"
-                        >
-                          State
-                        </label>
-                        <select
-                          v-model="selectedState"
-                          class="block w-full bg-white border text-sm rounded-lg p-2"
-                          :disabled="remote"
-                          @change="setSelectedState"
-                        >
-                          <option value="">Select State</option>
-                          <option
-                            v-for="state in states"
-                            :key="state.isoCode"
-                            :value="state.isoCode"
-                          >
-                            {{ state.name }}
-                          </option>
-                        </select>
 
-                        <div
-                          class="text-red-600 block text-[14px] text-left"
-                          v-if="err_state != ''"
-                        >
-                          {{ err_state }}
-                        </div>
-                      </div>
-                      <div class="w-[25%]">
-                        <label
-                          class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
-                          for="field2"
-                        >
-                          City
-                        </label>
-
-                        <input
-                          v-model="city"
-                          type="text"
-                          placeholder="Enter City"
-                          class="block w-full bg-white border text-sm rounded-lg p-2"
-                        />
-                        <div
-                          class="text-red-600 block text-[14px] text-left"
-                          v-if="err_city != ''"
-                        >
-                          {{ err_city }}
-                        </div>
-                      </div>
-                      <div class="w-[25%]">
-                        <label
-                          class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
-                          for="field2"
-                        >
-                          Contact Number
-                        </label>
-                        <input
-                          type="text"
-                          v-model="contact_number"
-                          placeholder="Enter Contact number"
-                          class="block w-full bg-white border text-sm rounded-lg p-2"
-                        />
-                        <div
-                          class="text-red-600 block text-[14px] text-left"
-                          v-if="err_contact_number != ''"
-                        >
-                          {{ err_contact_number }}
-                        </div>
-                      </div>
-                    </div>
-                    <div
-                      class="w-full flex sm:flex-row flex-col justify-between sm:gap-6 gap-2"
-                    ></div>
-                    <div
-                      class="w-full flex sm:flex-row flex-col justify-between sm:gap-6 gap-2"
-                    ></div>
-                    <div
-                      class="w-full flex sm:flex-row flex-col justify-between sm:gap-6 gap-2"
-                    ></div>
-                    <div
-                      class="w-full flex sm:flex-row flex-col justify-between sm:gap-6 gap-2"
-                    ></div>
-                  </div>
-                  <button
-                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-8 mb-4 mt-4 rounded-full focus:outline-none focus:shadow-outline"
-                    @click="registerEmployer"
-                  >
-                    Complete Registration
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
     <div
@@ -566,6 +412,7 @@ export default {
     const err_country = ref("");
     const err_state = ref("");
     const err_contact_number = ref("");
+    const stateError = ref("");
     const err_city = ref("");
     const formContainer = ref(null);
     const isLoading = ref(false);
@@ -629,8 +476,28 @@ export default {
         } else {
             matchpasswordError.value = "";
         }
+        if (contact_no.value == null || contact_no.value == "") {
+            contact_noError.value = "Enter contact no";
+          return false;
+        } else {
+            contact_noError.value = "";
+        }
+
+        if (selectedState.value == null || selectedState.value == "") {
+            console.log('selectedState',selectedState.value);
+            err_state.value = "Select state";
+          return false;
+        } else {
+            err_state.value = "";
+        }
 
 
+        if (city.value == null || city.value == "") {
+            err_city.value = "Please Enter City";
+          return false;
+        } else {
+            err_city.value = "";
+        }
 
         const formData = new FormData();
         formData.append("companyname", companyname.value);
@@ -655,6 +522,7 @@ export default {
             } else {
               steps.value = 2;
               employer_id.value = response.data.employer_id;
+
               //   const token = response.data.token;
               //   localStorage.setItem("accessToken", token);
               //   showSuccessModal.value = true;
@@ -690,10 +558,13 @@ export default {
               otpError.value = true;
               return false;
             } else {
+                const elementToHide = document.querySelector('.enter_otp_class');
+                elementToHide.classList.add('hidden');
+
                 showSuccessModal.value = true;
               setTimeout(() => {
                 router.push("/");
-              }, 3000);
+              }, 2000);
             }
           })
           .catch((error) => {
@@ -743,6 +614,7 @@ export default {
     });
 
     return {
+        stateError,
       companyname,
       companynameError,
       companywebsite,

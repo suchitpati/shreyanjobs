@@ -15,8 +15,8 @@ class EmployerController extends Controller
         $otp = rand(100000, 999999);
 
         $maildata = [
-            'title' => 'mail from webappfix',
-            'body' => 'Your email is' . $otp,
+            'title' => 'Varification OTP',
+            'body' => 'Your OTP is ' . $otp,
         ];
 
         if (Employer::where(['emailid' => $request->email, 'is_active' => 1])->exists()) {

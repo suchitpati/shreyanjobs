@@ -15,20 +15,8 @@
                 </button>
             </div>
         </div>
-        <div class="flex justify-end gap-4 pr-11 pt-5 pb-5 bg-[#fff]">
-            <button
-                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"
-                @click="adminLogout"
-            >
-                Logout
-            </button>
-            <button
-                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"
-                @click="adminProfile()"
-            >
-                Profile
-            </button>
-        </div>
+        <EmployerNev/>
+
         <div class="bg-[#ebf4ff] py-7 h-[calc(100vh-80px)] overflow-y-auto">
             <div class="max-w-[1080px] w-full mx-auto px-[20px]">
                 <h1
@@ -338,10 +326,12 @@ import apiUrl from "../../api";
 import SuccessModal from "../SuccessModal.vue";
 import { debounce } from "lodash";
 import {  State } from "country-state-city";
+import EmployerNev from "../Employer/EmployerNavbar.vue"
 
 export default {
     components: {
         SuccessModal,
+        EmployerNev
     },
     setup() {
         const data = reactive({});
