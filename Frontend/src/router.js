@@ -9,6 +9,8 @@ import SeekerLogin from './components/Seeker/SeekerLogin.vue'
 import SeekerRegister from './components/Seeker/SeekerRegister.vue'
 import ForgotPassword from './components/Seeker/ForgotPassword.vue'
 import SeekerProfile from './components/Seeker/SeekerProfile.vue'
+import SeekerUpdatePassword from './components/Seeker/UpdatePassword.vue';
+
 
 
 import EmployerLogin from './components/Employer/EmployerLogin.vue'
@@ -16,6 +18,8 @@ import EmployerRegister from './components/Employer/EmployerRegister.vue'
 import EmployerForgotPassword from './components/Employer/ForgotPassword.vue'
 import EmployerProfile from './components/Employer/EmployerProfile.vue'
 import EmployerDashboard from './components/Employer/EmployerDashboard.vue'
+import EmployerUpdatePassword from './components/Employer/UpdatePassword.vue';
+
 
 
 
@@ -82,6 +86,11 @@ const routes = [
     component: ForgotPassword,
   },
   {
+    path: '/seeker-update-password',
+    name: 'seeker-update-password',
+    component: SeekerUpdatePassword,
+  },
+  {
     path: '/employer-login',
     name: 'employer-login',
     component: EmployerLogin,
@@ -100,26 +109,16 @@ const routes = [
     path: '/employer-profile',
     name: 'employer-profile',
     component: EmployerProfile,
-    beforeEnter: (to, from, next) => {
-        if (!isEmployerLogged) {
-            return next('/employer-login');
-        } else {
-            next();
-        }
-      }
   },
   {
     path: '/employer-dashboard',
     name: 'employer-dashboard',
     component: EmployerDashboard,
-    beforeEnter: (to, from, next) => {
-        if (!isEmployerLogged) {
-            return next('/employer-login');
-        } else {
-            next();
-        }
-      }
-
+  },
+  {
+    path: '/employer-update-password',
+    name: 'employer-update-password',
+    component: EmployerUpdatePassword,
   },
 
 ];

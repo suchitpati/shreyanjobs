@@ -141,6 +141,19 @@ class EmployerController extends Controller
             ]);
         }
     }
+
+    public function updatePassword(Request $request)
+    {
+        if (Employer::where(['id' => $request->employer_id])->exists()) {
+            Employer::where('id', $request->employer_id)
+                ->update(['password' => Hash::make($request->password)]);
+            return response()->json([
+                'message' => 'password updated sucessfully',
+                'success' => 200,
+            ]);
+        }
+    }
+
     public function verifyRegisterOtp(Request $request)
     {
 

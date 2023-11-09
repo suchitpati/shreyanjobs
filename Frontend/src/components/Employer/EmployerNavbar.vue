@@ -1,6 +1,6 @@
 <template>
-    <div class="flex justify-end gap-4 pr-11 pt-5 pb-5 bg-[#fff]">
-        <SuccessModal v-if="showLogoutModal" :message="successMessage" />
+  <div class="flex justify-end gap-4 pr-11 pt-5 pb-5 bg-[#fff]">
+    <SuccessModal v-if="showLogoutModal" :message="successMessage" />
     <div
       v-if="showSuccessModal"
       class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-75"
@@ -17,6 +17,18 @@
     </div>
     <button
       class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"
+      @click="addJob"
+      >
+      Post Job
+    </button>
+    <button
+    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"
+    @click="home"
+  >
+    Home
+  </button>
+    <button
+      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"
       @click="employerLogout"
     >
       Logout
@@ -27,23 +39,28 @@
     >
       Profile
     </button>
+
+    <div
+    class="absolute inset-0 flex items-center justify-center"
+    v-if="isLoading"
+  >
+    <div
+      class="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"
+    ></div>
+  </div>
   </div>
 </template>
 
 <script>
-
-
 import axios from "axios";
 import apiUrl from "../../api";
-import {  ref } from "vue";
+import { ref } from "vue";
 import { useRouter } from "vue-router";
 
-
 export default {
-
   setup() {
     const router = useRouter();
-
+    const isLoading =ref(false);
     const showLogoutModal = ref(false);
     const successMessage = ref("");
     const employerLogout = async () => {
@@ -60,6 +77,7 @@ export default {
             Authorization: `Bearer ${authToken}`,
           },
         };
+        isLoading.value = true;
         const response = await axios.post(
           `${apiUrl}/employer-logout`,
           null,
@@ -67,7 +85,7 @@ export default {
         );
         localStorage.removeItem("employer_tocken");
         localStorage.removeItem("employer_id");
-
+        isLoading.value = false;
         if (response.data.message) {
           successMessage.value = response.data.message;
           showLogoutModal.value = true;
@@ -86,10 +104,21 @@ export default {
       router.push("/employer-profile");
     };
 
+    const addJob = async () => {
+        router.push("/add-job");
+
+    }
+    const home = async () => {
+      router.push("/");
+    };
 
     return {
-        employerLogout,
-        employerProfile
+      employerLogout,
+      employerProfile,
+      addJob,
+      isLoading,
+      home
+
     };
   },
 };

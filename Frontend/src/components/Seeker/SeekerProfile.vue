@@ -32,7 +32,7 @@
               class="bg-blue-500 text-white border px-3 py-1 rounded"
               @click="changeSection"
             >
-              Update Skill
+            Manage Subscription
             </button>
           </div>
           <div class="mt-4" v-if="section == 1">
@@ -76,7 +76,7 @@
                   />
                   <div>
                     <router-link
-                      to="/seeker-forgot-password"
+                      to="/seeker-update-password"
                       class="hover:underline hover:decoration-[#FF0000] text-[#FF0000]"
                       >Change Password</router-link
                     >
@@ -370,7 +370,7 @@
                   class="block text-gray-700 font-bold mb-1 text-start text-[14px] mr-3"
                   for="field1"
                 >
-                  Relocate
+                OK to Relocate
                 </label>
                 <input
                   class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline mr-2"
@@ -398,6 +398,8 @@
                           placeholder="Enter Email"
                           @change="image_details"
                         />
+                        <!-- <a href="https://www.shreyanjobs.com/public/pdf/1699523056.pdf" target="_blank">resume</a> -->
+
                         {{ resume }}
               </div>
             </div>
@@ -438,6 +440,7 @@
                   <input
                     type="text"
                     v-model="skill"
+                    placeholder="Enter skill"
                     class="min-h-[30px] border-gray-400 rounded-lg border"
                   />
 
@@ -935,6 +938,7 @@ export default {
       email,
       contact_number,
       defaultSelectedState,
+      apiUrl
     };
   },
 };

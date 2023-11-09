@@ -4,7 +4,7 @@
       <a
         href="/"
         class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[10px] py-[7px] px-[18px] md:px-[26px] rounded-[26px] focus:outline-none"
-        >Job search page
+        >Home
       </a>
     </div>
     <div

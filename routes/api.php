@@ -43,11 +43,12 @@ Route::post('/seeker-check-forgot-otp',[SeekerController::class,'checkForgotOtp'
 Route::post('/seeker-update-forgot-password',[SeekerController::class,'updateForgotPassword']);
 Route::post('/seeker-update-profile',[SeekerController::class,'updateseeker_profile']);
 Route::post('/seeker-login',[SeekerController::class,'loginSeeker']);
-Route::post('/seeker-all',[SeekerController::class,'getSeeker'])->middleware('auth:sanctum');;
+Route::post('/seeker-all',[SeekerController::class,'getSeeker'])->middleware('auth:sanctum');
 Route::post('/seeker-profile', [SeekerController::class, 'seeker_profile']);
 Route::post('/seeker-skill', [SeekerController::class, 'seeker_skill']);
 Route::post('/seeker-skill-add', [SeekerController::class, 'seeker_addskill']);
 Route::post('/seeker-skill-delete', [SeekerController::class, 'seeker_deleteskill']);
+Route::post('/seeker-update-password',[SeekerController::class,'updatePassword']);
 
 
 
@@ -59,9 +60,9 @@ Route::post('/seeker-skill-delete', [SeekerController::class, 'seeker_deleteskil
 Route::group(['middleware' => ['auth:sanctum']], function() {
     Route::post('/employer-logout',[EmployerController::class,'logout']);
 Route::post('/seeker-logout', [SeekerController::class, 'seekerLogout']);
+Route::post('/employer-profile', [EmployerController::class, 'employe_profile']);
 
   });
-Route::post('/employer-profile', [EmployerController::class, 'employe_profile']);
 Route::post('/employer-register', [EmployerController::class, 'employe_register']);
 Route::post('/verify-register-otp', [EmployerController::class, 'verifyRegisterOtp']);
 Route::post('/employer-login',[EmployerController::class,'login']);
@@ -69,6 +70,9 @@ Route::post('/employer-send-forgot-email-otp',[EmployerController::class,'sendFo
 Route::post('/employer-check-forgot-otp',[EmployerController::class,'checkForgotOtp']);
 Route::post('/employer-update-forgot-password',[EmployerController::class,'updateForgotPassword']);
 Route::post('/employer-update-profile',[EmployerController::class,'updateemployer_profile']);
+
+Route::post('/employer-update-password',[EmployerController::class,'updatePassword']);
+
 
 
 
