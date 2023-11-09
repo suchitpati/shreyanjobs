@@ -5,7 +5,7 @@
       <a
         href="/"
         class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[10px] py-[7px] px-[18px] md:px-[26px] rounded-[26px] focus:outline-none"
-        >Job search page
+        >Home
       </a>
     </div>
     <div
@@ -19,7 +19,9 @@
           class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-75"
         >
           <div class="bg-white p-8 rounded-lg shadow-lg">
-            <h2 class="text-2xl font-bold mb-4">Registration Completed Successfully</h2>
+            <h2 class="text-2xl font-bold mb-4">
+              Registration Completed Successfully
+            </h2>
             <button
               @click="closeSuccessModal"
               class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -135,23 +137,6 @@
                 </div>
               </div>
 
-              <div class="w-full mt-[10px] flex gap-2 items-center">
-                <label
-                  class="block text-gray-700 font-bold text-start text-[14px]"
-                  for="field2"
-                >
-                  Relocate
-                </label>
-                <div class="flex items-center gap-1">
-                 <input type="checkbox" v-model="relocate" >
-                </div>
-                <div
-                  v-if="genderError"
-                  class="text-red-600 block text-[14px] text-left"
-                >
-                  {{ genderError }}
-                </div>
-              </div>
               <button
                 class="bg-[#1890da] hover:bg-blue-500 text-white font-bold py-2 px-8 mb-[20px] rounded focus:outline-none focus:shadow-outline mt-[40px]"
                 @click.prevent="seekerRegister"
@@ -458,9 +443,9 @@
                       </div>
                     </div>
                     <div
-                      class="w-full flex sm:flex-row flex-col justify-between sm:gap-6 gap-2"
+                      class="w-full flex sm:flex-row flex-col justify-between sm:gap-6 gap-2 items-center"
                     >
-                      <div class="sm:w-[100%] mb-4">
+                      <div class="sm:w-[50%] mb-4">
                         <label
                           class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
                           for="email"
@@ -480,6 +465,17 @@
                           v-if="err_file != ''"
                         >
                           {{ err_file }}
+                        </div>
+                      </div>
+                      <div class="sm:w-[50%] ">
+                        <div class="flex items-center gap-2">
+                          <label
+                            class="block text-gray-700 font-bold text-start text-[14px]"
+                            for="field2"
+                          >
+                            OK to Relocate
+                          </label>
+                          <input type="checkbox" v-model="relocate" />
                         </div>
                       </div>
                     </div>
@@ -584,8 +580,8 @@ export default {
 
     const seekerRegister = async () => {
       try {
-          console.log(gender.value, "gender.value");
-          if (fullname.value == null || fullname.value == "") {
+        console.log(gender.value, "gender.value");
+        if (fullname.value == null || fullname.value == "") {
           fullnameError.value = "Please Enter FullName";
           return false;
         } else {
@@ -593,49 +589,42 @@ export default {
         }
 
         if (email.value == null || email.value == "") {
-            emailError.value = "Please Enter Email";
-            return false;
+          emailError.value = "Please Enter Email";
+          return false;
         } else {
-            emailError.value = "";
+          emailError.value = "";
         }
         if (password.value == null || password.value == "") {
-            passwordError.value = "Please Enter Password";
+          passwordError.value = "Please Enter Password";
           return false;
         } else {
           passwordError.value = "";
         }
         const regex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
 
-            if(regex.test(password.value) == false )
-            {
-                passwordError.value = "Enter At least 8 characters long with one capital and one number "
-                return false;
-
-            }
-            else
-            {
-                passwordError.value = "";
-            }
+        if (regex.test(password.value) == false) {
+          passwordError.value =
+            "Enter At least 8 characters long with one capital and one number ";
+          return false;
+        } else {
+          passwordError.value = "";
+        }
         if (gender.value == null || gender.value == "") {
           genderError.value = "Please select Gender";
           return false;
         } else {
-            genderError.value = "";
+          genderError.value = "";
         }
-        if(relocate.value == true)
-        {
-            relocate.value = 1;
-        }
-        console.log(relocate.value,'relocaterelocate');
+
+        console.log(relocate.value, "relocaterelocate");
 
         isLoading.value = true;
         await axios
-        .post(`${apiUrl}/registerSeeker`, {
+          .post(`${apiUrl}/registerSeeker`, {
             fullname: fullname.value,
             email: email.value,
             password: password.value,
             gender: gender.value,
-            relocate : relocate.value
           })
           .then((response) => {
             console.log(response);
@@ -769,6 +758,10 @@ export default {
       } else {
         err_file.value = "";
       }
+
+      if (relocate.value == true) {
+          relocate.value = 1;
+        }
       const formData = new FormData();
       formData.append("pdf", file.value);
       formData.append("country", selectedCountry.value);
@@ -782,6 +775,8 @@ export default {
       formData.append("secondary_skill", secondary_skill.value);
       formData.append("secondary_experience", secondary_experience.value);
       formData.append("seeker_id", seeker_id.value);
+      formData.append("relocate", relocate.value);
+
 
       try {
         await axios

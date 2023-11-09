@@ -14,7 +14,7 @@ class Seeker extends Model
 
     protected $table = "seekers";
 
-    protected $fillable = ['fullname', 'email', 'password', 'gender', 'is_active', 'otp','relocate'];
+    protected $fillable = ['fullname', 'email', 'password', 'gender', 'is_active', 'otp'];
 
     public function subscription()
     {

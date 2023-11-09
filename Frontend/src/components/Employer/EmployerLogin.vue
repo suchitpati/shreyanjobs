@@ -7,7 +7,7 @@
       <router-link
         to="/"
         class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[10px] py-[7px] px-[18px] md:px-[26px] rounded-[26px] focus:outline-none"
-        >Job search page</router-link
+        >Home</router-link
       >
     </div>
     <div
@@ -40,7 +40,7 @@
             <h1
               class="sm:text-[28px] text-[22px] font-bold mt-[20px] sm:mb-[5px] mb-[30px] text-[#1890da]"
             >
-              Sign in to your Accounts
+              Employer Login
             </h1>
             <div class="flex justify-center gap-[5px]">
               Don't have account ?
@@ -91,6 +91,7 @@
                   id="field1"
                   placeholder="Password"
                   v-model="password"
+                  @keyup.enter="employerLogin"
                 />
                 <div
                   v-if="passwordError"
@@ -130,7 +131,6 @@ import apiUrl from "../../api";
 
 export default {
   setup() {
-
     const data = reactive({});
 
     const email = ref("");
@@ -164,21 +164,17 @@ export default {
           passwordError.value = "";
         }
 
-
-
         const response = await axios.post(`${apiUrl}/employer-login`, {
           email: email.value,
           password: password.value,
         });
-        localStorage.setItem('employer_id',response.data.employer_id)
-        localStorage.setItem('employer_tocken',response.data.token)
-
 
         if (response.data.code == 100) {
           validationError.value = "Invalid credentials";
         } else {
           showSuccessModal.value = true;
-
+          localStorage.setItem("employer_id", response.data.employer_id);
+          localStorage.setItem("employer_tocken", response.data.token);
           setTimeout(() => {
             router.push("/employer-dashboard");
           }, 1000);

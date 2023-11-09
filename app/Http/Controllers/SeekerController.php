@@ -91,6 +91,19 @@ class SeekerController extends Controller
             'seeker_details' => $seeker_details
         ]);
     }
+
+    public function updatePassword(Request $request)
+    {
+        if (Seeker::where(['id' => $request->seeker_id])->exists()) {
+        }
+        Seeker::where('id', $request->seeker_id)
+        ->update(['password' => Hash::make($request->password)]);
+        return response()->json([
+            'message' => 'password updated sucessfully',
+            'success' => $request->all(),
+        ]);
+    }
+
     public function registerSeeker(Request $request)
     {
         $email = $request->email;
@@ -111,7 +124,6 @@ class SeekerController extends Controller
                 'password' => Hash::make($request->password),
                 'gender' => $request->gender,
                 'is_active' => 0,
-                'relocate' => $request->relocate,
                 'otp' => $otp
             ]);
         } else {
@@ -171,7 +183,9 @@ class SeekerController extends Controller
                     'primary_skill_experience' => $request->primary_experience,
                     'secondary_skill' => $request->secondary_skill,
                     'secondary_skill_experience' => $request->secondary_experience,
-                    'resume' => $fileName
+                    'resume' => $fileName,
+                    'relocate' => $request->relocate,
+
                 ]);
 
 

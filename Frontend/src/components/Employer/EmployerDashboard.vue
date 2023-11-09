@@ -15,7 +15,7 @@
         </button>
       </div>
     </div>
-    <EmployerNev/>
+    <EmployerNev />
     <div class="bg-[#ebf4ff] py-7 h-[calc(100vh-80px)] overflow-y-auto">
       <div class="w-full mx-auto px-[20px]">
         <!-- <h1
@@ -54,12 +54,12 @@
                   Search
                 </button>
 
-                <button
+                <!-- <button
                   class="bg-blue-700 rounded-[30px] text-white md:p-[13px_30px] sm:p-[7px_20px] p-[5px_14px]"
                   @click="addJob"
                 >
-                  Add post
-                </button>
+                Post Job
+            </button> -->
               </div>
             </div>
             <div class="mt-8 flow-root">
@@ -110,7 +110,7 @@
                           scope="col"
                           class="py-3.5 pl-4 pr-4 text-left text-sm font-semibold text-gray-900 sm:pr-0"
                         >
-                          Relocate
+                          OK to Relocate
                         </th>
                         <th
                           scope="col"
@@ -181,7 +181,8 @@
                         </td>
                       </tr>
                       <tr v-if="allSeeker == null || allSeeker == ''">
-                        <td colspan="9"
+                        <td
+                          colspan="9"
                           class="whitespace-nowrap py-4 pl-4 pr-4 text-sm font-medium text-gray-900 sm:pl-0"
                         >
                           No Profile match
@@ -205,14 +206,14 @@ import { useRouter } from "vue-router";
 import axios from "axios";
 import apiUrl from "../../api";
 import SuccessModal from "../SuccessModal.vue";
-import EmployerNev from "../Employer/EmployerNavbar.vue"
+import EmployerNev from "../Employer/EmployerNavbar.vue";
 import { debounce } from "lodash";
 import { State } from "country-state-city";
 
 export default {
   components: {
     SuccessModal,
-    EmployerNev
+    EmployerNev,
   },
   setup() {
     const data = reactive({});
@@ -315,9 +316,8 @@ export default {
 
     const router = useRouter();
     const addJob = async () => {
-        router.push("/add-job");
-
-    }
+      router.push("/add-job");
+    };
     const updateProfile = async () => {
       if (employername.value == null || employername.value == "") {
         employernameError.value = "Enter name";
@@ -342,9 +342,9 @@ export default {
       await axios
         .post(`${apiUrl}/employer-update-profile`, formData)
         .then((response) => {
-        //   countries.value = response.data;
-        console.log(response);
-        successMessage.value = response.data.message;
+          //   countries.value = response.data;
+          console.log(response);
+          successMessage.value = response.data.message;
           showLogoutModal.value = true;
         })
         .catch((error) => {
@@ -407,7 +407,6 @@ export default {
       router.push("/employer-profile");
     };
 
-
     const fetchSeeker = debounce(async () => {
       try {
         const authToken = localStorage.getItem("employer_tocken");
@@ -429,9 +428,27 @@ export default {
 
     const getEmployerDeatails = async () => {
       const employer_id = localStorage.getItem("employer_id");
-      const response = await axios.post(`${apiUrl}/employer-profile`, {
-        employer_id,
-      });
+
+      const authToken = localStorage.getItem("employer_tocken");
+
+      if (!authToken) {
+        console.log("Authentication token is missing.");
+        return;
+      }
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      };
+
+      const response = await axios.post(
+        `${apiUrl}/employer-profile`,
+      { 'employer_id' : employer_id },
+
+          config,
+
+      );
 
       company_name.value = response.data.employer_details.companyname;
       companyurl.value = response.data.employer_details.companyurl;
@@ -457,7 +474,7 @@ export default {
     });
 
     return {
-        addJob,
+      addJob,
       fetchSeeker,
       searchInput,
       allSeeker,

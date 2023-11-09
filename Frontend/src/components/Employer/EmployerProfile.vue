@@ -15,7 +15,7 @@
         </button>
       </div>
     </div>
-    <EmployerNev/>
+    <EmployerNev />
 
     <div class="bg-[#ebf4ff] py-7 h-[calc(100vh-80px)] overflow-y-auto">
       <div class="max-w-[1080px] w-full mx-auto px-[20px]">
@@ -111,7 +111,7 @@
                   />
                   <div>
                     <router-link
-                      to="/employer-forgot-password"
+                      to="/employer-update-password"
                       class="hover:underline hover:decoration-[#FF0000] text-[#FF0000]"
                       >Change Password</router-link
                     >
@@ -241,16 +241,14 @@ import apiUrl from "../../api";
 import SuccessModal from "../SuccessModal.vue";
 import { debounce } from "lodash";
 import { State } from "country-state-city";
-import EmployerNev from "../Employer/EmployerNavbar.vue"
-
+import EmployerNev from "../Employer/EmployerNavbar.vue";
 
 export default {
   components: {
     SuccessModal,
-    EmployerNev
+    EmployerNev,
   },
   setup() {
-
     const data = reactive({});
     const selectedCountry = ref("");
     const country = ref("");
@@ -366,13 +364,10 @@ export default {
       formData.append("country", selectedCountry.value);
       formData.append("state", selectedState.value);
       formData.append("city", city.value);
-      formData.append("employer_id", localStorage.getItem('employer_id'));
-
-
-
+      formData.append("employer_id", localStorage.getItem("employer_id"));
 
       await axios
-        .post(`${apiUrl}/employer-update-profile`, formData )
+        .post(`${apiUrl}/employer-update-profile`, formData)
         .then((response) => {
           countries.value = response.data;
         })
@@ -436,9 +431,13 @@ export default {
       router.push("/employer-profile");
     };
 
+    const updatePassword = async() => {
+        router.push("/employer-update-password");
+    }
+
     const adminLogout = async () => {
       try {
-        const authToken = localStorage.getItem("accessToken");
+        const authToken = localStorage.getItem("employer_tocken");
 
         if (!authToken) {
           console.log("Authentication token is missing.");
@@ -451,17 +450,19 @@ export default {
           },
         };
         const response = await axios.post(
-          `${apiUrl}/admin/logout`,
+          `${apiUrl}/employer-logout`,
           null,
           config
         );
-        localStorage.removeItem("accessToken");
+        localStorage.removeItem("employer_tocken");
+        localStorage.removeItem("employer_id");
+
         if (response.data.message) {
           successMessage.value = response.data.message;
           showLogoutModal.value = true;
 
           setTimeout(() => {
-            router.push("/admin-login");
+            router.push("/employer-login");
           }, 1000);
         }
 
@@ -472,9 +473,26 @@ export default {
     };
     const getEmployerDeatails = async () => {
       const employer_id = localStorage.getItem("employer_id");
-      const response = await axios.post(`${apiUrl}/employer-profile`, {
-        employer_id,
-      });
+
+      const authToken = localStorage.getItem("employer_tocken");
+
+      if (!authToken) {
+        console.log("Authentication token is missing.");
+        return;
+      }
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      };
+      const response = await axios.post(
+        `${apiUrl}/employer-profile`,
+        {
+          employer_id: employer_id,
+        },
+        config
+      );
 
       company_name.value = response.data.employer_details.companyname;
       companyurl.value = response.data.employer_details.companyurl;
@@ -499,6 +517,7 @@ export default {
     });
 
     return {
+      updatePassword,
       employernameError,
       contactnoError,
       updateProfile,

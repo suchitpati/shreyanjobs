@@ -5,7 +5,7 @@
       <a
         href="/"
         class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[10px] py-[7px] px-[18px] md:px-[26px] rounded-[26px] focus:outline-none"
-        >Job search page
+        >Home
       </a>
     </div>
     <div
@@ -135,7 +135,7 @@
                         </label>
                         <input
                           class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
-                          type="text"
+                          type="password"
                           id="field1"
                           v-model="password"
                           placeholder="Enter password"
@@ -167,10 +167,10 @@
 
                         <input
                           class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
-                          type="text"
+                          type="password"
                           id="field1"
                           v-model="confirmPassword"
-                          placeholder="Enter skill"
+                          placeholder="Enter Confirm Password"
                         />
                         <div
                           class="text-red-600 block text-[14px] text-left"

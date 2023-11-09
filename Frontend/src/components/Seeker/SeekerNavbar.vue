@@ -16,6 +16,12 @@
       </div>
     </div>
     <button
+    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"
+    @click="home"
+  >
+    Home
+  </button>
+    <button
       class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"
       @click="seekerLogout"
     >
@@ -86,10 +92,13 @@ export default {
       router.push("/seeker-profile");
     };
 
-
+    const home = async () => {
+      router.push("/");
+    };
     return {
         seekerLogout,
-        seekerProfile
+        seekerProfile,
+        home
     };
   },
 };
