@@ -16,7 +16,7 @@
       </div>
     </div>
     <EmployerNev />
-    <div class="bg-[#ebf4ff] py-7 h-[calc(100vh-80px)] overflow-y-auto">
+    <div class="bg-[#ebf4ff] py-7">
       <div class="w-full mx-auto px-[20px]">
         <!-- <h1
                       class="text-[#1890da] sm:text-[26px] text-[22px] font-semibold mt-[30px] sm:mb-[40px] mb-[25px]"

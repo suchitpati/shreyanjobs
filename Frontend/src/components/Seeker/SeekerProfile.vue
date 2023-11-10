@@ -27,12 +27,20 @@
         <div
           class="bg-[#d3ddff4f] rounded-lg py-4 sm:px-8 px-4 w-full shadow-[rgba(100,_100,_111,_0.2)_0px_0px_10px_0px] hover:shadow-[rgba(100,_100,_111,_0.2)_0px_0px_20px_0px] transition-[.5s]"
         >
-          <div class="float-right">
+          <div class="float-right" v-if="section == 1">
             <button
               class="bg-blue-500 text-white border px-3 py-1 rounded"
               @click="changeSection"
             >
-            Manage Subscription
+              Manage Subscription
+            </button>
+          </div>
+          <div class="float-right" v-else>
+            <button
+              class="bg-blue-500 text-white border px-3 py-1 rounded"
+              @click="backHome"
+            >
+            Back to Profile
             </button>
           </div>
           <div class="mt-4" v-if="section == 1">
@@ -370,7 +378,7 @@
                   class="block text-gray-700 font-bold mb-1 text-start text-[14px] mr-3"
                   for="field1"
                 >
-                OK to Relocate
+                  OK to Relocate
                 </label>
                 <input
                   class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline mr-2"
@@ -392,15 +400,15 @@
                   Resume
                 </label>
                 <input
-                          class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
-                          type="file"
-                          id="file"
-                          placeholder="Enter Email"
-                          @change="image_details"
-                        />
-                        <!-- <a href="https://www.shreyanjobs.com/public/pdf/1699523056.pdf" target="_blank">resume</a> -->
+                  class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
+                  type="file"
+                  id="file"
+                  placeholder="Enter Email"
+                  @change="image_details"
+                />
+                <!-- <a href="https://www.shreyanjobs.com/public/pdf/1699523056.pdf" target="_blank">resume</a> -->
 
-                        {{ resume }}
+                {{ resume }}
               </div>
             </div>
             <button
@@ -420,7 +428,7 @@
                   class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
                   for="field1"
                 >
-                  Skills subscribed for email
+                  Email Subscription for new Jobs with the below skills
                 </label>
                 <div
                   class="text-left flex"
@@ -684,7 +692,7 @@ export default {
       selectedState.value = response.data.seeker_details.state;
       city.value = response.data.seeker_details.city;
       relocate.value = response.data.seeker_details.relocate;
-      resume.value =  response.data.seeker_details.resume;
+      resume.value = response.data.seeker_details.resume;
       states.value = countries.value
         ? State.getStatesOfCountry(selectedCountry.value)
         : "";
@@ -733,7 +741,9 @@ export default {
         section.value = 1;
       }
     }
-
+    const backHome = async () => {
+        section.value = 1;
+    };
     const updateProfile = async () => {
       if (gender.value == null || gender.value == "") {
         err_gender.value = "Enter name";
@@ -809,21 +819,18 @@ export default {
       } else {
         err_secondary_skill_experience.value = "";
       }
-      if(relocate.value == true)
-        {
-            relocate.value = 1;
-        }
-        else{
-            relocate.value = 0;
+      if (relocate.value == true) {
+        relocate.value = 1;
+      } else {
+        relocate.value = 0;
+      }
 
-        }
-
-    //   if (file.value == null || file.value == "") {
-    //     err_file.value = "Pleas select file";
-    //     return false;
-    //   } else {
-    //     err_file.value = "";
-    //   }
+      //   if (file.value == null || file.value == "") {
+      //     err_file.value = "Pleas select file";
+      //     return false;
+      //   } else {
+      //     err_file.value = "";
+      //   }
 
       const formData = new FormData();
       formData.append("contactno", contactno.value);
@@ -833,23 +840,27 @@ export default {
       formData.append("work_authorization", work_authorization.value);
       formData.append("total_experience", total_experience.value);
       formData.append("primary_skill", primary_skill.value);
-      formData.append("primary_skill_experience", primary_skill_experience.value);
+      formData.append(
+        "primary_skill_experience",
+        primary_skill_experience.value
+      );
       formData.append("secondary_skill", secondary_skill.value);
-      formData.append("secondary_skill_experience", secondary_skill_experience.value);
+      formData.append(
+        "secondary_skill_experience",
+        secondary_skill_experience.value
+      );
       formData.append("relocate", relocate.value);
       formData.append("gender", gender.value);
       formData.append("seeker_id", localStorage.getItem("seeker_id"));
       formData.append("pdf", file.value);
       formData.append("resume", resume.value);
 
-
       await axios
         .post(`${apiUrl}/seeker-update-profile`, formData)
         .then((response) => {
-            console.log(response,'response');
-            file.value = "";
+          console.log(response, "response");
+          file.value = "";
           getSeekerDeatails();
-
         })
         .catch((error) => {
           console.error(error);
@@ -865,9 +876,10 @@ export default {
     });
 
     return {
-        resume,
-        image_details,
-        relocate,
+        backHome,
+      resume,
+      image_details,
+      relocate,
       err_city,
       err_gender,
       skillError,
@@ -938,7 +950,7 @@ export default {
       email,
       contact_number,
       defaultSelectedState,
-      apiUrl
+      apiUrl,
     };
   },
 };

@@ -1,5 +1,9 @@
 <template>
-  <div class="flex justify-end gap-4 pr-11 pt-5 pb-5 bg-[#fff]">
+  <div class="flex justify-between gap-4 px-11 pt-5 pb-5 bg-[#ebf4ff]">
+    <div>
+      <img class="w-[150px]" src="../../assets/logo-no-background.png" alt="" />
+    </div>
+
     <SuccessModal v-if="showLogoutModal" :message="successMessage" />
     <div
       v-if="showSuccessModal"
@@ -15,39 +19,41 @@
         </button>
       </div>
     </div>
-    <button
-      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"
-      @click="addJob"
+    <div class="flex gap-[5px]">
+      <button
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"
+        @click="addJob"
       >
-      Post Job
-    </button>
-    <button
-    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"
-    @click="home"
-  >
-    Home
-  </button>
-    <button
-      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"
-      @click="employerLogout"
-    >
-      Logout
-    </button>
-    <button
-      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"
-      @click="employerProfile()"
-    >
-      Profile
-    </button>
+        Post Job
+      </button>
+      <button
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"
+        @click="home"
+      >
+        Home
+      </button>
+      <button
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"
+        @click="employerLogout"
+      >
+        Logout
+      </button>
+      <button
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"
+        @click="employerProfile()"
+      >
+        Profile
+      </button>
+    </div>
 
     <div
-    class="absolute inset-0 flex items-center justify-center"
-    v-if="isLoading"
-  >
-    <div
-      class="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"
-    ></div>
-  </div>
+      class="absolute inset-0 flex items-center justify-center"
+      v-if="isLoading"
+    >
+      <div
+        class="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"
+      ></div>
+    </div>
   </div>
 </template>
 
@@ -60,7 +66,7 @@ import { useRouter } from "vue-router";
 export default {
   setup() {
     const router = useRouter();
-    const isLoading =ref(false);
+    const isLoading = ref(false);
     const showLogoutModal = ref(false);
     const successMessage = ref("");
     const employerLogout = async () => {
@@ -105,9 +111,8 @@ export default {
     };
 
     const addJob = async () => {
-        router.push("/add-job");
-
-    }
+      router.push("/add-job");
+    };
     const home = async () => {
       router.push("/");
     };
@@ -117,8 +122,7 @@ export default {
       employerProfile,
       addJob,
       isLoading,
-      home
-
+      home,
     };
   },
 };

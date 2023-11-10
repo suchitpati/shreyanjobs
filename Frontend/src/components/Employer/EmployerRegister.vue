@@ -57,6 +57,28 @@
                   class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
                   for="field2"
                 >
+                Full Name
+                </label>
+                <input
+                  class="border border-gray-400 rounded-lg py-2 px-4 mb-1 outline-[#264dd9] focus:shadow-outline w-full"
+                  type="text"
+                  id="field1"
+                  placeholder="Enter Full Name"
+                  v-model="employername"
+                />
+                <div
+                  v-if="employernameError"
+                  class="text-red-600 block text-[14px] text-left"
+                >
+                  {{ employernameError }}
+                </div>
+              </div>
+
+              <div class="w-full">
+                <label
+                  class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
+                  for="field2"
+                >
                   Company Name
                 </label>
                 <input
@@ -93,27 +115,6 @@
                   class="text-red-600 block text-[14px] text-left"
                 >
                   {{ companywebsiteError }}
-                </div>
-              </div>
-              <div class="w-full">
-                <label
-                  class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
-                  for="field2"
-                >
-                  Employer Name
-                </label>
-                <input
-                  class="border border-gray-400 rounded-lg py-2 px-4 mb-1 outline-[#264dd9] focus:shadow-outline w-full"
-                  type="text"
-                  id="field1"
-                  placeholder="Enter Employer Name"
-                  v-model="employername"
-                />
-                <div
-                  v-if="employernameError"
-                  class="text-red-600 block text-[14px] text-left"
-                >
-                  {{ employernameError }}
                 </div>
               </div>
 
@@ -201,11 +202,11 @@
                   v-model="contact_no"
                 />
                 <div
-                v-if="contact_noError"
-                class="text-red-600 block text-[14px] text-left"
-              >
-                {{ contact_noError }}
-              </div>
+                  v-if="contact_noError"
+                  class="text-red-600 block text-[14px] text-left"
+                >
+                  {{ contact_noError }}
+                </div>
                 <div class="flex gap-[15px]">
                   <div class="w-[33.33%]">
                     <div
@@ -272,11 +273,12 @@
                       </option>
                     </select>
                     <div
-                    class="text-red-600 block text-[14px] text-left"
-                    v-if="err_state"
-                  >
-                    {{ err_state }}
-                  </div>                  </div>
+                      class="text-red-600 block text-[14px] text-left"
+                      v-if="err_state"
+                    >
+                      {{ err_state }}
+                    </div>
+                  </div>
                   <div class="w-[33.33%]">
                     <!-- <div class="sm:w-[80%]"> -->
                     <label
@@ -286,7 +288,7 @@
                       City
                     </label>
                     <input
-                    v-model="city"
+                      v-model="city"
                       placeholder="City Name"
                       class="bg-[#FFFFFF] border placeholder:text-[#2C3E50] w-full p-2 rounded-lg text-sm"
                     />
@@ -309,7 +311,9 @@
           </div>
         </div>
         <div v-else>
-          <div class="fixed inset-0 flex items-center justify-center enter_otp_class">
+          <div
+            class="fixed inset-0 flex items-center justify-center enter_otp_class"
+          >
             <div class="bg-white p-8 rounded-lg shadow-lg">
               <h2 class="text-2xl font-bold mb-2">Enter OTP</h2>
               <div class="text-[14px]">OTP has been sent to your email ID</div>
@@ -333,7 +337,6 @@
             </div>
           </div>
         </div>
-
       </div>
     </div>
     <div
@@ -416,7 +419,7 @@ export default {
     const err_city = ref("");
     const formContainer = ref(null);
     const isLoading = ref(false);
-    const employer_id = ref('');
+    const employer_id = ref("");
     const closeSuccessModal = () => {
       showSuccessModal.value = false;
     };
@@ -429,7 +432,6 @@ export default {
         } else {
           companynameError.value = "";
         }
-
 
         if (employername.value == null || employername.value == "") {
           employernameError.value = "Please Enter Employer Name";
@@ -458,45 +460,45 @@ export default {
         } else {
           confirmpasswordError.value = "";
         }
-             const regex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
+        const regex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
 
-            if(regex.test(password.value) == false )
-            {
-                confirmpasswordError.value = "Enter At least 8 characters long with one capital and one number "
-                return false;
-
-            }
-            else
-            {
-                confirmpasswordError.value = "";
-            }
-        if (password.value != confirmpassword.value && confirmpassword.value != null) {
-            matchpasswordError.value = "Please match password and Confirm Password";
+        if (regex.test(password.value) == false) {
+          confirmpasswordError.value =
+            "Enter At least 8 characters long with one capital and one number ";
           return false;
         } else {
-            matchpasswordError.value = "";
+          confirmpasswordError.value = "";
+        }
+        if (
+          password.value != confirmpassword.value &&
+          confirmpassword.value != null
+        ) {
+          matchpasswordError.value =
+            "Please match password and Confirm Password";
+          return false;
+        } else {
+          matchpasswordError.value = "";
         }
         if (contact_no.value == null || contact_no.value == "") {
-            contact_noError.value = "Enter contact no";
+          contact_noError.value = "Enter contact no";
           return false;
         } else {
-            contact_noError.value = "";
+          contact_noError.value = "";
         }
 
         if (selectedState.value == null || selectedState.value == "") {
-            console.log('selectedState',selectedState.value);
-            err_state.value = "Select state";
+          console.log("selectedState", selectedState.value);
+          err_state.value = "Select state";
           return false;
         } else {
-            err_state.value = "";
+          err_state.value = "";
         }
 
-
         if (city.value == null || city.value == "") {
-            err_city.value = "Please Enter City";
+          err_city.value = "Please Enter City";
           return false;
         } else {
-            err_city.value = "";
+          err_city.value = "";
         }
 
         const formData = new FormData();
@@ -558,10 +560,10 @@ export default {
               otpError.value = true;
               return false;
             } else {
-                const elementToHide = document.querySelector('.enter_otp_class');
-                elementToHide.classList.add('hidden');
+              const elementToHide = document.querySelector(".enter_otp_class");
+              elementToHide.classList.add("hidden");
 
-                showSuccessModal.value = true;
+              showSuccessModal.value = true;
               setTimeout(() => {
                 router.push("/employer-login");
               }, 2000);
@@ -614,7 +616,7 @@ export default {
     });
 
     return {
-        stateError,
+      stateError,
       companyname,
       companynameError,
       companywebsite,

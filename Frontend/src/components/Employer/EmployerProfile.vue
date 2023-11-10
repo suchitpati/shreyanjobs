@@ -15,10 +15,10 @@
         </button>
       </div>
     </div>
-    <EmployerNev />
 
+    <EmployerNev />
     <div class="bg-[#ebf4ff] py-7 h-[calc(100vh-80px)] overflow-y-auto">
-      <div class="max-w-[1080px] w-full mx-auto px-[20px]">
+        <div class="max-w-[1080px] w-full mx-auto px-[20px]">
         <!-- <h1
                     class="text-[#1890da] sm:text-[26px] text-[22px] font-semibold mt-[30px] sm:mb-[40px] mb-[25px]"
                 >
@@ -28,6 +28,31 @@
           class="bg-[#d3ddff4f] rounded-lg py-4 sm:px-8 px-4 w-full shadow-[rgba(100,_100,_111,_0.2)_0px_0px_10px_0px] hover:shadow-[rgba(100,_100,_111,_0.2)_0px_0px_20px_0px] transition-[.5s]"
         >
           <div class="mt-4">
+            <div
+              class="w-full flex sm:flex-row flex-col justify-between sm:gap-6 gap-2"
+            >
+              <div class="sm:w-[100%] mb-4">
+                <label
+                  class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
+                  for="field1"
+                >
+                Full Name"
+                </label>
+                <input
+                  class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
+                  type="text"
+                  id="field1"
+                  v-model="employername"
+                  placeholder="Enter Full Name"
+                />
+                <div
+                  class="text-red-600 block text-[14px] text-left"
+                  v-if="employernameError != ''"
+                >
+                  {{ employernameError }}
+                </div>
+              </div>
+            </div>
             <div
               class="w-full flex sm:flex-row flex-col justify-between sm:gap-6 gap-2"
             >
@@ -66,31 +91,7 @@
                 />
               </div>
             </div>
-            <div
-              class="w-full flex sm:flex-row flex-col justify-between sm:gap-6 gap-2"
-            >
-              <div class="sm:w-[100%] mb-4">
-                <label
-                  class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
-                  for="field1"
-                >
-                  Employer Name
-                </label>
-                <input
-                  class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
-                  type="text"
-                  id="field1"
-                  v-model="employername"
-                  placeholder="Enter Employer Name"
-                />
-                <div
-                  class="text-red-600 block text-[14px] text-left"
-                  v-if="employernameError != ''"
-                >
-                  {{ employernameError }}
-                </div>
-              </div>
-            </div>
+
             <div
               class="w-full flex sm:flex-row flex-col justify-between sm:gap-6 gap-2"
             >
@@ -431,9 +432,9 @@ export default {
       router.push("/employer-profile");
     };
 
-    const updatePassword = async() => {
-        router.push("/employer-update-password");
-    }
+    const updatePassword = async () => {
+      router.push("/employer-update-password");
+    };
 
     const adminLogout = async () => {
       try {
