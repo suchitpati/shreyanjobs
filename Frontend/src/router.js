@@ -29,19 +29,11 @@ import EmployerUpdatePassword from './components/Employer/UpdatePassword.vue';
 
 const loggedIn = localStorage.getItem('accessToken');
 
-const isEmployerLogged = localStorage.getItem('employer_tocken');
 const routes = [
   {
     path: '/add-job',
     name: 'AddJob',
     component: Admin,
-    beforeEnter: (to, from, next) => {
-        if (!isEmployerLogged) {
-            return next('/employer-login');
-        } else {
-            next();
-        }
-      }
   },
   {
     path: '/',

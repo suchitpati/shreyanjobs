@@ -179,7 +179,7 @@ export default {
         localStorage.setItem('seeker_id',response.data.seeker_id)
         localStorage.setItem('seeker_tocken',response.data.token)
           setTimeout(() => {
-            router.push("/seeker-profile");
+            router.push("/");
           }, 1000);
         }
       } catch (error) {

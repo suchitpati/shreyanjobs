@@ -44,6 +44,12 @@
                 Profile
               </button>
             </router-link>
+            <button @click="seekerLogout"
+            class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[10px] py-[7px] px-[18px] md:px-[26px] rounded-[26px] focus:outline-none focus:shadow-outline"
+          >
+            Logout
+          </button>
+
           </div>
           <div
             v-if="isSeekerLogged == false && isEmployerLogged == false"
@@ -286,6 +292,9 @@
             <h1 class="text-[#414552] text-[20px] font-semibold">
               Job Search Result
             </h1>
+            <div v-if="jobStatus == false">
+                <p>Waiting for job listing</p>
+              </div>
             <div v-if="jobs.length">
               <div
                 v-for="job in jobs"
@@ -648,9 +657,9 @@
                 </div>
               </div>
             </div>
-            <div v-else>
-              <p>No jobs found.</p>
-            </div>
+            <div v-if="jobs.length == 0 && jobStatus == true">
+                <p>No job Found</p>
+              </div>
           </div>
         </div>
       </div>
@@ -781,6 +790,7 @@ export default {
     const isLoading = ref(false);
     const isEmployerLogged = ref(false);
     const isSeekerLogged = ref(false);
+    const jobStatus = ref(false);
 
     const someCountry = ref([]);
 
@@ -988,6 +998,41 @@ export default {
         });
     });
 
+    const seekerLogout = async () => {
+      try {
+        const authToken = localStorage.getItem("seeker_tocken");
+
+        if (!authToken) {
+          console.log("Authentication token is missing.");
+          return;
+        }
+
+        const config = {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        };
+        const response = await axios.post(
+          `${apiUrl}/seeker-logout`,
+          null,
+          config
+        );
+        localStorage.removeItem("seeker_tocken");
+        localStorage.removeItem("seeker_id");
+
+        if (response.data.message) {
+               setTimeout(() => {
+            router.push("/seeker-login");
+          }, 1000);
+        }
+
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+
     const fetchJobs = debounce(async () => {
       try {
         const params = {};
@@ -1036,7 +1081,9 @@ export default {
           params,
         });
 
+        jobStatus.value = true;
         jobs.value = response.data;
+
       } catch (error) {
         console.error(error);
       }
@@ -1065,6 +1112,8 @@ export default {
       fetchJobs();
     });
     return {
+        jobStatus,
+        seekerLogout,
       data,
       countries_state,
       handleButtonClick,
