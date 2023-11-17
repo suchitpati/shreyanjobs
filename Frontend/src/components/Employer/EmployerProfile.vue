@@ -36,7 +36,7 @@
                   class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
                   for="field1"
                 >
-                Full Name"
+                Full Name
                 </label>
                 <input
                   class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
@@ -231,6 +231,14 @@
         </div>
       </div>
     </div>
+    <div
+    class="absolute inset-0 flex items-center justify-center"
+    v-if="isLoading"
+  >
+    <div
+      class="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"
+    ></div>
+  </div>
   </div>
 </template>
 
@@ -292,6 +300,7 @@ export default {
     const empCountry = ref("");
     const empState = ref("");
     const employernameError = ref("");
+    const isLoading = ref(false);
 
     someCountry.value = [
       {
@@ -366,11 +375,14 @@ export default {
       formData.append("state", selectedState.value);
       formData.append("city", city.value);
       formData.append("employer_id", localStorage.getItem("employer_id"));
-
+      isLoading.value = true;
       await axios
         .post(`${apiUrl}/employer-update-profile`, formData)
         .then((response) => {
+            isLoading.value = false;
           countries.value = response.data;
+          window.location.reload();
+
         })
         .catch((error) => {
           console.error(error);
@@ -518,6 +530,7 @@ export default {
     });
 
     return {
+        isLoading,
       updatePassword,
       employernameError,
       contactnoError,

@@ -1,6 +1,6 @@
 <template>
     <div class="bg-[#eaf4ff]">
-        <EmployerNev />
+        <SeekerNavbar />
 
       <div
         class="p-4 h-[calc(100vh-62px)] flex justify-center flex-col gap-6 items-center"
@@ -14,8 +14,7 @@
           >
             <div class="bg-white p-8 rounded-lg shadow-lg">
               <h2 class="text-2xl font-bold mb-4">
-               Updated Password
-              </h2>
+                Password is updated successfully              </h2>
               <button
                 @click="closeSuccessModal"
                 class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -134,7 +133,7 @@
   import { reactive, ref } from "vue";
   import { useRouter } from "vue-router";
   import axios from "axios";
-  import EmployerNev from "../Employer/EmployerNavbar.vue";
+  import SeekerNavbar from "../Seeker/SeekerNavbar.vue";
 
   // import "vue-loading-overlay/dist/css/index.css";
 
@@ -142,7 +141,7 @@
 
   export default {
     components: {
-    EmployerNev,
+    SeekerNavbar,
   },
     setup() {
       const data = reactive({});

@@ -118,12 +118,12 @@
                         >
                           Work Visa
                         </th>
-                        <th
+                        <!-- <th
                           scope="col"
                           class="py-3.5 pl-4 pr-4 text-left text-sm font-semibold text-gray-900 sm:pr-0"
                         >
                           Job Seeker Contact Detail & Resume
-                        </th>
+                        </th> -->
                       </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200 bg-white">
@@ -174,11 +174,11 @@
                         >
                           {{ person.work_authorization }}
                         </td>
-                        <td
+                        <!-- <td
                           class="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-gray-500 sm:pr-0"
                         >
                           {{ person.contact_number }}
-                        </td>
+                        </td> -->
                       </tr>
                       <tr v-if="allSeeker == null || allSeeker == ''">
                         <td

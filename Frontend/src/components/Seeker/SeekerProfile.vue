@@ -201,6 +201,7 @@
                   type="text"
                   class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
                   v-model="city"
+                  placeholder="Enter City"
                 />
               </div>
               <div
@@ -246,7 +247,7 @@
                   type="text"
                   id="field1"
                   v-model="work_authorization"
-                  placeholder="Enter Contact No"
+                  placeholder="Enter Work authorization"
                 />
                 <div
                   class="text-red-600 block text-[14px] text-left"
@@ -267,7 +268,7 @@
                   type="text"
                   id="field1"
                   v-model="total_experience"
-                  placeholder="Enter Contact No"
+                  placeholder="Enter Total IT Yrs of Experience"
                 />
                 <div
                   class="text-red-600 block text-[14px] text-left"
@@ -293,7 +294,7 @@
                   type="text"
                   id="field1"
                   v-model="primary_skill"
-                  placeholder="Enter Contact No"
+                  placeholder="Enter Primary skill"
                 />
                 <div
                   class="text-red-600 block text-[14px] text-left"
@@ -314,7 +315,7 @@
                   type="text"
                   id="field1"
                   v-model="primary_skill_experience"
-                  placeholder="Enter Contact No"
+                  placeholder="Enter Yrs. Of experience in Primary skill"
                 />
                 <div
                   class="text-red-600 block text-[14px] text-left"
@@ -339,7 +340,7 @@
                   type="text"
                   id="field1"
                   v-model="secondary_skill"
-                  placeholder="Enter Contact No"
+                  placeholder="Enter Secondary skill"
                 />
                 <div
                   class="text-red-600 block text-[14px] text-left"
@@ -360,7 +361,7 @@
                   type="text"
                   id="field1"
                   v-model="secondary_skill_experience"
-                  placeholder="Enter Contact No"
+                  placeholder="Enter Yrs. Of experience in Secondary skill"
                 />
                 <div
                   class="text-red-600 block text-[14px] text-left"
@@ -403,7 +404,6 @@
                   class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
                   type="file"
                   id="file"
-                  placeholder="Enter Email"
                   @change="image_details"
                 />
                 <!-- <a href="https://www.shreyanjobs.com/public/pdf/1699523056.pdf" target="_blank">resume</a> -->
@@ -471,6 +471,14 @@
         </div>
       </div>
     </div>
+    <div
+    class="absolute inset-0 flex items-center justify-center"
+    v-if="isLoading"
+  >
+    <div
+      class="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"
+    ></div>
+  </div>
   </div>
 </template>
 
@@ -556,6 +564,8 @@ export default {
     const skillError = ref("");
     const relocate = ref(0);
     const file = ref("");
+    const isLoading = ref(false);
+
 
     someCountry.value = [
       {
@@ -854,10 +864,15 @@ export default {
       formData.append("seeker_id", localStorage.getItem("seeker_id"));
       formData.append("pdf", file.value);
       formData.append("resume", resume.value);
+      isLoading.value = true;
 
       await axios
         .post(`${apiUrl}/seeker-update-profile`, formData)
         .then((response) => {
+            window.location.reload();
+
+            isLoading.value = false;
+
           console.log(response, "response");
           file.value = "";
           getSeekerDeatails();
@@ -876,6 +891,7 @@ export default {
     });
 
     return {
+        isLoading,
         backHome,
       resume,
       image_details,

@@ -21,6 +21,8 @@ class AdminJob extends Model
         'job_title',
         'search_count',
         'email',
-        'contact_number'
+        'contact_number',
+        'additional_detail',
+        'technical_skill'
     ];
 }

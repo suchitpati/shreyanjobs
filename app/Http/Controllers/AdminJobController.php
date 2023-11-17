@@ -117,7 +117,9 @@ class AdminJobController extends Controller
             'detailed_description' => 'required|string',
             'job_title' => 'required|string',
             'email' => 'nullable|string',
-            'contact_number'  => 'nullable|string'
+            'contact_number'  => 'nullable|string',
+            'additional_detail' => 'nullable|string',
+            'technical_skill' => 'nullable|string',
         ]);
         $job_title = $request->job_title;
         $detailed_description = $request->detailed_description;

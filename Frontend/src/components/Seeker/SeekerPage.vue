@@ -45,7 +45,7 @@
               </button>
             </router-link>
             <button @click="seekerLogout"
-            class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[10px] py-[7px] px-[18px] md:px-[26px] rounded-[26px] focus:outline-none focus:shadow-outline"
+            class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max text-[#1890da] font-bold md:py-[10px] py-[7px] px-[18px] md:px-[26px] rounded-[26px] focus:outline-none focus:shadow-outline"
           >
             Logout
           </button>
@@ -379,7 +379,7 @@
                   <div class="mt-2 flex-wrap">
                     <div class="flex gap-[10px]">
                       <div
-                        class="flex items-center bg-[#fff] py-1 px-2 w-auto whitespace-nowrap rounded"
+                        class="flex items-center  py-1 px-2 w-auto whitespace-nowrap rounded"
                       >
                         <span
                           class="text-[#474d6a] font-bold mr-2 flex gap-2 items-center text-[14px]"
@@ -459,7 +459,7 @@
                                         }}</span>
                                     </div> -->
                       <div
-                        class="flex items-center bg-[#fff] py-1 px-2 w-auto whitespace-nowrap rounded"
+                        class="flex items-center py-1 px-2 w-auto whitespace-nowrap rounded"
                       >
                         <span
                           class="text-[#474d6a] font-bold mr-2 flex gap-2 items-center text-[14px]"
@@ -484,7 +484,7 @@
                         }}</span>
                       </div>
                     </div>
-                    <div class="flex items-center bg-[#fff] py-1 px-2 mt-2">
+                    <div class="flex items-center  py-1 px-2 mt-2">
                       <span
                         class="text-[#474d6a] font-bold mr-2 flex gap-2 items-center text-[14px]"
                       >
@@ -510,7 +510,7 @@
 
                 <div class="flex gap-2 w-full mt-2 flex-wrap">
                   <div
-                    class="flex items-center bg-[#fff] py-1 px-2 w-auto whitespace-nowrap rounded"
+                    class="flex items-center  py-1 px-2 w-auto whitespace-nowrap rounded"
                   >
                     <span
                       class="text-[#474d6a] font-bold mr-2 flex gap-2 items-center text-[14px]"
