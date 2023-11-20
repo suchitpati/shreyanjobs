@@ -16,6 +16,7 @@
       </div>
     </div>
     <SeekerNavbar />
+    <div class="text-right pr-[105px] bg-[#ebf4ff] text-[18px]">Welcome,{{fullname}}</div>
 
     <div class="bg-[#ebf4ff] py-7 h-[calc(100vh-80px)] overflow-y-auto">
       <div class="max-w-[1080px] w-full mx-auto px-[20px]">
@@ -24,6 +25,8 @@
                   >
                       Admin Page - Post Job Requirement
                   </h1> -->
+                  <span v-if="updateProfileMessage" class="text-green-600">Profile is updated successfully</span>
+
         <div
           class="bg-[#d3ddff4f] rounded-lg py-4 sm:px-8 px-4 w-full shadow-[rgba(100,_100,_111,_0.2)_0px_0px_10px_0px] hover:shadow-[rgba(100,_100,_111,_0.2)_0px_0px_20px_0px] transition-[.5s]"
         >
@@ -565,8 +568,7 @@ export default {
     const relocate = ref(0);
     const file = ref("");
     const isLoading = ref(false);
-
-
+    const updateProfileMessage = ref(false);
     someCountry.value = [
       {
         name: "United States",
@@ -872,7 +874,7 @@ export default {
             window.location.reload();
 
             isLoading.value = false;
-
+            updateProfileMessage.value = true;
           console.log(response, "response");
           file.value = "";
           getSeekerDeatails();
@@ -891,6 +893,7 @@ export default {
     });
 
     return {
+        updateProfileMessage,
         isLoading,
         backHome,
       resume,

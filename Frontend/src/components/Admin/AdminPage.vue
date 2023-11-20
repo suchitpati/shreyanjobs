@@ -16,6 +16,7 @@
       </div>
     </div>
     <EmployerNev />
+    <div class="text-right pr-[105px] bg-[#ebf4ff] text-[18px]">Welcome,{{employername}}</div>
 
     <div class="bg-[#ebf4ff] py-7 h-[calc(100vh-80px)] overflow-y-auto">
       <div class="max-w-[1080px] w-full mx-auto px-[20px]">
@@ -24,141 +25,127 @@
         >
           Post a Job
         </h1>
+        <span  v-if="addJobMessage" class="text-green-600">Your job was posted successfully and can be viewed in the home page.</span>
         <div
           class="bg-[#d3ddff4f] rounded-lg py-4 sm:px-8 px-4 w-full shadow-[rgba(100,_100,_111,_0.2)_0px_0px_10px_0px] hover:shadow-[rgba(100,_100,_111,_0.2)_0px_0px_20px_0px] transition-[.5s]"
         >
           <div class="mt-4">
             <div
-              class="w-full flex sm:flex-row flex-col justify-between md:gap-6 gap-3 sm:mb-4 mb-7"
-            >
-              <div class="sm:w-[25%]">
+            class="w-full flex sm:flex-row flex-col justify-between sm:gap-6 gap-2"
+          >
+            <div class="sm:w-[100%] mb-4">
+              <label
+                class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
+                for="field2"
+              >
+              If this job has multiple locations or you want to specify hybrid/ Day 1 onsite  work model, use “Additional Job Position Detail” section below
+              </label>
+              <div class="flex gap-2 items-center">
+                <input
+                  id="check"
+                  type="checkbox"
+                  class="w-[20px] h-[20px] border border-gray-400 "
+                  :checked="remote"
+                  v-model="remote"
+                />
                 <label
-                  class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
-                  for="field2"
+                  for="check"
+                  class="text-gray-700 font-bold text-start text-[14px] "
+                  >Remote</label
                 >
-                  Country
-                </label>
-                <select
-                  v-model="selectedCountry"
-                  @change="onCountryChange"
-                  class="block w-full bg-white border text-sm rounded-lg p-2"
-                >
-                  <option value="">Select Country</option>
-                  <option
-                    v-for="country in countries_state"
-                    :key="country.isoCode"
-                    :value="country.isoCode"
-                    class="flex items-center"
-                    :selected="country.isoCode === 'US'"
-                  >
-                    <span
-                      class="flag-icon flag-icon-{{ country.isoCode.toLowerCase() }} inline-block w-4 h-4 mr-2"
-                    ></span>
-                    <!-- <div class="mr-2">{{ country.flag }}</div> -->
-                    <div>{{ country.name }}</div>
-                  </option>
-                </select>
-                <div
-                  class="text-red-600 block text-[14px] text-left"
-                  v-if="err_country != ''"
-                >
-                  {{ err_country }}
-                </div>
-              </div>
-              <div class="sm:w-[50%]">
-                <label
-                  class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
-                  for="field2"
-                >
-                  State
-                </label>
-                <select
-                  v-model="selectedState"
-                  class="block w-full bg-white border text-sm rounded-lg p-2"
-                  :disabled="remote"
-                  :selected="country.isoCode === 'US'"
-                  @change="setSelectedState"
-                >
-                  <option value="">Select State</option>
-                  <option
-                    v-for="state in states"
-                    :key="state.isoCode"
-                    :value="state.isoCode"
-                  >
-                    {{ state.name }}
-                  </option>
-                </select>
-              </div>
-              <div class="sm:w-[25%]">
-                <div class="flex gap-2 items-center h-full">
-                  <input
-                    id="check"
-                    type="checkbox"
-                    class="w-[20px] h-[20px] border border-gray-400 sm:mt-[18px]"
-                    :checked="remote"
-                    v-model="remote"
-                  />
-                  <label
-                    for="check"
-                    class="text-gray-700 font-bold text-start text-[14px] sm:mt-[18px]"
-                    >Remote</label
-                  >
-                </div>
-                <div
-                  class="text-red-600 block text-[14px] text-left"
-                  v-if="err_remote != ''"
-                >
-                  {{ err_remote }}
-                </div>
               </div>
             </div>
-            <div
-              class="w-full flex sm:flex-row flex-col justify-between sm:gap-6 gap-2"
-            >
-              <div class="sm:w-[50%] mb-4">
-                <label
-                  class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
-                  for="field1"
-                >
-                  Skill
-                </label>
-                <input
-                  class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
-                  type="text"
-                  id="field1"
-                  v-model="skill"
-                  placeholder="Enter skill"
-                />
-                <div
-                  class="text-red-600 block text-[14px] text-left"
-                  v-if="err_skill != ''"
-                >
-                  {{ err_skill }}
-                </div>
-              </div>
 
-              <div class="sm:w-[50%] mb-4">
-                <label
-                  class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
-                  for="field1"
-                >
-                  Min Years of Exp
-                </label>
-                <input
-                  class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
-                  type="number"
-                  id="field1"
-                  v-model="year_of_experience"
-                  placeholder="Enter Experience"
-                />
-                <div
-                  class="text-red-600 block text-[14px] text-left"
-                  v-if="err_exp != ''"
-                >
-                  {{ err_exp }}
+
+          </div>
+            <fieldset class="border border-gray-400 px-3 pb-[10px] rounded sm:mb-4 mb-7">
+              <legend class="text-left ml-4 pl-1 pr-1">Location : </legend>
+              <div
+                class="w-full flex sm:flex-row flex-col justify-between md:gap-6 gap-3 "
+              >
+                <div class="sm:w-[25%]">
+                  <label
+                    class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
+                    for="field2"
+                  >
+                    Country
+                  </label>
+                  <select
+                    v-model="selectedCountry"
+                    @change="onCountryChange"
+                    class="block w-full bg-white border text-sm rounded-lg p-2"
+                  >
+                    <option value="">Select Country</option>
+                    <option
+                      v-for="country in countries_state"
+                      :key="country.isoCode"
+                      :value="country.isoCode"
+                      class="flex items-center"
+                      :selected="country.isoCode === 'US'"
+                    >
+                      <span
+                        class="flag-icon flag-icon-{{ country.isoCode.toLowerCase() }} inline-block w-4 h-4 mr-2"
+                      ></span>
+                      <!-- <div class="mr-2">{{ country.flag }}</div> -->
+                      <div>{{ country.name }}</div>
+                    </option>
+                  </select>
+                  <div
+                    class="text-red-600 block text-[14px] text-left"
+                    v-if="err_country != ''"
+                  >
+                    {{ err_country }}
+                  </div>
+                </div>
+                <div class="sm:w-[50%]">
+                  <label
+                    class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
+                    for="field2"
+                  >
+                    State
+                  </label>
+                  <select
+                    v-model="selectedState"
+                    class="block w-full bg-white border text-sm rounded-lg p-2"
+                    :disabled="remote"
+                    :selected="country.isoCode === 'US'"
+                    @change="setSelectedState"
+                  >
+                    <option value="">Select State</option>
+                    <option
+                      v-for="state in states"
+                      :key="state.isoCode"
+                      :value="state.isoCode"
+                    >
+                      {{ state.name }}
+                    </option>
+                  </select>
+                </div>
+                <div class="sm:w-[25%]">
+                  <div class="flex gap-2 items-center h-full">
+                    <input
+                      id="check"
+                      type="checkbox"
+                      class="w-[20px] h-[20px] border border-gray-400 sm:mt-[18px]"
+                      :checked="remote"
+                      v-model="remote"
+                    />
+                    <label
+                      for="check"
+                      class="text-gray-700 font-bold text-start text-[14px] sm:mt-[18px]"
+                      >Remote</label
+                    >
+                  </div>
+                  <div
+                    class="text-red-600 block text-[14px] text-left"
+                    v-if="err_remote != ''"
+                  >
+                    {{ err_remote }}
+                  </div>
                 </div>
               </div>
-            </div>
+            </fieldset>
+
             <div
               class="w-full flex sm:flex-row flex-col justify-between sm:gap-6 gap-2"
             >
@@ -213,6 +200,54 @@
                 </div>
               </div>
             </div>
+            <div
+              class="w-full flex sm:flex-row flex-col justify-between sm:gap-6 gap-2"
+            >
+              <div class="sm:w-[50%] mb-4">
+                <label
+                  class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
+                  for="field1"
+                >
+                  Skill
+                </label>
+                <input
+                  class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
+                  type="text"
+                  id="field1"
+                  v-model="skill"
+                  placeholder="Enter skill"
+                />
+                <div
+                  class="text-red-600 block text-[14px] text-left"
+                  v-if="err_skill != ''"
+                >
+                  {{ err_skill }}
+                </div>
+              </div>
+
+              <div class="sm:w-[50%] mb-4">
+                <label
+                  class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
+                  for="field1"
+                >
+                  Min Years of Exp
+                </label>
+                <input
+                  class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
+                  type="number"
+                  id="field1"
+                  v-model="year_of_experience"
+                  placeholder="Enter Experience"
+                />
+                <div
+                  class="text-red-600 block text-[14px] text-left"
+                  v-if="err_exp != ''"
+                >
+                  {{ err_exp }}
+                </div>
+              </div>
+            </div>
+
             <div
               class="w-full flex sm:flex-row flex-col justify-between sm:gap-6 gap-2"
             >
@@ -286,7 +321,6 @@
             >
             </textarea>
 
-
             <div class="text-end">
               <span class="text-blue-700 text-[16px]"
                 >Characters left: {{ remaining_additional_detail }}/500</span
@@ -331,12 +365,11 @@
               class="w-full border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline"
               id="textArea1"
               v-model="technical_skill"
-              rows="4"
+              rows="8"
               maxlength="2000"
               placeholder="Enter Technical skill Requirement"
             >
             </textarea>
-
 
             <div class="text-end">
               <span class="text-blue-700 text-[16px]"
@@ -414,7 +447,8 @@ export default {
     const isLoading = ref(false);
     const additional_detail = ref("");
     const technical_skill = ref("");
-
+    const addJobMessage = ref(false);
+    const employername = ref('');
     someCountry.value = [
       {
         name: "United States",
@@ -570,8 +604,8 @@ export default {
           job_title: job_title.value,
           email: email.value,
           contact_number: contact_number.value,
-          additional_detail : additional_detail.value,
-          technical_skill : technical_skill.value
+          additional_detail: additional_detail.value,
+          technical_skill: technical_skill.value,
         };
         console.log("requestData", requestData);
         isLoading.value = true;
@@ -594,11 +628,11 @@ export default {
           (selectedState_main.value = ""),
           (job_title.value = "");
         isLoading.value = false;
-
         // showSuccessModal.value = true;
         setTimeout(() => {
           window.location.reload();
         }, 2000);
+        addJobMessage.value = true;
       } catch (error) {
         console.error(error.response.data.errors);
       }
@@ -682,6 +716,7 @@ export default {
 
       email.value = response.data.employer_details.emailid;
       contact_number.value = response.data.employer_details.contactno;
+      employername.value = response.data.employer_details.employername
     };
     watch(detailed_description, (newValue) => {
       remaining.value = 2000 - newValue.length;
@@ -723,6 +758,7 @@ export default {
     });
 
     return {
+      addJobMessage,
       technical_skill,
       additional_detail,
       isLoading,
@@ -769,7 +805,8 @@ export default {
       email,
       contact_number,
       defaultSelectedState,
-      remaining_additional_detail
+      remaining_additional_detail,
+      employername
     };
   },
 };
