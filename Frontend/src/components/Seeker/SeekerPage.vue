@@ -624,7 +624,7 @@
                 >
                   <div
                     v-for="(point, index) in getTruncatedPoints(
-                      job.detailed_description.slice(0, 100),
+                        job.additional_detail ?  job.additional_detail.slice(0, 100) : '-',
                       50
                     )"
                     :key="index"
@@ -632,7 +632,7 @@
                     {{ point }}
                   </div>
                   <span class="show-more-link" @click="toggleExpand(job.id)"
-                    >Show More</span
+                    >Show Job Description &amp; Technical skill Required</span
                   >
                 </div>
                 <!-- Display full description when job is expanded -->
@@ -642,7 +642,15 @@
                 >
                   <div style="white-space: pre-wrap">
                     {{ job.detailed_description }}
+                    <br>
+                    <br>
+                    <br>
+                    {{ job.technical_skill }}
+
                   </div>
+                  <span class="show-more-link" @click="toggleExpand(job.id)"
+                    >Hide Job Description &amp; Technical skill Required</span
+                  >
                 </div>
                 <!-- Display full description when job is expanded -->
                 <!-- <div

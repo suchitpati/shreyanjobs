@@ -79,6 +79,10 @@ class SeekerController extends Controller
             $seeker_details = Seeker::where('fullname','LIKE','%'.$request->searchInput.'%')
                                     ->orWhere('primary_skill','LIKE','%'.$request->searchInput.'%')
                                     ->orWhere('secondary_skill','LIKE','%'.$request->searchInput.'%')
+                                    ->orWhere('state','LIKE','%'.$request->searchInput.'%')
+                                    ->orWhere('city','LIKE','%'.$request->searchInput.'%')
+                                    ->orWhere('country','LIKE','%'.$request->searchInput.'%')
+                                    ->orWhere('fullname','LIKE','%'.$request->searchInput.'%')
                                 ->get();
         }
         else

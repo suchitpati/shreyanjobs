@@ -12,11 +12,17 @@
         <br>
         <br>
 
-        <b>Title is :: </b> {{$title}}
+        <b>Title : </b> {{$title}}
         <br>
         <br>
 
-        <b>Description is ::</b>{{$description}}
+        <b>Description :</b>
+        <br>
+        <br>
+        Job Detail : Title :{{$title}} &nbsp; &nbsp; &nbsp; &nbsp; Location:{{$location}} &nbsp; &nbsp; &nbsp; &nbsp; Duration:{{$duration}}
+        <br>
+        <br>
+        Job Description : {{$description}}
 
 
 
