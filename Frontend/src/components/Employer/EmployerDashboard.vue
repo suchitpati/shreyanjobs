@@ -16,6 +16,8 @@
       </div>
     </div>
     <EmployerNev />
+    <div class="text-right pr-[105px] bg-[#ebf4ff] text-[18px]">Welcome,{{employername}}</div>
+
     <div class="bg-[#ebf4ff] py-7">
       <div class="w-full mx-auto px-[20px]">
         <!-- <h1
@@ -28,6 +30,7 @@
         >
           <div class="px-4 sm:px-6 lg:px-8">
             <div class="text-center">
+                <div class="text-left pl-[180px]">Search Resume</div>
               <div
                 class="flex items-center justify-center px-[20px] gap-6 w-[65%] mx-auto md:pt-[28px] pt-5 sm:mb-1 mb-10 md:w-full"
               >
@@ -37,7 +40,7 @@
                     type="text"
                     v-model="searchInput"
                     @keyup.enter="fetchSeeker"
-                    placeholder="Search seeker profile"
+                    placeholder="Search resume by name, skill, location"
                   />
                   <!-- @input="handleSearch" -->
 
@@ -61,6 +64,7 @@
                 Post Job
             </button> -->
               </div>
+              <span class="text-[12px] pr-[135px]">Please email to support@shreyanjobs.com to get the contact detail &amp; Resume.</span>
             </div>
             <div class="mt-8 flow-root">
               <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -118,12 +122,12 @@
                         >
                           Work Visa
                         </th>
-                        <th
+                        <!-- <th
                           scope="col"
                           class="py-3.5 pl-4 pr-4 text-left text-sm font-semibold text-gray-900 sm:pr-0"
                         >
                           Job Seeker Contact Detail & Resume
-                        </th>
+                        </th> -->
                       </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200 bg-white">
@@ -157,11 +161,11 @@
                           class="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-gray-500 sm:pr-0"
                         >
                           {{
-                            person.country +
+                            person.city+
                             "," +
                             person.state +
                             "," +
-                            person.city
+                            person.country
                           }}
                         </td>
                         <td
@@ -174,11 +178,11 @@
                         >
                           {{ person.work_authorization }}
                         </td>
-                        <td
+                        <!-- <td
                           class="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-gray-500 sm:pr-0"
                         >
                           {{ person.contact_number }}
-                        </td>
+                        </td> -->
                       </tr>
                       <tr v-if="allSeeker == null || allSeeker == ''">
                         <td

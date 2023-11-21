@@ -18,14 +18,16 @@ class JobMail extends Mailable
      */
     protected $title;
     protected $description;
+    protected $location;
+    protected $duration;
 
 
-    public function __construct($title,$description)
+    public function __construct($title,$description,$location,$duration)
     {
         $this->title = $title;
         $this->description = $description;
-
-
+        $this->location = $location;
+        $this->duration = $duration;
     }
 
     /**
@@ -35,6 +37,6 @@ class JobMail extends Mailable
      */
     public function build()
     {
-        return $this->view('jobEmail')->with(['title'=> $this->title,'description'=> $this->description] )->subject('Job added to shreyanjobs.com. Job Title :' .$this->title);
+        return $this->view('jobEmail')->with(['title'=> $this->title,'description'=> $this->description,'location' => $this->location,'duration' => $this->duration] )->subject('Job added to shreyanjobs.com. Job Title :' .$this->title);
     }
 }

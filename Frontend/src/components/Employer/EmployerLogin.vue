@@ -170,7 +170,7 @@ export default {
         });
 
         if (response.data.code == 100) {
-          validationError.value = "Invalid credentials";
+          validationError.value = response.data.message;
         } else {
           showSuccessModal.value = true;
           localStorage.setItem("employer_id", response.data.employer_id);

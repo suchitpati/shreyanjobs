@@ -192,8 +192,20 @@ class EmployerController extends Controller
     public function login(Request $request)
     {
 
-        $employer = Employer::where('emailid', $request->email)->first();
-        // dd($admin);
+        $employer = Employer::where(['emailid' => $request->email])->first();
+
+        if ($employer == null || $employer == '') {
+            return response()->json([
+                'message' => 'Email not found',
+                'code' => 100
+            ]);
+        }
+        if ($employer->is_active == 0) {
+            return response()->json([
+                'message' => 'Please re-register your account',
+                'code' => 100
+            ]);
+        }
         if (!$employer || !Hash::check($request->password, $employer->password)) {
             return response()->json([
                 'message' => 'Invalid credentials',

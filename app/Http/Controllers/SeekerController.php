@@ -79,6 +79,10 @@ class SeekerController extends Controller
             $seeker_details = Seeker::where('fullname','LIKE','%'.$request->searchInput.'%')
                                     ->orWhere('primary_skill','LIKE','%'.$request->searchInput.'%')
                                     ->orWhere('secondary_skill','LIKE','%'.$request->searchInput.'%')
+                                    ->orWhere('state','LIKE','%'.$request->searchInput.'%')
+                                    ->orWhere('city','LIKE','%'.$request->searchInput.'%')
+                                    ->orWhere('country','LIKE','%'.$request->searchInput.'%')
+                                    ->orWhere('fullname','LIKE','%'.$request->searchInput.'%')
                                 ->get();
         }
         else
@@ -119,12 +123,18 @@ class SeekerController extends Controller
             Mail::to($request->emailid)->send(new SeekerOtp($otp));
 
 
-            Seeker::where('email', $request->email)->update([
+              Seeker::where('email', $request->email)->update([
                 'fullname' => $request->fullname,
                 'password' => Hash::make($request->password),
                 'gender' => $request->gender,
                 'is_active' => 0,
                 'otp' => $otp
+            ]);
+            $seeker_details =   Seeker::where('email', $request->email)->first();
+            return response()->json([
+                'message' => 'Seeker OTP send successfully',
+                'success' => 200,
+                'seeker_id' => $seeker_details->id
             ]);
         } else {
             Mail::to($email)->send(new SeekerOtp($otp));
@@ -185,7 +195,7 @@ class SeekerController extends Controller
                     'secondary_skill_experience' => $request->secondary_experience,
                     'resume' => $fileName,
                     'relocate' => $request->relocate,
-
+                    'is_active' => 3
                 ]);
 
 

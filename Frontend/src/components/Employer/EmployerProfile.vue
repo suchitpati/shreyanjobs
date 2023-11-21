@@ -17,6 +17,8 @@
     </div>
 
     <EmployerNev />
+    <div class="text-right pr-[105px] bg-[#ebf4ff] text-[18px]">Welcome,{{employername}}</div>
+
     <div class="bg-[#ebf4ff] py-7 h-[calc(100vh-80px)] overflow-y-auto">
         <div class="max-w-[1080px] w-full mx-auto px-[20px]">
         <!-- <h1
@@ -24,6 +26,8 @@
                 >
                     Admin Page - Post Job Requirement
                 </h1> -->
+                <span v-if="updateProfileMessage" class="text-green-600">Profile is updated successfully</span>
+
         <div
           class="bg-[#d3ddff4f] rounded-lg py-4 sm:px-8 px-4 w-full shadow-[rgba(100,_100,_111,_0.2)_0px_0px_10px_0px] hover:shadow-[rgba(100,_100,_111,_0.2)_0px_0px_20px_0px] transition-[.5s]"
         >
@@ -36,7 +40,7 @@
                   class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
                   for="field1"
                 >
-                Full Name"
+                Full Name
                 </label>
                 <input
                   class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
@@ -231,6 +235,14 @@
         </div>
       </div>
     </div>
+    <div
+    class="absolute inset-0 flex items-center justify-center"
+    v-if="isLoading"
+  >
+    <div
+      class="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"
+    ></div>
+  </div>
   </div>
 </template>
 
@@ -292,6 +304,8 @@ export default {
     const empCountry = ref("");
     const empState = ref("");
     const employernameError = ref("");
+    const isLoading = ref(false);
+    const updateProfileMessage = ref(false);
 
     someCountry.value = [
       {
@@ -366,11 +380,15 @@ export default {
       formData.append("state", selectedState.value);
       formData.append("city", city.value);
       formData.append("employer_id", localStorage.getItem("employer_id"));
-
+      isLoading.value = true;
       await axios
         .post(`${apiUrl}/employer-update-profile`, formData)
         .then((response) => {
+            isLoading.value = false;
           countries.value = response.data;
+          updateProfileMessage.value = true;
+          window.location.reload();
+
         })
         .catch((error) => {
           console.error(error);
@@ -518,6 +536,8 @@ export default {
     });
 
     return {
+        updateProfileMessage,
+        isLoading,
       updatePassword,
       employernameError,
       contactnoError,
