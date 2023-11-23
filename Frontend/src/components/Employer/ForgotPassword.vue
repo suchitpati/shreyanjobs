@@ -20,7 +20,7 @@
         >
           <div class="bg-white p-8 rounded-lg shadow-lg">
             <h2 class="text-2xl font-bold mb-4">
-              Registration Completed Successfully
+                Password is changed Successfully
             </h2>
             <button
               @click="closeSuccessModal"

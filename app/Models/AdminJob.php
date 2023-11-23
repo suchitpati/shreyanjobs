@@ -12,6 +12,7 @@ class AdminJob extends Model
     protected $fillable = [
         'country',
         'state',
+        'city',
         'remote',
         'skill',
         'year_of_experience',

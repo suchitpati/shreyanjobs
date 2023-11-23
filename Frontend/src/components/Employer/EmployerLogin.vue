@@ -176,6 +176,14 @@ export default {
           localStorage.setItem("employer_id", response.data.employer_id);
           localStorage.setItem("employer_tocken", response.data.token);
           setTimeout(() => {
+            // Remove data from local storage
+            localStorage.removeItem("employer_id");
+            localStorage.removeItem("employer_tocken");
+            window.location.reload();
+
+          }, 60 * 60 * 1000);
+
+          setTimeout(() => {
             router.push("/employer-dashboard");
           }, 1000);
         }

@@ -29,7 +29,7 @@ class EmployerController extends Controller
             Mail::to($request->email)->send(new EmployerOtpMail($maildata));
 
 
-            $employer = Employer::where('emailid', $request->email)->update([
+             Employer::where('emailid', $request->email)->update([
                 'companyname' => $request->companyname,
                 'companyurl' => $request->companywebsite,
                 'employername' => $request->employername,
@@ -41,6 +41,8 @@ class EmployerController extends Controller
                 'otp' => $otp,
                 'is_active' => 0,
             ]);
+
+            $employer = Employer::where('emailid', $request->email)->first();
 
             return response()->json([
                 'message' => 'Details added successfully',
@@ -202,7 +204,7 @@ class EmployerController extends Controller
         }
         if ($employer->is_active == 0) {
             return response()->json([
-                'message' => 'Please re-register your account',
+                'message' => 'Your Account Registration did not complete last time. Please re-register the account',
                 'code' => 100
             ]);
         }

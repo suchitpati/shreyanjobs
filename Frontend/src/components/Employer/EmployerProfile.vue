@@ -26,7 +26,7 @@
                 >
                     Admin Page - Post Job Requirement
                 </h1> -->
-                <span v-if="updateProfileMessage" class="text-green-600">Profile is updated successfully</span>
+                <span v-if="updateProfileMessageStatus === 'true'" class="text-green-600">Profile is updated successfully {{updateProfileMessageStatus}}</span>
 
         <div
           class="bg-[#d3ddff4f] rounded-lg py-4 sm:px-8 px-4 w-full shadow-[rgba(100,_100,_111,_0.2)_0px_0px_10px_0px] hover:shadow-[rgba(100,_100,_111,_0.2)_0px_0px_20px_0px] transition-[.5s]"
@@ -306,7 +306,7 @@ export default {
     const employernameError = ref("");
     const isLoading = ref(false);
     const updateProfileMessage = ref(false);
-
+    const updateProfileMessageStatus = ref(false);
     someCountry.value = [
       {
         name: "United States",
@@ -386,7 +386,10 @@ export default {
         .then((response) => {
             isLoading.value = false;
           countries.value = response.data;
-          updateProfileMessage.value = true;
+          localStorage.setItem('updateProfileMessage',true);
+          localStorage.setItem('updateProfileMessageStatus',true);
+
+
           window.location.reload();
 
         })
@@ -528,6 +531,20 @@ export default {
         : "";
     };
     onMounted(() => {
+
+        updateProfileMessage.value = localStorage.getItem('updateProfileMessage');
+        updateProfileMessageStatus.value = localStorage.getItem('updateProfileMessageStatus');
+
+        if(updateProfileMessage.value &&  !updateProfileMessageStatus.value )
+        {
+            localStorage.setItem('updateProfileMessageStatus',true);
+        }
+
+        if(updateProfileMessage.value   && updateProfileMessageStatus )
+        {
+            localStorage.setItem('updateProfileMessageStatus',false);
+        }
+
       countries_state.value = someCountry.value;
 
       getEmployerDeatails();
@@ -536,6 +553,7 @@ export default {
     });
 
     return {
+        updateProfileMessageStatus,
         updateProfileMessage,
         isLoading,
       updatePassword,

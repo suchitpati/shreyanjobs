@@ -16,54 +16,66 @@
       </div>
     </div>
     <EmployerNev />
-    <div class="text-right pr-[105px] bg-[#ebf4ff] text-[18px]">Welcome,{{employername}}</div>
+    <div class="text-right pr-[105px] bg-[#ebf4ff] text-[18px]">
+      Welcome,{{ employername }}
+    </div>
 
     <div class="bg-[#ebf4ff] py-7 h-[calc(100vh-80px)] overflow-y-auto">
       <div class="max-w-[1080px] w-full mx-auto px-[20px]">
         <h1
           class="text-[#1890da] sm:text-[26px] text-[22px] font-semibold mt-[30px] sm:mb-[40px] mb-[25px]"
         >
-          Post a Job
-        </h1>
-        <span  v-if="addJobMessage" class="text-green-600">Your job was posted successfully and can be viewed in the home page.</span>
+          Post a Job         </h1>
+        <span  v-if="addJobMessageStatus === 'true'" class="text-green-600"
+          >Your job was posted successfully and can be viewed in the home
+          page.</span
+        >
         <div
           class="bg-[#d3ddff4f] rounded-lg py-4 sm:px-8 px-4 w-full shadow-[rgba(100,_100,_111,_0.2)_0px_0px_10px_0px] hover:shadow-[rgba(100,_100,_111,_0.2)_0px_0px_20px_0px] transition-[.5s]"
         >
           <div class="mt-4">
             <div
-            class="w-full flex sm:flex-row flex-col justify-between sm:gap-6 gap-2"
-          >
-            <div class="sm:w-[100%] mb-4">
-              <label
-                class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
-                for="field2"
-              >
-              If this job has multiple locations or you want to specify hybrid/ Day 1 onsite  work model, use “Additional Job Position Detail” section below
-              </label>
-              <div class="flex gap-2 items-center">
-                <input
-                  id="check"
-                  type="checkbox"
-                  class="w-[20px] h-[20px] border border-gray-400 "
-                  :checked="remote"
-                  v-model="remote"
-                />
+              class="w-full flex sm:flex-row flex-col justify-between sm:gap-6 gap-2"
+            >
+              <div class="sm:w-[100%] mb-4">
                 <label
-                  for="check"
-                  class="text-gray-700 font-bold text-start text-[14px] "
-                  >Remote</label
+                  class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
+                  for="field2"
                 >
+                  If this job has multiple locations or you want to specify
+                  hybrid/ Day 1 onsite work model, use “Additional Job Position
+                  Detail” section below
+                </label>
+
               </div>
             </div>
-
-
-          </div>
-            <fieldset class="border border-gray-400 px-3 pb-[10px] rounded sm:mb-4 mb-7">
-              <legend class="text-left ml-4 pl-1 pr-1">Location : </legend>
+            <fieldset
+              class="border border-gray-400 px-3 pb-[10px] rounded sm:mb-4 mb-7"
+            >
+              <legend class="text-left ml-4 pl-1 pr-1">Location :</legend>
               <div
-                class="w-full flex sm:flex-row flex-col justify-between md:gap-6 gap-3 "
+                class="w-full flex sm:flex-row flex-col justify-between md:gap-6 gap-3"
               >
-                <div class="sm:w-[25%]">
+                <div class="flex gap-2 items-center pb-4 pt-2">
+                  <input
+                    id="check"
+                    type="checkbox"
+                    class="w-[20px] h-[20px] border border-gray-400"
+                    :checked="remote"
+                    v-model="remote"
+                  />
+                  <label
+                    for="check"
+                    class="text-gray-700 font-bold text-start text-[14px]"
+                    >Remote</label
+                  >
+                </div>
+              </div>
+
+              <div
+                class="w-full flex sm:flex-row flex-col justify-between md:gap-6 gap-3"
+              >
+                <div class="sm:w-[33%]">
                   <label
                     class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
                     for="field2"
@@ -97,7 +109,7 @@
                     {{ err_country }}
                   </div>
                 </div>
-                <div class="sm:w-[50%]">
+                <div class="sm:w-[33%]">
                   <label
                     class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
                     for="field2"
@@ -121,27 +133,21 @@
                     </option>
                   </select>
                 </div>
-                <div class="sm:w-[25%]">
-                  <div class="flex gap-2 items-center h-full">
-                    <input
-                      id="check"
-                      type="checkbox"
-                      class="w-[20px] h-[20px] border border-gray-400 sm:mt-[18px]"
-                      :checked="remote"
-                      v-model="remote"
-                    />
-                    <label
-                      for="check"
-                      class="text-gray-700 font-bold text-start text-[14px] sm:mt-[18px]"
-                      >Remote</label
-                    >
-                  </div>
-                  <div
-                    class="text-red-600 block text-[14px] text-left"
-                    v-if="err_remote != ''"
+                <div class="sm:w-[33%]">
+                  <label
+                    class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
+                    for="field2"
                   >
-                    {{ err_remote }}
-                  </div>
+                    City
+                  </label>
+                  <input
+                  :disabled="remote"
+                  class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
+                  type="text"
+                  id="field1"
+                  v-model="city"
+                  placeholder="Enter City"
+                />
                 </div>
               </div>
             </fieldset>
@@ -373,7 +379,7 @@
 
             <div class="text-end">
               <span class="text-blue-700 text-[16px]"
-                >Characters left: {{ remaining }}/2000</span
+                >Characters left: {{ remaining_technical_skill }}/2000</span
               >
             </div>
           </div>
@@ -427,6 +433,7 @@ export default {
     const showSuccessModal = ref(false);
     const remaining = ref(2000);
     const remaining_additional_detail = ref(500);
+    const remaining_technical_skill = ref(2000);
     const showLogoutModal = ref(false);
     const successMessage = ref("");
     const countries = ref([]);
@@ -448,7 +455,10 @@ export default {
     const additional_detail = ref("");
     const technical_skill = ref("");
     const addJobMessage = ref(false);
-    const employername = ref('');
+    const addJobMessageStatus = ref(false);
+    const employername = ref("");
+    const city = ref("");
+
     someCountry.value = [
       {
         name: "United States",
@@ -595,6 +605,7 @@ export default {
         const requestData = {
           country: country.value,
           state: selectedState_main.value,
+          city: city.value,
           remote: remote.value,
           skill: skill.value,
           year_of_experience: year_of_experience.value,
@@ -632,7 +643,9 @@ export default {
         setTimeout(() => {
           window.location.reload();
         }, 2000);
-        addJobMessage.value = true;
+        localStorage.setItem('addJobMessage',true);
+        localStorage.setItem('addJobMessageStatus',true);
+
       } catch (error) {
         console.error(error.response.data.errors);
       }
@@ -716,12 +729,15 @@ export default {
 
       email.value = response.data.employer_details.emailid;
       contact_number.value = response.data.employer_details.contactno;
-      employername.value = response.data.employer_details.employername
+      employername.value = response.data.employer_details.employername;
     };
     watch(detailed_description, (newValue) => {
       remaining.value = 2000 - newValue.length;
     });
 
+    watch(technical_skill, (newValue) => {
+        remaining_technical_skill.value = 2000 - newValue.length;
+    });
     watch(
       [
         country,
@@ -749,6 +765,20 @@ export default {
     );
 
     onMounted(() => {
+        addJobMessage.value = localStorage.getItem('addJobMessage');
+        addJobMessageStatus.value = localStorage.getItem('addJobMessageStatus');
+
+
+
+        if(addJobMessage.value &&  !addJobMessageStatus.value )
+        {
+            localStorage.setItem('addJobMessageStatus',true);
+        }
+
+        if(addJobMessage.value   && addJobMessageStatus )
+        {
+            localStorage.setItem('addJobMessageStatus',false);
+        }
       // countries_state.value = Country.getAllCountries();
       countries_state.value = someCountry.value;
 
@@ -758,6 +788,8 @@ export default {
     });
 
     return {
+        addJobMessageStatus,
+      city,
       addJobMessage,
       technical_skill,
       additional_detail,
@@ -784,6 +816,7 @@ export default {
       router,
       route,
       remaining,
+      remaining_technical_skill,
       job_title,
       countries,
       fetchCountries,
@@ -806,7 +839,7 @@ export default {
       contact_number,
       defaultSelectedState,
       remaining_additional_detail,
-      employername
+      employername,
     };
   },
 };

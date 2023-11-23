@@ -34,7 +34,7 @@
               <div
                 class="flex items-center justify-center px-[20px] gap-6 w-[65%] mx-auto md:pt-[28px] pt-5 sm:mb-1 mb-10 md:w-full"
               >
-                <div class="flex items-center justify-center w-[29%] relative">
+                <div class="flex items-center justify-center w-[40%] relative">
                   <input
                     class="rounded-[40px] md:py-[16px] sm:py-[15px] py-[12px] px-4 sm:pl-[60px] pl-[40px] focus:shadow-outline w-full shadow-[0_25px_60px_rgba(113,106,147,.2)]"
                     type="text"
@@ -64,7 +64,7 @@
                 Post Job
             </button> -->
               </div>
-              <span class="text-[12px] pr-[135px]">Please email to support@shreyanjobs.com to get the contact detail &amp; Resume.</span>
+              <span class="text-[14px] pr-[135px]">Please email to support@shreyanjobs.com to get the contact detail &amp; Resume.</span>
             </div>
             <div class="mt-8 flow-root">
               <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
