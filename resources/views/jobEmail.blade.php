@@ -22,7 +22,10 @@
         Job Detail : Title :{{$title}} &nbsp; &nbsp; &nbsp; &nbsp; Location:{{$location}} &nbsp; &nbsp; &nbsp; &nbsp; Duration:{{$duration}}
         <br>
         <br>
-        Job Description : {{$description}}
+        Job Description :
+        <br>
+          {!! nl2br($description) !!}
+
 
 
 

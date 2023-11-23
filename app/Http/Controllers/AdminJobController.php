@@ -109,6 +109,7 @@ class AdminJobController extends Controller
         $validatedData = $request->validate([
             'country' => 'required|string',
             'state' => 'nullable|string',
+            'city' => 'nullable|string',
             'remote' => 'required|boolean',
             'skill' => 'required|string',
             'year_of_experience' => 'required|integer',
@@ -128,8 +129,10 @@ class AdminJobController extends Controller
 
         $job = AdminJob::create($validatedData);
 
-        $subscription_data = Subscription::with('seeker')->where('skill','LIKE','%'.$request->skill.'%')->get();
-        // return response()->json($subscription_data, 201);
+        $subscription_data = Subscription::with('seeker')
+                ->where('skill','LIKE','%'.$request->skill.'%')
+                ->orWhere('skill','LIKE','%'.$request->job_title.'%')
+                ->get();
         if(isset($subscription_data))
         {
 

@@ -16,30 +16,27 @@ class SeekerController extends Controller
 
     public function seeker_profile(Request $request)
     {
-            $seeker = Seeker::find($request->seeker_id);
-            return response()->json([
-                'message' => 'Details fetch successfully',
-                'success' => 200,
-                'seeker_details' => $seeker
+        $seeker = Seeker::find($request->seeker_id);
+        return response()->json([
+            'message' => 'Details fetch successfully',
+            'success' => 200,
+            'seeker_details' => $seeker
 
-            ]);
-
+        ]);
     }
     public function seeker_skill(Request $request)
     {
-            $skill_details = Subscription::where('seeker_id' ,$request->seeker_id)->get();
-            return response()->json([
-                'message' => 'Details fetch successfully',
-                'success' => 200,
-                'skill_details' => $skill_details
+        $skill_details = Subscription::where('seeker_id', $request->seeker_id)->get();
+        return response()->json([
+            'message' => 'Details fetch successfully',
+            'success' => 200,
+            'skill_details' => $skill_details
 
-            ]);
-
+        ]);
     }
     public function seeker_addskill(Request $request)
     {
-        if(!Subscription::where(['seeker_id' => $request->seeker_id,'skill' => $request->skill] )->exists())
-        {
+        if (!Subscription::where(['seeker_id' => $request->seeker_id, 'skill' => $request->skill])->exists()) {
             $seeker = Subscription::create([
                 'seeker_id' => $request->seeker_id,
                 'skill' => $request->skill,
@@ -49,45 +46,41 @@ class SeekerController extends Controller
                 'message' => 'Skill added successfully',
                 'code' => 200,
             ]);
-        }
-        else
-        {
+        } else {
             return response()->json([
                 'message' => 'Skill Already Exist   ',
                 'code' => 100,
             ]);
         }
-
     }
 
     public function seeker_deleteskill(Request $request)
     {
 
-           Subscription::where([
-                'id' => $request->id,
-            ])->delete();
+        Subscription::where([
+            'id' => $request->id,
+        ])->delete();
 
-            return response()->json([
-                'message' => 'Skill Deleted successfully',
-                'code' => 200,
-            ]);
-   }
+        return response()->json([
+            'message' => 'Skill Deleted successfully',
+            'code' => 200,
+        ]);
+    }
     public function getSeeker(Request $request)
     {
-        if($request->searchInput != null )
-        {
-            $seeker_details = Seeker::where('fullname','LIKE','%'.$request->searchInput.'%')
-                                    ->orWhere('primary_skill','LIKE','%'.$request->searchInput.'%')
-                                    ->orWhere('secondary_skill','LIKE','%'.$request->searchInput.'%')
-                                    ->orWhere('state','LIKE','%'.$request->searchInput.'%')
-                                    ->orWhere('city','LIKE','%'.$request->searchInput.'%')
-                                    ->orWhere('country','LIKE','%'.$request->searchInput.'%')
-                                    ->orWhere('fullname','LIKE','%'.$request->searchInput.'%')
-                                ->get();
-        }
-        else
-        {
-            $seeker_details = Seeker::all();
+        if ($request->searchInput != null) {
+            $seeker_details = Seeker::where(function ($query) use ($request) {
+                $query->where('fullname', 'LIKE', '%' . $request->searchInput . '%')
+                    ->orWhere('primary_skill', 'LIKE', '%' . $request->searchInput . '%')
+                    ->orWhere('secondary_skill', 'LIKE', '%' . $request->searchInput . '%')
+                    ->orWhere('state', 'LIKE', '%' . $request->searchInput . '%')
+                    ->orWhere('city', 'LIKE', '%' . $request->searchInput . '%')
+                    ->orWhere('country', 'LIKE', '%' . $request->searchInput . '%');
+            })
+                ->where('is_active', 2)
+                ->get();
+        } else {
+            $seeker_details = Seeker::where('is_active', 2)->get();
         }
 
         return response()->json([
@@ -101,7 +94,7 @@ class SeekerController extends Controller
         if (Seeker::where(['id' => $request->seeker_id])->exists()) {
         }
         Seeker::where('id', $request->seeker_id)
-        ->update(['password' => Hash::make($request->password)]);
+            ->update(['password' => Hash::make($request->password)]);
         return response()->json([
             'message' => 'password updated sucessfully',
             'success' => $request->all(),
@@ -113,17 +106,34 @@ class SeekerController extends Controller
         $email = $request->email;
         $otp = rand(100000, 999999);
 
-        if (Seeker::where(['email' => $request->email, 'is_active' => 1])->exists()) {
+        if (Seeker::where(['email' => $request->email, 'is_active' => 2])->exists()) {
 
             return response()->json([
                 'message' => 'Account Already exist',
                 'error' => 100
             ]);
         } elseif (Seeker::where(['email' => $request->email, 'is_active' => 0])->exists()) {
-            Mail::to($request->emailid)->send(new SeekerOtp($otp));
+            Mail::to($email)->send(new SeekerOtp($otp));
 
 
-              Seeker::where('email', $request->email)->update([
+            Seeker::where('email', $request->email)->update([
+                'fullname' => $request->fullname,
+                'password' => Hash::make($request->password),
+                'gender' => $request->gender,
+                'is_active' => 0,
+                'otp' => $otp
+            ]);
+            $seeker_details =   Seeker::where('email', $request->email)->first();
+            return response()->json([
+                'message' => 'Seeker OTP send successfully',
+                'success' => 200,
+                'seeker_id' => $seeker_details->id
+            ]);
+        } elseif (Seeker::where(['email' => $request->email, 'is_active' => 1])->exists()) {
+            Mail::to($email)->send(new SeekerOtp($otp));
+
+
+            Seeker::where('email', $request->email)->update([
                 'fullname' => $request->fullname,
                 'password' => Hash::make($request->password),
                 'gender' => $request->gender,
@@ -178,8 +188,25 @@ class SeekerController extends Controller
     {
         if ($request->hasFile('pdf')) {
 
-            $fileName = time() . '.' . $request->file('pdf')->extension();
-            $request->file('pdf')->move(public_path('pdf'), $fileName);
+
+            $allowedExtensions = ['pdf', 'doc', 'docx'];
+            $maxFileSize = 3 * 1024;
+
+            if ($request->hasFile('pdf') && in_array($request->file('pdf')->extension(), $allowedExtensions) && $request->file('pdf')->getSize() <= $maxFileSize
+            ) {
+                $fileName = time() . '.' . $request->file('pdf')->extension();
+                $request->file('pdf')->move(public_path('pdf'), $fileName);
+            } else {
+                return response()->json([
+                    'message' => 'Only PDF and DOC files are allowed, and the file must be less than 3MB.',
+                    'error' => 100,
+                ]);
+            }
+
+
+
+            // $fileName = time() . '.' . $request->file('pdf')->extension();
+            // $request->file('pdf')->move(public_path('pdf'), $fileName);
 
             Seeker::where('id', $request->seeker_id)
                 ->update([
@@ -195,7 +222,7 @@ class SeekerController extends Controller
                     'secondary_skill_experience' => $request->secondary_experience,
                     'resume' => $fileName,
                     'relocate' => $request->relocate,
-                    'is_active' => 3
+                    'is_active' => 2
                 ]);
 
 
@@ -271,33 +298,45 @@ class SeekerController extends Controller
     public function updateseeker_profile(Request $request)
     {
 
-        $fileName = time() . '.' . $request->file('pdf');
-        if ($request->hasFile('pdf')) {
-            $fileName = time() . '.' . $request->file('pdf')->extension();
-            $request->file('pdf')->move(public_path('pdf'), $fileName);
-        }
-        else
-        {
-            $fileName = $request->resume;
-        }
+
+                 $allowedExtensions = ['pdf', 'doc', 'docx'];
+
+                $fileName = time() . '.' . $request->file('pdf')->extension();
+
+                if ($request->hasFile('pdf') && in_array($request->file('pdf')->extension(), $allowedExtensions)) {
+                    $request->file('pdf')->move(public_path('pdf'), $fileName);
+                } else {
+                    return response()->json([
+                        'message' => 'Only PDF and DOC files are allowed.',
+                        'success' => 100,
+                    ]);
+                }
+
+        // $fileName = time() . '.' . $request->file('pdf');
+        // if ($request->hasFile('pdf')) {
+        //     $fileName = time() . '.' . $request->file('pdf')->extension();
+        //     $request->file('pdf')->move(public_path('pdf'), $fileName);
+        // } else {
+        //     $fileName = $request->resume;
+        // }
 
 
 
-            Seeker::where('id', $request->seeker_id)->update([
-                'country' => $request->country,
-                'state' => $request->state,
-                'city' => $request->city,
-                'contact_number' => $request->contactno,
-                'work_authorization' => $request->work_authorization,
-                'total_experience' => $request->total_experience,
-                'primary_skill' => $request->primary_skill,
-                'primary_skill_experience' => $request->primary_skill_experience,
-                'secondary_skill' => $request->secondary_skill,
-                'secondary_skill_experience' => $request->secondary_skill_experience,
-                'relocate' => $request->relocate,
-                'gender' => $request->gender,
-                'resume' =>  $fileName,
-            ]);
+        Seeker::where('id', $request->seeker_id)->update([
+            'country' => $request->country,
+            'state' => $request->state,
+            'city' => $request->city,
+            'contact_number' => $request->contactno,
+            'work_authorization' => $request->work_authorization,
+            'total_experience' => $request->total_experience,
+            'primary_skill' => $request->primary_skill,
+            'primary_skill_experience' => $request->primary_skill_experience,
+            'secondary_skill' => $request->secondary_skill,
+            'secondary_skill_experience' => $request->secondary_skill_experience,
+            'relocate' => $request->relocate,
+            'gender' => $request->gender,
+            'resume' =>  $fileName,
+        ]);
 
         return response()->json([
             'message' => 'Details added successfully',
@@ -309,9 +348,32 @@ class SeekerController extends Controller
     {
 
         $seeker = Seeker::where('email', $request->email)->first();
-        // dd($seeker);
 
-        if (!$seeker || !Hash::check($request->password,$seeker->password)) {
+        if($seeker == null)
+        {
+            return response()->json([
+                'message' => 'Email Id not found',
+                'code' =>  100
+            ]);
+        }
+
+        if($seeker->is_active == 0)
+        {
+            return response()->json([
+                'message' => 'Your Account Registration did not complete last time. Please re-register the account',
+                'code' =>  100
+            ]);
+        }
+
+        if($seeker->is_active == 1)
+        {
+            return response()->json([
+                'message' => 'Your Account Registration did not complete last time. Please re-register the account',
+                'code' =>  100
+            ]);
+        }
+
+        if (!$seeker || !Hash::check($request->password, $seeker->password)) {
             return response()->json([
                 'message' => 'Invalid credentials',
                 'code' => 100
@@ -322,7 +384,7 @@ class SeekerController extends Controller
         return response()->json([
             'message' => 'Login successful',
             'token' => $token,
-            'seeker_id'=> $seeker->id
+            'seeker_id' => $seeker->id
         ], 200);
 
 

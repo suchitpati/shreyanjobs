@@ -357,7 +357,7 @@
                       </div>
                       <div class="flex gap-1 items-center">
                        <span class="text-[#474d6a] font-bold flex gap-2 items-center text-[14px]">Job Title :</span>
-                       <span class="text-[#474d6a]">Network Architect</span>
+                       <span class="text-[#474d6a]">{{job.job_title}}</span>
                       </div>
                     </div>
                     <div class="flex items-center">
@@ -641,11 +641,21 @@
                   class="text-[#474d6a] bg-[#fff] py-1 px-2 mt-2 capitalize text-[14px]"
                 >
                   <div style="white-space: pre-wrap">
+                    <b>Additional Job Detail</b>
+                    <br>
+                    {{ job.additional_detail  ? job.additional_detail : '-'}}
+                    <br>
+                    <br>
+                    <br>
+                    <b>Job Description</b>
+                    <br>
                     {{ job.detailed_description }}
                     <br>
                     <br>
                     <br>
-                    {{ job.technical_skill }}
+                    <b>Technical Skill Required</b>
+                    <br>
+                    {{ job.technical_skill ? job.technical_skil : '-' }}
 
                   </div>
                   <span class="show-more-link" @click="toggleExpand(job.id)"

@@ -310,7 +310,7 @@
                           type="text"
                           id="field1"
                           v-model="work_authorization"
-                          placeholder="Enter skill"
+                          placeholder="Enter Work authorization"
                         />
                         <div
                           class="text-red-600 block text-[14px] text-left"
@@ -789,7 +789,7 @@ export default {
             console.log(response);
             isLoading.value = false;
             if (response.data.error == 100) {
-              alert("Something wrong");
+              alert(response.data.message);
             } else {
               showSuccessModal.value = true;
               setTimeout(() => {

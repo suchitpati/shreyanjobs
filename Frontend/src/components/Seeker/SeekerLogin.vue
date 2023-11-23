@@ -40,7 +40,7 @@
             <h1
               class="sm:text-[28px] text-[22px] font-bold mt-[20px] sm:mb-[5px] mb-[30px] text-[#1890da]"
             >
-            Job Seeker Login
+              Job Seeker Login
             </h1>
             <div class="flex justify-center gap-[5px]">
               Don't have account ?
@@ -91,7 +91,6 @@
                   id="field1"
                   placeholder="Password"
                   @keyup.enter="adminPage"
-
                   v-model="password"
                 />
                 <div
@@ -126,8 +125,8 @@
   <script>
 import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
-  import axios from "axios";
-  import apiUrl from "../../api";
+import axios from "axios";
+import apiUrl from "../../api";
 // import { useSeekerStore } from "../../store/seeker";
 
 export default {
@@ -166,18 +165,29 @@ export default {
           passwordError.value = "";
         }
 
-
-        const response = await axios.post(`${apiUrl}/seeker-login`, { email: email.value,
-          password: password.value, });
+        const response = await axios.post(`${apiUrl}/seeker-login`, {
+          email: email.value,
+          password: password.value,
+        });
 
         // const result = await store.loginSeeker(formData);
 
         if (response.data.code == 100) {
-          validationError.value = "Invalid credentials";
+          validationError.value = response.data.message;
         } else {
           showSuccessModal.value = true;
-        localStorage.setItem('seeker_id',response.data.seeker_id)
-        localStorage.setItem('seeker_tocken',response.data.token)
+          localStorage.setItem("seeker_id", response.data.seeker_id);
+          localStorage.setItem("seeker_tocken", response.data.token);
+
+          // Set a timer to remove data after 60 minutes
+          setTimeout(() => {
+            // Remove data from local storage
+            localStorage.removeItem("seeker_id", response.data.seeker_id);
+            localStorage.removeItem("seeker_tocken", response.data.token);
+            window.location.reload();
+
+          }, 60 * 60 * 1000);
+
           setTimeout(() => {
             router.push("/");
           }, 1000);
