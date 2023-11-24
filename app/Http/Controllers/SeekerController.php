@@ -186,15 +186,13 @@ class SeekerController extends Controller
 
     public function addSeekerDetails(Request $request)
     {
-        if ($request->hasFile('pdf')) {
-
+        if ($request->has('pdf')) {
 
             $allowedExtensions = ['pdf', 'doc', 'docx'];
-            $maxFileSize = 3 * 1024;
+            // $maxFileSize = 3 * 1024;
 
-            if ($request->hasFile('pdf') && in_array($request->file('pdf')->extension(), $allowedExtensions) && $request->file('pdf')->getSize() <= $maxFileSize
-            ) {
-                $fileName = time() . '.' . $request->file('pdf')->extension();
+            if (in_array($request->file('pdf')->getClientOriginalExtension(), $allowedExtensions) ) {
+                $fileName = time() . '.' . $request->file('pdf')->getClientOriginalExtension();
                 $request->file('pdf')->move(public_path('pdf'), $fileName);
             } else {
                 return response()->json([
@@ -299,18 +297,18 @@ class SeekerController extends Controller
     {
 
 
-                 $allowedExtensions = ['pdf', 'doc', 'docx'];
+        $allowedExtensions = ['pdf', 'doc', 'docx'];
+        // $maxFileSize = 3 * 1024;
 
-                $fileName = time() . '.' . $request->file('pdf')->extension();
-
-                if ($request->hasFile('pdf') && in_array($request->file('pdf')->extension(), $allowedExtensions)) {
-                    $request->file('pdf')->move(public_path('pdf'), $fileName);
-                } else {
-                    return response()->json([
-                        'message' => 'Only PDF and DOC files are allowed.',
-                        'success' => 100,
-                    ]);
-                }
+        if (in_array($request->file('pdf')->getClientOriginalExtension(), $allowedExtensions) ) {
+            $fileName = time() . '.' . $request->file('pdf')->getClientOriginalExtension();
+            $request->file('pdf')->move(public_path('pdf'), $fileName);
+        } else {
+            return response()->json([
+                'message' => 'Only PDF and DOC files are allowed, and the file must be less than 3MB.',
+                'error' => 100,
+            ]);
+        }
 
         // $fileName = time() . '.' . $request->file('pdf');
         // if ($request->hasFile('pdf')) {
