@@ -338,22 +338,29 @@
                             d="M21 3l-6.5 18a.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5"
                           ></path>
                         </svg>
-                        <div class="flex items-center">
-                          <!-- <span class="text-gray-500 mr-2">State:</span> -->
-                          <span class="text-[#474d6a] capitalize text-[16px]">{{
-                            job.country
-                          }}</span>
-                        </div>
+
                         <!-- <div v-if="job.state">,</div> -->
                         <h3 class="text-[#474d6a] capitalize text-[16px]">
                           <div v-if="job.remote == 1">(Remote)</div>
+                          <div v-else-if="job.remote == 0 && job.state && job.city">
+                             {{ job.city }},{{ job.state }},
+                          </div>
                           <div v-else-if="job.remote == 0 && job.state">
-                            ,{{ job.state }}
+                            {{ job.state }},
+                          </div>
+                          <div v-else-if="job.remote == 0 && job.city">
+                            {{ job.city }},
                           </div>
                           <div v-else></div>
 
                           <!-- {{ job.remote == 1 ? ",Remote" : ","+job.state }} -->
                         </h3>
+                        <div class="flex items-center">
+                            <!-- <span class="text-gray-500 mr-2">State:</span> -->
+                            <span class="text-[#474d6a] capitalize text-[16px]">{{
+                              job.country
+                            }}</span>
+                          </div>
                       </div>
                       <div class="flex gap-1 items-center">
                        <span class="text-[#474d6a] font-bold flex gap-2 items-center text-[14px]">Job Title :</span>
@@ -622,6 +629,8 @@
                   v-if="!expandedJobs.includes(job.id)"
                   class="text-[#474d6a] bg-[#fff] py-1 px-2 mt-2 capitalize text-[14px]"
                 >
+                <b>Additional Job Detail</b>
+
                   <div
                     v-for="(point, index) in getTruncatedPoints(
                         job.additional_detail ?  job.additional_detail.slice(0, 100) : '-',

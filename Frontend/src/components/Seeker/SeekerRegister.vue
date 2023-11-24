@@ -452,7 +452,7 @@
                         >
                           Resume
                         </label>
-
+                        <span class="text-start text-[13px]">(Only doc, docx & pdf file extensions are allowed. Files must be less than 3 MB)</span>
                         <input
                           class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
                           type="file"
