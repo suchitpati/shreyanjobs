@@ -7,19 +7,16 @@
     <title>Document</title>
 </head>
 <body>
-
-        New job Added.
+        New Job Notification from shreyanjobs.com for subscribed skill :{{$skill}}. Please login to shreyanjobs.com to apply for this job.        <br>
         <br>
         <br>
 
-        <b>Title : </b> {{$title}}
+        Job Title :{{$title}} &nbsp; &nbsp; &nbsp; &nbsp; Location:{{$location}} &nbsp; &nbsp; &nbsp; &nbsp; Duration:{{$duration}}
         <br>
         <br>
-
-        <b>Description :</b>
+        Additional Job Detail :
         <br>
-        <br>
-        Job Detail : Title :{{$title}} &nbsp; &nbsp; &nbsp; &nbsp; Location:{{$location}} &nbsp; &nbsp; &nbsp; &nbsp; Duration:{{$duration}}
+          {!! nl2br($additional_detail) !!}
         <br>
         <br>
         Job Description :

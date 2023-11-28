@@ -341,8 +341,7 @@
 
                         <!-- <div v-if="job.state">,</div> -->
                         <h3 class="text-[#474d6a] capitalize text-[16px]">
-                          <div v-if="job.remote == 1">(Remote)</div>
-                          <div v-else-if="job.remote == 0 && job.state && job.city">
+                          <div v-if="job.remote == 0 && job.state && job.city">
                              {{ job.city }},{{ job.state }},
                           </div>
                           <div v-else-if="job.remote == 0 && job.state">
@@ -360,6 +359,8 @@
                             <span class="text-[#474d6a] capitalize text-[16px]">{{
                               job.country
                             }}</span>
+                            <div v-if="job.remote == 1">(Remote)</div>
+
                           </div>
                       </div>
                       <div class="flex gap-1 items-center">
@@ -633,7 +634,7 @@
 
                   <div
                     v-for="(point, index) in getTruncatedPoints(
-                        job.additional_detail ?  job.additional_detail.slice(0, 100) : '-',
+                        job.additional_detail ? job.additional_detail.slice(0, 100) : '-',
                       50
                     )"
                     :key="index"
@@ -652,8 +653,7 @@
                   <div style="white-space: pre-wrap">
                     <b>Additional Job Detail</b>
                     <br>
-                    {{ job.additional_detail  ? job.additional_detail : '-'}}
-                    <br>
+                    {{job.additional_detail  ? job.additional_detail : '-'}}
                     <br>
                     <br>
                     <b>Job Description</b>
@@ -661,10 +661,9 @@
                     {{ job.detailed_description }}
                     <br>
                     <br>
-                    <br>
                     <b>Technical Skill Required</b>
                     <br>
-                    {{ job.technical_skill ? job.technical_skil : '-' }}
+                    {{ job.technical_skill ? job.technical_skill : '-' }}
 
                   </div>
                   <span class="show-more-link" @click="toggleExpand(job.id)"
@@ -937,7 +936,6 @@ export default {
     };
 
     const getTruncatedPoints = (description, limit) => {
-      console.log(description, "-------------------------------------");
       const points = getDetailedDescriptionPoints(description);
       // console.log(points,"sfsfsfsfsfsfsfsfs");
       return points.map((point) => truncateDescription(point, limit));
@@ -1114,6 +1112,7 @@ export default {
 
         jobStatus.value = true;
         jobs.value = response.data;
+        console.log(jobs.value,'asdasdas');
       } catch (error) {
         console.error(error);
       }

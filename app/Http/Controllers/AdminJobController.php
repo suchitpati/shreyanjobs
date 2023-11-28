@@ -121,11 +121,19 @@ class AdminJobController extends Controller
             'contact_number'  => 'nullable|string',
             'additional_detail' => 'nullable|string',
             'technical_skill' => 'nullable|string',
+            'job_owner_id' => 'required|integer',
         ]);
         $job_title = $request->job_title;
         $detailed_description = $request->detailed_description;
         $location = $request->country;
         $duration = $request->employment_type;
+        $skill = $request->skill;
+        $additional_detail = "No additional detail";
+
+        if(isset($request->additional_detail))
+        {
+            $additional_detail = $request->additional_detail;
+        }
 
         $job = AdminJob::create($validatedData);
 
@@ -139,7 +147,7 @@ class AdminJobController extends Controller
             foreach($subscription_data as $sub)
             {
 
-                SendJobNotification::dispatch($sub->seeker->email,$job_title,$detailed_description,$location,$duration);
+                SendJobNotification::dispatch($sub->seeker->email,$job_title,$detailed_description,$location,$duration,$skill,$additional_detail);
             }
         }
 

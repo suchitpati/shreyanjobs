@@ -594,6 +594,8 @@ export default {
       country.value = selectedCountryObj
         ? JSON.parse(JSON.stringify(selectedCountryObj)).name
         : "";
+        // const employer_id = localStorage.getItem("employer_id");
+
       try {
         const authToken = localStorage.getItem("accessToken");
         const config = {
@@ -617,6 +619,7 @@ export default {
           contact_number: contact_number.value,
           additional_detail: additional_detail.value,
           technical_skill: technical_skill.value,
+          job_owner_id : localStorage.getItem("employer_id")
         };
         console.log("requestData", requestData);
         isLoading.value = true;
@@ -640,9 +643,9 @@ export default {
           (job_title.value = "");
         isLoading.value = false;
         // showSuccessModal.value = true;
-        setTimeout(() => {
-          window.location.reload();
-        }, 2000);
+        window.location.reload();
+        // setTimeout(() => {
+        // }, 2000);
         localStorage.setItem('addJobMessage',true);
         localStorage.setItem('addJobMessageStatus',true);
 
