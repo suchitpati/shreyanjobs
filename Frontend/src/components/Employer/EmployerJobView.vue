@@ -5,14 +5,7 @@
       <EmployerNev />
 
        <div class=" bg-[#ebf4ff]">
-        <div>
-          <!-- <h1
-                      class="text-black md:text-[36px] sm:text-[28px] text-[22px] font-bold pt-[40px]"
-                  >
-                      Find your dream job now
-                  </h1> -->
-          <!-- <p class="mt-3 text-[18px]">5 lakh+ jobs for you to explore</p> -->
-        </div>
+
 
 
         <div class="max-w-[1080px] gap-6 w-full px-[20px] mx-auto">
@@ -351,6 +344,11 @@
                           job.year_of_experience
                         }}</span>
                       </div>
+                      <div>
+                                   <button class="bg-[red]"> <router-link :to="'/employer-job-edit/' + job.id">Edit</router-link>
+                                   </button>
+
+                    </div>
                     </div>
                   </div>
 

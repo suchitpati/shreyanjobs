@@ -191,14 +191,18 @@ class AdminJobController extends Controller
         $validatedData = $request->validate([
             'country' => 'required|string',
             'state' => 'nullable|string',
+            'city' => 'nullable|string',
             'remote' => 'required|boolean',
             'skill' => 'required|string',
             'year_of_experience' => 'required|integer',
             'employment_type' => 'required|string',
             'short_description' => 'required|string',
             'detailed_description' => 'required|string',
-            'job_title' => 'required|string'
-
+            'job_title' => 'required|string',
+            'email' => 'nullable|string',
+            'contact_number'  => 'nullable|string',
+            'additional_detail' => 'nullable|string',
+            'technical_skill' => 'nullable|string',
         ]);
 
         $job = AdminJob::findOrFail($id);

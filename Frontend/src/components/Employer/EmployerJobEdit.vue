@@ -25,9 +25,10 @@
         <h1
           class="text-[#1890da] sm:text-[26px] text-[22px] font-semibold mt-[30px] sm:mb-[40px] mb-[25px]"
         >
-          Post a Job         </h1>
-        <span  v-if="addJobMessageStatus === 'true'" class="text-green-600"
-          >Your job was posted successfully and can be viewed in the home
+          Edit a Job
+        </h1>
+        <span v-if="addJobMessageStatus === 'true'" class="text-green-600"
+          >Your job was updated successfully and can be viewed in the home
           page.</span
         >
         <div
@@ -46,7 +47,6 @@
                   hybrid/ Day 1 onsite work model, use “Additional Job Position
                   Detail” section below
                 </label>
-
               </div>
             </div>
             <fieldset
@@ -61,7 +61,7 @@
                     id="check"
                     type="checkbox"
                     class="w-[20px] h-[20px] border border-gray-400"
-                    :checked="remote"
+                    :checked="remote == 1"
                     v-model="remote"
                   />
                   <label
@@ -93,7 +93,6 @@
                       :key="country.isoCode"
                       :value="country.isoCode"
                       class="flex items-center"
-                      :selected="country.isoCode === 'US'"
                     >
                       <span
                         class="flag-icon flag-icon-{{ country.isoCode.toLowerCase() }} inline-block w-4 h-4 mr-2"
@@ -120,7 +119,7 @@
                     v-model="selectedState"
                     class="block w-full bg-white border text-sm rounded-lg p-2"
                     :disabled="remote"
-                    :selected="country.isoCode === 'US'"
+                    :selected="state.isoCode === 'GJ'"
                     @change="setSelectedState"
                   >
                     <option value="">Select State</option>
@@ -141,13 +140,13 @@
                     City
                   </label>
                   <input
-                  :disabled="remote"
-                  class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
-                  type="text"
-                  id="field1"
-                  v-model="city"
-                  placeholder="Enter City"
-                />
+                    :disabled="remote"
+                    class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
+                    type="text"
+                    id="field1"
+                    v-model="city"
+                    placeholder="Enter City"
+                  />
                 </div>
               </div>
             </fieldset>
@@ -173,8 +172,8 @@
                   <option value="contract">Contract</option>
                   <option value="contracttohire">Contract to Hire</option>
                   <!-- <option value="third-party contract">
-                                        Third-Party Contract
-                                    </option> -->
+                                          Third-Party Contract
+                                      </option> -->
                 </select>
                 <div
                   class="text-red-600 block text-[14px] text-left"
@@ -385,7 +384,7 @@
           </div>
           <button
             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-8 mb-4 mt-4 rounded-full focus:outline-none focus:shadow-outline"
-            @click="addJob"
+            @click="updateJob"
           >
             Submit
           </button>
@@ -403,9 +402,9 @@
   </div>
 </template>
 
-<script>
+  <script>
 import { reactive, ref, watch, onMounted } from "vue";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import axios from "axios";
 import apiUrl from "../../api";
 import SuccessModal from "../SuccessModal.vue";
@@ -420,7 +419,7 @@ export default {
   },
   setup() {
     const data = reactive({});
-    const selectedCountry = ref("US");
+    const selectedCountry = ref("");
     const country = ref("");
     const state = ref("");
     const remote = ref(false);
@@ -516,8 +515,9 @@ export default {
     const stateNames = ["State 1", "State 2", "State 3"];
 
     const router = useRouter();
+    const route = useRoute();
 
-    const route = useRouter();
+    console.log("route", route.params.id);
 
     const onCountryChange = async () => {
       console.log("selectedCountry.value", selectedCountry.value);
@@ -553,7 +553,8 @@ export default {
       states.value = countries.value ? State.getStatesOfCountry("US") : "";
     };
 
-    const addJob = async () => {
+    const updateJob = async () => {
+        const job_id = route.params.id;
       if (selectedCountry.value == null || selectedCountry.value == "") {
         err_country.value = "The country field is required";
         return false;
@@ -594,7 +595,7 @@ export default {
       country.value = selectedCountryObj
         ? JSON.parse(JSON.stringify(selectedCountryObj)).name
         : "";
-        // const employer_id = localStorage.getItem("employer_id");
+      // const employer_id = localStorage.getItem("employer_id");
 
       try {
         const authToken = localStorage.getItem("accessToken");
@@ -619,12 +620,12 @@ export default {
           contact_number: contact_number.value,
           additional_detail: additional_detail.value,
           technical_skill: technical_skill.value,
-          job_owner_id : localStorage.getItem("employer_id")
+          job_owner_id: localStorage.getItem("employer_id"),
         };
         console.log("requestData", requestData);
         isLoading.value = true;
-        const response = await axios.post(
-          `${apiUrl}/admin-jobs`,
+        const response = await axios.put(
+          `${apiUrl}/admin-jobs/${job_id}`,
           requestData,
           config
         );
@@ -646,13 +647,48 @@ export default {
         window.location.reload();
         // setTimeout(() => {
         // }, 2000);
-        localStorage.setItem('addJobMessage',true);
-        localStorage.setItem('addJobMessageStatus',true);
-
+        localStorage.setItem("addJobMessage", true);
+        localStorage.setItem("addJobMessageStatus", true);
       } catch (error) {
         console.error(error.response.data.errors);
       }
     };
+
+    const fetchJob = async () => {
+      const job_id = route.params.id;
+      const response = await axios.get(`${apiUrl}/admin-jobs/${job_id}`);
+      job_title.value = response.data.job_title;
+      year_of_experience.value = response.data.year_of_experience;
+      skill.value = response.data.skill;
+      short_description.value = response.data.short_description;
+      detailed_description.value = response.data.detailed_description;
+      additional_detail.value = response.data.additional_detail;
+      technical_skill.value = response.data.additechnical_skilltional_detail;
+      selectedCountry.value = response.data.country;
+      employment_type.value = response.data.employment_type;
+      console.log(selectedCountry.value, "selectedCountryoutside");
+      email.value = response.data.email;
+      contact_number.value = response.data.contact_number;
+      someCountry.value.forEach((element) => {
+        console.log(element.name, "selectedCountryIn", selectedCountry.value);
+        if (element.name == selectedCountry.value)
+          selectedCountry.value = element.isoCode;
+      });
+      selectedState.value = response.data.state;
+      states.value = countries.value
+        ? State.getStatesOfCountry(selectedCountry.value)
+        : "";
+
+      states.value.forEach((element) => {
+        if (element.name == selectedState.value)
+          selectedState.value = element.isoCode;
+      });
+
+      city.value = response.data.city;
+      remote.value = response.data.remote;
+      console.log(response.data, "responseresponse");
+    };
+
 
     const closeSuccessModal = () => {
       showSuccessModal.value = false;
@@ -672,6 +708,8 @@ export default {
     const adminProfile = async () => {
       router.push("/admin-profile");
     };
+
+    const getCountryCode = async () => {};
 
     const adminLogout = async () => {
       try {
@@ -730,20 +768,21 @@ export default {
         config
       );
 
-      email.value = response.data.employer_details.emailid;
-      contact_number.value = response.data.employer_details.contactno;
+
       employername.value = response.data.employer_details.employername;
     };
+    watch(additional_detail, (newValue) => {
+      if (newValue != null) {
+        remaining_additional_detail.value = 500 - newValue.length;
+      }
+    });
     watch(detailed_description, (newValue) => {
       remaining.value = 2000 - newValue.length;
     });
 
     watch(technical_skill, (newValue) => {
-        remaining_technical_skill.value = 2000 - newValue.length;
-    });
-    watch(additional_detail, (newValue) => {
       if (newValue != null) {
-        remaining_additional_detail.value = 500 - newValue.length;
+        remaining_technical_skill.value = 2000 - newValue.length;
       }
     });
     watch(
@@ -773,20 +812,19 @@ export default {
     );
 
     onMounted(() => {
-        addJobMessage.value = localStorage.getItem('addJobMessage');
-        addJobMessageStatus.value = localStorage.getItem('addJobMessageStatus');
+      fetchJob();
+      getCountryCode();
+      // console.log(router,'router')
+      addJobMessage.value = localStorage.getItem("addJobMessage");
+      addJobMessageStatus.value = localStorage.getItem("addJobMessageStatus");
 
+      if (addJobMessage.value && !addJobMessageStatus.value) {
+        localStorage.setItem("addJobMessageStatus", true);
+      }
 
-
-        if(addJobMessage.value &&  !addJobMessageStatus.value )
-        {
-            localStorage.setItem('addJobMessageStatus',true);
-        }
-
-        if(addJobMessage.value   && addJobMessageStatus )
-        {
-            localStorage.setItem('addJobMessageStatus',false);
-        }
+      if (addJobMessage.value && addJobMessageStatus) {
+        localStorage.setItem("addJobMessageStatus", false);
+      }
       // countries_state.value = Country.getAllCountries();
       countries_state.value = someCountry.value;
 
@@ -796,7 +834,8 @@ export default {
     });
 
     return {
-        addJobMessageStatus,
+      fetchJob,
+      addJobMessageStatus,
       city,
       addJobMessage,
       technical_skill,
@@ -804,7 +843,7 @@ export default {
       isLoading,
       getEmployerDeatails,
       data,
-      addJob,
+      updateJob,
       country,
       state,
       remote,
@@ -822,7 +861,6 @@ export default {
       adminLogout,
       adminProfile,
       router,
-      route,
       remaining,
       remaining_technical_skill,
       job_title,
@@ -853,4 +891,4 @@ export default {
 };
 </script>
 
-<style></style>
+  <style></style>
