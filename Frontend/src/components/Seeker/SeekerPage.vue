@@ -29,7 +29,7 @@
               <button
                 class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[10px] py-[7px] px-[18px] md:px-[26px] rounded-[26px] focus:outline-none focus:shadow-outline"
               >
-                Dashboard
+                Portal
               </button>
             </router-link>
           </div>
@@ -115,10 +115,10 @@
         </button>
       </div>
     </div>
-<div class="max-w-[1080px] text-[12px] w-full m-auto text-right pr-3">
-    <div>For any issue in accessing shreyanjobs.com </div>
-    <div>please email to support@shreyanjobs.com</div>
-</div>
+    <div class="max-w-[1080px] text-[12px] w-full m-auto text-right pr-3">
+      <div>For any issue in accessing shreyanjobs.com</div>
+      <div>please email to support@shreyanjobs.com</div>
+    </div>
     <div class="bg-[linear-gradient(180deg,#f5f4fa,rgba(251,251,253,0))]">
       <div>
         <!-- <h1
@@ -342,7 +342,7 @@
                         <!-- <div v-if="job.state">,</div> -->
                         <h3 class="text-[#474d6a] capitalize text-[16px]">
                           <div v-if="job.remote == 0 && job.state && job.city">
-                             {{ job.city }},{{ job.state }},
+                            {{ job.city }},{{ job.state }},
                           </div>
                           <div v-else-if="job.remote == 0 && job.state">
                             {{ job.state }},
@@ -355,17 +355,19 @@
                           <!-- {{ job.remote == 1 ? ",Remote" : ","+job.state }} -->
                         </h3>
                         <div class="flex items-center">
-                            <!-- <span class="text-gray-500 mr-2">State:</span> -->
-                            <span class="text-[#474d6a] capitalize text-[16px]">{{
-                              job.country
-                            }}</span>
-                            <div v-if="job.remote == 1">(Remote)</div>
-
-                          </div>
+                          <!-- <span class="text-gray-500 mr-2">State:</span> -->
+                          <span class="text-[#474d6a] capitalize text-[16px]">{{
+                            job.country
+                          }}</span>
+                          <div v-if="job.remote == 1">(Remote)</div>
+                        </div>
                       </div>
                       <div class="flex gap-1 items-center">
-                       <span class="text-[#474d6a] font-bold flex gap-2 items-center text-[14px]">Job Title :</span>
-                       <span class="text-[#474d6a]">{{job.job_title}}</span>
+                        <span
+                          class="text-[#474d6a] font-bold flex gap-2 items-center text-[14px]"
+                          >Job Title :</span
+                        >
+                        <span class="text-[#474d6a]">{{ job.job_title }}</span>
                       </div>
                     </div>
                     <div class="flex items-center">
@@ -518,7 +520,7 @@
                     </div>
                     <div class="flex gap-[10px] mt-[10px]">
                       <div
-                        class="flex items-center py-1 px-2 w-auto whitespace-nowrap rounded "
+                        class="flex items-center py-1 px-2 w-auto whitespace-nowrap rounded"
                       >
                         <span
                           class="text-[#474d6a] font-bold mr-2 flex gap-2 items-center text-[14px]"
@@ -599,7 +601,7 @@
                                     </div> -->
                     </div>
                     <div
-                      class="flex items-center py-1 px-2 w-auto whitespace-nowrap rounded  mt-2"
+                      class="flex items-center py-1 px-2 w-auto whitespace-nowrap rounded mt-2"
                     >
                       <span
                         class="text-[#474d6a] font-bold mr-2 flex gap-2 items-center text-[14px]"
@@ -623,6 +625,18 @@
                         job.year_of_experience
                       }}</span>
                     </div>
+
+                    <div v-if="isSeekerLogged == false && isEmployerLogged == false">
+                      <button class="bg-[red]">Login To apply</button>
+                    </div>
+
+
+                    <div v-if="isSeekerLogged == true">
+                      <button class="bg-[red]">Apply to this job</button>
+                    </div>
+                    <div v-if="isEmployerLogged == true && employer_id == job.job_owner_id ">
+                        <button class="bg-[red]">Edit</button>
+                      </div>
                   </div>
                 </div>
 
@@ -630,11 +644,13 @@
                   v-if="!expandedJobs.includes(job.id)"
                   class="text-[#474d6a] bg-[#fff] py-1 px-2 mt-2 capitalize text-[14px]"
                 >
-                <b>Additional Job Detail</b>
+                  <b>Additional Job Detail</b>
 
                   <div
                     v-for="(point, index) in getTruncatedPoints(
-                        job.additional_detail ? job.additional_detail.slice(0, 100) : '-',
+                      job.additional_detail
+                        ? job.additional_detail.slice(0, 100)
+                        : '-',
                       50
                     )"
                     :key="index"
@@ -652,19 +668,18 @@
                 >
                   <div style="white-space: pre-wrap">
                     <b>Additional Job Detail</b>
-                    <br>
-                    {{job.additional_detail  ? job.additional_detail : '-'}}
-                    <br>
-                    <br>
+                    <br />
+                    {{ job.additional_detail ? job.additional_detail : "-" }}
+                    <br />
+                    <br />
                     <b>Job Description</b>
-                    <br>
+                    <br />
                     {{ job.detailed_description }}
-                    <br>
-                    <br>
+                    <br />
+                    <br />
                     <b>Technical Skill Required</b>
-                    <br>
-                    {{ job.technical_skill ? job.technical_skill : '-' }}
-
+                    <br />
+                    {{ job.technical_skill ? job.technical_skill : "-" }}
                   </div>
                   <span class="show-more-link" @click="toggleExpand(job.id)"
                     >Hide Job Description &amp; Technical skill Required</span
@@ -822,7 +837,7 @@ export default {
     const isEmployerLogged = ref(false);
     const isSeekerLogged = ref(false);
     const jobStatus = ref(false);
-
+    const employer_id = ref('');
     const someCountry = ref([]);
 
     someCountry.value = [
@@ -879,6 +894,7 @@ export default {
     if (localStorage.getItem("employer_tocken") != null) {
       isEmployerLogged.value = true;
     }
+
     if (localStorage.getItem("seeker_tocken") != null) {
       isSeekerLogged.value = true;
     }
@@ -1112,7 +1128,7 @@ export default {
 
         jobStatus.value = true;
         jobs.value = response.data;
-        console.log(jobs.value,'asdasdas');
+        console.log(jobs.value, "asdasdas");
       } catch (error) {
         console.error(error);
       }
@@ -1139,8 +1155,10 @@ export default {
       console.log(countries_state.value, "countries_state");
       fetchCountries();
       fetchJobs();
+      employer_id.value = localStorage.getItem('employer_id');
     });
     return {
+      employer_id,
       jobStatus,
       seekerLogout,
       data,

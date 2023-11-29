@@ -20,16 +20,15 @@
       Welcome,{{ employername }}
     </div>
 
-    <div class="bg-[#ebf4ff] py-7 h-[calc(100vh-80px)] overflow-y-auto">
+    <div class="bg-[#ebf4ff] py-0 h-[calc(100vh-80px)] overflow-y-auto">
       <div class="max-w-[1080px] w-full mx-auto px-[20px]">
         <h1
-          class="text-[#1890da] sm:text-[26px] text-[22px] font-semibold mt-[30px] sm:mb-[40px] mb-[25px]"
+          class="text-[#1890da] sm:text-[26px] text-[22px] font-semibold mt-[0px] sm:mb-[0px] mb-[25px]"
         >
           Edit a Job
         </h1>
         <span v-if="addJobMessageStatus === 'true'" class="text-green-600"
-          >Your job was updated successfully and can be viewed in the home
-          page.</span
+          >Job is updated successfully</span
         >
         <div
           class="bg-[#d3ddff4f] rounded-lg py-4 sm:px-8 px-4 w-full shadow-[rgba(100,_100,_111,_0.2)_0px_0px_10px_0px] hover:shadow-[rgba(100,_100,_111,_0.2)_0px_0px_20px_0px] transition-[.5s]"

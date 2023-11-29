@@ -7,8 +7,8 @@
        <div class=" bg-[#ebf4ff]">
 
 
-
-        <div class="max-w-[1080px] gap-6 w-full px-[20px] mx-auto">
+        View Past Jobs
+        <div class="max-w-[1080px] gap-6 w-full px mx-auto">
           <!-- Form with two parts -->
 
           <div
@@ -345,7 +345,9 @@
                         }}</span>
                       </div>
                       <div>
-                                   <button class="bg-[red]"> <router-link :to="'/employer-job-edit/' + job.id">Edit</router-link>
+                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:shadow-outline" >
+
+                                    <router-link :to="'/employer-job-edit/' + job.id">Edit</router-link>
                                    </button>
 
                     </div>
@@ -503,7 +505,7 @@
   </template>
 
   <script>
-  import { reactive, ref, watch, onMounted, computed } from "vue";
+  import { reactive, ref, watch, onMounted } from "vue";
   import { useRouter } from "vue-router";
   import apiUrl from "../../api";
   import { debounce } from "lodash";
@@ -640,9 +642,6 @@
           : "";
       };
 
-      const stringYearOfExperience = computed(() =>
-        year_of_experience.value.toString()
-      );
 
       const formateDate = (date) => {
         return moment(date).format("DD-MMM-YYYY");
@@ -795,51 +794,9 @@
 
       const fetchJobs = debounce(async () => {
         try {
-          const params = {};
+        const employer_id = localStorage.getItem("employer_id");
 
-          if (country.value.trim() !== "") {
-            params.country = country.value.trim();
-          }
-          if (employment_type.value.trim() !== "") {
-            params.employment_type = employment_type.value.trim();
-          }
-
-          if (skill.value.trim() !== "") {
-            params.skill = skill.value.trim();
-          }
-
-          if (stringYearOfExperience.value.trim() !== "") {
-            params.year_of_experience = stringYearOfExperience.value.trim();
-          }
-
-          // if (state.value.trim() !== "") {
-          //   params.state = state.value.trim();
-          // }
-
-          if (selectedState_main.value.trim() !== "") {
-            params.state = selectedState_main.value.trim();
-          }
-          if (remote.value) {
-            params.remote = true;
-          }
-
-          if (searchInput.value.trim() !== "") {
-            params.search = searchInput.value.trim();
-          }
-
-          if (datePosted.value.trim() !== "") {
-            const days = parseInt(datePosted.value, 10);
-
-            if (!isNaN(days) && [1, 3, 7, 30].includes(days)) {
-              const startDate = moment()
-                .subtract(days, "days")
-                .format("YYYY-MM-DD hh:mm:ss");
-              params.created_at = startDate;
-            }
-          }
-          const response = await axios.get(`${apiUrl}/admin-jobs`, {
-            params,
-          });
+          const response = await axios.get(`${apiUrl}/employer-job/${employer_id}`);
 
           jobStatus.value = true;
           jobs.value = response.data;
