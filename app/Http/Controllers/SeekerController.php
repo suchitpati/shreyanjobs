@@ -191,7 +191,7 @@ class SeekerController extends Controller
             $allowedExtensions = ['pdf', 'doc', 'docx'];
             // $maxFileSize = 3 * 1024;
 
-            if (in_array($request->file('pdf')->getClientOriginalExtension(), $allowedExtensions) ) {
+            if (in_array($request->file('pdf')->getClientOriginalExtension(), $allowedExtensions)) {
                 $fileName = time() . '.' . $request->file('pdf')->getClientOriginalExtension();
                 $request->file('pdf')->move(public_path('pdf'), $fileName);
             } else {
@@ -299,15 +299,19 @@ class SeekerController extends Controller
 
         $allowedExtensions = ['pdf', 'doc', 'docx'];
         // $maxFileSize = 3 * 1024;
+        if ($request->hasFile('pdf')) {
 
-        if (in_array($request->file('pdf')->getClientOriginalExtension(), $allowedExtensions) ) {
-            $fileName = time() . '.' . $request->file('pdf')->getClientOriginalExtension();
-            $request->file('pdf')->move(public_path('pdf'), $fileName);
+            if (in_array($request->file('pdf')->getClientOriginalExtension(), $allowedExtensions)) {
+                $fileName = time() . '.' . $request->file('pdf')->getClientOriginalExtension();
+                $request->file('pdf')->move(public_path('pdf'), $fileName);
+            } else {
+                return response()->json([
+                    'message' => 'Only PDF and DOC files are allowed, and the file must be less than 3MB.',
+                    'error' => 100,
+                ]);
+            }
         } else {
-            return response()->json([
-                'message' => 'Only PDF and DOC files are allowed, and the file must be less than 3MB.',
-                'error' => 100,
-            ]);
+            $fileName = $request->resume;
         }
 
         // $fileName = time() . '.' . $request->file('pdf');
@@ -347,24 +351,21 @@ class SeekerController extends Controller
 
         $seeker = Seeker::where('email', $request->email)->first();
 
-        if($seeker == null)
-        {
+        if ($seeker == null) {
             return response()->json([
                 'message' => 'Email Id not found',
                 'code' =>  100
             ]);
         }
 
-        if($seeker->is_active == 0)
-        {
+        if ($seeker->is_active == 0) {
             return response()->json([
                 'message' => 'Your Account Registration did not complete last time. Please re-register the account',
                 'code' =>  100
             ]);
         }
 
-        if($seeker->is_active == 1)
-        {
+        if ($seeker->is_active == 1) {
             return response()->json([
                 'message' => 'Your Account Registration did not complete last time. Please re-register the account',
                 'code' =>  100

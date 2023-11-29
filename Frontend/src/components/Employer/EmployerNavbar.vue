@@ -27,6 +27,12 @@
         Post Job
       </button>
       <button
+      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"
+      @click="searchResume"
+    >
+     Search Resume
+    </button>
+      <button
         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"
         @click="home"
       >
@@ -113,11 +119,15 @@ export default {
     const addJob = async () => {
       router.push("/add-job");
     };
+    const searchResume = async () => {
+      router.push("/employer-job-view");
+    };
     const home = async () => {
       router.push("/");
     };
 
     return {
+      searchResume,
       employerLogout,
       employerProfile,
       addJob,

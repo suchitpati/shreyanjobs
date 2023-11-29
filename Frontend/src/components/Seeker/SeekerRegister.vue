@@ -452,7 +452,10 @@
                         >
                           Resume
                         </label>
-                        <span class="text-start text-[13px]">(Only doc, docx & pdf file extensions are allowed. Files must be less than 3 MB)</span>
+                        <span class="text-start text-[13px]"
+                          >(Only doc, docx & pdf file extensions are allowed.
+                          Files must be less than 3 MB)</span
+                        >
                         <input
                           class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
                           type="file"
@@ -467,7 +470,7 @@
                           {{ err_file }}
                         </div>
                       </div>
-                      <div class="sm:w-[50%] ">
+                      <div class="sm:w-[50%]">
                         <div class="flex items-center gap-2">
                           <label
                             class="block text-gray-700 font-bold text-start text-[14px]"
@@ -722,6 +725,17 @@ export default {
       } else {
         err_total_experience.value = "";
       }
+      if (
+        parseInt(total_experience.value) < 0 ||
+        parseInt(total_experience.value) == 0
+      ) {
+        err_total_experience.value =
+          "Please enter Total Experience greater then 0 ";
+        return false;
+      } else {
+        err_total_experience.value = "";
+      }
+
       if (primary_skill.value == null || primary_skill.value == "") {
         err_primary_skill.value = "The Primary skill is required";
         return false;
@@ -731,6 +745,16 @@ export default {
       if (primary_experience.value == null || primary_experience.value == "") {
         err_primary_experience.value =
           "The primary experience field is required";
+        return false;
+      } else {
+        err_primary_experience.value = "";
+      }
+      if (
+        parseInt(primary_experience.value) < 0 ||
+        parseInt(primary_experience.value) == 0
+      ) {
+        err_primary_experience.value =
+          "Please enter primary Experience greater then 0 ";
         return false;
       } else {
         err_primary_experience.value = "";
@@ -752,6 +776,16 @@ export default {
         err_secondary_experience.value = "";
       }
 
+      if (
+        parseInt(secondary_experience.value) < 0 ||
+        parseInt(secondary_experience.value) == 0
+      ) {
+        err_secondary_experience.value =
+          "Please enter secondary Experience greater then 0 ";
+        return false;
+      } else {
+        err_secondary_experience.value = "";
+      }
       if (file.value == null || file.value == "") {
         err_file.value = "Pleas select file";
         return false;
@@ -760,8 +794,8 @@ export default {
       }
 
       if (relocate.value == true) {
-          relocate.value = 1;
-        }
+        relocate.value = 1;
+      }
       const formData = new FormData();
       formData.append("pdf", file.value);
       formData.append("country", selectedCountry.value);
@@ -776,7 +810,6 @@ export default {
       formData.append("secondary_experience", secondary_experience.value);
       formData.append("seeker_id", seeker_id.value);
       formData.append("relocate", relocate.value);
-
 
       try {
         await axios

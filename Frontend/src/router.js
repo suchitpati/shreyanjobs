@@ -19,12 +19,8 @@ import EmployerForgotPassword from './components/Employer/ForgotPassword.vue'
 import EmployerProfile from './components/Employer/EmployerProfile.vue'
 import EmployerDashboard from './components/Employer/EmployerDashboard.vue'
 import EmployerUpdatePassword from './components/Employer/UpdatePassword.vue';
-
-
-
-
-
-
+import EmployerJobView from './components/Employer/EmployerJobView.vue';
+import EmployerJobEdit from './components/Employer/EmployerJobEdit.vue';
 
 
 const loggedIn = localStorage.getItem('accessToken');
@@ -106,6 +102,16 @@ const routes = [
     path: '/employer-dashboard',
     name: 'employer-dashboard',
     component: EmployerDashboard,
+  },
+  {
+    path: '/employer-job-view',
+    name: 'employer-job-view',
+    component:   EmployerJobView,
+  },
+  {
+    path: '/employer-job-edit/:id',
+    name: 'employer-job-edit',
+    component:   EmployerJobEdit,
   },
   {
     path: '/employer-update-password',

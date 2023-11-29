@@ -268,7 +268,7 @@
                 </label>
                 <input
                   class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
-                  type="text"
+                  type="number"
                   id="field1"
                   v-model="total_experience"
                   placeholder="Enter Total IT Yrs of Experience"
@@ -315,7 +315,7 @@
                 </label>
                 <input
                   class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
-                  type="text"
+                  type="number"
                   id="field1"
                   v-model="primary_skill_experience"
                   placeholder="Enter Yrs. Of experience in Primary skill"
@@ -361,7 +361,7 @@
                 </label>
                 <input
                   class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
-                  type="text"
+                  type="number"
                   id="field1"
                   v-model="secondary_skill_experience"
                   placeholder="Enter Yrs. Of experience in Secondary skill"
@@ -802,6 +802,17 @@ export default {
       } else {
         err_total_experience.value = "";
       }
+      if (
+        parseInt(total_experience.value) < 0 ||
+        parseInt(total_experience.value) == 0
+      ) {
+        err_total_experience.value =
+          "Please enter Total Experience greater then 0 ";
+        return false;
+      } else {
+        err_total_experience.value = "";
+      }
+
       if (primary_skill.value == null || primary_skill.value == "") {
         err_primary_skill.value = "The Primary skill is required";
         return false;
@@ -818,6 +829,16 @@ export default {
       } else {
         err_primary_skill_experience.value = "";
       }
+      if (
+        parseInt(primary_skill_experience.value) < 0 ||
+        parseInt(primary_skill_experience.value) == 0
+      ) {
+        err_primary_skill_experience.value =
+          "Please enter primary Experience greater then 0 ";
+        return false;
+      } else {
+        err_primary_skill_experience.value = "";
+      }
       if (secondary_skill.value == null || secondary_skill.value == "") {
         err_secondary_skill.value = "The secondary skill field is required";
         return false;
@@ -830,6 +851,16 @@ export default {
       ) {
         err_secondary_skill_experience.value =
           "The secondary experience field is required";
+        return false;
+      } else {
+        err_secondary_skill_experience.value = "";
+      }
+      if (
+        parseInt(secondary_skill_experience.value) < 0 ||
+        parseInt(secondary_skill_experience.value) == 0
+      ) {
+        err_secondary_skill_experience.value =
+          "Please enter secondary Experience greater then 0 ";
         return false;
       } else {
         err_secondary_skill_experience.value = "";
