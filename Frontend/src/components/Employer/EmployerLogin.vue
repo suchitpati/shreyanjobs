@@ -184,7 +184,7 @@ export default {
           }, 60 * 60 * 1000);
 
           setTimeout(() => {
-            router.push("/employer-dashboard");
+            router.push("/employer-job-view");
           }, 1000);
         }
       } catch (error) {

@@ -85,6 +85,8 @@ Route::get('admin/getAdmin', [AdminController::class, 'getAdmin'])->middleware('
 
 
 Route::resource('admin-jobs', AdminJobController::class);
+Route::get('/employer-job/{id}', [AdminJobController::class, 'employerJob']);
+
 Route::get('/countries', [CountryController::class, 'index']);
 Route::get('/countries/{country}/states', [CountryController::class, 'states']);
 

@@ -224,4 +224,11 @@ class AdminJobController extends Controller
 
         return response()->json(null, 204);
     }
+
+
+    public function employerJob($id)
+    {
+        $job = AdminJob::where('job_owner_id',$id)->get();
+        return response()->json($job, 200);
+    }
 }

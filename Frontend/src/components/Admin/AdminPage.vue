@@ -20,10 +20,10 @@
       Welcome,{{ employername }}
     </div>
 
-    <div class="bg-[#ebf4ff] py-7 h-[calc(100vh-80px)] overflow-y-auto">
+    <div class="bg-[#ebf4ff] py-0 h-[calc(100vh-80px)] overflow-y-auto">
       <div class="max-w-[1080px] w-full mx-auto px-[20px]">
         <h1
-          class="text-[#1890da] sm:text-[26px] text-[22px] font-semibold mt-[30px] sm:mb-[40px] mb-[25px]"
+          class="text-[#1890da] sm:text-[26px] text-[22px] font-semibold mt-[0px] sm:mb-[0px] mb-[25px]"
         >
           Post a Job         </h1>
         <span  v-if="addJobMessageStatus === 'true'" class="text-green-600"
