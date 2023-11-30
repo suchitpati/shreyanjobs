@@ -21,6 +21,7 @@
         </button>
       </div>
     </div>
+<<<<<<< Updated upstream
 
     <!-- Dropdown Menu -->
     <div class="relative inline-block text-left">
@@ -35,6 +36,36 @@
       <div
         class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
         v-if="isDropdown"
+=======
+    <div class="flex gap-[5px]">
+      <button
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"
+        @click="addJob"
+      >
+        Post Job
+      </button>
+      <button
+      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"
+      @click="searchResume"
+    >
+     Search Resume
+    </button>
+      <button
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"
+        @click="home"
+      >
+        Home
+      </button>
+      <button
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"
+        @click="employerLogout"
+      >
+        Logout
+      </button>
+      <button
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"
+        @click="employerProfile()"
+>>>>>>> Stashed changes
       >
         <div
           class="py-1"
@@ -150,7 +181,15 @@ export default {
       router.push("/add-job");
     };
     const searchResume = async () => {
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
       router.push("/employer-dashboard");
+=======
+      router.push("/employer-job-view");
+>>>>>>> Stashed changes
+=======
+      router.push("/employer-job-view");
+>>>>>>> Stashed changes
     };
     const home = async () => {
       router.push("/");
@@ -161,8 +200,14 @@ export default {
     };
 
     return {
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
       isDropdown,
       toggleDropdown,
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
       searchResume,
       employerLogout,
       employerProfile,

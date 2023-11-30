@@ -342,7 +342,14 @@
                         <!-- <div v-if="job.state">,</div> -->
                         <h3 class="text-[#474d6a] capitalize text-[16px]">
                           <div v-if="job.remote == 0 && job.state && job.city">
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
                             {{ job.city }},{{ job.state }},
+=======
+=======
+>>>>>>> Stashed changes
+                             {{ job.city }},{{ job.state }},
+>>>>>>> Stashed changes
                           </div>
                           <div v-else-if="job.remote == 0 && job.state">
                             {{ job.state }},
@@ -355,12 +362,22 @@
                           <!-- {{ job.remote == 1 ? ",Remote" : ","+job.state }} -->
                         </h3>
                         <div class="flex items-center">
+<<<<<<< Updated upstream
                           <!-- <span class="text-gray-500 mr-2">State:</span> -->
                           <span class="text-[#474d6a] capitalize text-[16px]">{{
                             job.country
                           }}</span>
                           <div v-if="job.remote == 1">(Remote)</div>
                         </div>
+=======
+                            <!-- <span class="text-gray-500 mr-2">State:</span> -->
+                            <span class="text-[#474d6a] capitalize text-[16px]">{{
+                              job.country
+                            }}</span>
+                            <div v-if="job.remote == 1">(Remote)</div>
+
+                          </div>
+>>>>>>> Stashed changes
                       </div>
                       <div class="flex gap-1 items-center">
                         <span
@@ -648,9 +665,17 @@
 
                   <div
                     v-for="(point, index) in getTruncatedPoints(
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
                       job.additional_detail
                         ? job.additional_detail.slice(0, 100)
                         : '-',
+=======
+                        job.additional_detail ? job.additional_detail.slice(0, 100) : '-',
+>>>>>>> Stashed changes
+=======
+                        job.additional_detail ? job.additional_detail.slice(0, 100) : '-',
+>>>>>>> Stashed changes
                       50
                     )"
                     :key="index"
@@ -668,18 +693,33 @@
                 >
                   <div style="white-space: pre-wrap">
                     <b>Additional Job Detail</b>
+<<<<<<< Updated upstream
                     <br />
                     {{ job.additional_detail ? job.additional_detail : "-" }}
                     <br />
                     <br />
+=======
+                    <br>
+                    {{job.additional_detail  ? job.additional_detail : '-'}}
+                    <br>
+                    <br>
+>>>>>>> Stashed changes
                     <b>Job Description</b>
                     <br />
                     {{ job.detailed_description }}
+<<<<<<< Updated upstream
                     <br />
                     <br />
                     <b>Technical Skill Required</b>
                     <br />
                     {{ job.technical_skill ? job.technical_skill : "-" }}
+=======
+                    <br>
+                    <b>Technical Skill Required</b>
+                    <br>
+                    {{ job.technical_skill ? job.technical_skill : '-' }}
+
+>>>>>>> Stashed changes
                   </div>
                   <span class="show-more-link" @click="toggleExpand(job.id)"
                     >Hide Job Description &amp; Technical skill Required</span
@@ -1128,7 +1168,15 @@ export default {
 
         jobStatus.value = true;
         jobs.value = response.data;
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
         console.log(jobs.value, "asdasdas");
+=======
+        console.log(jobs.value,'asdasdas');
+>>>>>>> Stashed changes
+=======
+        console.log(jobs.value,'asdasdas');
+>>>>>>> Stashed changes
       } catch (error) {
         console.error(error);
       }
