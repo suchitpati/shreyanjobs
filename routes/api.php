@@ -49,7 +49,7 @@ Route::post('/seeker-skill', [SeekerController::class, 'seeker_skill']);
 Route::post('/seeker-skill-add', [SeekerController::class, 'seeker_addskill']);
 Route::post('/seeker-skill-delete', [SeekerController::class, 'seeker_deleteskill']);
 Route::post('/seeker-update-password',[SeekerController::class,'updatePassword']);
-
+Route::post('/apply-job-email',[SeekerController::class,'applyJobMail']);
 
 
 
