@@ -4,12 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Mail\SeekerOtp;
 use App\Mail\SeekerOtpMail;
+use App\Models\Employer;
 use App\Models\Seeker;
+use App\Models\AdminJob;
 use App\Models\Subscription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\SeekerMail;
+use Illuminate\Support\Facades\File;
+
+use Exception;
 
 class SeekerController extends Controller
 {
@@ -414,4 +420,43 @@ class SeekerController extends Controller
 
         return response()->json(['message' => 'Logged out successfully'], 200);
     }
+    public function applyJobMail(Request $request){
+
+             $employer = Employer::find($request->employer_id);
+             $Seeker = Seeker::find($request->seeker_id);
+             $adminjob = AdminJob::find($request->job_owner_id);
+
+            $allowedExtensions = ['pdf', 'doc', 'docx'];
+            $path = public_path('pdf');
+            $fileName = time() . '.' . $request->file('pdf')->getClientOriginalExtension();
+            $resume = $request->file('pdf')->move(public_path('pdf'), $fileName);
+
+            $resume->move($path, $fileName);
+
+            $name = $path.'/'.$fileName;
+
+        $applyjobdata = [
+            'job_title' => 'mail from Shreyanjobs',
+        ];
+        $job_title = $request->job_title;
+        $fullname = $request->fullname;
+        $employername = $request->employername;
+        $city = $request->city;
+        $state = $request->state;
+        $country = $request->country;
+        try{
+            Mail::to($employer->emailid)->send(new SeekerMail($applyjobdata,$name,$job_title,$fullname,$employername,$city,$state,$country));
+            File::delete($name);
+        }
+
+        catch(Exception $e)
+        {
+            return response()->json([
+            'message' => 'Please try agian letter',
+            'success' => $e,
+        ]);
+        }
+
+    }
 }
+
