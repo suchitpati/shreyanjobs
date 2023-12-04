@@ -713,6 +713,15 @@
                                                 Apply to this job
                                             </button>
                                         </div>
+
+                                        <div v-if="isSeekerLogged == true">
+                                            <button
+                                                class="bg-[red]"
+                                                @click="openModel"
+                                            >
+                                            Applied
+                                            </button>
+                                        </div>
                                         <div
                                             v-if="
                                                 isEmployerLogged == true &&
@@ -1300,13 +1309,18 @@ export default {
         getSeekerDeatails();
 
         const jobmail = async (employer_id) => {
+            console.log('resume',  resume.value)
+            // if(resume.value )
             try {
                 //const job_id = router.params.id;
+                console.log("jobsjobs-==>>", jobs.value);
                 const seeker_id = localStorage.getItem("seeker_id");
+                const id = jobs.value[0].id;
                 const formData = new FormData();
-                formData.append("pdf", file.value);
+                formData.append("pdf", file.value ? file.value : resume.value);
                 formData.append("employer_id", employer_id);
                 formData.append("seeker_id", seeker_id);
+                formData.append("id", id);
 
                 await axios
                     .post(`${apiUrl}/apply-job-email`, formData, {
@@ -1323,7 +1337,7 @@ export default {
             } catch (error) {
                 console.error(error);
             }
-            console.log("hffhff", employer_id);
+            // console.log("hffhff", employer_id);
         };
         const seekerLogout = async () => {
             try {

@@ -8,19 +8,24 @@
 </head>
 <body>
 
-            “Hi {{ $employername}},Job Application for {{ $job_title['job_title'] }} - From shreyanjobs.com
+            Hi {{ $employername}},   <br>
+           Job Application for - From shreyanjobs.com for the below job.
         <br>
         <br>
-            Applicant Name : {{$fullname['fullname']}}
+        <b>Applicant Name</b> : {{$fullname}}
         <br>
         <br>
-            “Job Title : {{  }} , Location : {{ $city }} or “Remote, {{ $country }}
+         <b>Job Title</b> : {{ $job_title }} , Location : {{ $city,$state,$country}} or “Remote, {{ $country }}
         <br>
         <br>
-            Additional Job Detail
+        <b>Additional detail</b>
+        <br>
+            {!! nl2br($additional_detail) !!}
         <br>
         <br>
-            Job Description
+        <b>Detailed description</b>
+        <br>
+        {!! nl2br($detailed_description) !!}
         <br>
         {{-- <h1>{{ $job_title['job_title'] }}</h1> --}}
 

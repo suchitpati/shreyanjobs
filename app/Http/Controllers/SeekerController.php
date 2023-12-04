@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SeekerMail;
+use App\Models\SeekerJobApplication;
+use App\Models\UserJobApplication;
 use Illuminate\Support\Facades\File;
 
 use Exception;
@@ -422,9 +424,11 @@ class SeekerController extends Controller
     }
     public function applyJobMail(Request $request){
 
-             $employer = Employer::find($request->employer_id);
-             $Seeker = Seeker::find($request->seeker_id);
-             $adminjob = AdminJob::find($request->job_owner_id);
+        $employer = Employer::find($request->employer_id);
+        $Seeker = Seeker::find($request->seeker_id);
+        $adminjob = AdminJob::find($request->id);
+        if($request->file('pdf'))
+        {
 
             $allowedExtensions = ['pdf', 'doc', 'docx'];
             $path = public_path('pdf');
@@ -433,30 +437,47 @@ class SeekerController extends Controller
 
             $resume->move($path, $fileName);
 
-            $name = $path.'/'.$fileName;
-
-        $applyjobdata = [
-            'job_title' => 'mail from Shreyanjobs',
-        ];
-        $job_title = $request->job_title;
-        $fullname = $request->fullname;
-        $employername = $request->employername;
-        $city = $request->city;
-        $state = $request->state;
-        $country = $request->country;
-        try{
-            Mail::to($employer->emailid)->send(new SeekerMail($applyjobdata,$name,$job_title,$fullname,$employername,$city,$state,$country));
-            File::delete($name);
+            $resume_file = $path . '/' . $fileName;
         }
-
-        catch(Exception $e)
+        else
         {
-            return response()->json([
-            'message' => 'Please try agian letter',
-            'success' => $e,
-        ]);
+            $path = public_path('pdf');
+
+            $resume_file = $path . '/' . $Seeker->resume;
+
         }
 
+        // $applyjobdata = [
+        //     'job_title' => 'mail from Shreyanjobs',
+        // ];
+
+        $job_title = $adminjob->job_title;
+        $fullname = $Seeker->fullname;
+        $employername = $employer->employername;
+        $city = $adminjob->city;
+        $country = $adminjob->country;
+        $detailed_description = $adminjob->detailed_description;
+        $state = $adminjob->state;
+
+
+        $additional_detail = $adminjob->additional_detail;
+
+
+        try {
+
+            Mail::to($employer->emailid)->send(new SeekerMail($job_title,$fullname, $employername, $city, $country, $additional_detail,$resume_file,$detailed_description,$state));
+            File::delete($resume_file);
+
+            SeekerJobApplication::create(['seeker_id' => $request->seeker_id,'job_id'=>$request->id]);
+            return response()->json([
+                'message' => 'Email send successfully',
+            ]);
+        } catch (Exception $e) {
+
+            return response()->json([
+                'message' => 'Please try agian letter',
+                'error' => $e,
+            ]);
+        }
     }
 }
-
