@@ -6,6 +6,7 @@ use App\Http\Controllers\CountryController;
 use App\Http\Controllers\EmployerController;
 use App\Http\Controllers\SeekerController;
 use App\Http\Controllers\UserSubscriptionController;
+use App\Http\Controllers\UserJobApplication;
 use App\Models\Seeker;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -30,6 +31,9 @@ Route::post('admin/login', [AdminController::class, 'login']);
 //Subsciber Routes
 Route::post('sendOtp', [UserSubscriptionController::class, 'sendOtp']);
 Route::post('addSubscriber', [UserSubscriptionController::class, 'addSubscriber']);
+
+//UserJobApplication
+Route::post('UserJobApplication',[UserJobApplication::class,'UserJobApplication']);
 
 //Seeker Routes
 
