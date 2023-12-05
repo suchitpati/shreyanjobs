@@ -391,19 +391,9 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div
-                                                class="flex gap-1 items-center"
-                                            >
-                                                <span
-                                                    class="text-[#474d6a] font-bold flex gap-2 items-center text-[14px]"
-                                                    >Job Title :</span
-                                                >
-                                                <span class="text-[#474d6a]">{{
-                                                    job.job_title
-                                                }}</span>
-                                            </div>
+
                                         </div>
-                                        <div class="flex items-center">
+                                        <div class="flex items-center mt-2">
                                             <span
                                                 class="text-[#474d6a] font-bold mr-2 flex gap-2 items-center text-[14px]"
                                             >
@@ -426,123 +416,86 @@
                                                 job.skill
                                             }}</span>
                                         </div>
-                                        <div
-                                            class="flex gap-2 w-full flex-wrap"
-                                        >
+                                        <div class="flex items-center mt-2 gap-10">
                                             <div
-                                                class="flex items-center w-auto whitespace-nowrap rounded"
-                                            >
-                                                <span
-                                                    class="text-[#474d6a] font-bold mr-2 flex gap-2 items-center text-[14px]"
+                                                    class="flex items-center w-auto whitespace-nowrap rounded"
                                                 >
-                                                    <svg
-                                                        version="1.0"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        width="1.7em"
-                                                        height="1.7em"
-                                                        viewBox="0 0 1920.000000 1597.000000"
-                                                        preserveAspectRatio="xMidYMid meet"
+                                                    <span
+                                                        class="text-[#474d6a] font-bold mr-2 flex gap-2 items-center text-[14px]"
                                                     >
-                                                        <g
-                                                            transform="translate(0.000000,1597.000000) scale(0.100000,-0.100000)"
-                                                            fill="#000000"
-                                                            stroke="none"
+                                                        <svg
+                                                            stroke="currentColor"
+                                                            fill="currentColor"
+                                                            stroke-width="0"
+                                                            viewBox="0 0 448 512"
+                                                            height="1em"
+                                                            width="1em"
+                                                            xmlns="http://www.w3.org/2000/svg"
                                                         >
                                                             <path
-                                                                d="M4120 12000 c-254 -30 -476 -143 -660 -336 -142 -149 -226 -310 -278
-                                               -529 -15 -64 -16 -332 -19 -3080 -3 -2053 0 -3041 7 -3109 29 -271 136 -494
-                                               328 -678 161 -155 335 -245 557 -289 101 -20 10985 -21 11085 -1 218 44 402
-                                               138 556 284 160 152 259 327 317 558 l21 85 4 2990 c2 2147 0 3025 -8 3113
-                                               -25 279 -133 506 -328 694 -102 97 -169 144 -295 203 -106 50 -216 81 -337 95
-                                               -102 12 -10851 11 -10950 0z m10993 -484 c37 -10 66 -22 65 -27 -2 -4 -181
-                                               -163 -398 -351 -217 -189 -739 -642 -1160 -1008 -421 -365 -1037 -901 -1370
-                                               -1190 -333 -289 -832 -723 -1110 -964 -278 -242 -736 -640 -1018 -885 -283
-                                               -245 -517 -446 -522 -446 -4 0 -221 187 -481 416 -261 229 -888 780 -1394
-                                               1224 -506 445 -1046 919 -1200 1055 -154 135 -559 491 -900 791 -341 299 -833
-                                               731 -1092 959 -319 280 -468 417 -459 422 7 4 42 11 77 16 38 6 2231 9 5479 8
-                                               5268 -1 5417 -2 5483 -20z m-10853 -814 c1724 -1514 2589 -2273 3030 -2661
-                                               272 -238 499 -437 503 -441 4 -4 -124 -93 -285 -198 -161 -105 -1092 -715
-                                               -2068 -1355 -976 -640 -1778 -1161 -1783 -1157 -4 3 -11 40 -17 81 -13 103
-                                               -13 5930 0 6024 11 74 47 195 58 195 4 0 257 -219 562 -488z m11284 373 c14
-                                               -53 16 -383 16 -3086 0 -1665 -3 -3041 -6 -3058 -4 -17 -10 -31 -14 -31 -4 0
-                                               -157 99 -341 219 -184 121 -505 332 -714 469 -2047 1341 -3055 2006 -3053
-                                               2012 2 5 285 253 629 552 841 730 1683 1462 2139 1858 206 179 586 510 844
-                                               734 258 224 472 404 477 399 4 -4 15 -35 23 -68z m-6658 -4436 c388 -341 708
-                                               -619 713 -619 4 0 329 279 722 621 393 341 719 623 725 626 12 4 162 -93 1639
-                                               -1062 920 -604 1017 -668 1899 -1245 366 -239 665 -439 666 -443 0 -11 -94
-                                               -51 -160 -68 -78 -20 -10895 -21 -10978 -1 -59 13 -152 51 -152 61 1 11 4204
-                                               2760 4213 2754 5 -3 326 -284 713 -624z"
-                                                            />
-                                                        </g>
-                                                    </svg>
-                                                    Employer Email & Contact :
-                                                </span>
-
-                                                <span
-                                                    v-if="
-                                                        isEmployerLogged ||
-                                                        isSeekerLogged
-                                                    "
-                                                    class="text-[#474d6a]"
-                                                    >{{
-                                                        job.email
-                                                            ? job.email
-                                                            : "-"
-                                                    }}</span
-                                                >
-                                                <span
-                                                    v-else
-                                                    class="text-[#474d6a] underline"
-                                                >
-                                                    <router-link
-                                                        to="/seeker-login"
+                                                                d="M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm95.8 32.6L272 480l-32-136 32-56h-96l32 56-32 136-47.8-191.4C56.9 292 0 350.3 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-72.1-56.9-130.4-128.2-133.8z"
+                                                            ></path>
+                                                        </svg>
+                                                        Employment Type:
+                                                    </span>
+                                                    <span
+                                                        class="text-[#474d6a]"
+                                                        v-if="
+                                                            job.employment_type ==
+                                                            'contracttohire'
+                                                        "
+                                                        >Contract To Hire</span
                                                     >
-                                                        Login as Job seeker to
-                                                        View
-                                                    </router-link>
-                                                </span>
-                                            </div>
-
-                                            <!-- <div
-                                                class="flex items-center bg-[#fff] py-1 px-2 w-auto whitespace-nowrap rounded"
+                                                    <span
+                                                        class="text-[#474d6a]"
+                                                        v-if="
+                                                            job.employment_type ==
+                                                            'parttime'
+                                                        "
+                                                        >Part Time</span
+                                                    >
+                                                    <span
+                                                        class="text-[#474d6a]"
+                                                        v-if="
+                                                            job.employment_type ==
+                                                            'fulltime'
+                                                        "
+                                                        >Full Time</span
+                                                    >
+                                                    <span
+                                                        class="text-[#474d6a]"
+                                                        v-if="
+                                                            job.employment_type ==
+                                                            'contract'
+                                                        "
+                                                        >Contract</span
+                                                    >
+                                                </div>
+                                                <div
+                                            class="flex items-center w-auto whitespace-nowrap rounded"
+                                        >
+                                            <span
+                                                class="text-[#474d6a] font-bold mr-2 flex gap-2 items-center text-[14px]"
                                             >
-                                                <span
-                                                    class="text-[#474d6a] font-bold mr-2 flex gap-2 items-center text-[14px]"
+                                                <svg
+                                                    stroke="currentColor"
+                                                    fill="currentColor"
+                                                    stroke-width="0"
+                                                    viewBox="0 0 16 16"
+                                                    height="1em"
+                                                    width="1em"
+                                                    xmlns="http://www.w3.org/2000/svg"
                                                 >
-                                                    <svg
-                                                        version="1.0"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        width="1.4em"
-                                                        height="1.4em"
-                                                        viewBox="0 0 512.000000 512.000000"
-                                                        preserveAspectRatio="xMidYMid meet"
-                                                    >
-                                                        <g
-                                                            transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
-                                                            fill="#000000"
-                                                            stroke="none"
-                                                        >
-                                                            <path
-                                                                d="M1265 4327 c-173 -58 -321 -188 -400 -352 -72 -148 -80 -191 -80
-                           -415 1 -164 4 -211 23 -299 228 -1046 1400 -2216 2459 -2453 133 -30 451 -33
-                           553 -5 221 61 383 195 478 395 35 74 37 82 37 182 0 93 -3 112 -26 161 -15 31
-                           -44 75 -65 99 -21 23 -173 136 -337 251 -321 224 -369 249 -482 249 -102 0
-                           -230 -56 -293 -128 -13 -15 -53 -69 -88 -119 -36 -51 -67 -93 -70 -93 -7 0
-                           -144 100 -224 164 -271 217 -601 549 -811 816 -46 59 -139 189 -139 194 0 2
-                           50 39 111 82 127 89 178 151 209 252 25 82 25 153 0 235 -17 53 -59 121 -229
-                           364 -115 164 -228 316 -251 337 -70 63 -140 90 -245 93 -56 2 -105 -2 -130
-                           -10z"
-                                                            />
-                                                        </g>
-                                                    </svg>
-                                                    Employer Contact
-                                                </span>
-                                                <span class="text-[#474d6a]">{{
-                                                    job.contact_number
-                                                        ? job.contact_number
-                                                        : "-"
-                                                }}</span>
-                                            </div> -->
+                                                    <path
+                                                        d="M6.5 1A1.5 1.5 0 0 0 5 2.5V3H1.5A1.5 1.5 0 0 0 0 4.5v8A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 14.5 3H11v-.5A1.5 1.5 0 0 0 9.5 1h-3zm0 1h3a.5.5 0 0 1 .5.5V3H6v-.5a.5.5 0 0 1 .5-.5zm1.886 6.914L15 7.151V12.5a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5V7.15l6.614 1.764a1.5 1.5 0 0 0 .772 0zM1.5 4h13a.5.5 0 0 1 .5.5v1.616L8.129 7.948a.5.5 0 0 1-.258 0L1 6.116V4.5a.5.5 0 0 1 .5-.5z"
+                                                    ></path>
+                                                </svg>
+                                                Yrs of Exp:
+                                            </span>
+                                            <span class="text-[#474d6a]">{{
+                                                job.year_of_experience
+                                            }}</span>
+                                        </div>
                                         </div>
                                     </div>
                                     <div class="flex-wrap">
@@ -576,6 +529,17 @@
                                         </div>
                                         <div class="flex gap-[10px] mt-[10px]">
                                             <div
+                                                class="flex gap-1 items-center"
+                                            >
+                                                <span
+                                                    class="text-[#474d6a] font-bold flex gap-2 items-center text-[14px]"
+                                                    >Job Title :</span
+                                                >
+                                                <span class="text-[#474d6a]">{{
+                                                    job.job_title
+                                                }}</span>
+                                            </div>
+                                            <!-- <div
                                                 class="flex items-center py-1 px-2 w-auto whitespace-nowrap rounded"
                                             >
                                                 <span
@@ -628,7 +592,7 @@
                                                     "
                                                     >Contract</span
                                                 >
-                                            </div>
+                                            </div> -->
                                             <!-- <div
                                           class="flex items-center bg-[#fff] py-1 px-2 w-auto whitespace-nowrap rounded"
                                       >
@@ -668,31 +632,7 @@
                                           }}</span>
                                       </div> -->
                                         </div>
-                                        <div
-                                            class="flex items-center py-1 px-2 w-auto whitespace-nowrap rounded mt-2"
-                                        >
-                                            <span
-                                                class="text-[#474d6a] font-bold mr-2 flex gap-2 items-center text-[14px]"
-                                            >
-                                                <svg
-                                                    stroke="currentColor"
-                                                    fill="currentColor"
-                                                    stroke-width="0"
-                                                    viewBox="0 0 16 16"
-                                                    height="1em"
-                                                    width="1em"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                >
-                                                    <path
-                                                        d="M6.5 1A1.5 1.5 0 0 0 5 2.5V3H1.5A1.5 1.5 0 0 0 0 4.5v8A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 14.5 3H11v-.5A1.5 1.5 0 0 0 9.5 1h-3zm0 1h3a.5.5 0 0 1 .5.5V3H6v-.5a.5.5 0 0 1 .5-.5zm1.886 6.914L15 7.151V12.5a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5V7.15l6.614 1.764a1.5 1.5 0 0 0 .772 0zM1.5 4h13a.5.5 0 0 1 .5.5v1.616L8.129 7.948a.5.5 0 0 1-.258 0L1 6.116V4.5a.5.5 0 0 1 .5-.5z"
-                                                    ></path>
-                                                </svg>
-                                                Yrs of Exp:
-                                            </span>
-                                            <span class="text-[#474d6a]">{{
-                                                job.year_of_experience
-                                            }}</span>
-                                        </div>
+
 
                                         <div
                                             v-if="
@@ -705,21 +645,37 @@
                                             </button>
                                         </div>
 
-                                        <div v-if="isSeekerLogged == true">
+                                        <div
+                                            v-if="
+                                                isSeekerLogged == true &&
+                                                job.applied == false
+                                            "
+                                        >
                                             <button
-                                                class="bg-[red]"
-                                                @click="openModel"
+                                                class="bg-blue-500"
+                                                @click="
+                                                    openModel(
+                                                        job.id,
+                                                        job.job_owner_id
+                                                    )
+                                                "
                                             >
                                                 Apply to this job
                                             </button>
                                         </div>
 
-                                        <div v-if="isSeekerLogged == true">
+                                        <div
+                                        class="text-right mt-2"
+                                            v-if="
+                                                isSeekerLogged == true &&
+                                                job.applied == true
+                                            "
+                                        >
                                             <button
-                                                class="bg-[red]"
+                                                class="py-2 px-4 rounded-lg text-white bg-blue-600"
                                                 @click="openModel"
                                             >
-                                            Applied
+                                                Applied
                                             </button>
                                         </div>
                                         <div
@@ -731,126 +687,6 @@
                                             <button class="bg-[red]">
                                                 Edit
                                             </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div v-if="isActive">
-                                    <div
-                                        class="fixed inset-0 bg-black bg-opacity-40 z-30"
-                                    >
-                                        <div
-                                            class="w-full h-full flex justify-center items-center"
-                                        >
-                                            <div
-                                                class="max-w-[700px] w-full rounded-lg bg-[#d3ddff] p-5 relative"
-                                            >
-                                                <div
-                                                    class="absolute top-3 right-5 cursor-pointer"
-                                                    @click="openModel"
-                                                >
-                                                    x
-                                                </div>
-                                                <div>
-                                                    <div
-                                                        class="text-xl font-semibold text-center mb-5"
-                                                    >
-                                                        Resume
-                                                    </div>
-                                                    <div
-                                                        class="flex items-center mb-5"
-                                                    >
-                                                        <div
-                                                            class="text-black font-semibold mr-3"
-                                                        >
-                                                            Resume :
-                                                            <span
-                                                                v-if="
-                                                                    isEmployerLogged ||
-                                                                    isSeekerLogged
-                                                                "
-                                                                class="text-[#474d6a]"
-                                                                >{{
-                                                                    resume
-                                                                }}</span
-                                                            >
-                                                        </div>
-                                                        <div class="flex-grow">
-                                                            <span
-                                                                class="text-[#474d6a]"
-                                                            ></span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="mb-5">
-                                                        <div
-                                                            class="flex items-center mb-2"
-                                                        >
-                                                            <div
-                                                                class="text-black font-semibold mr-3"
-                                                            >
-                                                                Replace Resume :
-                                                            </div>
-                                                            <div
-                                                                class="border border-gray-400 rounded-lg p-2 flex-grow"
-                                                            >
-                                                                <input
-                                                                    type="file"
-                                                                    id="file"
-                                                                    class="w-full"
-                                                                    @change="
-                                                                        image_details
-                                                                    "
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                        <div class="text-xs">
-                                                            ( Lorem ipsum dolor
-                                                            sit, amet
-                                                            consectetur
-                                                            adipisicing elit.
-                                                            Ut, magni. )
-                                                        </div>
-                                                    </div>
-                                                    <div class="mb-5">
-                                                        <div
-                                                            class="text-black font-semibold mr-3 mb-2"
-                                                        >
-                                                            Cover Letter or
-                                                            Additional Note to
-                                                            the Employer
-                                                        </div>
-                                                        <textarea
-                                                            name="textfield"
-                                                            id=""
-                                                            cols="60"
-                                                            rows="5"
-                                                            class="border border-black rounded-lg"
-                                                            v-model="
-                                                                cover_letter
-                                                            "
-                                                        ></textarea>
-                                                    </div>
-                                                    <div
-                                                        class="flex justify-end"
-                                                    >
-                                                        <div>
-                                                            <button
-                                                                class="bg-blue-400 px-5 mr-3 py-3 rounded-xl text-white"
-                                                                @click="
-                                                                    jobmail(
-                                                                        job.job_owner_id
-                                                                    )
-                                                                "
-                                                            >
-                                                                Apply</button
-                                                            ><button
-                                                                class="bg-red-400 px-5 py-3 rounded-xl text-white"
-                                                            >
-                                                                Cancel
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -1024,12 +860,106 @@
             </div>
         </div>
         <div
-            class="absolute inset-0 flex items-center justify-center"
+            class="absolute inset-0 flex items-center justify-center z-10"
             v-if="isLoading"
         >
             <div
                 class="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"
             ></div>
+        </div>
+        <div v-if="isActive">
+            <div class="fixed inset-0 bg-black bg-opacity-40 z-5">
+                <div class="w-full h-full flex justify-center items-center">
+                    <div
+                        class="max-w-[700px] w-full rounded-lg bg-[#d3ddff] p-5 relative"
+                    >
+                        <div
+                            class="absolute top-3 right-5 cursor-pointer"
+                            @click="openModel()"
+                        >
+                            x
+                        </div>
+                        <div>
+                            <div class="text-xl font-semibold text-center mb-5">
+                                Resume
+                            </div>
+                            <div class="flex items-center mb-5">
+                                <div class="text-black font-semibold mr-3">
+                                    Resume :
+                                    <span
+                                        v-if="
+                                            isEmployerLogged || isSeekerLogged
+                                        "
+                                        class="text-[#474d6a]"
+                                        >{{ resume }}</span
+                                    >
+                                </div>
+                                <div class="">
+                                    <span
+                                        class="text-blue-500 underline cursor-pointer"
+                                        @click="downloadPDF"
+                                        >Download</span
+                                    >
+                                </div>
+                            </div>
+                            <div class="mb-5">
+                                <div class="flex items-center mb-2">
+                                    <div class="text-black font-semibold mr-3">
+                                        Replace Resume :
+                                    </div>
+                                    <div
+                                        class="border border-gray-400 rounded-lg p-2 flex-grow"
+                                    >
+                                        <input
+                                            type="file"
+                                            id="file"
+                                            class="w-full"
+                                            @change="image_details"
+                                        />
+                                    </div>
+                                </div>
+                                <div class="text-xs">
+                                    ( Lorem ipsum dolor sit, amet consectetur
+                                    adipisicing elit. Ut, magni. )
+                                </div>
+                            </div>
+                            <div class="mb-5">
+                                <div class="text-black font-semibold mr-3 mb-2">
+                                    Cover Letter or Additional Note to the
+                                    Employer
+                                </div>
+                                <textarea
+                                    name="textfield"
+                                    id=""
+                                    cols="60"
+                                    rows="5"
+                                    class="border border-black rounded-lg"
+                                    v-model="cover_letter"
+                                ></textarea>
+                            </div>
+                            <div class="flex justify-end">
+                                <div>
+                                    <button
+                                        class="bg-blue-400 px-5 mr-3 py-3 rounded-xl text-white"
+                                        @click="
+                                            jobmail(
+                                                jobOriginalId,
+                                                jobOriginalEmployerId
+                                            )
+                                        "
+                                    >
+                                        Apply</button
+                                    ><button
+                                        class="bg-red-400 px-5 py-3 rounded-xl text-white" @click="openModel()"
+                                    >
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -1086,6 +1016,9 @@ export default {
         const employer_id = ref("");
         const someCountry = ref([]);
         const file = ref("");
+        const seekerLoggedId = ref("");
+        const jobOriginalId = ref("");
+        const jobOriginalEmployerId = ref("");
 
         someCountry.value = [
             {
@@ -1244,7 +1177,30 @@ export default {
                     console.error(error);
                 });
         });
+        const downloadPDF = async() => {
+            const seeker_id = localStorage.getItem("seeker_id");
+            const response = await axios.post(`${apiUrl}/seeker-profile`, {
+                seeker_id,
+            });
+            console.log("response", response);
+            resume.value = response.data.seeker_details.resume;
+            const fileName = resume.value;
+            const fileUrl = `http://127.0.0.1:8000/pdf/${fileName}`;
 
+            // Create a temporary anchor element
+            const link = document.createElement("a");
+            link.href = fileUrl;
+            link.download = fileName;
+
+            // Append the link to the DOM (optional, but required for some browsers)
+            document.body.appendChild(link);
+
+            // Simulate a click on the link to trigger the download
+            link.click();
+
+            // Remove the link from the DOM after triggering the download
+            document.body.removeChild(link);
+        };
         const closeOtpModel = () => {
             showOtpModel.value = false;
         };
@@ -1256,8 +1212,10 @@ export default {
         const seekerLogin = () => {
             router.push("/seeker-login");
         };
-        const openModel = () => {
+        const openModel = (job_id, employer_id) => {
             isActive.value = !isActive.value;
+            jobOriginalId.value = job_id;
+            jobOriginalEmployerId.value = employer_id;
         };
         const fetchCountries = debounce(async () => {
             await axios
@@ -1306,22 +1264,20 @@ export default {
             console.log("response", response);
             resume.value = response.data.seeker_details.resume;
         };
-        getSeekerDeatails();
 
-        const jobmail = async (employer_id) => {
-            console.log('resume',  resume.value)
+        const jobmail = async (job_id, employer_id) => {
+            console.log("resume", job_id);
             // if(resume.value )
             try {
                 //const job_id = router.params.id;
                 console.log("jobsjobs-==>>", jobs.value);
                 const seeker_id = localStorage.getItem("seeker_id");
-                const id = jobs.value[0].id;
                 const formData = new FormData();
                 formData.append("pdf", file.value ? file.value : resume.value);
                 formData.append("employer_id", employer_id);
                 formData.append("seeker_id", seeker_id);
-                formData.append("id", id);
-
+                formData.append("id", job_id);
+                isLoading.value = true;
                 await axios
                     .post(`${apiUrl}/apply-job-email`, formData, {
                         headers: {
@@ -1330,6 +1286,9 @@ export default {
                     })
                     .then((response) => {
                         console.log(response);
+                        isLoading.value = false;
+
+                        window.location.reload();
                     })
                     .catch((error) => {
                         console.error(error);
@@ -1424,6 +1383,16 @@ export default {
 
                 jobStatus.value = true;
                 jobs.value = response.data;
+                jobs.value.forEach((job) => {
+                    job.applied = false;
+
+                    job.seekerdata.forEach((job_apply) => {
+                        if (job_apply.seeker_id == seekerLoggedId.value) {
+                            job.applied = true;
+                        }
+                    });
+                });
+
                 console.log(jobs.value, "asdasdas");
             } catch (error) {
                 console.error(error);
@@ -1449,12 +1418,20 @@ export default {
             countries_state.value = someCountry.value;
 
             console.log(countries_state.value, "countries_state");
-            // getSeekerDeatails();
+            const seeker_id = localStorage.getItem("seeker_id");
+            if (seeker_id != null) {
+                getSeekerDeatails();
+            }
+            seekerLoggedId.value = localStorage.getItem("seeker_id");
             fetchCountries();
             fetchJobs();
             employer_id.value = localStorage.getItem("employer_id");
         });
         return {
+            downloadPDF,
+            jobOriginalId,
+            jobOriginalEmployerId,
+            seekerLoggedId,
             file,
             image_details,
             cover_letter,

@@ -17,7 +17,7 @@ class AdminJobController extends Controller
      */
     public function index(Request $request)
     {
-        $adminJobs= AdminJob::query();
+        $adminJobs= AdminJob::with('seekerdata');
 
         // $query = AdminJob::orderBy('created_at', 'DESC');
         // $adminJobs = $query->get();
@@ -123,6 +123,9 @@ class AdminJobController extends Controller
             'technical_skill' => 'nullable|string',
             'job_owner_id' => 'required|integer',
         ]);
+
+        $job = AdminJob::create($validatedData);
+
         $job_title = $request->job_title;
         $detailed_description = $request->detailed_description;
         $location = $request->country;
@@ -135,12 +138,10 @@ class AdminJobController extends Controller
             $additional_detail = $request->additional_detail;
         }
 
-        $job = AdminJob::create($validatedData);
-
         $subscription_data = Subscription::with('seeker')
-                ->where('skill','LIKE','%'.$request->skill.'%')
-                ->orWhere('skill','LIKE','%'.$request->job_title.'%')
-                ->get();
+        ->where('skill','LIKE','%'.$request->skill.'%')
+        ->orWhere('skill','LIKE','%'.$request->job_title.'%')
+        ->get();
         if(isset($subscription_data))
         {
 
@@ -228,7 +229,7 @@ class AdminJobController extends Controller
 
     public function employerJob($id)
     {
-        $job = AdminJob::where('job_owner_id',$id)->get();
+        $job = AdminJob::where('job_owner_id',$id)->where('created_at', '>', now()->subDays(60)->endOfDay())->get();
         return response()->json($job, 200);
     }
 }

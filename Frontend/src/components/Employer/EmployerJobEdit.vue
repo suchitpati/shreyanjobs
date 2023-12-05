@@ -662,7 +662,7 @@ export default {
       short_description.value = response.data.short_description;
       detailed_description.value = response.data.detailed_description;
       additional_detail.value = response.data.additional_detail;
-      technical_skill.value = response.data.additechnical_skilltional_detail;
+      technical_skill.value = response.data.technical_skill;
       selectedCountry.value = response.data.country;
       employment_type.value = response.data.employment_type;
       console.log(selectedCountry.value, "selectedCountryoutside");

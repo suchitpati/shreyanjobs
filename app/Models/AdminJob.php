@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class AdminJob extends Model
 {
     use HasFactory;
+    protected $table = "admin_jobs";
 
     protected $fillable = [
         'country',
@@ -27,4 +28,9 @@ class AdminJob extends Model
         'technical_skill',
         'job_owner_id'
     ];
+
+    public function seekerdata()
+    {
+            return $this->hasMany(SeekerJobApplication::class,'job_id','id');
+    }
 }
