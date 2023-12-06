@@ -6,6 +6,7 @@ use App\Http\Controllers\CountryController;
 use App\Http\Controllers\EmployerController;
 use App\Http\Controllers\SeekerController;
 use App\Http\Controllers\UserSubscriptionController;
+use App\Http\Controllers\UserJobApplication;
 use App\Models\Seeker;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -31,6 +32,9 @@ Route::post('admin/login', [AdminController::class, 'login']);
 Route::post('sendOtp', [UserSubscriptionController::class, 'sendOtp']);
 Route::post('addSubscriber', [UserSubscriptionController::class, 'addSubscriber']);
 
+//UserJobApplication
+Route::post('UserJobApplication',[UserJobApplication::class,'UserJobApplication']);
+
 //Seeker Routes
 
 
@@ -49,7 +53,7 @@ Route::post('/seeker-skill', [SeekerController::class, 'seeker_skill']);
 Route::post('/seeker-skill-add', [SeekerController::class, 'seeker_addskill']);
 Route::post('/seeker-skill-delete', [SeekerController::class, 'seeker_deleteskill']);
 Route::post('/seeker-update-password',[SeekerController::class,'updatePassword']);
-
+Route::post('/apply-job-email',[SeekerController::class,'applyJobMail']);
 
 
 
@@ -59,10 +63,11 @@ Route::post('/seeker-update-password',[SeekerController::class,'updatePassword']
 
 Route::group(['middleware' => ['auth:sanctum']], function() {
     Route::post('/employer-logout',[EmployerController::class,'logout']);
-Route::post('/seeker-logout', [SeekerController::class, 'seekerLogout']);
-Route::post('/employer-profile', [EmployerController::class, 'employe_profile']);
+    Route::post('/seeker-logout', [SeekerController::class, 'seekerLogout']);
+    Route::post('/employer-profile', [EmployerController::class, 'employe_profile']);
 
-  });
+});
+Route::resource('admin-jobs', AdminJobController::class);
 Route::post('/employer-register', [EmployerController::class, 'employe_register']);
 Route::post('/verify-register-otp', [EmployerController::class, 'verifyRegisterOtp']);
 Route::post('/employer-login',[EmployerController::class,'login']);
@@ -84,7 +89,6 @@ Route::post('admin/passwordChange/{id}', [AdminController::class, 'changePasswor
 Route::get('admin/getAdmin', [AdminController::class, 'getAdmin'])->middleware('auth:sanctum');
 
 
-Route::resource('admin-jobs', AdminJobController::class);
 Route::get('/employer-job/{id}', [AdminJobController::class, 'employerJob']);
 
 Route::get('/countries', [CountryController::class, 'index']);

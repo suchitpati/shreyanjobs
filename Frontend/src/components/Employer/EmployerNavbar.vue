@@ -150,7 +150,8 @@ export default {
       router.push("/add-job");
     };
     const searchResume = async () => {
-      router.push("/employer-dashboard");
+
+      router.push("/employer-job-view");
     };
     const home = async () => {
       router.push("/");
@@ -161,6 +162,7 @@ export default {
     };
 
     return {
+
       isDropdown,
       toggleDropdown,
       searchResume,

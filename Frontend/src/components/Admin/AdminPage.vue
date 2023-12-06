@@ -22,10 +22,13 @@
 
     <div class="bg-[#ebf4ff] py-0 h-[calc(100vh-80px)] overflow-y-auto">
       <div class="max-w-[1080px] w-full mx-auto px-[20px]">
-        <h1
-          class="text-[#1890da] sm:text-[26px] text-[22px] font-semibold mt-[0px] sm:mb-[0px] mb-[25px]"
-        >
-          Post a Job         </h1>
+        <div class="flex justify-between items-center mb-5">
+            <h1
+            class="text-[#1890da] sm:text-[26px] text-[22px] font-semibold mt-[0px] sm:mb-[0px] mb-[25px]"
+            >
+            Post a Job         </h1>
+            <div class=" text-[#1890da] sm:text-[26px] text-[22px] font-semibold mt-[0px] sm:mb-[0px] mb-[25px] cursor-pointer underline"> <router-link to="/employer-job-view">View/ Edit Past Jobs</router-link>  </div>
+        </div>
         <span  v-if="addJobMessageStatus === 'true'" class="text-green-600"
           >Your job was posted successfully and can be viewed in the home
           page.</span

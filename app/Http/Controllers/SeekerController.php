@@ -4,12 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Mail\SeekerOtp;
 use App\Mail\SeekerOtpMail;
+use App\Models\Employer;
 use App\Models\Seeker;
+use App\Models\AdminJob;
 use App\Models\Subscription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\SeekerMail;
+use App\Models\SeekerJobApplication;
+use App\Models\UserJobApplication;
+use Illuminate\Support\Facades\File;
+
+use Exception;
 
 class SeekerController extends Controller
 {
@@ -413,5 +421,63 @@ class SeekerController extends Controller
         $user->tokens()->where('name', 'SeekerToken')->delete();
 
         return response()->json(['message' => 'Logged out successfully'], 200);
+    }
+    public function applyJobMail(Request $request){
+
+        $employer = Employer::find($request->employer_id);
+        $Seeker = Seeker::find($request->seeker_id);
+        $adminjob = AdminJob::find($request->id);
+        if($request->file('pdf'))
+        {
+
+            $allowedExtensions = ['pdf', 'doc', 'docx'];
+            $path = public_path('pdf');
+            $fileName = time() . '.' . $request->file('pdf')->getClientOriginalExtension();
+            $resume = $request->file('pdf')->move(public_path('pdf'), $fileName);
+
+            $resume->move($path, $fileName);
+
+            $resume_file = $path . '/' . $fileName;
+        }
+        else
+        {
+            $path = public_path('pdf');
+
+            $resume_file = $path . '/' . $Seeker->resume;
+
+        }
+
+        // $applyjobdata = [
+        //     'job_title' => 'mail from Shreyanjobs',
+        // ];
+
+        $job_title = $adminjob->job_title;
+        $fullname = $Seeker->fullname;
+        $employername = $employer->employername;
+        $city = $adminjob->city;
+        $country = $adminjob->country;
+        $detailed_description = $adminjob->detailed_description;
+        $state = $adminjob->state;
+
+
+        $additional_detail = $adminjob->additional_detail;
+
+
+        try {
+
+            Mail::to($employer->emailid)->send(new SeekerMail($job_title,$fullname, $employername, $city, $country, $additional_detail,$resume_file,$detailed_description,$state));
+            File::delete($resume_file);
+
+            SeekerJobApplication::create(['seeker_id' => $request->seeker_id,'job_id'=>$request->id]);
+            return response()->json([
+                'message' => 'Email send successfully',
+            ]);
+        } catch (Exception $e) {
+
+            return response()->json([
+                'message' => 'Please try agian letter',
+                'error' => $e,
+            ]);
+        }
     }
 }
