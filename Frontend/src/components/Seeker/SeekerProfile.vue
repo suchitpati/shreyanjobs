@@ -18,7 +18,7 @@
     <SeekerNavbar />
     <div class="text-right pr-[105px] bg-[#ebf4ff] text-[18px]">Welcome,{{fullname}}</div>
 
-    <div class="bg-[#ebf4ff] py-7 h-[calc(100vh-80px)] overflow-y-auto">
+    <div class="bg-[#ebf4ff] py-7 ">
       <div class="max-w-[1080px] w-full mx-auto px-[20px]">
         <!-- <h1
                       class="text-[#1890da] sm:text-[26px] text-[22px] font-semibold mt-[30px] sm:mb-[40px] mb-[25px]"
@@ -402,7 +402,13 @@
                   for="field1"
                 >
                   Resume
+                                    <span
+                                        class="text-blue-500 underline cursor-pointer ml-4"
+                                        @click="downloadPDF"
+                                        >Download</span
+                                    >
                 </label>
+
                 <input
                   class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
                   type="file"
@@ -482,6 +488,7 @@
       class="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"
     ></div>
   </div>
+  <FooterPage/>
   </div>
 </template>
 
@@ -494,11 +501,13 @@ import SuccessModal from "../SuccessModal.vue";
 import { debounce } from "lodash";
 import { State } from "country-state-city";
 import SeekerNavbar from "../Seeker/SeekerNavbar.vue";
+import FooterPage from "../FooterPage.vue";
 
 export default {
   components: {
     SuccessModal,
     SeekerNavbar,
+    FooterPage,
   },
   setup() {
     const data = reactive({});
@@ -681,6 +690,33 @@ export default {
           console.error(error);
         });
     });
+
+
+    const downloadPDF = async() => {
+            const seeker_id = localStorage.getItem("seeker_id");
+            const response = await axios.post(`${apiUrl}/seeker-profile`, {
+                seeker_id,
+            });
+            console.log("response", response);
+            resume.value = response.data.seeker_details.resume;
+            const fileName = resume.value;
+            const fileUrl = `http://127.0.0.1:8000/pdf/${fileName}`;
+
+            // Create a temporary anchor element
+            const link = document.createElement("a");
+            link.href = fileUrl;
+            link.download = fileName;
+
+            // Append the link to the DOM (optional, but required for some browsers)
+            document.body.appendChild(link);
+
+            // Simulate a click on the link to trigger the download
+            link.click();
+
+            // Remove the link from the DOM after triggering the download
+            document.body.removeChild(link);
+        };
+
 
     const getSeekerDeatails = async () => {
       const seeker_id = localStorage.getItem("seeker_id");
@@ -943,6 +979,7 @@ export default {
     });
 
     return {
+        downloadPDF,
         updateSeekerProfileMessageStatus,
         updateSeekerProfileMessage,
         isLoading,

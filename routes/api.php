@@ -63,10 +63,11 @@ Route::post('/apply-job-email',[SeekerController::class,'applyJobMail']);
 
 Route::group(['middleware' => ['auth:sanctum']], function() {
     Route::post('/employer-logout',[EmployerController::class,'logout']);
-Route::post('/seeker-logout', [SeekerController::class, 'seekerLogout']);
-Route::post('/employer-profile', [EmployerController::class, 'employe_profile']);
+    Route::post('/seeker-logout', [SeekerController::class, 'seekerLogout']);
+    Route::post('/employer-profile', [EmployerController::class, 'employe_profile']);
 
-  });
+});
+Route::resource('admin-jobs', AdminJobController::class);
 Route::post('/employer-register', [EmployerController::class, 'employe_register']);
 Route::post('/verify-register-otp', [EmployerController::class, 'verifyRegisterOtp']);
 Route::post('/employer-login',[EmployerController::class,'login']);
@@ -88,7 +89,6 @@ Route::post('admin/passwordChange/{id}', [AdminController::class, 'changePasswor
 Route::get('admin/getAdmin', [AdminController::class, 'getAdmin'])->middleware('auth:sanctum');
 
 
-Route::resource('admin-jobs', AdminJobController::class);
 Route::get('/employer-job/{id}', [AdminJobController::class, 'employerJob']);
 
 Route::get('/countries', [CountryController::class, 'index']);

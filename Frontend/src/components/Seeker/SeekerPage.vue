@@ -640,7 +640,7 @@
                                                 isEmployerLogged == false
                                             "
                                         >
-                                            <button class="bg-[red]">
+                                            <button class="py-2 px-4 rounded-lg text-white bg-blue-600">
                                                 Login To apply
                                             </button>
                                         </div>
@@ -652,7 +652,7 @@
                                             "
                                         >
                                             <button
-                                                class="bg-blue-500"
+                                                class="py-2 px-4 rounded-lg text-white bg-blue-600"
                                                 @click="
                                                     openModel(
                                                         job.id,
@@ -673,7 +673,7 @@
                                         >
                                             <button
                                                 class="py-2 px-4 rounded-lg text-white bg-blue-600"
-                                                @click="openModel"
+
                                             >
                                                 Applied
                                             </button>
@@ -684,9 +684,11 @@
                                                 employer_id == job.job_owner_id
                                             "
                                         >
-                                            <button class="bg-[red]">
-                                                Edit
-                                            </button>
+                                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:shadow-outline" >
+
+<router-link :to="'/employer-job-edit/' + job.id">Edit</router-link>
+</button>
+
                                         </div>
                                     </div>
                                 </div>
@@ -919,8 +921,7 @@
                                     </div>
                                 </div>
                                 <div class="text-xs">
-                                    ( Lorem ipsum dolor sit, amet consectetur
-                                    adipisicing elit. Ut, magni. )
+                                    ( Only Doc,docx & pdf file extantion are allowed,Files must be less than 3 MB )
                                 </div>
                             </div>
                             <div class="mb-5">
@@ -962,6 +963,7 @@
             </div>
         </div>
     </div>
+
 </template>
 
 <script>
@@ -971,10 +973,10 @@ import apiUrl from "../../api";
 import { debounce } from "lodash";
 import moment from "moment";
 import { State } from "country-state-city";
-
 import axios from "axios";
 
 export default {
+
     setup() {
         const cover_letter = ref("");
         const resume = ref("");
