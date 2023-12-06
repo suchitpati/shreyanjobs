@@ -17,7 +17,7 @@ class AdminJobController extends Controller
      */
     public function index(Request $request)
     {
-        $adminJobs= AdminJob::with('seekerdata');
+        $adminJobs = AdminJob::with('seekerdata');
 
         // $query = AdminJob::orderBy('created_at', 'DESC');
         // $adminJobs = $query->get();
@@ -32,7 +32,7 @@ class AdminJobController extends Controller
         });
 
         $adminJobs->when($request->has('remote'), function ($adminJobs) use ($request) {
-            $adminJobs->where('remote', $request->remote == 'true'? true: false);
+            $adminJobs->where('remote', $request->remote == 'true' ? true : false);
         });
 
         $adminJobs->when($request->has('skill'), function ($adminJobs) use ($request) {
@@ -133,8 +133,7 @@ class AdminJobController extends Controller
         $skill = $request->skill;
         $additional_detail = "No additional detail";
 
-        if(isset($request->additional_detail))
-        {
+        if (isset($request->additional_detail)) {
             $additional_detail = $request->additional_detail;
         }
 
@@ -142,17 +141,16 @@ class AdminJobController extends Controller
         ->where('skill','LIKE','%'.$request->skill.'%')
         ->orWhere('skill','LIKE','%'.$request->job_title.'%')
         ->get();
-        if(isset($subscription_data))
-        {
 
-            foreach($subscription_data as $sub)
-            {
+        if (isset($subscription_data)) {
 
-                SendJobNotification::dispatch($sub->seeker->email,$job_title,$detailed_description,$location,$duration,$skill,$additional_detail);
+            foreach ($subscription_data as $sub) {
+
+                SendJobNotification::dispatch($sub->seeker->email, $job_title, $detailed_description, $location, $duration, $skill, $additional_detail);
             }
         }
 
-            // SendJobNotification::dispatch($subscription_data,$request->job_title);
+        // SendJobNotification::dispatch($subscription_data,$request->job_title);
 
         return response()->json($subscription_data, 201);
     }
@@ -229,7 +227,7 @@ class AdminJobController extends Controller
 
     public function employerJob($id)
     {
-        $job = AdminJob::where('job_owner_id',$id)->where('created_at', '>', now()->subDays(60)->endOfDay())->get();
+        $job = AdminJob::where('job_owner_id', $id)->where('created_at', '>', now()->subDays(60)->endOfDay())->get();
         return response()->json($job, 200);
     }
 }

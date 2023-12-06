@@ -7,7 +7,7 @@
        <div class=" bg-[#ebf4ff]">
 
 
-        View Past Jobs
+       <div class="text-[#1890da] sm:text-[26px] text-[22px] font-semibold mt-[0px] sm:mb-[0px] mb-[25px] cursor-pointer "> View Past Jobs</div>
         <div class="max-w-[1080px] gap-6 w-full px mx-auto">
           <!-- Form with two parts -->
 
