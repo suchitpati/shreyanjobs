@@ -401,7 +401,8 @@
                   class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
                   for="field1"
                 >
-                  Resume
+                  Resume : {{ resume }}
+
                                     <span
                                         class="text-blue-500 underline cursor-pointer ml-4"
                                         @click="downloadPDF"
@@ -415,10 +416,14 @@
                   id="file"
                   @change="image_details"
                 />
+                <div class="text-xs text-left text-gray-500">
+                    ( Only Doc,docx & pdf file extantion are allowed,Files must be less than 3 MB )
+                </div>
                 <!-- <a href="https://www.shreyanjobs.com/public/pdf/1699523056.pdf" target="_blank">resume</a> -->
 
-                {{ resume }}
+
               </div>
+
             </div>
             <button
               class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-8 mb-4 mt-4 rounded-full focus:outline-none focus:shadow-outline"
@@ -694,13 +699,14 @@ export default {
 
     const downloadPDF = async() => {
             const seeker_id = localStorage.getItem("seeker_id");
+
             const response = await axios.post(`${apiUrl}/seeker-profile`, {
-                seeker_id,
+            seeker_id,
             });
             console.log("response", response);
             resume.value = response.data.seeker_details.resume;
             const fileName = resume.value;
-            const fileUrl = `http://127.0.0.1:8000/pdf/${fileName}`;
+            const fileUrl = `https://shreyanjobs.com/backend/public/pdf/${fileName}`;
 
             // Create a temporary anchor element
             const link = document.createElement("a");

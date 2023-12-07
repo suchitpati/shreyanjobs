@@ -641,7 +641,8 @@
                                             "
                                         >
                                             <button class="py-2 px-4 rounded-lg text-white bg-blue-600">
-                                                Login To apply
+                                                <router-link to="/seeker-login"> Login To apply</router-link>
+
                                             </button>
                                         </div>
 
@@ -1187,7 +1188,7 @@ export default {
             console.log("response", response);
             resume.value = response.data.seeker_details.resume;
             const fileName = resume.value;
-            const fileUrl = `http://127.0.0.1:8000/pdf/${fileName}`;
+            const fileUrl = `https://shreyanjobs.com/backend/public/pdf/${fileName}`;
 
             // Create a temporary anchor element
             const link = document.createElement("a");
