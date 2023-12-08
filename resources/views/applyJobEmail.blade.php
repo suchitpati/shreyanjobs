@@ -8,11 +8,13 @@
 </head>
 <body>
 
-            Hi {{ $employername}},   <br>
-           Job Application for - From shreyanjobs.com for the below job.
+            Hi {{ $employername}},Job Application for - From shreyanjobs.com for the below job.
         <br>
         <br>
         <b>Applicant Name</b> : {{$fullname}}
+        <br>
+        <br>
+        Message from Applicant :{{  $cover_letter }}
         <br>
         <br>
          <b>Job Title</b> : {{ $job_title }} , Location : {{ $city,$state,$country}} or “Remote, {{ $country }}

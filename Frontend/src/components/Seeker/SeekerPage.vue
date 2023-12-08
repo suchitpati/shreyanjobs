@@ -23,30 +23,73 @@
                       </h1> -->
                     <div
                         v-if="isEmployerLogged == true"
-                        class="sm:w-full xs:w-auto w-[50%] xs:order-3 order-2 flex justify-end gap-[10px]"
+                        class="sm:w-full xs:w-auto w-[50%] xs:order-3 order-2 flex justify-end gap-[5px]"
                     >
-                        <router-link to="/employer-dashboard">
+
+                        <router-link to="/add-job">
                             <button
-                                class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[10px] py-[7px] px-[18px] md:px-[26px] rounded-[26px] focus:outline-none focus:shadow-outline"
+                                class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] focus:outline-none focus:shadow-outline"
                             >
-                                Portal
+                                Post Job
                             </button>
                         </router-link>
+                        <router-link to="/employer-job-view">
+                            <button
+                                class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] focus:outline-none focus:shadow-outline"
+                            >
+                            View/ Edit Jobs
+                            </button>
+                        </router-link>
+                        <router-link to="/employer-dashboard">
+                            <button
+                                class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] focus:outline-none focus:shadow-outline"
+                            >
+                            Search Resume
+                            </button>
+                        </router-link>
+                        <router-link to="/">
+                            <button
+                                class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] focus:outline-none focus:shadow-outline"
+                            >
+                            Job Search
+                            </button>
+                        </router-link>
+                        <router-link to="/employer-profile">
+                            <button
+                                class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] focus:outline-none focus:shadow-outline"
+                            >
+                            Profile
+                            </button>
+                        </router-link>
+
+                            <button @click = employerLogout
+                                class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] focus:outline-none focus:shadow-outline"
+                            >
+                            Logout
+                            </button>
                     </div>
                     <div
                         v-if="isSeekerLogged == true"
                         class="sm:w-full xs:w-auto w-[50%] xs:order-3 order-2 flex justify-end gap-[10px]"
                     >
+                    <router-link to="/">
+                            <button
+                                class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] focus:outline-none focus:shadow-outline"
+                            >
+                            Job Search
+                            </button>
+                        </router-link>
+
                         <router-link to="/seeker-profile">
                             <button
-                                class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[10px] py-[7px] px-[18px] md:px-[26px] rounded-[26px] focus:outline-none focus:shadow-outline"
+                                class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] focus:outline-none focus:shadow-outline"
                             >
                                 Profile
                             </button>
                         </router-link>
                         <button
                             @click="seekerLogout"
-                            class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max text-[#1890da] font-bold md:py-[10px] py-[7px] px-[18px] md:px-[26px] rounded-[26px] focus:outline-none focus:shadow-outline"
+                            class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max text-[#1890da] font-bold md:py-[5px] py-[7px] px-[18px] md:px-[26px] rounded-[26px] focus:outline-none focus:shadow-outline"
                         >
                             Logout
                         </button>
@@ -99,7 +142,7 @@
                         type="text"
                         v-model="searchInput"
                         @keyup.enter="fetchJobs"
-                        placeholder="Search jobs by skill of job Role"
+                        placeholder="Search jobs by skill or job Role"
                     />
                     <!-- @input="handleSearch" -->
 
@@ -295,7 +338,7 @@
                 >
                     <div class="text-start">
                         <h1 class="text-[#414552] text-[20px] font-semibold">
-                            Job Search Result
+                            Search Jobs by skill or Job Role
                         </h1>
                         <div v-if="jobStatus == false">
                             <p>Waiting for job listing</p>
@@ -391,7 +434,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-
                                         </div>
                                         <div class="flex items-center mt-2">
                                             <span
@@ -416,86 +458,88 @@
                                                 job.skill
                                             }}</span>
                                         </div>
-                                        <div class="flex items-center mt-2 gap-10">
-                                            <div
-                                                    class="flex items-center w-auto whitespace-nowrap rounded"
-                                                >
-                                                    <span
-                                                        class="text-[#474d6a] font-bold mr-2 flex gap-2 items-center text-[14px]"
-                                                    >
-                                                        <svg
-                                                            stroke="currentColor"
-                                                            fill="currentColor"
-                                                            stroke-width="0"
-                                                            viewBox="0 0 448 512"
-                                                            height="1em"
-                                                            width="1em"
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                        >
-                                                            <path
-                                                                d="M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm95.8 32.6L272 480l-32-136 32-56h-96l32 56-32 136-47.8-191.4C56.9 292 0 350.3 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-72.1-56.9-130.4-128.2-133.8z"
-                                                            ></path>
-                                                        </svg>
-                                                        Employment Type:
-                                                    </span>
-                                                    <span
-                                                        class="text-[#474d6a]"
-                                                        v-if="
-                                                            job.employment_type ==
-                                                            'contracttohire'
-                                                        "
-                                                        >Contract To Hire</span
-                                                    >
-                                                    <span
-                                                        class="text-[#474d6a]"
-                                                        v-if="
-                                                            job.employment_type ==
-                                                            'parttime'
-                                                        "
-                                                        >Part Time</span
-                                                    >
-                                                    <span
-                                                        class="text-[#474d6a]"
-                                                        v-if="
-                                                            job.employment_type ==
-                                                            'fulltime'
-                                                        "
-                                                        >Full Time</span
-                                                    >
-                                                    <span
-                                                        class="text-[#474d6a]"
-                                                        v-if="
-                                                            job.employment_type ==
-                                                            'contract'
-                                                        "
-                                                        >Contract</span
-                                                    >
-                                                </div>
-                                                <div
-                                            class="flex items-center w-auto whitespace-nowrap rounded"
+                                        <div
+                                            class="flex items-center mt-2 gap-10"
                                         >
-                                            <span
-                                                class="text-[#474d6a] font-bold mr-2 flex gap-2 items-center text-[14px]"
+                                            <div
+                                                class="flex items-center w-auto whitespace-nowrap rounded"
                                             >
-                                                <svg
-                                                    stroke="currentColor"
-                                                    fill="currentColor"
-                                                    stroke-width="0"
-                                                    viewBox="0 0 16 16"
-                                                    height="1em"
-                                                    width="1em"
-                                                    xmlns="http://www.w3.org/2000/svg"
+                                                <span
+                                                    class="text-[#474d6a] font-bold mr-2 flex gap-2 items-center text-[14px]"
                                                 >
-                                                    <path
-                                                        d="M6.5 1A1.5 1.5 0 0 0 5 2.5V3H1.5A1.5 1.5 0 0 0 0 4.5v8A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 14.5 3H11v-.5A1.5 1.5 0 0 0 9.5 1h-3zm0 1h3a.5.5 0 0 1 .5.5V3H6v-.5a.5.5 0 0 1 .5-.5zm1.886 6.914L15 7.151V12.5a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5V7.15l6.614 1.764a1.5 1.5 0 0 0 .772 0zM1.5 4h13a.5.5 0 0 1 .5.5v1.616L8.129 7.948a.5.5 0 0 1-.258 0L1 6.116V4.5a.5.5 0 0 1 .5-.5z"
-                                                    ></path>
-                                                </svg>
-                                                Yrs of Exp:
-                                            </span>
-                                            <span class="text-[#474d6a]">{{
-                                                job.year_of_experience
-                                            }}</span>
-                                        </div>
+                                                    <svg
+                                                        stroke="currentColor"
+                                                        fill="currentColor"
+                                                        stroke-width="0"
+                                                        viewBox="0 0 448 512"
+                                                        height="1em"
+                                                        width="1em"
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                    >
+                                                        <path
+                                                            d="M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm95.8 32.6L272 480l-32-136 32-56h-96l32 56-32 136-47.8-191.4C56.9 292 0 350.3 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-72.1-56.9-130.4-128.2-133.8z"
+                                                        ></path>
+                                                    </svg>
+                                                    Employment Type:
+                                                </span>
+                                                <span
+                                                    class="text-[#474d6a]"
+                                                    v-if="
+                                                        job.employment_type ==
+                                                        'contracttohire'
+                                                    "
+                                                    >Contract To Hire</span
+                                                >
+                                                <span
+                                                    class="text-[#474d6a]"
+                                                    v-if="
+                                                        job.employment_type ==
+                                                        'parttime'
+                                                    "
+                                                    >Part Time</span
+                                                >
+                                                <span
+                                                    class="text-[#474d6a]"
+                                                    v-if="
+                                                        job.employment_type ==
+                                                        'fulltime'
+                                                    "
+                                                    >Full Time</span
+                                                >
+                                                <span
+                                                    class="text-[#474d6a]"
+                                                    v-if="
+                                                        job.employment_type ==
+                                                        'contract'
+                                                    "
+                                                    >Contract</span
+                                                >
+                                            </div>
+                                            <div
+                                                class="flex items-center w-auto whitespace-nowrap rounded"
+                                            >
+                                                <span
+                                                    class="text-[#474d6a] font-bold mr-2 flex gap-2 items-center text-[14px]"
+                                                >
+                                                    <svg
+                                                        stroke="currentColor"
+                                                        fill="currentColor"
+                                                        stroke-width="0"
+                                                        viewBox="0 0 16 16"
+                                                        height="1em"
+                                                        width="1em"
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                    >
+                                                        <path
+                                                            d="M6.5 1A1.5 1.5 0 0 0 5 2.5V3H1.5A1.5 1.5 0 0 0 0 4.5v8A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 14.5 3H11v-.5A1.5 1.5 0 0 0 9.5 1h-3zm0 1h3a.5.5 0 0 1 .5.5V3H6v-.5a.5.5 0 0 1 .5-.5zm1.886 6.914L15 7.151V12.5a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5V7.15l6.614 1.764a1.5 1.5 0 0 0 .772 0zM1.5 4h13a.5.5 0 0 1 .5.5v1.616L8.129 7.948a.5.5 0 0 1-.258 0L1 6.116V4.5a.5.5 0 0 1 .5-.5z"
+                                                        ></path>
+                                                    </svg>
+                                                    Yrs of Exp:
+                                                </span>
+                                                <span class="text-[#474d6a]">{{
+                                                    job.year_of_experience
+                                                }}</span>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="flex-wrap">
@@ -633,16 +677,18 @@
                                       </div> -->
                                         </div>
 
-
                                         <div
                                             v-if="
                                                 isSeekerLogged == false &&
                                                 isEmployerLogged == false
                                             "
                                         >
-                                            <button class="py-2 px-4 rounded-lg text-white bg-blue-600">
-                                                <router-link to="/seeker-login"> Login To apply</router-link>
-
+                                            <button
+                                                class="py-2 px-4 rounded-lg text-white bg-blue-600"
+                                            >
+                                                <router-link to="/seeker-login">
+                                                    Login To apply</router-link
+                                                >
                                             </button>
                                         </div>
 
@@ -666,7 +712,7 @@
                                         </div>
 
                                         <div
-                                        class="text-right mt-2"
+                                            class="text-right mt-2"
                                             v-if="
                                                 isSeekerLogged == true &&
                                                 job.applied == true
@@ -674,7 +720,6 @@
                                         >
                                             <button
                                                 class="py-2 px-4 rounded-lg text-white bg-blue-600"
-
                                             >
                                                 Applied
                                             </button>
@@ -685,11 +730,17 @@
                                                 employer_id == job.job_owner_id
                                             "
                                         >
-                                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:shadow-outline" >
-
-<router-link :to="'/employer-job-edit/' + job.id">Edit</router-link>
-</button>
-
+                                            <button
+                                                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:shadow-outline"
+                                            >
+                                                <router-link
+                                                    :to="
+                                                        '/employer-job-edit/' +
+                                                        job.id
+                                                    "
+                                                    >Edit</router-link
+                                                >
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -707,7 +758,7 @@
                                             job.additional_detail
                                                 ? job.additional_detail.slice(
                                                       0,
-                                                      100
+                                                      200
                                                   )
                                                 : '-',
                                             50
@@ -922,7 +973,8 @@
                                     </div>
                                 </div>
                                 <div class="text-xs">
-                                    ( Only Doc,docx & pdf file extantion are allowed,Files must be less than 3 MB )
+                                    ( Only Doc,docx & pdf file extantion are
+                                    allowed,Files must be less than 3 MB )
                                 </div>
                             </div>
                             <div class="mb-5">
@@ -935,9 +987,17 @@
                                     id=""
                                     cols="60"
                                     rows="5"
+                                    maxlength="200"
                                     class="border border-black rounded-lg"
                                     v-model="cover_letter"
                                 ></textarea>
+                                <div class="text-end">
+                                    <span
+                                        class="text-blue-700 text-[16px] mr-[45px]"
+                                        >Characters left:
+                                        {{ remaining_cover_detail }}/200</span
+                                    >
+                                </div>
                             </div>
                             <div class="flex justify-end">
                                 <div>
@@ -952,7 +1012,8 @@
                                     >
                                         Apply</button
                                     ><button
-                                        class="bg-red-400 px-5 py-3 rounded-xl text-white" @click="openModel()"
+                                        class="bg-red-400 px-5 py-3 rounded-xl text-white"
+                                        @click="openModel()"
                                     >
                                         Cancel
                                     </button>
@@ -964,7 +1025,6 @@
             </div>
         </div>
     </div>
-
 </template>
 
 <script>
@@ -977,7 +1037,6 @@ import { State } from "country-state-city";
 import axios from "axios";
 
 export default {
-
     setup() {
         const cover_letter = ref("");
         const resume = ref("");
@@ -1022,6 +1081,7 @@ export default {
         const seekerLoggedId = ref("");
         const jobOriginalId = ref("");
         const jobOriginalEmployerId = ref("");
+        const remaining_cover_detail = ref(200);
 
         someCountry.value = [
             {
@@ -1180,7 +1240,7 @@ export default {
                     console.error(error);
                 });
         });
-        const downloadPDF = async() => {
+        const downloadPDF = async () => {
             const seeker_id = localStorage.getItem("seeker_id");
             const response = await axios.post(`${apiUrl}/seeker-profile`, {
                 seeker_id,
@@ -1280,6 +1340,7 @@ export default {
                 formData.append("employer_id", employer_id);
                 formData.append("seeker_id", seeker_id);
                 formData.append("id", job_id);
+                formData.append("cover_letter", cover_letter.value);
                 isLoading.value = true;
                 await axios
                     .post(`${apiUrl}/apply-job-email`, formData, {
@@ -1301,6 +1362,40 @@ export default {
             }
             // console.log("hffhff", employer_id);
         };
+
+        const employerLogout = async () => {
+      try {
+        const authToken = localStorage.getItem("employer_tocken");
+
+        if (!authToken) {
+          console.log("Authentication token is missing.");
+          return;
+        }
+
+        const config = {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        };
+        isLoading.value = true;
+        const response = await axios.post(
+          `${apiUrl}/employer-logout`,
+          null,
+          config
+        );
+        localStorage.removeItem("employer_tocken");
+        localStorage.removeItem("employer_id");
+        isLoading.value = false;
+
+        console.log(response.data,'responseresponse');
+        window.location.reload();
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+
         const seekerLogout = async () => {
             try {
                 const authToken = localStorage.getItem("seeker_tocken");
@@ -1416,6 +1511,16 @@ export default {
             }
         );
 
+        watch(cover_letter, (newValue) => {
+            if (cover_letter.value.length > 200) {
+                // Trim the excess characters
+                cover_letter.value = cover_letter.value.substring(0, 200);
+            }
+            if (newValue != null) {
+                remaining_cover_detail.value = 200 - newValue.length;
+            }
+        });
+
         onMounted(() => {
             // countries_state.value = Country.getAllCountries();
             countries_state.value = someCountry.value;
@@ -1431,6 +1536,8 @@ export default {
             employer_id.value = localStorage.getItem("employer_id");
         });
         return {
+            employerLogout,
+            remaining_cover_detail,
             downloadPDF,
             jobOriginalId,
             jobOriginalEmployerId,
