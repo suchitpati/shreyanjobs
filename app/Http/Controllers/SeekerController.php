@@ -427,6 +427,12 @@ class SeekerController extends Controller
         $employer = Employer::find($request->employer_id);
         $Seeker = Seeker::find($request->seeker_id);
         $adminjob = AdminJob::find($request->id);
+        $cover_letter = $request->cover_letter;
+        if($cover_letter == null  || $cover_letter == "")
+        {
+            $cover_letter = "-";
+        }
+
         if($request->file('pdf'))
         {
 
@@ -447,10 +453,6 @@ class SeekerController extends Controller
 
         }
 
-        // $applyjobdata = [
-        //     'job_title' => 'mail from Shreyanjobs',
-        // ];
-
         $job_title = $adminjob->job_title;
         $fullname = $Seeker->fullname;
         $employername = $employer->employername;
@@ -458,15 +460,16 @@ class SeekerController extends Controller
         $country = $adminjob->country;
         $detailed_description = $adminjob->detailed_description;
         $state = $adminjob->state;
-
-
         $additional_detail = $adminjob->additional_detail;
-
 
         try {
 
-            Mail::to($employer->emailid)->send(new SeekerMail($job_title,$fullname, $employername, $city, $country, $additional_detail,$resume_file,$detailed_description,$state));
-            File::delete($resume_file);
+            Mail::to($adminjob->email, $Seeker->email)->send(new SeekerMail($job_title,$fullname, $employername, $city, $country, $additional_detail,$resume_file,$detailed_description,$state, $cover_letter));
+            if($request->file('pdf'))
+            {
+
+                File::delete($resume_file);
+            }
 
             SeekerJobApplication::create(['seeker_id' => $request->seeker_id,'job_id'=>$request->id]);
             return response()->json([
