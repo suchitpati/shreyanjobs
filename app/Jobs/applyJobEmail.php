@@ -2,6 +2,8 @@
 
 namespace App\Jobs;
 
+
+use Illuminate\Support\Facades\File;
 use App\Mail\SeekerMail;
 use Exception;
 use Illuminate\Bus\Queueable;
@@ -37,8 +39,9 @@ class applyJobEmail implements ShouldQueue
     protected $remote;
     protected $email;
     protected $adminemail;
+    protected $fileStatus;
 
-    public function __construct($adminemail,$email,$job_title,$fullname,$employername,$city,$country,$additional_detail,$resume,$detailed_description,$state,$cover_letter,$emailid,$remote)
+    public function __construct($fileStatus,$adminemail,$email,$job_title,$fullname,$employername,$city,$country,$additional_detail,$resume,$detailed_description,$state,$cover_letter,$emailid,$remote)
     {
         Log::info('Email sent successfully.');
         $this->job_title = $job_title;
@@ -55,6 +58,11 @@ class applyJobEmail implements ShouldQueue
         $this->remote = $remote;
         $this->email = $email;
         $this->adminemail = $adminemail;
+        $this->fileStatus = $fileStatus;
+
+
+
+
 
     }
 
@@ -67,7 +75,15 @@ class applyJobEmail implements ShouldQueue
     {
         {
             try{
-                Mail::to('rsu.globaliasoft@gmail.com')->send(new SeekerMail($this->adminemail,$this->email,$this->job_title,$this->country,$this->fullname,$this->employername,$this->city,$this->additional_detail,$this->state,$this->detailed_description,$this->cover_letter,$this->emailid,$this->remote,$this->resume));
+                Mail::to($this->adminemail)->send(new SeekerMail($this->adminemail,$this->email,$this->job_title,$this->fullname,$this->employername,$this->city,$this->country,$this->additional_detail,$this->resume,$this->detailed_description,$this->state,$this->cover_letter,$this->emailid,$this->remote,));
+
+                $fileStatus = $this->fileStatus;
+                $resume = $this->resume;
+                if($fileStatus == 0)
+                {
+
+                    File::delete($resume);
+                }
 
             }
             catch(Exception $e)
@@ -78,4 +94,6 @@ class applyJobEmail implements ShouldQueue
 
         }
     }
+
 }
+
