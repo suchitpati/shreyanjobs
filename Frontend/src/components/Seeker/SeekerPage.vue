@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="relative">
         <!-- Rest of the form content -->
         <div>
             <p class="py-2">
@@ -160,9 +160,12 @@
                 </button>
             </div>
         </div>
-        <div class="max-w-[1080px] text-[12px] w-full m-auto text-right pr-3">
-            <div>For any issue in accessing shreyanjobs.com</div>
-            <div>please email to support@shreyanjobs.com</div>
+        <div class="max-w-[1080px] text-[12px] w-full m-auto pr-3">
+            <div class="m-auto p-auto text-center">
+                <span v-if="mailSentMessageStatus === 'true'" class="text-green-600 text-[16px]">Your resume has been submitted to the employer</span>
+            </div>
+            <div class="text-right">For any issue in accessing shreyanjobs.com</div>
+            <div class="text-right">please email to support@shreyanjobs.com</div>
         </div>
         <div class="bg-[linear-gradient(180deg,#f5f4fa,rgba(251,251,253,0))]">
             <div>
@@ -913,14 +916,7 @@
                 </button>
             </div>
         </div>
-        <div
-            class="absolute inset-0 flex items-center justify-center z-10"
-            v-if="isLoading"
-        >
-            <div
-                class="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"
-            ></div>
-        </div>
+
         <div v-if="isActive">
             <div class="fixed inset-0 bg-black bg-opacity-40 z-5">
                 <div class="w-full h-full flex justify-center items-center">
@@ -934,6 +930,7 @@
                             x
                         </div>
                         <div>
+                            <!-- <span v-if="mailSentMessageStatus === 'true'" class="text-green-600">Your resume has been submitted to the employer</span> -->
                             <div class="text-xl font-semibold text-center mb-5">
                                 Resume
                             </div>
@@ -1024,6 +1021,14 @@
                 </div>
             </div>
         </div>
+        <div
+            class="fixed inset-0 flex items-center justify-center z-10"
+            v-if="isLoading"
+        >
+            <div
+                class="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"
+            ></div>
+        </div>
     </div>
 </template>
 
@@ -1082,6 +1087,8 @@ export default {
         const jobOriginalId = ref("");
         const jobOriginalEmployerId = ref("");
         const remaining_cover_detail = ref(200);
+        const mailSentMessage = ref(false);
+        const mailSentMessageStatus = ref(false);
 
         someCountry.value = [
             {
@@ -1350,6 +1357,8 @@ export default {
                     })
                     .then((response) => {
                         console.log(response);
+                        localStorage.setItem('mailSentMessage',true);
+                        localStorage.setItem('mailSentMessageStatus',true);
                         isLoading.value = false;
 
                         window.location.reload();
@@ -1534,9 +1543,24 @@ export default {
             fetchCountries();
             fetchJobs();
             employer_id.value = localStorage.getItem("employer_id");
+
+            mailSentMessage.value = localStorage.getItem('mailSentMessage');
+            mailSentMessageStatus.value = localStorage.getItem('mailSentMessageStatus');
+
+        if(mailSentMessage.value &&  !mailSentMessageStatus.value )
+        {
+            localStorage.setItem('mailSentMessageStatus',true);
+        }
+
+        if(mailSentMessage.value   && mailSentMessageStatus )
+        {
+            localStorage.setItem('mailSentMessageStatus',false);
+        }
         });
         return {
             employerLogout,
+            mailSentMessageStatus,
+            mailSentMessage,
             remaining_cover_detail,
             downloadPDF,
             jobOriginalId,
