@@ -467,13 +467,17 @@ class SeekerController extends Controller
         $additional_detail = $adminjob->additional_detail;
         $email = $Seeker->email;
         $adminemail = $adminjob->email;
+        $fileStatus= 1;
         try {
-
-            applyJobEmail::dispatch($adminemail,$email,$job_title,$fullname, $employername, $city, $country, $additional_detail,$resume_file,$detailed_description,$state, $cover_letter,$emailid,$remote);
             if($request->file('pdf'))
             {
-                File::delete($resume_file);
+                $fileStatus = 0;
             }
+            applyJobEmail::dispatch($fileStatus,$adminemail,$email,$job_title,$fullname, $employername, $city, $country, $additional_detail,$resume_file,$detailed_description,$state, $cover_letter,$emailid,$remote);
+            // if($request->file('pdf'))
+            // {
+            //     File::delete($resume_file);
+            // }
 
             SeekerJobApplication::create(['seeker_id' => $request->seeker_id,'job_id'=>$request->id]);
             return response()->json([
