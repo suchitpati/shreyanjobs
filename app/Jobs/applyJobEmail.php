@@ -1,22 +1,28 @@
 <?php
 
-namespace App\Mail;
+namespace App\Jobs;
 
+use App\Mail\SeekerMail;
+use Exception;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Mail\Mailable;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
-class SeekerMail extends Mailable
+
+class applyJobEmail implements ShouldQueue
 {
-    use Queueable, SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
-     * Create a new message instance.
+     * Create a new job instance.
      *
      * @return void
      */
-    // protected $job_title;
     protected $resume;
     protected $fullname;
     protected $employername;
@@ -26,15 +32,15 @@ class SeekerMail extends Mailable
     protected $job_title;
     protected $state;
     protected $detailed_description;
-    protected  $cover_letter;
+    protected $cover_letter;
     protected $emailid;
     protected $remote;
     protected $email;
     protected $adminemail;
 
-
     public function __construct($adminemail,$email,$job_title,$fullname,$employername,$city,$country,$additional_detail,$resume,$detailed_description,$state,$cover_letter,$emailid,$remote)
     {
+        Log::info('Email sent successfully.');
         $this->job_title = $job_title;
         $this->resume = $resume;
         $this->detailed_description = $detailed_description;
@@ -53,13 +59,23 @@ class SeekerMail extends Mailable
     }
 
     /**
-     * Build the message.
+     * Execute the job.
      *
-     * @return $this
+     * @return void
      */
-    public function build()
+    public function handle()
     {
-        $subject = "Job Application for {$this->job_title} - From shreyanjobs.com";
-        return $this->view('applyJobEmail')->with(['adminemail'=>$this->adminemail,'job_title'=>$this->job_title,'country'=>$this->country,'fullname'=>$this->fullname,'employername'=>$this->employername,'city'=>$this->city,'additional_detail'=>$this->additional_detail,'state'=>$this->state,'detailed_description'=>$this->detailed_description,'cover_letter'=>$this->cover_letter,'emailid'=>$this->emailid,'remote'=>$this->remote])->attach($this->resume)->subject($subject)->cc($this->email);
+        {
+            try{
+                Mail::to('rsu.globaliasoft@gmail.com')->send(new SeekerMail($this->adminemail,$this->email,$this->job_title,$this->country,$this->fullname,$this->employername,$this->city,$this->additional_detail,$this->state,$this->detailed_description,$this->cover_letter,$this->emailid,$this->remote,$this->resume));
+
+            }
+            catch(Exception $e)
+            {
+                Log::error('Error sending email: ' . $e->getMessage());
+                dd($e);
+            }
+
+        }
     }
 }
