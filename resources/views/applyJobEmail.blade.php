@@ -8,16 +8,25 @@
 </head>
 <body>
 
-            Hi {{ $employername}},Job Application for - From shreyanjobs.com for the below job.
+        Hi,
         <br>
         <br>
-        <b>Applicant Name</b> : {{$fullname}}
+        Job Application for {{ $job_title }} From shreyanjobs.com for the below job.
         <br>
         <br>
-        Message from Applicant :{{  $cover_letter }}
+        <b>Applicant Name</b> : {{$fullname}} (Resume Attached)
         <br>
         <br>
-         <b>Job Title</b> : {{ $job_title }} , Location : {{ $city,$state,$country}} or “Remote, {{ $country }}
+        <b>Message from Applicant</b> :{{  $cover_letter }}
+        <br>
+        <br>
+        <b>Job Title</b> : {{ $job_title }} ,
+        @if($remote)
+                Location : Remote,  {{ $country }}
+            @else
+                Location : {{ $city }}, {{ $state }}, {{ $country }}
+        @endif
+
         <br>
         <br>
         <b>Additional detail</b>
@@ -29,7 +38,7 @@
         <br>
         {!! nl2br($detailed_description) !!}
         <br>
-        {{-- <h1>{{ $job_title['job_title'] }}</h1> --}}
+
 
 </body>
 </html>

@@ -16,7 +16,8 @@ use App\Mail\SeekerMail;
 use App\Models\SeekerJobApplication;
 use App\Models\UserJobApplication;
 use Illuminate\Support\Facades\File;
-
+use App\Jobs\applyJobEmail;
+use Illuminate\Support\Facades\Log;
 use Exception;
 
 class SeekerController extends Controller
@@ -427,6 +428,8 @@ class SeekerController extends Controller
         $employer = Employer::find($request->employer_id);
         $Seeker = Seeker::find($request->seeker_id);
         $adminjob = AdminJob::find($request->id);
+        $remote = $adminjob->remote;
+
         $cover_letter = $request->cover_letter;
         if($cover_letter == null  || $cover_letter == "")
         {
@@ -456,18 +459,19 @@ class SeekerController extends Controller
         $job_title = $adminjob->job_title;
         $fullname = $Seeker->fullname;
         $employername = $employer->employername;
+        $emailid = $employer->emailid;
         $city = $adminjob->city;
         $country = $adminjob->country;
         $detailed_description = $adminjob->detailed_description;
         $state = $adminjob->state;
         $additional_detail = $adminjob->additional_detail;
-
+        $email = $Seeker->email;
+        $adminemail = $adminjob->email;
         try {
 
-            Mail::to($adminjob->email, $Seeker->email)->send(new SeekerMail($job_title,$fullname, $employername, $city, $country, $additional_detail,$resume_file,$detailed_description,$state, $cover_letter));
+            applyJobEmail::dispatch($adminemail,$email,$job_title,$fullname, $employername, $city, $country, $additional_detail,$resume_file,$detailed_description,$state, $cover_letter,$emailid,$remote);
             if($request->file('pdf'))
             {
-
                 File::delete($resume_file);
             }
 
@@ -476,7 +480,7 @@ class SeekerController extends Controller
                 'message' => 'Email send successfully',
             ]);
         } catch (Exception $e) {
-
+            Log::error('Error in applying for job: ' . $e->getMessage());
             return response()->json([
                 'message' => 'Please try agian letter',
                 'error' => $e,
