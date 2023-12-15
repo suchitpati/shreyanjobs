@@ -318,12 +318,7 @@
                         >
                           {{ err_work_authorization }}
                         </div>
-                        <div
-                          class="text-red-600 block text-[14px] text-left"
-                          v-if="err_skill != ''"
-                        >
-                          {{ err_skill }}
-                        </div>
+
                       </div>
 
                       <div class="sm:w-[50%] mb-4">
@@ -443,6 +438,33 @@
                       </div>
                     </div>
                     <div
+                    class="w-full flex sm:flex-row flex-col justify-between sm:gap-6 gap-2"
+                  >
+                    <div class="sm:w-[100%] mb-4">
+                      <label
+                        class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
+                        for="field2"
+                      >
+                      Skill for Email Subscription
+                      </label>
+                      <input
+                        class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
+                        type="text"
+                        id="field1"
+                        v-model="skill"
+                        placeholder="Enter your skill"
+                      />
+                      <div
+                        class="text-red-600 block text-[14px] text-left"
+                        v-if="err_skill != ''"
+                      >
+                        {{ err_skill }}
+                      </div>
+                    </div>
+
+
+                  </div>
+                    <div
                       class="w-full flex sm:flex-row flex-col justify-between sm:gap-6 gap-2 items-center"
                     >
                       <div class="sm:w-[50%] mb-4">
@@ -546,7 +568,7 @@ export default {
     const selectedState = ref("");
     const selectedState_main = ref("");
 
-    const steps = ref(1);
+    const steps = ref(3);
     const enter_otp = ref("");
 
     const final_otp = ref("");
@@ -576,6 +598,8 @@ export default {
     const formContainer = ref(null);
     const isLoading = ref(false);
     const relocate = ref(0);
+    const skill = ref("");
+    const err_skill = ref("");
 
     const closeSuccessModal = () => {
       showSuccessModal.value = false;
@@ -775,6 +799,12 @@ export default {
       } else {
         err_secondary_experience.value = "";
       }
+      if (skill.value == null || skill.value == "") {
+        err_skill.value = "The skill field is required";
+        return false;
+      } else {
+        err_skill.value = "";
+      }
 
       if (
         parseInt(secondary_experience.value) < 0 ||
@@ -808,6 +838,7 @@ export default {
       formData.append("primary_experience", primary_experience.value);
       formData.append("secondary_skill", secondary_skill.value);
       formData.append("secondary_experience", secondary_experience.value);
+      formData.append("skill", skill.value);
       formData.append("seeker_id", seeker_id.value);
       formData.append("relocate", relocate.value);
 
@@ -877,6 +908,8 @@ export default {
     });
 
     return {
+        skill,
+        err_skill,
       isLoading,
       state,
       country,

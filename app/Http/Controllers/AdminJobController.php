@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Jobs\SendJobNotification;
 use App\Models\AdminJob;
+use App\Models\Employer;
+use App\Models\EmployerTransactionHistory;
 use App\Models\Subscription;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -126,6 +128,23 @@ class AdminJobController extends Controller
 
         $job = AdminJob::create($validatedData);
 
+        $employer = Employer::find($request->job_owner_id);
+        $begin_balance = $employer->acct_balance;
+        $end_balance = $employer->acct_balance - 0.50;
+
+        $employer->acct_balance = $end_balance;
+        $employer->save();
+
+
+
+        EmployerTransactionHistory::create([
+            'employer_id' =>$request->job_owner_id,
+            'begin_balance' =>$begin_balance,
+            'transaction_amount' => 0.50,
+            'end_balance' => $end_balance,
+            'transaction_date' => Carbon::now(),
+            'action_name' => 'Job Posting',
+        ]);
         $job_title = $request->job_title;
         $detailed_description = $request->detailed_description;
         $location = $request->country;

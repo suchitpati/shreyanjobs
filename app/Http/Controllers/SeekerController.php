@@ -17,6 +17,8 @@ use App\Models\SeekerJobApplication;
 use App\Models\UserJobApplication;
 use Illuminate\Support\Facades\File;
 use App\Jobs\applyJobEmail;
+use App\Models\EmployerTransactionHistory;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Exception;
 
@@ -89,12 +91,40 @@ class SeekerController extends Controller
                 ->where('is_active', 2)
                 ->get();
         } else {
-            $seeker_details = Seeker::where('is_active', 2)->get();
+            $seeker_details = Seeker::where('is_active', 2)->get(['id','fullname','primary_skill','primary_skill_experience','secondary_skill','secondary_skill_experience','city','state','country','relocate','work_authorization']);
         }
 
         return response()->json([
             'success' => 200,
             'seeker_details' => $seeker_details
+        ]);
+    }
+
+    public function seekerContactDetail($id,$employe_id)
+    {
+        $seeker = Seeker::where('id',$id)->get(['email','contact_number']);
+
+        $employer = Employer::find($employe_id);
+        $begin_balance = $employer->acct_balance;
+        $end_balance = $employer->acct_balance - 0.50;
+
+        $employer->acct_balance = $end_balance;
+        $employer->save();
+
+        EmployerTransactionHistory::create([
+            'employer_id' =>$employe_id,
+            'begin_balance' =>$begin_balance,
+            'transaction_amount' => 0.50,
+            'end_balance' => $end_balance,
+            'transaction_date' => Carbon::now(),
+            'action_name' => 'View Contact',
+            'job_seeker_id' => $id
+        ]);
+        return response()->json([
+            'message' => 'Details fetch successfully',
+            'success' => 200,
+            'seeker_details' => $seeker
+
         ]);
     }
 
@@ -232,6 +262,11 @@ class SeekerController extends Controller
                     'is_active' => 2
                 ]);
 
+
+                    Subscription::create([
+                        'seeker_id' => $request->seeker_id,
+                        'skill' => $request->skill,
+                    ]);
 
 
 

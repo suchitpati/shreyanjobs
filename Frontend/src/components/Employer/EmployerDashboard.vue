@@ -16,7 +16,9 @@
       </div>
     </div>
     <EmployerNev />
-    <div class="text-right pr-[105px] bg-[#ebf4ff] text-[18px]">Welcome,{{employername}}</div>
+    <div class="text-right pr-[105px] bg-[#ebf4ff] text-[18px]">
+      Welcome,{{ employername }}
+    </div>
 
     <div class="bg-[#ebf4ff] py-7">
       <div class="w-full mx-auto px-[20px]">
@@ -30,7 +32,7 @@
         >
           <div class="px-4 sm:px-6 lg:px-8">
             <div class="text-center">
-                <div class="text-left pl-[180px]">Search Resume</div>
+              <div class="text-left pl-[180px]">Search Resume</div>
               <div
                 class="flex items-center justify-center px-[20px] gap-6 w-[65%] mx-auto md:pt-[28px] pt-5 sm:mb-1 mb-10 md:w-full"
               >
@@ -64,7 +66,10 @@
                 Post Job
             </button> -->
               </div>
-              <span class="text-[14px] pr-[135px]">Please email to support@shreyanjobs.com to get the contact detail &amp; Resume.</span>
+              <span class="text-[14px] pr-[135px]"
+                >Please email to support@shreyanjobs.com to get the contact
+                detail &amp; Resume.</span
+              >
             </div>
             <div class="mt-8 flow-root">
               <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -108,7 +113,7 @@
                           scope="col"
                           class="py-3.5 pl-4 pr-4 text-left text-sm font-semibold text-gray-900 sm:pr-0"
                         >
-                          Location (City, State (Country))
+                          Location
                         </th>
                         <th
                           scope="col"
@@ -121,6 +126,12 @@
                           class="py-3.5 pl-4 pr-4 text-left text-sm font-semibold text-gray-900 sm:pr-0"
                         >
                           Work Visa
+                        </th>
+                        <th
+                          scope="col"
+                          class="py-3.5 pl-4 pr-4 text-left text-sm font-semibold text-gray-900 sm:pr-0"
+                        >
+                          Resume & Contact
                         </th>
                         <!-- <th
                           scope="col"
@@ -161,7 +172,7 @@
                           class="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-gray-500 sm:pr-0"
                         >
                           {{
-                            person.city+
+                            person.city +
                             "," +
                             person.state +
                             "," +
@@ -177,6 +188,33 @@
                           class="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-gray-500 sm:pr-0"
                         >
                           {{ person.work_authorization }}
+                        </td>
+                        <td
+                          class="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-gray-500 sm:pr-0"
+                        >
+                          <div>
+                            <div
+                                v-if="!viewContactStatus && contact_id != person.id"
+                                class="cursor-pointer underline"
+                                @click="openConfirmationmodel(person.id)"
+                              >
+                                View Contact Detail
+                              </div>
+                            <div v-else-if="contact_id == person.id">
+                              <div>{{ email }}</div>
+                              <div>{{ contact_number }}</div>
+                            </div>
+                            <div v-else class="cursor-pointer underline"
+                            @click="openConfirmationmodel(person.id)"
+                          >
+                            View Contact Detail
+                          </div>
+
+                          </div>
+                          <br />
+                          <div class="cursor-pointer">
+                            <a><u>View Resume</u></a>
+                          </div>
                         </td>
                         <!-- <td
                           class="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-gray-500 sm:pr-0"
@@ -198,6 +236,27 @@
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="modal fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center"
+      v-if="confirmModel"
+    >
+      <div class="bg-white p-8 rounded shadow-lg w-100">
+        <p class="mb-1">$0.5 will be deducted from your account balance.</p>
+        <p class="mb-3">Do you want to continue ?</p>
+
+        <div class="flex justify-end">
+          <button class="mr-2 px-4 py-2 bg-gray-500 text-white rounded">
+            No
+          </button>
+          <button
+            class="px-4 py-2 bg-green-500 text-white rounded"
+            @click="fetchSeeekerContactDetail"
+          >
+            Yes
+          </button>
         </div>
       </div>
     </div>
@@ -266,6 +325,10 @@ export default {
 
     const allSeeker = ref({});
 
+    const confirmModel = ref(false);
+    const viewContactStatus = ref(false);
+    const contact_id = ref("");
+    const target_id = ref("");
     someCountry.value = [
       {
         name: "United States",
@@ -410,6 +473,11 @@ export default {
     const employerProfile = async () => {
       router.push("/employer-profile");
     };
+    const openConfirmationmodel = async (id) => {
+
+        target_id.value = id;
+      confirmModel.value = !confirmModel.value;
+    };
 
     const fetchSeeker = debounce(async () => {
       try {
@@ -430,6 +498,33 @@ export default {
       }
     }, 500);
 
+    const fetchSeeekerContactDetail = debounce(async () => {
+      try {
+        const authToken = localStorage.getItem("employer_tocken");
+        const employer_id = localStorage.getItem("employer_id");
+
+        const formData = new FormData();
+        formData.append("searchInput", searchInput.value);
+        const response = await axios.get(
+          `${apiUrl}/seeker-contact-detail/${target_id.value}/${employer_id}`,
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+            },
+          }
+        );
+        viewContactStatus.value = !viewContactStatus.value;
+        email.value = response.data.seeker_details[0].email;
+        contact_number.value = response.data.seeker_details[0].contact_number;
+        confirmModel.value = !confirmModel.value;
+        contact_id.value = target_id.value;
+        console.log(email.value, "response");
+      } catch (error) {
+        console.error(error);
+      }
+    });
+
     const getEmployerDeatails = async () => {
       const employer_id = localStorage.getItem("employer_id");
 
@@ -448,10 +543,9 @@ export default {
 
       const response = await axios.post(
         `${apiUrl}/employer-profile`,
-      { 'employer_id' : employer_id },
+        { employer_id: employer_id },
 
-          config,
-
+        config
       );
 
       company_name.value = response.data.employer_details.companyname;
@@ -478,6 +572,12 @@ export default {
     });
 
     return {
+        target_id,
+      contact_id,
+      viewContactStatus,
+      fetchSeeekerContactDetail,
+      openConfirmationmodel,
+      confirmModel,
       addJob,
       fetchSeeker,
       searchInput,

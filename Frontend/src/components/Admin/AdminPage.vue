@@ -388,7 +388,7 @@
           </div>
           <button
             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-8 mb-4 mt-4 rounded-full focus:outline-none focus:shadow-outline"
-            @click="addJob"
+            @click="opemConfirmationmodel"
           >
             Submit
           </button>
@@ -403,6 +403,16 @@
         class="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"
       ></div>
     </div>
+    <div class="modal fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center"  v-if="confirmModel">
+        <div class="bg-white p-8 rounded shadow-lg w-100">
+          <p class="mb-1">$0.5 will be deducted from your account balance.</p><p class="mb-3"> Do you want to continue ?</p>
+
+          <div class="flex justify-end">
+            <button @click="opemConfirmationmodel" class="mr-2 px-4 py-2 bg-gray-500 text-white rounded">No</button>
+            <button @click="addJob" class="px-4 py-2 bg-green-500 text-white rounded">Yes</button>
+          </div>
+        </div>
+      </div>
   </div>
 </template>
 
@@ -461,6 +471,7 @@ export default {
     const addJobMessageStatus = ref(false);
     const employername = ref("");
     const city = ref("");
+    const confirmModel=ref(false);
 
     someCountry.value = [
       {
@@ -557,38 +568,7 @@ export default {
     };
 
     const addJob = async () => {
-      if (selectedCountry.value == null || selectedCountry.value == "") {
-        err_country.value = "The country field is required";
-        return false;
-      }
 
-      if (skill.value == null || skill.value == "") {
-        err_skill.value = "The skill field is required";
-        return false;
-      }
-      if (year_of_experience.value == null || year_of_experience.value == "") {
-        err_exp.value = "The year of experience field is required";
-        return false;
-      }
-      if (employment_type.value == null || employment_type.value == "") {
-        err_emp.value = "The employment type field is required";
-        return false;
-      }
-      if (job_title.value == null || job_title.value == "") {
-        err_job.value = "The job title field is required";
-        return false;
-      }
-      if (short_description.value == null || short_description.value == "") {
-        err_short.value = "The short description field is required";
-        return false;
-      }
-      if (
-        detailed_description.value == null ||
-        detailed_description.value == ""
-      ) {
-        err_detail.value = "The detailed description field is required";
-        return false;
-      }
 
       const selectedCountryObj = await countries_state.value.find(
         (countrys) => countrys.isoCode === selectedCountry.value
@@ -597,6 +577,9 @@ export default {
       country.value = selectedCountryObj
         ? JSON.parse(JSON.stringify(selectedCountryObj)).name
         : "";
+
+        confirmModel.value =  !confirmModel.value;
+
         // const employer_id = localStorage.getItem("employer_id");
 
       try {
@@ -710,6 +693,42 @@ export default {
         console.log(error);
       }
     };
+    const opemConfirmationmodel = async() =>
+    {
+        if (selectedCountry.value == null || selectedCountry.value == "") {
+        err_country.value = "The country field is required";
+        return false;
+      }
+      if (employment_type.value == null || employment_type.value == "") {
+        err_emp.value = "The employment type field is required";
+        return false;
+      }
+      if (job_title.value == null || job_title.value == "") {
+        err_job.value = "The job title field is required";
+        return false;
+      }
+      if (skill.value == null || skill.value == "") {
+        err_skill.value = "The skill field is required";
+        return false;
+      }
+      if (year_of_experience.value == null || year_of_experience.value == "") {
+        err_exp.value = "The year of experience field is required";
+        return false;
+      }
+
+      if (short_description.value == null || short_description.value == "") {
+        err_short.value = "The short description field is required";
+        return false;
+      }
+      if (
+        detailed_description.value == null ||
+        detailed_description.value == ""
+      ) {
+        err_detail.value = "The detailed description field is required";
+        return false;
+      }
+        confirmModel.value = !confirmModel.value;
+    }
     const getEmployerDeatails = async () => {
       const employer_id = localStorage.getItem("employer_id");
 
@@ -799,6 +818,8 @@ export default {
     });
 
     return {
+        opemConfirmationmodel,
+        confirmModel,
         addJobMessageStatus,
       city,
       addJobMessage,
