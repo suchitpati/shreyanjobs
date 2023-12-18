@@ -6,6 +6,7 @@ use App\Jobs\SendJobNotification;
 use App\Models\AdminJob;
 use App\Models\Employer;
 use App\Models\EmployerTransactionHistory;
+use App\Models\Seeker;
 use App\Models\Subscription;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -156,10 +157,27 @@ class AdminJobController extends Controller
             $additional_detail = $request->additional_detail;
         }
 
-        $subscription_data = Subscription::with('seeker')
-        ->where('skill','LIKE','%'.$request->skill.'%')
-        ->orWhere('skill','LIKE','%'.$request->job_title.'%')
-        ->get();
+        $searchTerm = $request->input('skill');
+
+        // Ensure $skills is an array, even if it's a single string
+
+
+
+        $subscription_data = Seeker::where(function ($query) use ($searchTerm) {
+            $query->whereRaw("JSON_CONTAINS(skill, JSON_QUOTE('$searchTerm'), '$') = 1")
+                ->orWhere('skill', 'like', '%"'.$searchTerm.'"%');
+        })->get();
+
+
+
+
+
+        return response()->json($subscription_data, 201);
+
+        // $subscription_data = Subscription::with('seeker')
+        // ->where('skill','LIKE','%'.$request->skill.'%')
+        // ->orWhere('skill','LIKE','%'.$request->job_title.'%')
+        // ->get();
 
         if (isset($subscription_data)) {
 

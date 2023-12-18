@@ -707,6 +707,8 @@ export default {
             resume.value = response.data.seeker_details.resume;
             const fileName = resume.value;
             const fileUrl = `https://shreyanjobs.com/backend/public/pdf/${fileName}`;
+            // const fileUrl = `http://127.0.0.1:8000/pdf/${fileName}`;
+
 
             // Create a temporary anchor element
             const link = document.createElement("a");
@@ -745,7 +747,6 @@ export default {
         response.data.seeker_details.secondary_skill_experience;
       gender.value = response.data.seeker_details.gender;
       selectedCountry.value = response.data.seeker_details.country;
-
       selectedState.value = response.data.seeker_details.state;
       city.value = response.data.seeker_details.city;
       relocate.value = response.data.seeker_details.relocate;

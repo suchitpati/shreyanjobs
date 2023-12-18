@@ -47,22 +47,38 @@ class SeekerController extends Controller
     }
     public function seeker_addskill(Request $request)
     {
-        if (!Subscription::where(['seeker_id' => $request->seeker_id, 'skill' => $request->skill])->exists()) {
-            $seeker = Subscription::create([
-                'seeker_id' => $request->seeker_id,
-                'skill' => $request->skill,
-            ]);
 
-            return response()->json([
-                'message' => 'Skill added successfully',
-                'code' => 200,
-            ]);
-        } else {
-            return response()->json([
-                'message' => 'Skill Already Exist   ',
-                'code' => 100,
-            ]);
-        }
+        $seeker = Seeker::find($request->seeker_id);
+        $existingSkills = json_decode($seeker->skill, true) ?? [];
+
+        $newSkill = $request->skill;
+
+
+            if (!in_array($newSkill, $existingSkills)) {
+                $existingSkills[] = $newSkill;
+                $seeker->skill = $existingSkills;
+                $seeker->save();
+            }
+
+
+
+
+        // if (!Subscription::where(['seeker_id' => $request->seeker_id, 'skill' => $request->skill])->exists()) {
+        //     $seeker = Subscription::create([
+        //         'seeker_id' => $request->seeker_id,
+        //         'skill' => $request->skill,
+        //     ]);
+
+        //     return response()->json([
+        //         'message' => 'Skill added successfully',
+        //         'code' => 200,
+        //     ]);
+        // } else {
+        //     return response()->json([
+        //         'message' => 'Skill Already Exist   ',
+        //         'code' => 100,
+        //     ]);
+        // }
     }
 
     public function seeker_deleteskill(Request $request)
@@ -91,7 +107,7 @@ class SeekerController extends Controller
                 ->where('is_active', 2)
                 ->get();
         } else {
-            $seeker_details = Seeker::where('is_active', 2)->get(['id','fullname','primary_skill','primary_skill_experience','secondary_skill','secondary_skill_experience','city','state','country','relocate','work_authorization']);
+            $seeker_details = Seeker::where('is_active', 2)->get(['id', 'fullname', 'primary_skill', 'primary_skill_experience', 'secondary_skill', 'secondary_skill_experience', 'city', 'state', 'country', 'relocate', 'work_authorization']);
         }
 
         return response()->json([
@@ -100,9 +116,9 @@ class SeekerController extends Controller
         ]);
     }
 
-    public function seekerContactDetail($id,$employe_id)
+    public function seekerContactDetail($id, $employe_id)
     {
-        $seeker = Seeker::where('id',$id)->get(['email','contact_number']);
+        $seeker = Seeker::where('id', $id)->get(['email', 'contact_number']);
 
         $employer = Employer::find($employe_id);
         $begin_balance = $employer->acct_balance;
@@ -112,12 +128,39 @@ class SeekerController extends Controller
         $employer->save();
 
         EmployerTransactionHistory::create([
-            'employer_id' =>$employe_id,
-            'begin_balance' =>$begin_balance,
+            'employer_id' => $employe_id,
+            'begin_balance' => $begin_balance,
             'transaction_amount' => 0.50,
             'end_balance' => $end_balance,
             'transaction_date' => Carbon::now(),
             'action_name' => 'View Contact',
+            'job_seeker_id' => $id
+        ]);
+        return response()->json([
+            'message' => 'Details fetch successfully',
+            'success' => 200,
+            'seeker_details' => $seeker
+
+        ]);
+    }
+    public function seekerResumeDetail($id, $employe_id)
+    {
+        $seeker = Seeker::where('id', $id)->get(['resume']);
+
+        $employer = Employer::find($employe_id);
+        $begin_balance = $employer->acct_balance;
+        $end_balance = $employer->acct_balance - 0.50;
+
+        $employer->acct_balance = $end_balance;
+        $employer->save();
+
+        EmployerTransactionHistory::create([
+            'employer_id' => $employe_id,
+            'begin_balance' => $begin_balance,
+            'transaction_amount' => 0.50,
+            'end_balance' => $end_balance,
+            'transaction_date' => Carbon::now(),
+            'action_name' => 'View Resume',
             'job_seeker_id' => $id
         ]);
         return response()->json([
@@ -258,19 +301,12 @@ class SeekerController extends Controller
                     'secondary_skill' => $request->secondary_skill,
                     'secondary_skill_experience' => $request->secondary_experience,
                     'resume' => $fileName,
+                    'skill' => json_decode($request->skill, true) ?? [],
                     'relocate' => $request->relocate,
                     'is_active' => 2
                 ]);
 
 
-                    Subscription::create([
-                        'seeker_id' => $request->seeker_id,
-                        'skill' => $request->skill,
-                    ]);
-
-
-
-            // You may want to store the filename in the database or perform other actions here.
 
             return response()->json([
                 'message' => 'Details added successfully',
@@ -458,7 +494,8 @@ class SeekerController extends Controller
 
         return response()->json(['message' => 'Logged out successfully'], 200);
     }
-    public function applyJobMail(Request $request){
+    public function applyJobMail(Request $request)
+    {
 
         $employer = Employer::find($request->employer_id);
         $Seeker = Seeker::find($request->seeker_id);
@@ -466,13 +503,11 @@ class SeekerController extends Controller
         $remote = $adminjob->remote;
 
         $cover_letter = $request->cover_letter;
-        if($cover_letter == null  || $cover_letter == "")
-        {
+        if ($cover_letter == null  || $cover_letter == "") {
             $cover_letter = "-";
         }
 
-        if($request->file('pdf'))
-        {
+        if ($request->file('pdf')) {
 
             $allowedExtensions = ['pdf', 'doc', 'docx'];
             $path = public_path('pdf');
@@ -482,13 +517,10 @@ class SeekerController extends Controller
             $resume->move($path, $fileName);
 
             $resume_file = $path . '/' . $fileName;
-        }
-        else
-        {
+        } else {
             $path = public_path('pdf');
 
             $resume_file = $path . '/' . $Seeker->resume;
-
         }
 
         $job_title = $adminjob->job_title;
@@ -502,19 +534,18 @@ class SeekerController extends Controller
         $additional_detail = $adminjob->additional_detail;
         $email = $Seeker->email;
         $adminemail = $adminjob->email;
-        $fileStatus= 1;
+        $fileStatus = 1;
         try {
-            if($request->file('pdf'))
-            {
+            if ($request->file('pdf')) {
                 $fileStatus = 0;
             }
-            applyJobEmail::dispatch($fileStatus,$adminemail,$email,$job_title,$fullname, $employername, $city, $country, $additional_detail,$resume_file,$detailed_description,$state, $cover_letter,$emailid,$remote);
+            applyJobEmail::dispatch($fileStatus, $adminemail, $email, $job_title, $fullname, $employername, $city, $country, $additional_detail, $resume_file, $detailed_description, $state, $cover_letter, $emailid, $remote);
             // if($request->file('pdf'))
             // {
             //     File::delete($resume_file);
             // }
 
-            SeekerJobApplication::create(['seeker_id' => $request->seeker_id,'job_id'=>$request->id]);
+            SeekerJobApplication::create(['seeker_id' => $request->seeker_id, 'job_id' => $request->id]);
             return response()->json([
                 'message' => 'Email send successfully',
             ]);

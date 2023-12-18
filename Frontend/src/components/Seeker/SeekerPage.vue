@@ -1256,6 +1256,8 @@ export default {
             resume.value = response.data.seeker_details.resume;
             const fileName = resume.value;
             const fileUrl = `https://shreyanjobs.com/backend/public/pdf/${fileName}`;
+            // const fileUrl = `http://127.0.0.1:8000/pdf/${fileName}`;
+
 
             // Create a temporary anchor element
             const link = document.createElement("a");
