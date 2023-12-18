@@ -40,6 +40,8 @@ class EmployerController extends Controller
                 'city' => $request->city,
                 'otp' => $otp,
                 'is_active' => 0,
+                'acct_balance' => 50
+
             ]);
 
             $employer = Employer::where('emailid', $request->email)->first();
@@ -67,6 +69,7 @@ class EmployerController extends Controller
                 'city' => $request->city,
                 'otp' => $otp,
                 'is_active' => 0,
+                'acct_balance' => 50
             ]);
 
             return response()->json([
