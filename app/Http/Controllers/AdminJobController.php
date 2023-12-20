@@ -163,10 +163,7 @@ class AdminJobController extends Controller
 
 
 
-        $subscription_data = Seeker::where(function ($query) use ($searchTerm) {
-            $query->whereRaw("JSON_CONTAINS(skill, JSON_QUOTE('$searchTerm'), '$') = 1")
-                ->orWhere('skill', 'like', '%"'.$searchTerm.'"%');
-        })->get();
+        $subscription_data = Seeker::where('skill','LIKE','%'.$skill.'%')->get();
 
 
 

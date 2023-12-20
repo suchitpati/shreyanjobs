@@ -31,10 +31,12 @@
                     class="bg-[#d3ddff4f] rounded-lg py-4 sm:px-8 px-4 w-full shadow-[rgba(100,_100,_111,_0.2)_0px_0px_10px_0px] hover:shadow-[rgba(100,_100,_111,_0.2)_0px_0px_20px_0px] transition-[.5s]"
                 >
                     <div class="px-4 sm:px-6 lg:px-8">
+                        <h1
+                            class="text-[#1890da] sm:text-[26px] text-[22px] font-semibold mt-[0px] sm:mb-[0px] mb-[25px] text-left"
+                        >
+                            Serch Resume
+                        </h1>
                         <div class="text-center">
-                            <div class="text-left pl-[180px]">
-                                Search Resume
-                            </div>
                             <div
                                 class="flex items-center justify-center px-[20px] gap-6 w-[65%] mx-auto md:pt-[28px] pt-5 sm:mb-1 mb-10 md:w-full"
                             >
@@ -70,586 +72,170 @@
                 Post Job
             </button> -->
                             </div>
-                            <span class="text-[14px] pr-[135px] "
+                            <!-- <span class="text-[14px] pr-[135px]"
                                 >Please email to support@shreyanjobs.com to get
                                 the contact detail &amp; Resume.</span
-                            >
+                            > -->
                         </div>
-                        <div class="bg-[linear-gradient(180deg,#f5f4fa,rgba(251,251,253,0))] mt-9">
-            <div>
-                <!-- <h1
-                      class="text-black md:text-[36px] sm:text-[28px] text-[22px] font-bold pt-[40px]"
-                  >
-                      Find your dream job now
-                  </h1> -->
-                <!-- <p class="mt-3 text-[18px]">5 lakh+ jobs for you to explore</p> -->
-            </div>
-
-            <div
-                class="rounded-2xl p-4 sm:p-7 top-[10px] m-auto max-w-[1080px] w-full bg-[#d3ddff4f] shadow-[0px_0px_14px_0px_rgba(255,255,255,1);] transition-[.5s]"
-            >
-                <div
-                    class="grid grid-cols-7 md:gap-4 gap-3 max-w-[1200px] m-auto items-center"
-                >
-                    <div class="">
-                        <label
-                            class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
-                            for="field2"
+                        <div
+                            class="rounded-2xl p-4 sm:p-7 top-[10px] m-auto max-w-[1080px] w-full bg-[#d3ddff4f] shadow-[0px_0px_14px_0px_rgba(255,255,255,1);] transition-[.5s]"
                         >
-                            Country
-                        </label>
-                        <select
-                            v-model="selectedCountry"
-                            @change="onCountryChange"
-                            class="block w-full bg-white border text-sm rounded-lg p-2"
-                        >
-                            <option value="">Select Country</option>
-                            <option
-                                v-for="country in countries_state"
-                                :key="country.isoCode"
-                                :value="country.isoCode"
-                                class="flex items-center"
-                            >
-                                <span
-                                    class="flag-icon flag-icon-{{ country.isoCode.toLowerCase() }} inline-block w-4 h-4 mr-2"
-                                ></span>
-                                <!-- <div class="mr-2">{{ country.flag }}</div> -->
-                                <div>{{ country.name }}</div>
-                            </option>
-                        </select>
-                    </div>
-                    <div class="">
-                        <div class="flex justify-between">
-                            <div>
-                                <label
-                                    class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
-                                    for="field2"
-                                >
-                                    State
-                                </label>
-                            </div>
-                        </div>
-                        <select
-                            v-model="selectedState"
-                            class="block w-full bg-white border text-sm rounded-lg p-2"
-                            :disabled="remote"
-                            @change="setSelectedState"
-                        >
-                            <option value="">Select State</option>
-                            <option
-                                v-for="state in states"
-                                :key="state.isoCode"
-                                :value="state.isoCode"
-                            >
-                                {{ state.name }}
-                            </option>
-                        </select>
-                    </div>
-                    <div class="h-[22px] flex items-center gap-2 mt-[30px]">
-                        <input
-                            id="check"
-                            type="checkbox"
-                            v-model="remote"
-                            class="w-[20px] h-[20px] border border-gray-400"
-                        />
-                        <label
-                            for="check"
-                            class="text-gray-700 font-bold text-start text-[14px]"
-                        >
-                            100% Remote
-                            <!-- {{ remote ? "Remote" : "100% Remote" }} -->
-                        </label>
-                    </div>
-                    <div class="">
-                        <label
-                            class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
-                            for="field2"
-                        >
-                            Employee Type
-                        </label>
-                        <select
-                            class="border text-sm rounded-lg bg-white py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
-                            id="field2"
-                            v-model="employment_type"
-                        >
-                            <option value="">Select</option>
-                            <option value="fulltime">Full-time</option>
-                            <option value="parttime">Part-time</option>
-                            <option value="contract">Contract</option>
-                            <option value="contract">Contract Hire</option>
-                        </select>
-                    </div>
-                    <div class="">
-                        <label
-                            class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
-                            for="field1"
-                        >
-                            Skill
-                        </label>
-                        <input
-                            class="border text-sm rounded-lg py-2 h-[36px] px-4 outline-[#264dd9] focus:shadow-outline w-full"
-                            type="text"
-                            id="field1"
-                            v-model="skill"
-                        />
-                    </div>
-                    <div class="">
-                        <label
-                            class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
-                            for="field1"
-                        >
-                            Min Years of Exp
-                        </label>
-                        <input
-                            class="border text-sm rounded-lg h-[36px] py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
-                            type="number"
-                            id="field1"
-                            v-model="year_of_experience"
-                        />
-                    </div>
-                    <div class="">
-                        <label
-                            class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
-                            for="field2"
-                        >
-                            Date Posted
-                        </label>
-                        <select
-                            class="border text-sm rounded-lg bg-white py-2 px-4 outline-[#264dd9] hover:text-[#000] focus:shadow-outline w-full"
-                            id="field2"
-                            v-model="datePosted"
-                            @change="fetchJobs"
-                        >
-                            <option value="">Date Posted</option>
-
-                            <option value="1">Last 24 Hours</option>
-                            <option value="3">Last 3 days</option>
-                            <option value="7">Last 7 days</option>
-                            <option value="30">Last 30 days</option>
-                        </select>
-                    </div>
-
-                    <!-- <div>
-                          <label
-                              class="block text-blue-500 font-bold mb-1 text-start text-[14px] cursor-pointer"
-                              for="field1"
-                              @click="handleButtonClick"
-                          >
-                              Admin? login
-                          </label>
-                      </div> -->
-                    <div class="w-full flex justify-between gap-6"></div>
-                </div>
-            </div>
-            <div class="max-w-[1080px] gap-6 w-full px-[20px] mx-auto">
-                <!-- Form with two parts -->
-
-                <div
-                    class="rounded-lg m-auto w-full shadow-[rgba(100, 100, 111, 0.2) 0px 5px 30px 0px] mt-6"
-                >
-                    <div class="text-start">
-                        <h1 class="text-[#414552] text-[20px] font-semibold">
-                            Search Jobs by skill or Job Role
-                        </h1>
-                        <div v-if="jobStatus == false">
-                            <p>Waiting for job listing</p>
-                        </div>
-                        <div v-if="person">
                             <div
-                                v-for="person in allSeeker"
-                                :key="person.email"
-                                class="rounded-[20px] bg-[#d3ddff4f] sm:p-[30px] sm:pt-[12px] p-[16px] mt-[20px] shadow-[rgba(100,_100,_111,_0.2)_0px_0px_10px_0px] hover:shadow-[rgba(100,_100,_111,_0.2)_0px_0px_20px_0px] transition-[.5s]"
+                                class="grid grid-cols-8 md:gap-4 gap-3 max-w-[1200px] m-auto items-end"
                             >
-
-                                <div class="flex gap-[10px]">
-                                    <div class="grow">
-                                        <p
-                                            class="text-[#121224] font-bold hover:underline capitalize text-[17px]"
+                                <div class="">
+                                    <label
+                                        class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
+                                        for="field2"
+                                    >
+                                        Country
+                                    </label>
+                                    <select
+                                        v-model="selectedCountry"
+                                        @change="onCountryChange"
+                                        class="block w-full bg-white border text-sm rounded-lg p-2"
+                                    >
+                                        <option value="">Select Country</option>
+                                        <option
+                                            v-for="country in countries_state"
+                                            :key="country.isoCode"
+                                            :value="country.isoCode"
+                                            class="flex items-center"
                                         >
-                                            {{ person.short_description }}
-                                        </p>
-                                        <div
-                                            class="flex items-center gap-4 mt-2"
-                                        >
-                                            <div
-                                                class="flex gap-1 items-center"
-                                            >
-                                                <svg
-                                                    stroke="currentColor"
-                                                    fill="none"
-                                                    stroke-width="2"
-                                                    viewBox="0 0 24 24"
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    height="1em"
-                                                    width="1em"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                >
-                                                    <path
-                                                        stroke="none"
-                                                        d="M0 0h24v24H0z"
-                                                        fill="none"
-                                                    ></path>
-                                                    <path
-                                                        d="M21 3l-6.5 18a.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5"
-                                                    ></path>
-                                                </svg>
-
-                                                <!-- <div v-if="person.state">,</div> -->
-                                                <h3
-                                                    class="text-[#474d6a] capitalize text-[16px]"
-                                                >
-                                                    <div
-                                                        v-if="
-                                                            person.remote == 0 &&
-                                                            person.state &&
-                                                            person.city
-                                                        "
-                                                    >
-                                                        {{ person.city }},{{
-                                                            person.state
-                                                        }},
-                                                    </div>
-                                                    <div
-                                                        v-else-if="
-                                                            person.remote == 0 &&
-                                                            person.state
-                                                        "
-                                                    >
-                                                        {{ person.state }},
-                                                    </div>
-                                                    <div
-                                                        v-else-if="
-                                                            person.remote == 0 &&
-                                                            person.city
-                                                        "
-                                                    >
-                                                        {{ person.city }},
-                                                    </div>
-                                                    <div v-else></div>
-
-                                                    <!-- {{ person.remote == 1 ? ",Remote" : ","+person.state }} -->
-                                                </h3>
-                                                <div class="flex items-center">
-                                                    <!-- <span class="text-gray-500 mr-2">State:</span> -->
-                                                    <span
-                                                        class="text-[#474d6a] capitalize text-[16px]"
-                                                        >{{ person.country }}</span
-                                                    >
-                                                    <div v-if="person.remote == 1">
-                                                        (Remote)
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="flex items-center mt-2">
                                             <span
-                                                class="text-[#474d6a] font-bold mr-2 flex gap-2 items-center text-[14px]"
+                                                class="flag-icon flag-icon-{{ country.isoCode.toLowerCase() }} inline-block w-4 h-4 mr-2"
+                                            ></span>
+                                            <!-- <div class="mr-2">{{ country.flag }}</div> -->
+                                            <div>{{ country.name }}</div>
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="">
+                                    <div class="flex justify-between">
+                                        <div>
+                                            <label
+                                                class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
+                                                for="field2"
                                             >
-                                                <svg
-                                                    stroke="currentColor"
-                                                    fill="currentColor"
-                                                    stroke-width="0"
-                                                    viewBox="0 0 512 512"
-                                                    height="1em"
-                                                    width="1em"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                >
-                                                    <path
-                                                        d="M119.1 25v.1c-25 3.2-47.1 32-47.1 68.8 0 20.4 7.1 38.4 17.5 50.9L99.7 157 84 159.9c-13.7 2.6-23.8 9.9-32.2 21.5-8.5 11.5-14.9 27.5-19.4 45.8-8.2 33.6-9.9 74.7-10.1 110.5h44l11.9 158.4h96.3L185 337.7h41.9c0-36.2-.3-77.8-7.8-111.7-4-18.5-10.2-34.4-18.7-45.9-8.6-11.4-19.2-18.7-34.5-21l-16-2.5L160 144c10-12.5 16.7-30.2 16.7-50.1 0-39.2-24.8-68.8-52.4-68.8-2.9 0-4.7-.1-5.2-.1zM440 33c-17.2 0-31 13.77-31 31s13.8 31 31 31 31-13.77 31-31-13.8-31-31-31zM311 55v48H208v18h103v158h-55v18h55v110H208v18h103v32h80.8c-.5-2.9-.8-5.9-.8-9 0-3.1.3-6.1.8-9H329V297h62.8c-.5-2.9-.8-5.9-.8-9 0-3.1.3-6.1.8-9H329V73h62.8c-.5-2.92-.8-5.93-.8-9 0-3.07.3-6.08.8-9H311zm129 202c-17.2 0-31 13.8-31 31s13.8 31 31 31 31-13.8 31-31-13.8-31-31-31zm0 160c-17.2 0-31 13.8-31 31s13.8 31 31 31 31-13.8 31-31-13.8-31-31-31z"
-                                                    ></path>
-                                                </svg>
-                                                Skill:
-                                            </span>
-                                            <span class="text-[#474d6a]">{{
-                                                 person.primary_skill
-                                            }}</span>
-                                        </div>
-                                        <div
-                                            class="flex items-center mt-2 gap-10"
-                                        >
-                                            <div
-                                                class="flex items-center w-auto whitespace-nowrap rounded"
-                                            >
-                                                <span
-                                                    class="text-[#474d6a] font-bold mr-2 flex gap-2 items-center text-[14px]"
-                                                >
-                                                    <svg
-                                                        stroke="currentColor"
-                                                        fill="currentColor"
-                                                        stroke-width="0"
-                                                        viewBox="0 0 448 512"
-                                                        height="1em"
-                                                        width="1em"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                    >
-                                                        <path
-                                                            d="M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm95.8 32.6L272 480l-32-136 32-56h-96l32 56-32 136-47.8-191.4C56.9 292 0 350.3 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-72.1-56.9-130.4-128.2-133.8z"
-                                                        ></path>
-                                                    </svg>
-                                                    Employment Type:
-                                                </span>
-                                                <span
-                                                    class="text-[#474d6a]"
-                                                    v-if="
-                                                        person.employment_type ==
-                                                        'contracttohire'
-                                                    "
-                                                    >Contract To Hire</span
-                                                >
-                                                <span
-                                                    class="text-[#474d6a]"
-                                                    v-if="
-                                                        person.employment_type ==
-                                                        'parttime'
-                                                    "
-                                                    >Part Time</span
-                                                >
-                                                <span
-                                                    class="text-[#474d6a]"
-                                                    v-if="
-                                                        person.employment_type ==
-                                                        'fulltime'
-                                                    "
-                                                    >Full Time</span
-                                                >
-                                                <span
-                                                    class="text-[#474d6a]"
-                                                    v-if="
-                                                        person.employment_type ==
-                                                        'contract'
-                                                    "
-                                                    >Contract</span
-                                                >
-                                            </div>
-                                            <div
-                                                class="flex items-center w-auto whitespace-nowrap rounded"
-                                            >
-                                                <span
-                                                    class="text-[#474d6a] font-bold mr-2 flex gap-2 items-center text-[14px]"
-                                                >
-                                                    <svg
-                                                        stroke="currentColor"
-                                                        fill="currentColor"
-                                                        stroke-width="0"
-                                                        viewBox="0 0 16 16"
-                                                        height="1em"
-                                                        width="1em"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                    >
-                                                        <path
-                                                            d="M6.5 1A1.5 1.5 0 0 0 5 2.5V3H1.5A1.5 1.5 0 0 0 0 4.5v8A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 14.5 3H11v-.5A1.5 1.5 0 0 0 9.5 1h-3zm0 1h3a.5.5 0 0 1 .5.5V3H6v-.5a.5.5 0 0 1 .5-.5zm1.886 6.914L15 7.151V12.5a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5V7.15l6.614 1.764a1.5 1.5 0 0 0 .772 0zM1.5 4h13a.5.5 0 0 1 .5.5v1.616L8.129 7.948a.5.5 0 0 1-.258 0L1 6.116V4.5a.5.5 0 0 1 .5-.5z"
-                                                        ></path>
-                                                    </svg>
-                                                    Yrs of Exp:
-                                                </span>
-                                                <span class="text-[#474d6a]">{{
-                                                    person.year_of_experience
-                                                }}</span>
-                                            </div>
+                                                State
+                                            </label>
                                         </div>
                                     </div>
-                                    <div class="flex-wrap">
-                                        <div
-                                            class="flex items-center justify-end"
+                                    <select
+                                        v-model="selectedState"
+                                        class="block w-full bg-white border text-sm rounded-lg p-2"
+                                        @change="setSelectedState"
+                                    >
+                                        <option value="">Select State</option>
+                                        <option
+                                            v-for="state in states"
+                                            :key="state.isoCode"
+                                            :value="state.isoCode"
                                         >
-                                            <svg
-                                                stroke="currentColor"
-                                                fill="currentColor"
-                                                stroke-width="0"
-                                                viewBox="0 0 16 16"
-                                                height="1em"
-                                                width="1em"
-                                                xmlns="http://www.w3.org/2000/svg"
+                                            {{ state.name }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="">
+                                    <label
+                                        class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
+                                        for="field1"
+                                    >
+                                        City
+                                    </label>
+                                    <input
+                                        class="border text-sm rounded-lg py-2 h-[36px] px-4 outline-[#264dd9] focus:shadow-outline w-full"
+                                        type="text"
+                                        placeholder="City"
+                                        id="field1"
+                                        v-model="city"
+                                    />
+                                </div>
+                                <div class="">
+                                    <div class="flex justify-between">
+                                        <div>
+                                            <label
+                                                class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
+                                                for="field2"
                                             >
-                                                <path
-                                                    d="M11 6.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-5 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z"
-                                                ></path>
-                                                <path
-                                                    d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"
-                                                ></path>
-                                            </svg>
-                                            <p
-                                                class="text-[14px] text-[#717b9e] ml-[5px]"
-                                            >
-                                                Posted Date :
-                                                {{
-                                                    formateDate(person.created_at)
-                                                }}
-                                            </p>
-                                        </div>
-                                        <div class="flex gap-[10px] mt-[10px]">
-                                            <div
-                                                class="flex gap-1 items-center"
-                                            >
-                                                <span
-                                                    class="text-[#474d6a] font-bold flex gap-2 items-center text-[14px]"
-                                                    >Job Title :</span
-                                                >
-                                                <span class="text-[#474d6a]">{{
-                                                    person.job_title
-                                                }}</span>
-                                            </div>
-
-                                        </div>
-
-                                        <div
-                                            v-if="
-                                                isSeekerLogged == false &&
-                                                isEmployerLogged == false
-                                            "
-                                        >
-                                            <button
-                                                class="py-2 px-4 rounded-lg text-white bg-blue-600"
-                                            >
-                                                <router-link to="/seeker-login">
-                                                    Login To apply</router-link
-                                                >
-                                            </button>
-                                        </div>
-
-                                        <div
-                                            v-if="
-                                                isSeekerLogged == true &&
-                                                person.applied == false
-                                            "
-                                        >
-                                            <button
-                                                class="py-2 px-4 rounded-lg text-white bg-blue-600"
-                                                @click="
-                                                    openModel(
-                                                        person.id,
-                                                        person.job_owner_id
-                                                    )
-                                                "
-                                            >
-                                                Apply to this person
-                                            </button>
-                                        </div>
-
-                                        <div
-                                            class="text-right mt-2"
-                                            v-if="
-                                                isSeekerLogged == true &&
-                                                person.applied == true
-                                            "
-                                        >
-                                            <button
-                                                class="py-2 px-4 rounded-lg text-white bg-blue-600"
-                                            >
-                                                Applied
-                                            </button>
-                                        </div>
-                                        <div
-                                            v-if="
-                                                isEmployerLogged == true &&
-                                                employer_id == person.job_owner_id
-                                            "
-                                        >
-                                            <button
-                                                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:shadow-outline"
-                                            >
-                                                <router-link
-                                                    :to="
-                                                        '/employer-person-edit/' +
-                                                        person.id
-                                                    "
-                                                    >Edit</router-link
-                                                >
-                                            </button>
+                                                Relocate
+                                            </label>
                                         </div>
                                     </div>
+                                    <select
+                                        v-model="relocate"
+                                        class="block w-full bg-white border text-sm rounded-lg p-2"
+                                    >
+                                        <option value="">Select One</option>
+                                        <option value="true">Yes</option>
+                                        <option value="false">NO</option>
+                                    </select>
+                                </div>
+
+                                <div class="">
+                                    <label
+                                        class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
+                                        for="field1"
+                                    >
+                                        Skill
+                                    </label>
+                                    <input
+                                        class="border text-sm rounded-lg py-2 h-[36px] px-4 outline-[#264dd9] focus:shadow-outline w-full"
+                                        type="text"
+                                        id="field1"
+                                        placeholder="Skill"
+                                        v-model="skill"
+                                    />
+                                </div>
+                                <div class="">
+                                    <label
+                                        class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
+                                        for="field1"
+                                    >
+                                        Yrs. Of Exp in Primary skill
+                                    </label>
+                                    <input
+                                        class="border text-sm rounded-lg h-[36px] py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
+                                        type="number"
+                                        id="field1"
+                                        v-model="primary_skill_experience"
+                                    />
+                                </div>
+                                <div class="">
+                                    <label
+                                        class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
+                                        for="field1"
+                                    >
+                                        Yrs. Of Exp in Secondary skill
+                                    </label>
+                                    <input
+                                        class="border text-sm rounded-lg h-[36px] py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
+                                        type="number"
+                                        id="field1"
+                                        v-model="secondary_skill_experience"
+                                    />
+                                </div>
+                                <div class="">
+                                    <label
+                                        class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
+                                        for="field1"
+                                    >
+                                        Work Visa
+                                    </label>
+                                    <input
+                                        class="border text-sm rounded-lg py-2 h-[36px] px-4 outline-[#264dd9] focus:shadow-outline w-full"
+                                        type="text"
+                                        id="field1"
+                                        v-model="work_visa"
+                                    />
                                 </div>
 
                                 <div
-                                    v-if="!expandedJobs.includes(person.id)"
-                                    class="text-[#474d6a] bg-[#fff] py-1 px-2 mt-2 capitalize text-[14px]"
-                                >
-                                    <b>Additional Job Detail</b>
-
-                                    <div
-                                        v-for="(
-                                            point, index
-                                        ) in getTruncatedPoints(
-                                            person.additional_detail
-                                                ? person.additional_detail.slice(
-                                                      0,
-                                                      200
-                                                  )
-                                                : '-',
-                                            50
-                                        )"
-                                        :key="index"
-                                    >
-                                        {{ point }}
-                                    </div>
-                                    <span
-                                        class="show-more-link"
-                                        @click="toggleExpand(person.id)"
-                                        >Show Job Description &amp; Technical
-                                        skill Required</span
-                                    >
-                                </div>
-                                <!-- Display full description when person is expanded -->
-                                <div
-                                    v-else
-                                    class="text-[#474d6a] bg-[#fff] py-1 px-2 mt-2 capitalize text-[14px]"
-                                >
-                                    <div style="white-space: pre-wrap">
-                                        <b>Additional Job Detail</b>
-                                        <br />
-                                        {{
-                                            person.additional_detail
-                                                ? person.additional_detail
-                                                : "-"
-                                        }}
-                                        <br />
-                                        <br />
-                                        <b>Job Description</b>
-                                        <br />
-                                        {{ person.detailed_description }}
-                                        <br />
-                                        <br />
-                                        <b>Technical Skill Required</b>
-                                        <br />
-                                        {{
-                                            person.technical_skill
-                                                ? person.technical_skill
-                                                : "-"
-                                        }}
-                                    </div>
-                                    <span
-                                        class="show-more-link"
-                                        @click="toggleExpand(person.id)"
-                                        >Hide Job Description &amp; Technical
-                                        skill Required</span
-                                    >
-                                </div>
-                                <!-- Display full description when person is expanded -->
-                                <!-- <div
-                                      v-else
-                                      class="text-[#474d6a] bg-[#fff] py-1 px-2 mt-2 capitalize text-[14px]"
-                                  >
-                                      {{ person.detailed_description }}
-                                  </div> -->
-                                <div class="flex gap-2 items-center px-2 mt-2">
-                                    <p class="text-[14px] text-[#717b9e]">
-                                        <!-- Posted Date
-                                          {{ formateDate(person.created_at) }} -->
-
-                                        (Searched for
-                                        {{ person.search_count }} times )
-                                    </p>
-                                </div>
+                                    class="w-full flex justify-between gap-6"
+                                ></div>
                             </div>
                         </div>
-                        <div v-if="jobs == 0 && jobStatus == true">
-                            <p>No job Found</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+
                         <div class="mt-8 flow-root">
                             <div
                                 class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8"
@@ -698,7 +284,8 @@
                                                     scope="col"
                                                     class="py-3.5 pl-4 pr-4 text-left text-sm font-semibold text-gray-900 sm:pr-0"
                                                 >
-                                                    Location
+                                                    Location (City, State
+                                                    (Country))
                                                 </th>
                                                 <th
                                                     scope="col"
@@ -735,12 +322,12 @@
                                                 class="divide-x divide-gray-200"
                                             >
                                                 <td
-                                                    class="whitespace-nowrap py-4 pl-4 pr-4 text-sm font-medium text-gray-900 sm:pl-0"
+                                                    class="py-4 pl-4 pr-4 text-sm font-medium text-gray-900 sm:pl-0 break-words"
                                                 >
                                                     {{ person.fullname }}
                                                 </td>
                                                 <td
-                                                    class="whitespace-nowrap p-4 text-sm text-gray-500"
+                                                    class="p-4 text-sm text-gray-500 break-words max-w-[500px]"
                                                 >
                                                     {{ person.primary_skill }}
                                                 </td>
@@ -752,7 +339,7 @@
                                                     }}
                                                 </td>
                                                 <td
-                                                    class="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-gray-500 sm:pr-0"
+                                                    class="p-4 text-sm text-gray-500 sm:pr-0 max-w-[500px] break-words"
                                                 >
                                                     {{ person.secondary_skill }}
                                                 </td>
@@ -918,32 +505,30 @@
             </div>
         </div>
         <div
-            class="modal fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center"
-            v-if="confirmModel"
-        >
-            <div class="bg-white p-8 rounded shadow-lg w-100">
-                <p class="mb-1">
-                    $0.5 will be deducted from your account balance.
-                </p>
-                <p class="mb-3">Do you want to continue ?</p>
+      class="modal fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center"
+      v-if="confirmModel"
+    >
+      <div class="bg-white p-8 rounded shadow-lg w-100">
+        <p class="mb-1">$0.5 will be deducted from your account balance.</p>
+        <p class="mb-3">Do you want to continue ?</p>
 
-                <div class="flex justify-end">
-                    <button
-                        class="mr-2 px-4 py-2 bg-gray-500 text-white rounded"
-                        @click="closeconfirmModel"
-                    >
-                        No
-                    </button>
-                    <button
-                        class="px-4 py-2 bg-green-500 text-white rounded"
-                        @click="fetchSeeekerContactDetail"
-                    >
-                        Yes
-                    </button>
-                </div>
-            </div>
+        <div class="flex justify-end">
+          <button class="mr-2 px-4 py-2 bg-gray-500 text-white rounded">
+            No
+          </button>
+          <button
+            class="px-4 py-2 bg-green-500 text-white rounded"
+            @click="fetchSeeekerContactDetail"
+          >
+            Yes
+          </button>
         </div>
+      </div>
+    </div>
 
+        <div class="">
+            <FooterPage />
+        </div>
         <div
             class="modal fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center"
             v-if="confirmModelResume"
@@ -970,11 +555,12 @@
                 </div>
             </div>
         </div>
+
     </div>
 </template>
 
 <script>
-import { reactive, ref, onMounted } from "vue";
+import { reactive, ref, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
 import apiUrl from "../../api";
@@ -982,19 +568,22 @@ import SuccessModal from "../SuccessModal.vue";
 import EmployerNev from "../Employer/EmployerNavbar.vue";
 import { debounce } from "lodash";
 import { State } from "country-state-city";
+import moment from "moment";
+import FooterPage from "../FooterPage.vue";
 
 export default {
     components: {
         SuccessModal,
         EmployerNev,
+        FooterPage,
     },
     setup() {
-        const resume = ref("");
+        const total_experience = ref("");
         const data = reactive({});
         const selectedCountry = ref("");
         const country = ref("");
         const state = ref("");
-        const remote = ref(false);
+        const relocate = ref("");
         const skill = ref("");
         const year_of_experience = ref("");
         const employment_type = ref("");
@@ -1029,21 +618,25 @@ export default {
         const searchInput = ref("");
 
         const city = ref("");
+        const datePosted = ref("");
 
         const empCountry = ref("");
         const empState = ref("");
         const employernameError = ref("");
+        const last_date = ref("");
+        const primary_skill_experience = ref("");
+        const secondary_skill_experience = ref("");
+        const work_visa = ref("");
+        const target_id = ref("");
+        const confirmModel = ref(false);
 
         const allSeeker = ref({});
-
-        const confirmModel = ref(false);
-        const confirmModelResume = ref(false);
         const viewContactStatus = ref(false);
         const contact_id = ref("");
-        const resume_contact_id = ref("");
-
-        const target_id = ref("");
         const target_resume_id = ref("");
+        const confirmModelResume = ref(false);
+        const download_resume = ref("");
+        const resume_contact_id = ref("");
 
         someCountry.value = [
             {
@@ -1096,47 +689,28 @@ export default {
             },
         ];
         const states = ref([]);
-        const download_resume = ref("");
 
         const router = useRouter();
         const addJob = async () => {
             router.push("/add-job");
         };
-        const updateProfile = async () => {
-            if (employername.value == null || employername.value == "") {
-                employernameError.value = "Enter name";
-            } else {
-                employernameError.value = "";
-            }
-            if (contactno.value == null || contactno.value == "") {
-                contactnoError.value = "Enter Contact no";
-            } else {
-                contactnoError.value = "";
-            }
 
-            const formData = new FormData();
-            formData.append("employername", employername.value);
-            formData.append("contactno", contactno.value);
-            formData.append("country", selectedCountry.value);
-            formData.append("state", selectedState.value);
-            formData.append("city", city.value);
-            formData.append("employer_id", localStorage.getItem("employer_id"));
-            showLogoutModal.value = true;
+        // const onCountryChange = async () => {
+        //   console.log("selectedCountry.value", selectedCountry.value);
+        //   const selectedCountryObj = await countries_state.value.find(
+        //     (countrys) => countrys.isoCode === selectedCountry.value
+        //   );
+        //   console.log("selectedCountryObj", selectedCountryObj);
 
-            await axios
-                .post(`${apiUrl}/employer-update-profile`, formData)
-                .then((response) => {
-                    //   countries.value = response.data;
-                    console.log(response);
-                    successMessage.value = response.data.message;
-                    showLogoutModal.value = true;
-                })
-                .catch((error) => {
-                    console.error(error);
-                });
-        };
+        //   country.value = selectedCountryObj
+        //     ? JSON.parse(JSON.stringify(selectedCountryObj)).name
+        //     : "";
+        //   // err_country.value = "";
+
+        //   selectedState.value = "";
+        //   selectedState_main.value = "";
+        // };
         const onCountryChange = async () => {
-            console.log("selectedCountry.value", selectedCountry.value);
             const selectedCountryObj = await countries_state.value.find(
                 (countrys) => countrys.isoCode === selectedCountry.value
             );
@@ -1145,30 +719,21 @@ export default {
             country.value = selectedCountryObj
                 ? JSON.parse(JSON.stringify(selectedCountryObj)).name
                 : "";
-            // err_country.value = "";
             states.value = selectedCountryObj
                 ? State.getStatesOfCountry(selectedCountryObj.isoCode)
                 : "";
-            selectedState.value = "";
+            // selectedState.value = "";
             selectedState_main.value = "";
         };
 
         const setSelectedState = async () => {
-            console.log(selectedState.value, "selectedState.value");
             const selectedStateObj = states.value.find((statess) => {
                 return statess.isoCode == selectedState.value;
             });
 
-            console.log("state.value,selectedStateObj", selectedStateObj);
-            selectedState_main.value = JSON.parse(
-                JSON.stringify(selectedStateObj)
-            ).name;
-        };
-
-        const defaultSelectedState = async () => {
-            console.log(selectedCountry.value, "selectedCountry.value");
-            states.value = countries.value
-                ? State.getStatesOfCountry("" + selectedCountry.value + "")
+            console.log("state.valueeeeeeeeeee", state.value);
+            selectedState_main.value = selectedStateObj
+                ? JSON.parse(JSON.stringify(selectedStateObj)).name
                 : "";
         };
 
@@ -1176,33 +741,43 @@ export default {
             showSuccessModal.value = false;
         };
 
-        const fetchCountries = debounce(async () => {
-            await axios
-                .get(`${apiUrl}/countries`)
-                .then((response) => {
-                    countries.value = response.data;
-                })
-                .catch((error) => {
-                    console.error(error);
-                });
-        });
-
         const employerProfile = async () => {
             router.push("/employer-profile");
         };
+
         const openConfirmationmodel = async (id) => {
             target_id.value = id;
             confirmModel.value = !confirmModel.value;
-
         };
 
-        const closeconfirmModel = () => {
-            confirmModel.value = false;
-        };
+        const fetchSeeekerContactDetail = debounce(async () => {
+      try {
+        const authToken = localStorage.getItem("employer_tocken");
+        const employer_id = localStorage.getItem("employer_id");
 
+        const formData = new FormData();
+        formData.append("searchInput", searchInput.value);
+        const response = await axios.get(
+          `${apiUrl}/seeker-contact-detail/${target_id.value}/${employer_id}`,
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+            },
+          }
+        );
+        viewContactStatus.value = !viewContactStatus.value;
+        email.value = response.data.seeker_details[0].email;
+        contact_number.value = response.data.seeker_details[0].contact_number;
+        confirmModel.value = !confirmModel.value;
+        contact_id.value = target_id.value;
+        console.log(email.value, "response");
+      } catch (error) {
+        console.error(error);
+      }
+    });
 
-
-        const openResumeConfirmationmodel = async (id) => {
+    const openResumeConfirmationmodel = async (id) => {
             target_resume_id.value = id;
             confirmModelResume.value = !confirmModelResume.value;
             console.log(
@@ -1210,65 +785,13 @@ export default {
                 "target_idtarget_idtarget_idtarget_id"
             );
         };
-
         const closeResumeconfirmModel = () => {
             confirmModelResume.value = false;
         };
-        const fetchSeeker = debounce(async () => {
-            try {
-                const authToken = localStorage.getItem("employer_tocken");
-
-                const formData = new FormData();
-                formData.append("searchInput", searchInput.value);
-                formData.append("selectedCountry", selectedCountry.value);
-
-                const response = await axios.post(
-                    `${apiUrl}/seeker-all`,
-                    formData,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${authToken}`,
-                        },
-                    }
-                );
-
-                console.log(response, "response");
-                allSeeker.value = response.data.seeker_details;
-            } catch (error) {
-                console.error(error);
-            }
-        }, 500);
-
-        const fetchSeeekerContactDetail = debounce(async () => {
-            try {
-                const authToken = localStorage.getItem("employer_tocken");
-                const employer_id = localStorage.getItem("employer_id");
-
-                const response = await axios.get(
-                    `${apiUrl}/seeker-contact-detail/${target_id.value}/${employer_id}`,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${authToken}`,
-                        },
-                    }
-                );
-                viewContactStatus.value = !viewContactStatus.value;
-                email.value = response.data.seeker_details[0].email;
-                contact_number.value =
-                    response.data.seeker_details[0].contact_number;
-                confirmModel.value = !confirmModel.value;
-                contact_id.value = target_id.value;
-                console.log(email.value, "response");
-            } catch (error) {
-                console.error(error);
-            }
-        });
-
         const fetchSeeekerResumeDetail = debounce(async () => {
             try {
                 const authToken = localStorage.getItem("employer_tocken");
                 const employer_id = localStorage.getItem("employer_id");
-
                 const response = await axios.get(
                     `${apiUrl}/seeker-resume-detail/${target_resume_id.value}/${employer_id}`,
                     {
@@ -1291,99 +814,104 @@ export default {
                 console.error(error);
             }
         });
-        const downloadResume = async () => {
+        const fetchSeeker = debounce(async () => {
+            try {
+                const authToken = localStorage.getItem("employer_tocken");
 
-           const  fileName =  download_resume.value;
+                if (datePosted.value.trim() !== "") {
+                    const days = parseInt(datePosted.value, 10);
 
-            // const fileUrl = `https://shreyanjobs.com/backend/public/pdf/${fileName}`;
-            const fileUrl = `http://127.0.0.1:8000/pdf/${fileName}`;
+                    if (!isNaN(days) && [1, 3, 7, 30].includes(days)) {
+                        const startDate = moment()
+                            .subtract(days, "days")
+                            .format("YYYY-MM-DD hh:mm:ss");
+                        last_date.value = startDate;
+                    }
+                }
 
+                const formData = new FormData();
+                formData.append("searchInput", searchInput.value);
+                formData.append("country", selectedCountry.value);
+                formData.append("state", selectedState.value);
+                formData.append("city", city.value);
+                formData.append("relocate", relocate.value);
+                formData.append("skill", skill.value);
+                formData.append(
+                    "primary_skill_experience",
+                    primary_skill_experience.value
+                );
+                formData.append(
+                    "secondary_skill_experience",
+                    secondary_skill_experience.value
+                );
+                formData.append("work_visa", work_visa.value);
 
-            // Create a temporary anchor element
-            const link = document.createElement("a");
-            link.href = fileUrl;
-            link.download = fileName;
+                formData.append("created_at", last_date.value);
 
-            // Append the link to the DOM (optional, but required for some browsers)
-            document.body.appendChild(link);
+                const response = await axios.post(
+                    `${apiUrl}/seeker-all`,
+                    formData,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${authToken}`,
+                        },
+                    }
+                );
 
-            // Simulate a click on the link to trigger the download
-            link.click();
-
-            // Remove the link from the DOM after triggering the download
-            document.body.removeChild(link);
-        };
-
-        const getEmployerDeatails = async () => {
-            const employer_id = localStorage.getItem("employer_id");
-
-            const authToken = localStorage.getItem("employer_tocken");
-
-            if (!authToken) {
-                console.log("Authentication token is missing.");
-                return;
+                console.log(response, "response");
+                allSeeker.value = response.data.seeker_details;
+            } catch (error) {
+                console.error(error);
             }
+        }, 500);
+        watch(
+            [
+                skill,
+                primary_skill_experience,
+                secondary_skill_experience,
+                relocate,
+                country,
+                state,
+                selectedState,
+                city,
+                work_visa,
+            ],
+            () => {
+                fetchSeeker();
+            }
+        );
 
-            const config = {
-                headers: {
-                    Authorization: `Bearer ${authToken}`,
-                },
-            };
-
-            const response = await axios.post(
-                `${apiUrl}/employer-profile`,
-                { employer_id: employer_id },
-
-                config
-            );
-
-            company_name.value = response.data.employer_details.companyname;
-            companyurl.value = response.data.employer_details.companyurl;
-            employername.value = response.data.employer_details.employername;
-            emailid.value = response.data.employer_details.emailid;
-            contactno.value = response.data.employer_details.contactno;
-            selectedCountry.value = response.data.employer_details.country;
-            console.log("selectedCountry", selectedCountry.value);
-            selectedState.value = response.data.employer_details.state;
-
-            city.value = response.data.employer_details.city;
-            states.value = countries.value
-                ? State.getStatesOfCountry(selectedCountry.value)
-                : "";
-        };
         onMounted(() => {
             countries_state.value = someCountry.value;
 
-            getEmployerDeatails();
-            fetchCountries();
             fetchSeeker();
-            //   defaultSelectedState();
         });
 
         return {
+            confirmModelResume,
             download_resume,
-            resume,
-            downloadResume,
-            resume_contact_id,
-            fetchSeeekerResumeDetail,
             closeResumeconfirmModel,
             target_resume_id,
+            fetchSeeekerResumeDetail,
             openResumeConfirmationmodel,
-            confirmModelResume,
-            target_id,
             contact_id,
             viewContactStatus,
             fetchSeeekerContactDetail,
-            closeconfirmModel,
-            openConfirmationmodel,
             confirmModel,
+            target_id,
+            openConfirmationmodel,
+            work_visa,
+            primary_skill_experience,
+            secondary_skill_experience,
+            datePosted,
+            setSelectedState,
+            total_experience,
             addJob,
             fetchSeeker,
             searchInput,
             allSeeker,
             employernameError,
             contactnoError,
-            updateProfile,
             company_name,
             companyurl,
             employername,
@@ -1395,7 +923,7 @@ export default {
             data,
             country,
             state,
-            remote,
+            relocate,
             skill,
             year_of_experience,
             employment_type,
@@ -1410,13 +938,11 @@ export default {
             remaining,
             job_title,
             countries,
-            fetchCountries,
             selectedCountry,
             onCountryChange,
             countries_state,
             selectedState,
             states,
-            setSelectedState,
             selectedState_main,
             err_country,
             err_skill,
@@ -1428,7 +954,6 @@ export default {
             err_remote,
             email,
             contact_number,
-            defaultSelectedState,
         };
     },
 };

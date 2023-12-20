@@ -14,7 +14,7 @@ class AddSkillToSeekerTable extends Migration
     public function up()
     {
         Schema::table('seekers', function (Blueprint $table) {
-            $table->json('skill')->nullable()->after('resume'); // Column to store skills as JSON ['php', 'java', ...]
+            $table->text('skill')->nullable()->after('resume'); // Column to store skills as JSON ['php', 'java', ...]
         });
     }
 

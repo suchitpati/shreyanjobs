@@ -37,7 +37,8 @@ class SeekerController extends Controller
     }
     public function seeker_skill(Request $request)
     {
-        $skill_details = Subscription::where('seeker_id', $request->seeker_id)->get();
+        $seeker_data = Seeker::find($request->seeker_id);
+        $skill_details = explode(',', $seeker_data->skill);
         return response()->json([
             'message' => 'Details fetch successfully',
             'success' => 200,
@@ -49,16 +50,17 @@ class SeekerController extends Controller
     {
 
         $seeker = Seeker::find($request->seeker_id);
-        $existingSkills = json_decode($seeker->skill, true) ?? [];
+        $existingSkills = $seeker->skill;
+        $newSkill = $existingSkills . ',' . $request->skill;
+        $seeker->skill = $newSkill;
+        $seeker->save();
 
-        $newSkill = $request->skill;
 
-
-            if (!in_array($newSkill, $existingSkills)) {
-                $existingSkills[] = $newSkill;
-                $seeker->skill = $existingSkills;
-                $seeker->save();
-            }
+        // if (!in_array($newSkill, $existingSkills)) {
+        //     $existingSkills[] = $newSkill;
+        //     $seeker->skill = $existingSkills;
+        //     $seeker->save();
+        // }
 
 
 
@@ -84,36 +86,166 @@ class SeekerController extends Controller
     public function seeker_deleteskill(Request $request)
     {
 
-        Subscription::where([
-            'id' => $request->id,
-        ])->delete();
+        // Fetch the seeker details by ID from the request
+        $seeker_details = Seeker::find($request->seeker_id);
+
+            $skill_data = explode(',', $seeker_details->skill);
+
+            $filteredItems = array_filter($skill_data, function ($item) use ($request) {
+                return $item !== $request->skill;
+            });
+            if($filteredItems == null)
+            {
+                $newSkills = '';
+            }
+            else
+            {
+
+                $newSkills = implode(',', $filteredItems);
+            }
+
+            if($newSkills == null)
+            {
+                $seeker_details->skill = null;
+
+            }
+            else
+            {
+
+                $seeker_details->skill = $newSkills;
+            }
+            $seeker_details->save();
+
+            $seeker_data = Seeker::where('id',$request->seeker_id)->first();
 
         return response()->json([
             'message' => 'Skill Deleted successfully',
-            'code' => 200,
+            'code' => $seeker_data->skill,
         ]);
     }
     public function getSeeker(Request $request)
     {
+        // $seekerQuery = new Seeker();
+
+        // if ($request->searchInput != null) {
+        //     $seeker_details = Seeker::where(function ($query) use ($request) {
+        //         $query->where('fullname', 'LIKE', '%' . $request->searchInput . '%')
+        //             ->orWhere('primary_skill', 'LIKE', '%' . $request->searchInput . '%')
+        //             ->orWhere('secondary_skill', 'LIKE', '%' . $request->searchInput . '%')
+        //             ->orWhere('state', 'LIKE', '%' . $request->searchInput . '%')
+        //             ->orWhere('city', 'LIKE', '%' . $request->searchInput . '%')
+        //             ->orWhere('country', 'LIKE', '%' . $request->searchInput . '%')
+        //             ->orWhere('skill', 'LIKE', '%' . $request->searchInput . '%');
+        //     })
+        //         ->where('is_active', 2)
+        //         ->get();
+        // } else {
+        //     $seeker_details = Seeker::where('is_active', 2)->get(['id', 'fullname', 'primary_skill', 'primary_skill_experience', 'secondary_skill', 'secondary_skill_experience', 'city', 'state', 'country', 'relocate', 'work_authorization','skill']);
+
+
+        // }
+        $seekerQuery = new Seeker();
         if ($request->searchInput != null) {
-            $seeker_details = Seeker::where(function ($query) use ($request) {
+            $seekerQuery = $seekerQuery->where(function ($query) use ($request) {
                 $query->where('fullname', 'LIKE', '%' . $request->searchInput . '%')
                     ->orWhere('primary_skill', 'LIKE', '%' . $request->searchInput . '%')
                     ->orWhere('secondary_skill', 'LIKE', '%' . $request->searchInput . '%')
                     ->orWhere('state', 'LIKE', '%' . $request->searchInput . '%')
                     ->orWhere('city', 'LIKE', '%' . $request->searchInput . '%')
-                    ->orWhere('country', 'LIKE', '%' . $request->searchInput . '%');
-            })
-                ->where('is_active', 2)
-                ->get();
-        } else {
-            $seeker_details = Seeker::where('is_active', 2)->get(['id', 'fullname', 'primary_skill', 'primary_skill_experience', 'secondary_skill', 'secondary_skill_experience', 'city', 'state', 'country', 'relocate', 'work_authorization']);
+                    ->orWhere('country', 'LIKE', '%' . $request->searchInput . '%')
+                    ->orWhere('skill', 'LIKE', '%' . $request->searchInput . '%');
+            });
+        }
+        if ($request->skill != null) {
+            $seekerQuery = $seekerQuery->where('skill', 'like', '%' . $request->skill . '%');
         }
 
+        if ($request->primary_skill_experience != null) {
+            $seekerQuery = $seekerQuery->where('primary_skill_experience', '>=', $request->primary_skill_experience);
+        }
+        if ($request->secondary_skill_experience != null) {
+            $seekerQuery = $seekerQuery->where('secondary_skill_experience', '>=', $request->secondary_skill_experience);
+        }
+        if ($request->country != null) {
+            $seekerQuery = $seekerQuery->where('country', $request->country);
+        }
+
+        if ($request->state != null) {
+            $seekerQuery = $seekerQuery->where('state', $request->state);
+        }
+
+        if ($request->city != null) {
+            $seekerQuery = $seekerQuery->where('city', 'like', '%' . $request->city. '%');
+        }
+
+        // $seekerQuery->when($request->has('relocate'), function ($seekerQuery) use ($request) {
+        //     $seekerQuery->where('relocate', $request->relocate == true );
+        // });
+
+        if ($request->relocate != null) {
+            $seekerQuery = $seekerQuery->where('relocate', $request->relocate == 'true' ? 1 : 0);
+        }
+        if ($request->work_visa != null) {
+            $seekerQuery = $seekerQuery->where('work_authorization', 'like', '%' . $request->work_visa. '%');
+        }
+
+        if ($request->created_at != null) {
+
+            $startDate = Carbon::parse($request->created_at);
+            $formattedStartDate = $startDate->format('Y-m-d H:i:s');
+            $seekerQuery = $seekerQuery->where('created_at', '>=', $formattedStartDate)->orderByDesc('created_at');
+
+
+        }
+
+
+
+        $seekerdetails = $seekerQuery->get();
+        // return response()->json([
+        //     'success' => 200,
+        //     'seeker_details' => $seeker_details
+
+        // ]);
         return response()->json([
             'success' => 200,
-            'seeker_details' => $seeker_details
+            'seeker_details' => $seekerdetails
         ]);
+
+
+        //     $seekerQuery = Seeker::where('is_active', 2);
+
+        // if ($request->has('searchInput') && $request->searchInput != null) {
+        //     $seekerQuery->where(function ($query) use ($request) {
+        //         $query->where('fullname', 'LIKE', '%' . $request->searchInput . '%')
+        //             ->orWhere('primary_skill', 'LIKE', '%' . $request->searchInput . '%')
+        //             ->orWhere('secondary_skill', 'LIKE', '%' . $request->searchInput . '%')
+        //             ->orWhere('state', 'LIKE', '%' . $request->searchInput . '%')
+        //             ->orWhere('city', 'LIKE', '%' . $request->searchInput . '%')
+        //             ->orWhere('country', 'LIKE', '%' . $request->searchInput . '%')
+        //             ->orWhere('skill', 'LIKE', '%' . $request->searchInput . '%');
+        //     });
+        // }
+
+        // if ($request->has('skill')) {
+        //     $seekerQuery->where('skill', 'like', '%' . $request->skill . '%');
+        // }
+
+        // if ($request->has('primary_skill_experience')) {
+        //     $seekerQuery->where('primary_skill_experience', $request->primary_skill_experience);
+        // }
+
+
+        // $seekerDetails = $seekerQuery->get([
+        //     'id', 'fullname', 'primary_skill', 'primary_skill_experience',
+        //     'secondary_skill', 'secondary_skill_experience', 'city',
+        //     'state', 'country', 'relocate', 'work_authorization', 'skill'
+        // ]);
+
+        // return response()->json([
+        //     'success' => 200,
+        //     'seeker_details' => $seekerDetails
+        // ]);
+
     }
 
     public function seekerContactDetail($id, $employe_id)
