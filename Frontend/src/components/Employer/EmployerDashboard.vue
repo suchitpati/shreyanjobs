@@ -194,11 +194,12 @@
                                     >
                                         Yrs. Of Exp in Primary skill
                                     </label>
-                                    <input
+                                    <input min="0"
                                         class="border text-sm rounded-lg h-[36px] py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
                                         type="number"
                                         id="field1"
                                         v-model="primary_skill_experience"
+                                        placeholder="0"
                                     />
                                 </div>
                                 <div class="">
@@ -208,17 +209,19 @@
                                     >
                                         Yrs. Of Exp in Secondary skill
                                     </label>
-                                    <input
+                                    <input min="0"
                                         class="border text-sm rounded-lg h-[36px] py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
                                         type="number"
                                         id="field1"
                                         v-model="secondary_skill_experience"
+                                        placeholder="0"
                                     />
                                 </div>
                                 <div class="">
                                     <label
                                         class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
                                         for="field1"
+
                                     >
                                         Work Visa
                                     </label>
@@ -227,6 +230,7 @@
                                         type="text"
                                         id="field1"
                                         v-model="work_visa"
+                                        placeholder="Work Visa"
                                     />
                                 </div>
 

@@ -454,7 +454,7 @@
                                     v-for="(skill, index) in all_skill"
                                     :key="skill.id"
                                 >
-                                    <div v-if="skill != ''">
+                                    <div class="flex " v-if="skill != ''">
                                         <span class="mr-2">
                                             {{ index + 1 }}.</span
                                         >
