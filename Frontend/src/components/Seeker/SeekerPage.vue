@@ -25,7 +25,6 @@
                         v-if="isEmployerLogged == true"
                         class="sm:w-full xs:w-auto w-[50%] xs:order-3 order-2 flex justify-end gap-[5px]"
                     >
-
                         <router-link to="/add-job">
                             <button
                                 class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] focus:outline-none focus:shadow-outline"
@@ -37,46 +36,47 @@
                             <button
                                 class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] focus:outline-none focus:shadow-outline"
                             >
-                            View/ Edit Jobs
+                                View/ Edit Jobs
                             </button>
                         </router-link>
                         <router-link to="/employer-dashboard">
                             <button
                                 class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] focus:outline-none focus:shadow-outline"
                             >
-                            Search Resume
+                                Search Resume
                             </button>
                         </router-link>
                         <router-link to="/">
                             <button
                                 class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] focus:outline-none focus:shadow-outline"
                             >
-                            Job Search
+                                Job Search
                             </button>
                         </router-link>
                         <router-link to="/employer-profile">
                             <button
                                 class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] focus:outline-none focus:shadow-outline"
                             >
-                            Profile
+                                Profile
                             </button>
                         </router-link>
 
-                            <button @click = employerLogout
-                                class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] focus:outline-none focus:shadow-outline"
-                            >
+                        <button
+                            @click="employerLogout"
+                            class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] focus:outline-none focus:shadow-outline"
+                        >
                             Logout
-                            </button>
+                        </button>
                     </div>
                     <div
                         v-if="isSeekerLogged == true"
                         class="sm:w-full xs:w-auto w-[50%] xs:order-3 order-2 flex justify-end gap-[10px]"
                     >
-                    <router-link to="/">
+                        <router-link to="/">
                             <button
                                 class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] focus:outline-none focus:shadow-outline"
                             >
-                            Job Search
+                                Job Search
                             </button>
                         </router-link>
 
@@ -160,12 +160,20 @@
                 </button>
             </div>
         </div>
-        <div class="max-w-[1080px] text-[12px] w-full m-auto pr-3">
+        <div class="max-w-[980px] text-[12px] w-full m-auto pr-3">
             <div class="m-auto p-auto text-center">
-                <span v-if="mailSentMessageStatus === 'true'" class="text-green-600 text-[16px]">Your resume has been submitted to the employer</span>
+                <span
+                    v-if="mailSentMessageStatus === 'true'"
+                    class="text-green-600 text-[16px]"
+                    >Your resume has been submitted to the employer</span
+                >
             </div>
-            <div class="text-right">For any issue in accessing shreyanjobs.com</div>
-            <div class="text-right">please email to support@shreyanjobs.com</div>
+            <div class="text-right">
+                For any issue in accessing shreyanjobs.com
+            </div>
+            <div class="text-right">
+                please email to support@shreyanjobs.com
+            </div>
         </div>
         <div class="bg-[linear-gradient(180deg,#f5f4fa,rgba(251,251,253,0))]">
             <div>
@@ -178,7 +186,7 @@
             </div>
 
             <div
-                class="rounded-2xl p-4 sm:p-7 top-[10px] m-auto max-w-[1080px] w-full bg-[#d3ddff4f] shadow-[0px_0px_14px_0px_rgba(255,255,255,1);] transition-[.5s]"
+                class="rounded-2xl p-4 sm:p-7 top-[10px] m-auto max-w-[980px] w-full bg-[#d3ddff4f] shadow-[0px_0px_14px_0px_rgba(255,255,255,1);] transition-[.5s]"
             >
                 <div
                     class="grid grid-cols-7 md:gap-4 gap-3 max-w-[1200px] m-auto items-center"
@@ -333,7 +341,7 @@
                     <div class="w-full flex justify-between gap-6"></div>
                 </div>
             </div>
-            <div class="max-w-[1080px] gap-6 w-full px-[20px] mx-auto">
+            <div class="max-w-[980px] gap-6 w-full px-[20px] mx-auto">
                 <!-- Form with two parts -->
 
                 <div
@@ -1021,6 +1029,48 @@
                 </div>
             </div>
         </div>
+        <div v-if="skillModelStatus"
+            class="modal fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center"
+        >
+            <div class="bg-white p-8 rounded shadow-lg w-100">
+                <p class="mb-4 text-sm">
+                    Email will be sent to you for any new job posting with this
+                    skill.
+                </p>
+                <p class="mb-4 text-sm">
+                    You can add/remove skills in “Manage Subscription” under the
+                    Profile Page.
+                </p>
+                <div class="flex items-center mb-4">
+                    <label
+                        for=""
+                        class="mr-2 text-gray-700 font-semibold"
+                        >Skill:</label
+                    >
+                    <input
+                        id=""
+                        v-model="skillInput"
+                        type="text"
+                        class="border-2 border-gray-400 px-4 py-2 rounded-md w-full focus:outline-none focus:border-blue-500"
+                    />
+                </div>
+
+                <div class="flex justify-center">
+                    <button
+                        class="mr-2 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition duration-300"
+                        @click="closeSeeekerSkillDetailModel"
+                    >
+                        No
+                    </button>
+                    <button
+                        class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition duration-300"
+                        @click="addSeeekerSkillDetail"
+                    >
+                        Yes
+                    </button>
+                </div>
+            </div>
+        </div>
         <div
             class="fixed inset-0 flex items-center justify-center z-10"
             v-if="isLoading"
@@ -1089,7 +1139,11 @@ export default {
         const remaining_cover_detail = ref(200);
         const mailSentMessage = ref(false);
         const mailSentMessageStatus = ref(false);
+        const skillModelStatus = ref(false);
 
+
+        const skillInput = ref("");
+        const skillInput1s = ref("");
         someCountry.value = [
             {
                 name: "United States",
@@ -1258,7 +1312,6 @@ export default {
             const fileUrl = `https://shreyanjobs.com/backend/public/pdf/${fileName}`;
             // const fileUrl = `http://127.0.0.1:8000/pdf/${fileName}`;
 
-
             // Create a temporary anchor element
             const link = document.createElement("a");
             link.href = fileUrl;
@@ -1333,10 +1386,18 @@ export default {
             const response = await axios.post(`${apiUrl}/seeker-profile`, {
                 seeker_id,
             });
-            console.log("response", response);
             resume.value = response.data.seeker_details.resume;
+            if(response.data.seeker_details.skill == null)
+            {
+                console.log("response", response.data.seeker_details.skill);
+                skillModelStatus.value = true;
+            }
+
         };
 
+        const closeSeeekerSkillDetailModel = () => {
+
+        };
         const jobmail = async (job_id, employer_id) => {
             console.log("resume", job_id);
             // if(resume.value )
@@ -1359,8 +1420,8 @@ export default {
                     })
                     .then((response) => {
                         console.log(response);
-                        localStorage.setItem('mailSentMessage',true);
-                        localStorage.setItem('mailSentMessageStatus',true);
+                        localStorage.setItem("mailSentMessage", true);
+                        localStorage.setItem("mailSentMessageStatus", true);
                         isLoading.value = false;
 
                         window.location.reload();
@@ -1375,37 +1436,36 @@ export default {
         };
 
         const employerLogout = async () => {
-      try {
-        const authToken = localStorage.getItem("employer_tocken");
+            try {
+                const authToken = localStorage.getItem("employer_tocken");
 
-        if (!authToken) {
-          console.log("Authentication token is missing.");
-          return;
-        }
+                if (!authToken) {
+                    console.log("Authentication token is missing.");
+                    return;
+                }
 
-        const config = {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
+                const config = {
+                    headers: {
+                        Authorization: `Bearer ${authToken}`,
+                    },
+                };
+                isLoading.value = true;
+                const response = await axios.post(
+                    `${apiUrl}/employer-logout`,
+                    null,
+                    config
+                );
+                localStorage.removeItem("employer_tocken");
+                localStorage.removeItem("employer_id");
+                isLoading.value = false;
+
+                console.log(response.data, "responseresponse");
+                window.location.reload();
+                console.log(response);
+            } catch (error) {
+                console.log(error);
+            }
         };
-        isLoading.value = true;
-        const response = await axios.post(
-          `${apiUrl}/employer-logout`,
-          null,
-          config
-        );
-        localStorage.removeItem("employer_tocken");
-        localStorage.removeItem("employer_id");
-        isLoading.value = false;
-
-        console.log(response.data,'responseresponse');
-        window.location.reload();
-        console.log(response);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
 
         const seekerLogout = async () => {
             try {
@@ -1440,6 +1500,21 @@ export default {
                 console.log(error);
             }
         };
+
+        const addSeeekerSkillDetail = debounce(async()=>{
+            const seeker_id = localStorage.getItem("seeker_id");
+
+            const formData = new FormData();
+            formData.append("skill",skillInput.value);
+            formData.append("seeker_id",seeker_id);
+            const response = await axios.post(`${apiUrl}/seeker-skill-add`,
+            formData,
+            );
+            skillModelStatus.value = false;
+
+            console.log("response", response);
+            console.log(skillInput.value,'skillInput1sskillInput1s');
+        })
 
         const fetchJobs = debounce(async () => {
             try {
@@ -1546,20 +1621,25 @@ export default {
             fetchJobs();
             employer_id.value = localStorage.getItem("employer_id");
 
-            mailSentMessage.value = localStorage.getItem('mailSentMessage');
-            mailSentMessageStatus.value = localStorage.getItem('mailSentMessageStatus');
+            mailSentMessage.value = localStorage.getItem("mailSentMessage");
+            mailSentMessageStatus.value = localStorage.getItem(
+                "mailSentMessageStatus"
+            );
 
-        if(mailSentMessage.value &&  !mailSentMessageStatus.value )
-        {
-            localStorage.setItem('mailSentMessageStatus',true);
-        }
+            if (mailSentMessage.value && !mailSentMessageStatus.value) {
+                localStorage.setItem("mailSentMessageStatus", true);
+            }
 
-        if(mailSentMessage.value   && mailSentMessageStatus )
-        {
-            localStorage.setItem('mailSentMessageStatus',false);
-        }
+            if (mailSentMessage.value && mailSentMessageStatus) {
+                localStorage.setItem("mailSentMessageStatus", false);
+            }
         });
         return {
+            skillModelStatus,
+            skillInput1s,
+            closeSeeekerSkillDetailModel,
+            skillInput,
+            addSeeekerSkillDetail,
             employerLogout,
             mailSentMessageStatus,
             mailSentMessage,

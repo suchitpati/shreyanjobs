@@ -51,7 +51,13 @@ class SeekerController extends Controller
 
         $seeker = Seeker::find($request->seeker_id);
         $existingSkills = $seeker->skill;
-        $newSkill = $existingSkills . ',' . $request->skill;
+        if($existingSkills == null)
+        {
+            $newSkill = $request->skill;
+        }else
+        {
+            $newSkill = $existingSkills . ',' . $request->skill;
+        }
         $seeker->skill = $newSkill;
         $seeker->save();
 
@@ -253,6 +259,14 @@ class SeekerController extends Controller
         $seeker = Seeker::where('id', $id)->get(['email', 'contact_number']);
 
         $employer = Employer::find($employe_id);
+        if($employer->acct_balance < 0.5)
+        {
+            return response()->json([
+                    'code' => 100,
+                    'message' => "Insufficient balance",
+                    'status' => 'error'
+                ]);
+        }
         $begin_balance = $employer->acct_balance;
         $end_balance = $employer->acct_balance - 0.50;
 
@@ -280,6 +294,14 @@ class SeekerController extends Controller
         $seeker = Seeker::where('id', $id)->get(['resume']);
 
         $employer = Employer::find($employe_id);
+        if($employer->acct_balance < 0.5)
+        {
+            return response()->json([
+                    'code' => 100,
+                    'message' => "Insufficient balance",
+                    'status' => 'error'
+                ]);
+        }
         $begin_balance = $employer->acct_balance;
         $end_balance = $employer->acct_balance - 0.50;
 

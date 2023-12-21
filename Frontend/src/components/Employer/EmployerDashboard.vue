@@ -6,7 +6,7 @@
             class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-75"
         >
             <div class="bg-white p-8 rounded-lg shadow-lg">
-                <h2 class="text-2xl font-bold mb-4">Job Added Successfully!</h2>
+                <h2 class="text-2xl font-bold mb-4">Insufficient balance</h2>
                 <button
                     @click="closeSuccessModal"
                     class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -17,7 +17,7 @@
         </div>
         <EmployerNev />
         <div class="text-right pr-[105px] bg-[#ebf4ff] text-[18px]">
-            Welcome,{{ employername }}
+            Welcome,{{ employername }} (Employer)
         </div>
 
         <div class="bg-[#ebf4ff] py-7">
@@ -284,8 +284,7 @@
                                                     scope="col"
                                                     class="py-3.5 pl-4 pr-4 text-left text-sm font-semibold text-gray-900 sm:pr-0"
                                                 >
-                                                    Location (City, State
-                                                    (Country))
+                                                    Location
                                                 </th>
                                                 <th
                                                     scope="col"
@@ -327,7 +326,7 @@
                                                     {{ person.fullname }}
                                                 </td>
                                                 <td
-                                                    class="p-4 text-sm text-gray-500 break-words max-w-[500px]"
+                                                    class="p-4 text-sm text-gray-500 break-words max-w-[270px] text-left"
                                                 >
                                                     {{ person.primary_skill }}
                                                 </td>
@@ -339,7 +338,7 @@
                                                     }}
                                                 </td>
                                                 <td
-                                                    class="p-4 text-sm text-gray-500 sm:pr-0 max-w-[500px] break-words"
+                                                    class="p-4 text-sm text-gray-500 sm:pr-0 max-w-[270px] break-words  text-left"
                                                 >
                                                     {{ person.secondary_skill }}
                                                 </td>
@@ -403,13 +402,16 @@
                                                             "
                                                         >
                                                             <div>
-                                                                {{ email }}
+                                                                {{ email }}(Verified)
                                                             </div>
                                                             <div>
                                                                 {{
                                                                     contact_number
-                                                                }}
+                                                                }}(Not Verified)
                                                             </div>
+                                                            <!-- <div>
+                                                            (Please save these detail as it will not be visible when you come back to this page again)
+                                                            </div> -->
                                                         </div>
                                                         <div
                                                             v-else
@@ -437,22 +439,22 @@
                                                             )
                                                         "
                                                     >
-                                                        <a
-                                                            ><u
-                                                                >View Resume</u
-                                                            ></a
+                                                        <a><u>View Resume</u></a
                                                         >{{ resume }}
                                                     </div>
                                                     <div
                                                         v-else-if="
-                                                        resume_contact_id ==
+                                                            resume_contact_id ==
                                                             person.id
                                                         "
                                                         class="cursor-pointer underline"
                                                     >
-                                                        <div @click="downloadResume">
+                                                        <div
+                                                            @click="
+                                                                downloadResume
+                                                            "
+                                                        >
                                                             Download Resume
-
                                                         </div>
                                                     </div>
                                                     <div
@@ -505,26 +507,32 @@
             </div>
         </div>
         <div
-      class="modal fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center"
-      v-if="confirmModel"
-    >
-      <div class="bg-white p-8 rounded shadow-lg w-100">
-        <p class="mb-1">$0.5 will be deducted from your account balance.</p>
-        <p class="mb-3">Do you want to continue ?</p>
+            class="modal fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center"
+            v-if="confirmModel"
+        >
+            <div class="bg-white p-8 rounded shadow-lg w-100">
+                <p class="mb-1">
+                    $0.5 will be deducted from your account balance.
+                </p>
+                <p class="mb-3">Do you want to continue ?</p>
 
-        <div class="flex justify-end">
-          <button class="mr-2 px-4 py-2 bg-gray-500 text-white rounded">
-            No
-          </button>
-          <button
-            class="px-4 py-2 bg-green-500 text-white rounded"
-            @click="fetchSeeekerContactDetail"
-          >
-            Yes
-          </button>
+                <div class="flex justify-end">
+                    <button
+                        class="mr-2 px-4 py-2 bg-gray-500 text-white rounded"
+                        @click="closeConfirmationmodel"
+
+                    >
+                        No
+                    </button>
+                    <button
+                        class="px-4 py-2 bg-green-500 text-white rounded"
+                        @click="fetchSeeekerContactDetail"
+                    >
+                        Yes
+                    </button>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
 
         <div class="">
             <FooterPage />
@@ -555,7 +563,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 </template>
 
@@ -749,35 +756,43 @@ export default {
             target_id.value = id;
             confirmModel.value = !confirmModel.value;
         };
+        const closeConfirmationmodel = () => {
+            confirmModel.value = !confirmModel.value;
+        };
 
         const fetchSeeekerContactDetail = debounce(async () => {
-      try {
-        const authToken = localStorage.getItem("employer_tocken");
-        const employer_id = localStorage.getItem("employer_id");
+            try {
+                const authToken = localStorage.getItem("employer_tocken");
+                const employer_id = localStorage.getItem("employer_id");
 
-        const formData = new FormData();
-        formData.append("searchInput", searchInput.value);
-        const response = await axios.get(
-          `${apiUrl}/seeker-contact-detail/${target_id.value}/${employer_id}`,
-          formData,
-          {
-            headers: {
-              Authorization: `Bearer ${authToken}`,
-            },
-          }
-        );
-        viewContactStatus.value = !viewContactStatus.value;
-        email.value = response.data.seeker_details[0].email;
-        contact_number.value = response.data.seeker_details[0].contact_number;
-        confirmModel.value = !confirmModel.value;
-        contact_id.value = target_id.value;
-        console.log(email.value, "response");
-      } catch (error) {
-        console.error(error);
-      }
-    });
+                const formData = new FormData();
+                formData.append("searchInput", searchInput.value);
+                const response = await axios.get(
+                    `${apiUrl}/seeker-contact-detail/${target_id.value}/${employer_id}`,
+                    formData,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${authToken}`,
+                        },
+                    }
+                );
+                confirmModel.value = !confirmModel.value;
+                if (response.data.code == 100) {
+                    showSuccessModal.value = true;
+                    return false;
+                }
+                viewContactStatus.value = !viewContactStatus.value;
+                email.value = response.data.seeker_details[0].email;
+                contact_number.value =
+                    response.data.seeker_details[0].contact_number;
+                contact_id.value = target_id.value;
+                console.log(email.value, "response");
+            } catch (error) {
+                console.error(error);
+            }
+        });
 
-    const openResumeConfirmationmodel = async (id) => {
+        const openResumeConfirmationmodel = async (id) => {
             target_resume_id.value = id;
             confirmModelResume.value = !confirmModelResume.value;
             console.log(
@@ -787,6 +802,21 @@ export default {
         };
         const closeResumeconfirmModel = () => {
             confirmModelResume.value = false;
+        };
+        const downloadResume = async () => {
+            const fileName = download_resume.value;
+            // const fileUrl = `https://shreyanjobs.com/backend/public/pdf/${fileName}`;
+            const fileUrl = `http://127.0.0.1:8000/pdf/${fileName}`;
+            // Create a temporary anchor element
+            const link = document.createElement("a");
+            link.href = fileUrl;
+            link.download = fileName;
+            // Append the link to the DOM (optional, but required for some browsers)
+            document.body.appendChild(link);
+            // Simulate a click on the link to trigger the download
+            link.click();
+            // Remove the link from the DOM after triggering the download
+            document.body.removeChild(link);
         };
         const fetchSeeekerResumeDetail = debounce(async () => {
             try {
@@ -800,11 +830,14 @@ export default {
                         },
                     }
                 );
+                confirmModelResume.value = !confirmModelResume.value;
+                if (response.data.code == 100) {
+                    showSuccessModal.value = true;
+                    return false;
+                }
                 viewContactStatus.value = !viewContactStatus.value;
                 console.log(response, "response");
-                download_resume.value =
-                    response.data.seeker_details[0].resume;
-                confirmModelResume.value = !confirmModelResume.value;
+                download_resume.value = response.data.seeker_details[0].resume;
                 resume_contact_id.value = target_resume_id.value;
                 console.log(
                     resume_contact_id.value,
@@ -814,6 +847,26 @@ export default {
                 console.error(error);
             }
         });
+        const getEmployerDeatails = async () => {
+            const employer_id = localStorage.getItem("employer_id");
+            const authToken = localStorage.getItem("employer_tocken");
+            if (!authToken) {
+                console.log("Authentication token is missing.");
+                return;
+            }
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${authToken}`,
+                },
+            };
+            const response = await axios.post(
+                `${apiUrl}/employer-profile`,
+                { employer_id: employer_id },
+                config
+            );
+
+            employername.value = response.data.employer_details.employername;
+        };
         const fetchSeeker = debounce(async () => {
             try {
                 const authToken = localStorage.getItem("employer_tocken");
@@ -885,9 +938,14 @@ export default {
             countries_state.value = someCountry.value;
 
             fetchSeeker();
+            getEmployerDeatails();
         });
 
         return {
+            closeConfirmationmodel,
+            getEmployerDeatails,
+            resume_contact_id,
+            downloadResume,
             confirmModelResume,
             download_resume,
             closeResumeconfirmModel,

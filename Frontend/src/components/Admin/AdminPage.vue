@@ -6,7 +6,7 @@
             class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-75"
         >
             <div class="bg-white p-8 rounded-lg shadow-lg">
-                <h2 class="text-2xl font-bold mb-4">Job Added Successfully!</h2>
+                <h2 class="text-2xl font-bold mb-4">Insuficience balance</h2>
                 <button
                     @click="closeSuccessModal"
                     class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -21,15 +21,15 @@
         </div>
 
         <div class="bg-[#ebf4ff] py-0 h-[calc(100vh-80px)] overflow-y-auto">
-            <div class="max-w-[1080px] w-full mx-auto px-[20px]">
+            <div class="max-w-[980px] w-full mx-auto px-[20px]">
                 <div class="flex justify-between items-center mb-5">
                     <h1
-                        class="text-[#1890da] sm:text-[26px] text-[22px] font-semibold mt-[0px] sm:mb-[0px] mb-[25px]"
+                        class="text-[#1890da] sm:text-[22px] text-[22px] font-semibold mt-[0px] sm:mb-[0px] mb-[25px]"
                     >
                         Post a Job
                     </h1>
                     <div
-                        class="text-[#1890da] sm:text-[26px] text-[22px] font-semibold mt-[0px] sm:mb-[0px] mb-[25px] cursor-pointer underline"
+                        class="text-[#1890da] sm:text-[22px] text-[22px] font-semibold mt-[0px] sm:mb-[0px] mb-[25px] cursor-pointer underline"
                     >
                         <router-link to="/employer-job-view"
                             >View/ Edit Past Jobs</router-link
@@ -650,6 +650,13 @@ export default {
                     requestData,
                     config
                 );
+                isLoading.value = false;
+
+                if(response.data.code == 100 )
+                {
+                showSuccessModal.value = true;
+                return false;
+                }
                 console.log(response, "job ===>");
                 (country.value = ""),
                     (state.value = ""),
@@ -663,8 +670,6 @@ export default {
                     (selectedCountry.value = ""),
                     (selectedState_main.value = ""),
                     (job_title.value = "");
-                isLoading.value = false;
-                // showSuccessModal.value = true;
                 // window.location.reload();
                 // setTimeout(() => {
                 // }, 2000);
