@@ -20,7 +20,7 @@
             Welcome,{{ employername }}
         </div>
 
-        <div class="bg-[#ebf4ff] py-0 h-[calc(100vh-80px)] overflow-y-auto">
+        <div class="bg-[#ebf4ff] py-0  ">
             <div class="max-w-[980px] w-full mx-auto px-[20px]">
                 <div class="flex justify-between items-center mb-5">
                     <h1
@@ -409,6 +409,9 @@
                     </button>
                 </div>
             </div>
+            <div class="">
+                <FooterPage />
+            </div>
         </div>
         <div
             class="absolute inset-0 flex items-center justify-center"
@@ -444,9 +447,6 @@
                 </div>
             </div>
         </div>
-        <div class="">
-            <FooterPage />
-        </div>
     </div>
 </template>
 
@@ -465,7 +465,7 @@ export default {
     components: {
         SuccessModal,
         EmployerNev,
-        FooterPage
+        FooterPage,
     },
     setup() {
         const data = reactive({});
@@ -652,10 +652,9 @@ export default {
                 );
                 isLoading.value = false;
 
-                if(response.data.code == 100 )
-                {
-                showSuccessModal.value = true;
-                return false;
+                if (response.data.code == 100) {
+                    showSuccessModal.value = true;
+                    return false;
                 }
                 console.log(response, "job ===>");
                 (country.value = ""),

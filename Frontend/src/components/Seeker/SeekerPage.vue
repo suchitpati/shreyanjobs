@@ -1058,7 +1058,7 @@
                 <div class="flex justify-center">
                     <button
                         class="mr-2 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition duration-300"
-                        @click="closeSeeekerSkillDetailModel"
+                        @click="closeSeeekerSkillDetail"
                     >
                         No
                     </button>
@@ -1270,6 +1270,10 @@ export default {
         const closeSuccessSubscrber = () => {
             showSuccessSubscrber.value = false;
         };
+
+        const closeSeeekerSkillDetail = () => {
+            skillModelStatus.value = false;
+        };
         const openOtpModel = debounce(async () => {
             if (subscribe_skill.value == null || subscribe_skill.value == "") {
                 subscribe_skillError.value = "Insert skill";
@@ -1395,9 +1399,7 @@ export default {
 
         };
 
-        const closeSeeekerSkillDetailModel = () => {
 
-        };
         const jobmail = async (job_id, employer_id) => {
             console.log("resume", job_id);
             // if(resume.value )
@@ -1635,9 +1637,9 @@ export default {
             }
         });
         return {
+            closeSeeekerSkillDetail,
             skillModelStatus,
             skillInput1s,
-            closeSeeekerSkillDetailModel,
             skillInput,
             addSeeekerSkillDetail,
             employerLogout,

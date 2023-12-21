@@ -21,7 +21,7 @@
             Welcome,{{ employername }} (Employer)
         </div>
         <div class="text-right pr-[105px] bg-[#ebf4ff] text-[18px]">
-            Account Balance : {{ acct_balance }}
+            Account Balance : ${{ acct_balance }}
         </div>
 
         <div class="bg-[#ebf4ff] py-7  overflow-y-auto">
