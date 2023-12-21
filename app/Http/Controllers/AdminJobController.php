@@ -6,6 +6,7 @@ use App\Jobs\SendJobNotification;
 use App\Models\AdminJob;
 use App\Models\Employer;
 use App\Models\EmployerTransactionHistory;
+use App\Models\Seeker;
 use App\Models\Subscription;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -126,14 +127,24 @@ class AdminJobController extends Controller
             'job_owner_id' => 'required|integer',
         ]);
 
-        $job = AdminJob::create($validatedData);
-
         $employer = Employer::find($request->job_owner_id);
+        if($employer->acct_balance < 0.5)
+        {
+            return response()->json([
+                    'code' => 100,
+                    'message' => "Insufficient balance",
+                    'status' => 'error'
+                ]);
+        }
         $begin_balance = $employer->acct_balance;
         $end_balance = $employer->acct_balance - 0.50;
 
         $employer->acct_balance = $end_balance;
         $employer->save();
+
+        $job = AdminJob::create($validatedData);
+
+
 
 
 
@@ -156,16 +167,16 @@ class AdminJobController extends Controller
             $additional_detail = $request->additional_detail;
         }
 
-        $subscription_data = Subscription::with('seeker')
-        ->where('skill','LIKE','%'.$request->skill.'%')
-        ->orWhere('skill','LIKE','%'.$request->job_title.'%')
+        $subscription_data = Seeker::whereRaw('LOWER(skill) LIKE ?', ['%' . strtolower($skill) . '%'])
+        ->orWhereRaw('LOWER(skill) LIKE ?', ['%' . strtolower($skill) . ''])
+        ->orWhereRaw('LOWER(skill) LIKE ?', [strtolower($skill) . '%'])
         ->get();
 
         if (isset($subscription_data)) {
 
             foreach ($subscription_data as $sub) {
 
-                SendJobNotification::dispatch($sub->seeker->email, $job_title, $detailed_description, $location, $duration, $skill, $additional_detail);
+                SendJobNotification::dispatch($sub->email, $job_title, $detailed_description, $location, $duration, $skill, $additional_detail);
             }
         }
 
@@ -242,7 +253,6 @@ class AdminJobController extends Controller
 
         return response()->json(null, 204);
     }
-
 
     public function employerJob($id)
     {

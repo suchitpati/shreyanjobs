@@ -460,6 +460,7 @@
                       >
                         {{ err_skill }}
                       </div>
+                      <div class="text-start text-[13px]">Email will be sent to you for any new job posting with this skill. You can add/remove skills in “Manage Subscription” under the Profile Page.</div>
                     </div>
 
 

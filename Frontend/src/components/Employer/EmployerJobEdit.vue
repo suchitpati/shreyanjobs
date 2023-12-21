@@ -17,7 +17,7 @@
     </div>
     <EmployerNev />
     <div class="text-right pr-[105px] bg-[#ebf4ff] text-[18px]">
-      Welcome,{{ employername }}
+      Welcome,{{ employername }} (Employer)
     </div>
 
     <div class="bg-[#ebf4ff] py-0 h-[calc(100vh-80px)] overflow-y-auto">

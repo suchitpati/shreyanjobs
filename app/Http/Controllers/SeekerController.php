@@ -37,7 +37,8 @@ class SeekerController extends Controller
     }
     public function seeker_skill(Request $request)
     {
-        $skill_details = Subscription::where('seeker_id', $request->seeker_id)->get();
+        $seeker_data = Seeker::find($request->seeker_id);
+        $skill_details = explode(',', $seeker_data->skill);
         return response()->json([
             'message' => 'Details fetch successfully',
             'success' => 200,
@@ -47,64 +48,225 @@ class SeekerController extends Controller
     }
     public function seeker_addskill(Request $request)
     {
-        if (!Subscription::where(['seeker_id' => $request->seeker_id, 'skill' => $request->skill])->exists()) {
-            $seeker = Subscription::create([
-                'seeker_id' => $request->seeker_id,
-                'skill' => $request->skill,
-            ]);
 
-            return response()->json([
-                'message' => 'Skill added successfully',
-                'code' => 200,
-            ]);
-        } else {
-            return response()->json([
-                'message' => 'Skill Already Exist   ',
-                'code' => 100,
-            ]);
+        $seeker = Seeker::find($request->seeker_id);
+        $existingSkills = $seeker->skill;
+        if($existingSkills == null)
+        {
+            $newSkill = $request->skill;
+        }else
+        {
+            $newSkill = $existingSkills . ',' . $request->skill;
         }
+        $seeker->skill = $newSkill;
+        $seeker->save();
+
+
+        // if (!in_array($newSkill, $existingSkills)) {
+        //     $existingSkills[] = $newSkill;
+        //     $seeker->skill = $existingSkills;
+        //     $seeker->save();
+        // }
+
+
+
+
+        // if (!Subscription::where(['seeker_id' => $request->seeker_id, 'skill' => $request->skill])->exists()) {
+        //     $seeker = Subscription::create([
+        //         'seeker_id' => $request->seeker_id,
+        //         'skill' => $request->skill,
+        //     ]);
+
+        //     return response()->json([
+        //         'message' => 'Skill added successfully',
+        //         'code' => 200,
+        //     ]);
+        // } else {
+        //     return response()->json([
+        //         'message' => 'Skill Already Exist   ',
+        //         'code' => 100,
+        //     ]);
+        // }
     }
 
     public function seeker_deleteskill(Request $request)
     {
 
-        Subscription::where([
-            'id' => $request->id,
-        ])->delete();
+        // Fetch the seeker details by ID from the request
+        $seeker_details = Seeker::find($request->seeker_id);
+
+            $skill_data = explode(',', $seeker_details->skill);
+
+            $filteredItems = array_filter($skill_data, function ($item) use ($request) {
+                return $item !== $request->skill;
+            });
+            if($filteredItems == null)
+            {
+                $newSkills = '';
+            }
+            else
+            {
+
+                $newSkills = implode(',', $filteredItems);
+            }
+
+            if($newSkills == null)
+            {
+                $seeker_details->skill = null;
+
+            }
+            else
+            {
+
+                $seeker_details->skill = $newSkills;
+            }
+            $seeker_details->save();
+
+            $seeker_data = Seeker::where('id',$request->seeker_id)->first();
 
         return response()->json([
             'message' => 'Skill Deleted successfully',
-            'code' => 200,
+            'code' => $seeker_data->skill,
         ]);
     }
     public function getSeeker(Request $request)
     {
+        // $seekerQuery = new Seeker();
+
+        // if ($request->searchInput != null) {
+        //     $seeker_details = Seeker::where(function ($query) use ($request) {
+        //         $query->where('fullname', 'LIKE', '%' . $request->searchInput . '%')
+        //             ->orWhere('primary_skill', 'LIKE', '%' . $request->searchInput . '%')
+        //             ->orWhere('secondary_skill', 'LIKE', '%' . $request->searchInput . '%')
+        //             ->orWhere('state', 'LIKE', '%' . $request->searchInput . '%')
+        //             ->orWhere('city', 'LIKE', '%' . $request->searchInput . '%')
+        //             ->orWhere('country', 'LIKE', '%' . $request->searchInput . '%')
+        //             ->orWhere('skill', 'LIKE', '%' . $request->searchInput . '%');
+        //     })
+        //         ->where('is_active', 2)
+        //         ->get();
+        // } else {
+        //     $seeker_details = Seeker::where('is_active', 2)->get(['id', 'fullname', 'primary_skill', 'primary_skill_experience', 'secondary_skill', 'secondary_skill_experience', 'city', 'state', 'country', 'relocate', 'work_authorization','skill']);
+
+
+        // }
+        $seekerQuery = new Seeker();
         if ($request->searchInput != null) {
-            $seeker_details = Seeker::where(function ($query) use ($request) {
+            $seekerQuery = $seekerQuery->where(function ($query) use ($request) {
                 $query->where('fullname', 'LIKE', '%' . $request->searchInput . '%')
                     ->orWhere('primary_skill', 'LIKE', '%' . $request->searchInput . '%')
                     ->orWhere('secondary_skill', 'LIKE', '%' . $request->searchInput . '%')
                     ->orWhere('state', 'LIKE', '%' . $request->searchInput . '%')
                     ->orWhere('city', 'LIKE', '%' . $request->searchInput . '%')
-                    ->orWhere('country', 'LIKE', '%' . $request->searchInput . '%');
-            })
-                ->where('is_active', 2)
-                ->get();
-        } else {
-            $seeker_details = Seeker::where('is_active', 2)->get(['id','fullname','primary_skill','primary_skill_experience','secondary_skill','secondary_skill_experience','city','state','country','relocate','work_authorization']);
+                    ->orWhere('country', 'LIKE', '%' . $request->searchInput . '%')
+                    ->orWhere('skill', 'LIKE', '%' . $request->searchInput . '%');
+            });
+        }
+        if ($request->skill != null) {
+            $seekerQuery = $seekerQuery->where('skill', 'like', '%' . $request->skill . '%');
         }
 
+        if ($request->primary_skill_experience != null) {
+            $seekerQuery = $seekerQuery->where('primary_skill_experience', '>=', $request->primary_skill_experience);
+        }
+        if ($request->secondary_skill_experience != null) {
+            $seekerQuery = $seekerQuery->where('secondary_skill_experience', '>=', $request->secondary_skill_experience);
+        }
+        if ($request->country != null) {
+            $seekerQuery = $seekerQuery->where('country', $request->country);
+        }
+
+        if ($request->state != null) {
+            $seekerQuery = $seekerQuery->where('state', $request->state);
+        }
+
+        if ($request->city != null) {
+            $seekerQuery = $seekerQuery->where('city', 'like', '%' . $request->city. '%');
+        }
+
+        // $seekerQuery->when($request->has('relocate'), function ($seekerQuery) use ($request) {
+        //     $seekerQuery->where('relocate', $request->relocate == true );
+        // });
+
+        if ($request->relocate != null) {
+            $seekerQuery = $seekerQuery->where('relocate', $request->relocate == 'true' ? 1 : 0);
+        }
+        if ($request->work_visa != null) {
+            $seekerQuery = $seekerQuery->where('work_authorization', 'like', '%' . $request->work_visa. '%');
+        }
+
+        if ($request->created_at != null) {
+
+            $startDate = Carbon::parse($request->created_at);
+            $formattedStartDate = $startDate->format('Y-m-d H:i:s');
+            $seekerQuery = $seekerQuery->where('created_at', '>=', $formattedStartDate)->orderByDesc('created_at');
+
+
+        }
+
+
+
+        $seekerdetails = $seekerQuery->get();
+        // return response()->json([
+        //     'success' => 200,
+        //     'seeker_details' => $seeker_details
+
+        // ]);
         return response()->json([
             'success' => 200,
-            'seeker_details' => $seeker_details
+            'seeker_details' => $seekerdetails
         ]);
+
+
+        //     $seekerQuery = Seeker::where('is_active', 2);
+
+        // if ($request->has('searchInput') && $request->searchInput != null) {
+        //     $seekerQuery->where(function ($query) use ($request) {
+        //         $query->where('fullname', 'LIKE', '%' . $request->searchInput . '%')
+        //             ->orWhere('primary_skill', 'LIKE', '%' . $request->searchInput . '%')
+        //             ->orWhere('secondary_skill', 'LIKE', '%' . $request->searchInput . '%')
+        //             ->orWhere('state', 'LIKE', '%' . $request->searchInput . '%')
+        //             ->orWhere('city', 'LIKE', '%' . $request->searchInput . '%')
+        //             ->orWhere('country', 'LIKE', '%' . $request->searchInput . '%')
+        //             ->orWhere('skill', 'LIKE', '%' . $request->searchInput . '%');
+        //     });
+        // }
+
+        // if ($request->has('skill')) {
+        //     $seekerQuery->where('skill', 'like', '%' . $request->skill . '%');
+        // }
+
+        // if ($request->has('primary_skill_experience')) {
+        //     $seekerQuery->where('primary_skill_experience', $request->primary_skill_experience);
+        // }
+
+
+        // $seekerDetails = $seekerQuery->get([
+        //     'id', 'fullname', 'primary_skill', 'primary_skill_experience',
+        //     'secondary_skill', 'secondary_skill_experience', 'city',
+        //     'state', 'country', 'relocate', 'work_authorization', 'skill'
+        // ]);
+
+        // return response()->json([
+        //     'success' => 200,
+        //     'seeker_details' => $seekerDetails
+        // ]);
+
     }
 
-    public function seekerContactDetail($id,$employe_id)
+    public function seekerContactDetail($id, $employe_id)
     {
-        $seeker = Seeker::where('id',$id)->get(['email','contact_number']);
+        $seeker = Seeker::where('id', $id)->get(['email', 'contact_number']);
 
         $employer = Employer::find($employe_id);
+        if($employer->acct_balance < 0.5)
+        {
+            return response()->json([
+                    'code' => 100,
+                    'message' => "Insufficient balance",
+                    'status' => 'error'
+                ]);
+        }
         $begin_balance = $employer->acct_balance;
         $end_balance = $employer->acct_balance - 0.50;
 
@@ -112,12 +274,47 @@ class SeekerController extends Controller
         $employer->save();
 
         EmployerTransactionHistory::create([
-            'employer_id' =>$employe_id,
-            'begin_balance' =>$begin_balance,
+            'employer_id' => $employe_id,
+            'begin_balance' => $begin_balance,
             'transaction_amount' => 0.50,
             'end_balance' => $end_balance,
             'transaction_date' => Carbon::now(),
             'action_name' => 'View Contact',
+            'job_seeker_id' => $id
+        ]);
+        return response()->json([
+            'message' => 'Details fetch successfully',
+            'success' => 200,
+            'seeker_details' => $seeker
+
+        ]);
+    }
+    public function seekerResumeDetail($id, $employe_id)
+    {
+        $seeker = Seeker::where('id', $id)->get(['resume']);
+
+        $employer = Employer::find($employe_id);
+        if($employer->acct_balance < 0.5)
+        {
+            return response()->json([
+                    'code' => 100,
+                    'message' => "Insufficient balance",
+                    'status' => 'error'
+                ]);
+        }
+        $begin_balance = $employer->acct_balance;
+        $end_balance = $employer->acct_balance - 0.50;
+
+        $employer->acct_balance = $end_balance;
+        $employer->save();
+
+        EmployerTransactionHistory::create([
+            'employer_id' => $employe_id,
+            'begin_balance' => $begin_balance,
+            'transaction_amount' => 0.50,
+            'end_balance' => $end_balance,
+            'transaction_date' => Carbon::now(),
+            'action_name' => 'View Resume',
             'job_seeker_id' => $id
         ]);
         return response()->json([
@@ -258,19 +455,12 @@ class SeekerController extends Controller
                     'secondary_skill' => $request->secondary_skill,
                     'secondary_skill_experience' => $request->secondary_experience,
                     'resume' => $fileName,
+                    'skill' => json_decode($request->skill, true) ?? [],
                     'relocate' => $request->relocate,
                     'is_active' => 2
                 ]);
 
 
-                    Subscription::create([
-                        'seeker_id' => $request->seeker_id,
-                        'skill' => $request->skill,
-                    ]);
-
-
-
-            // You may want to store the filename in the database or perform other actions here.
 
             return response()->json([
                 'message' => 'Details added successfully',
@@ -458,7 +648,8 @@ class SeekerController extends Controller
 
         return response()->json(['message' => 'Logged out successfully'], 200);
     }
-    public function applyJobMail(Request $request){
+    public function applyJobMail(Request $request)
+    {
 
         $employer = Employer::find($request->employer_id);
         $Seeker = Seeker::find($request->seeker_id);
@@ -466,13 +657,11 @@ class SeekerController extends Controller
         $remote = $adminjob->remote;
 
         $cover_letter = $request->cover_letter;
-        if($cover_letter == null  || $cover_letter == "")
-        {
+        if ($cover_letter == null  || $cover_letter == "") {
             $cover_letter = "-";
         }
 
-        if($request->file('pdf'))
-        {
+        if ($request->file('pdf')) {
 
             $allowedExtensions = ['pdf', 'doc', 'docx'];
             $path = public_path('pdf');
@@ -482,13 +671,10 @@ class SeekerController extends Controller
             $resume->move($path, $fileName);
 
             $resume_file = $path . '/' . $fileName;
-        }
-        else
-        {
+        } else {
             $path = public_path('pdf');
 
             $resume_file = $path . '/' . $Seeker->resume;
-
         }
 
         $job_title = $adminjob->job_title;
@@ -502,19 +688,18 @@ class SeekerController extends Controller
         $additional_detail = $adminjob->additional_detail;
         $email = $Seeker->email;
         $adminemail = $adminjob->email;
-        $fileStatus= 1;
+        $fileStatus = 1;
         try {
-            if($request->file('pdf'))
-            {
+            if ($request->file('pdf')) {
                 $fileStatus = 0;
             }
-            applyJobEmail::dispatch($fileStatus,$adminemail,$email,$job_title,$fullname, $employername, $city, $country, $additional_detail,$resume_file,$detailed_description,$state, $cover_letter,$emailid,$remote);
+            applyJobEmail::dispatch($fileStatus, $adminemail, $email, $job_title, $fullname, $employername, $city, $country, $additional_detail, $resume_file, $detailed_description, $state, $cover_letter, $emailid, $remote);
             // if($request->file('pdf'))
             // {
             //     File::delete($resume_file);
             // }
 
-            SeekerJobApplication::create(['seeker_id' => $request->seeker_id,'job_id'=>$request->id]);
+            SeekerJobApplication::create(['seeker_id' => $request->seeker_id, 'job_id' => $request->id]);
             return response()->json([
                 'message' => 'Email send successfully',
             ]);

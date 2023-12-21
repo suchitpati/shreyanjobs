@@ -1,6 +1,6 @@
 <template>
     <footer class="footer">
-      <p>&copy; {{ currentYear }} © Shreyan Technology LLC, USA. All rights Reserved.</p>
+      <p class="bg-green-700 text-white">© 2023 Shreyan Technology LLC, USA. All rights Reserved.</p>
     </footer>
 </template>
 
@@ -17,7 +17,7 @@
 <style>
   .footer {
     /* Your footer styles here */
-    background-color: #f0f0f0;
+    background-color: #ebf4ff;
     text-align: center;
     padding: 20px;
   }
