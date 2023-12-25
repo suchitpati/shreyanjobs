@@ -128,7 +128,7 @@ class AdminJobController extends Controller
         ]);
 
         $employer = Employer::find($request->job_owner_id);
-        if($employer->acct_balance < 0.5)
+        if($employer->acct_balance < 5)
         {
             return response()->json([
                     'code' => 100,
@@ -137,7 +137,7 @@ class AdminJobController extends Controller
                 ]);
         }
         $begin_balance = $employer->acct_balance;
-        $end_balance = $employer->acct_balance - 0.50;
+        $end_balance = $employer->acct_balance - 5;
 
         $employer->acct_balance = $end_balance;
         $employer->save();
@@ -151,7 +151,7 @@ class AdminJobController extends Controller
         EmployerTransactionHistory::create([
             'employer_id' =>$request->job_owner_id,
             'begin_balance' =>$begin_balance,
-            'transaction_amount' => 0.50,
+            'transaction_amount' => 5,
             'end_balance' => $end_balance,
             'transaction_date' => Carbon::now(),
             'action_name' => 'Job Posting',
@@ -172,6 +172,12 @@ class AdminJobController extends Controller
         ->orWhereRaw('LOWER(skill) LIKE ?', [strtolower($skill) . '%'])
         ->get();
 
+        // return response()->json([
+        //     'code' => 100,
+        //    'message' =>$beforespace,
+        //    'subscription_data' => $subscription_data,
+
+        // ]);
         if (isset($subscription_data)) {
 
             foreach ($subscription_data as $sub) {
@@ -179,6 +185,7 @@ class AdminJobController extends Controller
                 SendJobNotification::dispatch($sub->email, $job_title, $detailed_description, $location, $duration, $skill, $additional_detail);
             }
         }
+
 
         // SendJobNotification::dispatch($subscription_data,$request->job_title);
 
