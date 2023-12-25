@@ -536,7 +536,7 @@ import { reactive, ref, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
 import { debounce } from "lodash";
-import { Country, State } from "country-state-city";
+import { State } from "country-state-city";
 // import "vue-loading-overlay/dist/css/index.css";
 
 import apiUrl from "../../api";
@@ -569,7 +569,7 @@ export default {
     const selectedState = ref("");
     const selectedState_main = ref("");
 
-    const steps = ref(3);
+    const steps = ref(1);
     const enter_otp = ref("");
 
     const final_otp = ref("");
@@ -601,7 +601,58 @@ export default {
     const relocate = ref(0);
     const skill = ref("");
     const err_skill = ref("");
+    const someCountry = ref([]);
 
+    someCountry.value = [
+            {
+                name: "United States",
+                isoCode: "US",
+            },
+            {
+                name: "Canada",
+                isoCode: "CA",
+            },
+            {
+                name: "United Kingdom",
+                isoCode: "GB",
+            },
+            {
+                name: "Australia",
+                isoCode: "AU",
+            },
+            {
+                name: "Singapore",
+                isoCode: "SG",
+            },
+            {
+                name: "France",
+                isoCode: "FR",
+            },
+            {
+                name: "Germany",
+                isoCode: "DE",
+            },
+            {
+                name: "China",
+                isoCode: "CN",
+            },
+            {
+                name: "India",
+                isoCode: "IN",
+            },
+            {
+                name: "Japan",
+                isoCode: "JP",
+            },
+            {
+                name: "Saudi Arabia",
+                isoCode: "SA",
+            },
+            {
+                name: "Brazil",
+                isoCode: "BR",
+            },
+        ];
     const closeSuccessModal = () => {
       showSuccessModal.value = false;
     };
@@ -902,7 +953,7 @@ export default {
     };
     watch([country]);
     onMounted(() => {
-      countries_state.value = Country.getAllCountries();
+      countries_state.value = someCountry.value;
       console.log(countries_state.value, "countries_state.value");
       fetchCountries();
       defaultSelectedState();

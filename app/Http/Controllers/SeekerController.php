@@ -150,18 +150,33 @@ class SeekerController extends Controller
 
 
         // }
+
         $seekerQuery = new Seeker();
-        if ($request->searchInput != null) {
-            $seekerQuery = $seekerQuery->where(function ($query) use ($request) {
-                $query->where('fullname', 'LIKE', '%' . $request->searchInput . '%')
-                    ->orWhere('primary_skill', 'LIKE', '%' . $request->searchInput . '%')
-                    ->orWhere('secondary_skill', 'LIKE', '%' . $request->searchInput . '%')
-                    ->orWhere('state', 'LIKE', '%' . $request->searchInput . '%')
-                    ->orWhere('city', 'LIKE', '%' . $request->searchInput . '%')
-                    ->orWhere('country', 'LIKE', '%' . $request->searchInput . '%')
-                    ->orWhere('skill', 'LIKE', '%' . $request->searchInput . '%');
-            });
+        if ($request->hasAny(['searchInput', 'skill', 'primary_skill_experience', 'secondary_skill_experience', 'country', 'state', 'city', 'relocate', 'work_visa', 'created_at'])) {
+
+            if ($request->searchInput != null) {
+                $seekerQuery = $seekerQuery->where(function ($query) use ($request) {
+                    $query->where('fullname', 'LIKE', '%' . $request->searchInput . '%')
+                        ->orWhere('primary_skill', 'LIKE', '%' . $request->searchInput . '%')
+                        ->orWhere('secondary_skill', 'LIKE', '%' . $request->searchInput . '%')
+                        ->orWhere('state', 'LIKE', '%' . $request->searchInput . '%')
+                        ->orWhere('city', 'LIKE', '%' . $request->searchInput . '%')
+                        ->orWhere('country', 'LIKE', '%' . $request->searchInput . '%')
+                        ->orWhere('skill', 'LIKE', '%' . $request->searchInput . '%');
+                });
+            }
         }
+        // if ($request->searchInput != null) {
+        //     $seekerQuery = $seekerQuery->where(function ($query) use ($request) {
+        //         $query->where('fullname', 'LIKE', '%' . $request->searchInput . '%')
+        //             ->orWhere('primary_skill', 'LIKE', '%' . $request->searchInput . '%')
+        //             ->orWhere('secondary_skill', 'LIKE', '%' . $request->searchInput . '%')
+        //             ->orWhere('state', 'LIKE', '%' . $request->searchInput . '%')
+        //             ->orWhere('city', 'LIKE', '%' . $request->searchInput . '%')
+        //             ->orWhere('country', 'LIKE', '%' . $request->searchInput . '%')
+        //             ->orWhere('skill', 'LIKE', '%' . $request->searchInput . '%');
+        //     });
+        // }
         if ($request->skill != null) {
             $seekerQuery = $seekerQuery->where('skill', 'like', '%' . $request->skill . '%');
         }
