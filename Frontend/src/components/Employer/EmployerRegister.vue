@@ -356,7 +356,7 @@ import { reactive, ref, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
 import { debounce } from "lodash";
-import { Country, State } from "country-state-city";
+import { State } from "country-state-city";
 
 // import "vue-loading-overlay/dist/css/index.css";
 
@@ -423,7 +423,58 @@ export default {
     const closeSuccessModal = () => {
       showSuccessModal.value = false;
     };
+    const someCountry = ref([]);
 
+    someCountry.value = [
+            {
+                name: "United States",
+                isoCode: "US",
+            },
+            {
+                name: "Canada",
+                isoCode: "CA",
+            },
+            {
+                name: "United Kingdom",
+                isoCode: "GB",
+            },
+            {
+                name: "Australia",
+                isoCode: "AU",
+            },
+            {
+                name: "Singapore",
+                isoCode: "SG",
+            },
+            {
+                name: "France",
+                isoCode: "FR",
+            },
+            {
+                name: "Germany",
+                isoCode: "DE",
+            },
+            {
+                name: "China",
+                isoCode: "CN",
+            },
+            {
+                name: "India",
+                isoCode: "IN",
+            },
+            {
+                name: "Japan",
+                isoCode: "JP",
+            },
+            {
+                name: "Saudi Arabia",
+                isoCode: "SA",
+            },
+            {
+                name: "Brazil",
+                isoCode: "BR",
+            },
+        ];
     const registerEmployer = async () => {
       try {
         if (companyname.value == null || companyname.value == "") {
@@ -609,7 +660,7 @@ export default {
     };
     watch([country]);
     onMounted(() => {
-      countries_state.value = Country.getAllCountries();
+      countries_state.value = someCountry.value;
       console.log(countries_state.value, "countries_state.value");
       fetchCountries();
       defaultSelectedState();

@@ -1033,6 +1033,7 @@
             class="modal fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center"
         >
             <div class="bg-white p-8 rounded shadow-lg w-100">
+                <p class="text-[22px]"><b>Email Subscription for New Job Posting</b></p>
                 <p class="mb-4 text-sm">
                     Email will be sent to you for any new job posting with this
                     skill.
@@ -1056,17 +1057,17 @@
                 </div>
 
                 <div class="flex justify-center">
-                    <button
+                    <!-- <button
                         class="mr-2 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition duration-300"
                         @click="closeSeeekerSkillDetail"
                     >
                         No
-                    </button>
+                    </button> -->
                     <button
                         class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition duration-300"
                         @click="addSeeekerSkillDetail"
                     >
-                        Yes
+                        Submit
                     </button>
                 </div>
             </div>

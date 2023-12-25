@@ -669,7 +669,7 @@ export default {
                     (selectedCountry.value = ""),
                     (selectedState_main.value = ""),
                     (job_title.value = "");
-                // window.location.reload();
+                window.location.reload();
                 // setTimeout(() => {
                 // }, 2000);
                 localStorage.setItem("addJobMessage", true);

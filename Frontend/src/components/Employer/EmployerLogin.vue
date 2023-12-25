@@ -103,12 +103,12 @@
                             <div
                                 class="border border-[#1890da] rounded-lg text-left p-2 ms-3 font-bold w-[80%]"
                             >
-                                <p>A Nominal Fixed Cost Per Year</p>
+                                <p>A Nominal Fixed Cost per Use</p>
                                 <p class="italic">
                                     - $5 to Post a Job for 30 Day
                                 </p>
                                 <p class="italic">
-                                    - $0.5 to View Candidate's Email & Contract
+                                    - $0.5 to view Job Seeker Email and Contact number
                                 </p>
                                 <p class="italic">
                                     - $0.5 to View Candidate's Resume
@@ -123,7 +123,7 @@
                                 class="accent-[green] w-[20px] h-[20[px]"
                             />
                             <p class="ps-3 font-bold">
-                                $50 To Credit to use after your sucessful
+                                $50 Credit to use after successful Registration
                                 Registration
                             </p>
                         </div>

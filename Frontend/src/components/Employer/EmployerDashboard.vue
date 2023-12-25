@@ -34,7 +34,7 @@
                         <h1
                             class="text-[#1890da] sm:text-[26px] text-[22px] font-semibold mt-[0px] sm:mb-[0px] mb-[25px] text-left"
                         >
-                            Serch Resume
+                            Search Resume
                         </h1>
                         <div class="text-center">
                             <div
@@ -77,8 +77,9 @@
                                 the contact detail &amp; Resume.</span
                             > -->
                         </div>
-                        <div
-                            class="rounded-2xl p-4 sm:p-7 top-[10px] m-auto max-w-[1080px] w-full bg-[#d3ddff4f] shadow-[0px_0px_14px_0px_rgba(255,255,255,1);] transition-[.5s]"
+                        <div v-if="!allSeeker.length" >Please use the search filters to find your matching Resume</div>
+                        <div v-if="allSeeker.length > 0"
+                            class="rounded-2xl p-4 sm:p-7 top-[10px] m-auto max-w-[1080px] w-full bg-[#d3ddff4f] shadow-[0px_0px_14px_0px_rgba(255,255,255,1);] transition-[.5s] mt-4"
                         >
                             <div
                                 class="grid grid-cols-8 md:gap-4 gap-3 max-w-[1200px] m-auto items-end"
@@ -240,7 +241,7 @@
                             </div>
                         </div>
 
-                        <div class="mt-8 flow-root">
+                        <div class="mt-8 flow-root"  v-if="allSeeker.length > 0">
                             <div
                                 class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8"
                             >
@@ -941,7 +942,7 @@ export default {
         onMounted(() => {
             countries_state.value = someCountry.value;
 
-            fetchSeeker();
+            // fetchSeeker();
             getEmployerDeatails();
         });
 
