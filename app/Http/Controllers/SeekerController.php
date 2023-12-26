@@ -166,6 +166,7 @@ class SeekerController extends Controller
                 });
             }
         }
+
         // if ($request->searchInput != null) {
         //     $seekerQuery = $seekerQuery->where(function ($query) use ($request) {
         //         $query->where('fullname', 'LIKE', '%' . $request->searchInput . '%')
@@ -178,7 +179,8 @@ class SeekerController extends Controller
         //     });
         // }
         if ($request->skill != null) {
-            $seekerQuery = $seekerQuery->where('skill', 'like', '%' . $request->skill . '%');
+            $seekerQuery = $seekerQuery->where('primary_skill', 'LIKE','%' . $request->skill . '%')
+                                        ->orWhere('secondary_skill','LIKE', '%' . $request->skill . '%');
         }
 
         if ($request->primary_skill_experience != null) {
@@ -220,6 +222,7 @@ class SeekerController extends Controller
         }
 
 
+        $seekerQuery = $seekerQuery->where('is_active',2);
 
         $seekerdetails = $seekerQuery->get();
         // return response()->json([

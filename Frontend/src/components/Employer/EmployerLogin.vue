@@ -124,7 +124,6 @@
                             />
                             <p class="ps-3 font-bold">
                                 $50 Credit to use after successful Registration
-                                Registration
                             </p>
                         </div>
                     </div>
