@@ -452,15 +452,15 @@
                                 <span
                                     class="text-left flex"
                                     v-for="(skill, index) in all_skill"
-                                    :key="skill.id"
+                                    :key="skill"
                                 >
                                     <div class="flex " v-if="skill != ''">
                                         <span class="mr-2">
                                             {{ index + 1 }}.</span
                                         >
-                                        {{ skill }}
+                                        {{ skill.skill }}
                                         <div
-                                            @click="deleteSkill(skill)"
+                                            @click="deleteSkill(skill.id)"
                                             class="ml-2 underline cursor-pointer"
                                         >
                                             delete

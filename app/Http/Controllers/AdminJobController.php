@@ -10,6 +10,7 @@ use App\Models\Seeker;
 use App\Models\Subscription;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class AdminJobController extends Controller
 {
@@ -128,13 +129,12 @@ class AdminJobController extends Controller
         ]);
 
         $employer = Employer::find($request->job_owner_id);
-        if($employer->acct_balance < 5)
-        {
+        if ($employer->acct_balance < 5) {
             return response()->json([
-                    'code' => 100,
-                    'message' => "Insufficient balance",
-                    'status' => 'error'
-                ]);
+                'code' => 100,
+                'message' => "Insufficient balance",
+                'status' => 'error'
+            ]);
         }
         $begin_balance = $employer->acct_balance;
         $end_balance = $employer->acct_balance - 5;
@@ -149,8 +149,8 @@ class AdminJobController extends Controller
 
 
         EmployerTransactionHistory::create([
-            'employer_id' =>$request->job_owner_id,
-            'begin_balance' =>$begin_balance,
+            'employer_id' => $request->job_owner_id,
+            'begin_balance' => $begin_balance,
             'transaction_amount' => 5,
             'end_balance' => $end_balance,
             'transaction_date' => Carbon::now(),
@@ -167,17 +167,22 @@ class AdminJobController extends Controller
             $additional_detail = $request->additional_detail;
         }
 
-        $subscription_data = Seeker::whereRaw('LOWER(skill) LIKE ?', ['%' . strtolower($skill) . '%'])
-        ->orWhereRaw('LOWER(skill) LIKE ?', ['%' . strtolower($skill) . ''])
-        ->orWhereRaw('LOWER(skill) LIKE ?', [strtolower($skill) . '%'])
-        ->get();
+        // $searchTerms = explode(' ', $skill);
 
-        // return response()->json([
-        //     'code' => 100,
-        //    'message' =>$beforespace,
-        //    'subscription_data' => $subscription_data,
+        $subscription_data = Subscription::all();
+        $foundSubscriptions = [];
 
-        // ]);
+        foreach ($subscription_data as $sub) {
+            $found = strpos(strtolower($skill), strtolower($sub->skill)) !== false;
+
+            if ($found) {
+                $foundSubscriptions[] = $sub->seeker_id;
+            }
+        }
+
+        $uniqueFoundSubscriptions = array_unique($foundSubscriptions);
+        $subscription_data = Seeker::whereIn('id', $uniqueFoundSubscriptions)->get();
+
         if (isset($subscription_data)) {
 
             foreach ($subscription_data as $sub) {

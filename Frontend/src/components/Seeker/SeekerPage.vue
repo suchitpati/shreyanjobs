@@ -1392,12 +1392,20 @@ export default {
                 seeker_id,
             });
             resume.value = response.data.seeker_details.resume;
-            if(response.data.seeker_details.skill == null)
-            {
-                console.log("response", response.data.seeker_details.skill);
-                skillModelStatus.value = true;
-            }
 
+
+
+            const skill_data = await axios.post(`${apiUrl}/seeker-skill`, {
+                seeker_id: seeker_id,
+            });
+
+
+            if (skill_data.data.skill_details == null ||  skill_data.data.skill_details == "") {
+
+
+                skillModelStatus.value = true;
+
+            }
         };
 
 
@@ -1638,6 +1646,7 @@ export default {
             }
         });
         return {
+
             closeSeeekerSkillDetail,
             skillModelStatus,
             skillInput1s,

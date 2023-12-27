@@ -22,11 +22,7 @@
 
     <div class="bg-[#ebf4ff] py-7">
       <div class="w-full mx-auto px-[20px]">
-        <!-- <h1
-                      class="text-[#1890da] sm:text-[26px] text-[22px] font-semibold mt-[30px] sm:mb-[40px] mb-[25px]"
-                  >
-                      Admin Page - Post Job Requirement
-                  </h1> -->
+
         <div
           class="bg-[#d3ddff4f] rounded-lg py-4 sm:px-8 px-4 w-full shadow-[rgba(100,_100,_111,_0.2)_0px_0px_10px_0px] hover:shadow-[rgba(100,_100,_111,_0.2)_0px_0px_20px_0px] transition-[.5s]"
         >
@@ -37,9 +33,9 @@
               Search Resume
             </h1>
             <div class="text-center">
-              <div
+                <div
                 class="flex items-center justify-center px-[20px] gap-6 w-[65%] mx-auto md:pt-[28px] pt-5 sm:mb-1 mb-10 md:w-full"
-              >
+                >
                 <div class="flex items-center justify-center w-[40%] relative">
                   <input
                     class="rounded-[40px] md:py-[16px] sm:py-[15px] py-[12px] px-4 sm:pl-[60px] pl-[40px] focus:shadow-outline w-full shadow-[0_25px_60px_rgba(113,106,147,.2)]"
@@ -63,22 +59,16 @@
                   Search
                 </button>
 
-                <!-- <button
-                  class="bg-blue-700 rounded-[30px] text-white md:p-[13px_30px] sm:p-[7px_20px] p-[5px_14px]"
-                  @click="addJob"
-                >
-                Post Job
-            </button> -->
+
               </div>
-              <!-- <span class="text-[14px] pr-[135px]"
-                                >Please email to support@shreyanjobs.com to get
-                                the contact detail &amp; Resume.</span
-                            > -->
+
             </div>
-            <div v-if="!allSeeker.length" class="text-[25px] mt-3 text-[red]">
+            <div class="text-[red]  " v-if="inputStatus"> Please Enter something</div>
+            <div  class="text-[red]  " v-if="fetchJobStatus">No data found</div>
+            <!-- <div v-if="!allSeeker.length" class="text-[25px] mt-3 text-[red]">
               Please use the search filters to find your matching Resume
-            </div>
-            <div
+            </div> -->
+            <!-- <div
               v-if="allSeeker.length > 0"
               class="rounded-2xl p-4 sm:p-7 top-[10px] m-auto max-w-[1080px] w-full bg-[#d3ddff4f] shadow-[0px_0px_14px_0px_rgba(255,255,255,1);] transition-[.5s] mt-4"
             >
@@ -107,7 +97,6 @@
                       <span
                         class="flag-icon flag-icon-{{ country.isoCode.toLowerCase() }} inline-block w-4 h-4 mr-2"
                       ></span>
-                      <!-- <div class="mr-2">{{ country.flag }}</div> -->
                       <div>{{ country.name }}</div>
                     </option>
                   </select>
@@ -239,7 +228,7 @@
 
                 <div class="w-full flex justify-between gap-6"></div>
               </div>
-            </div>
+            </div> -->
 
             <!-- <div class="mt-8 flow-root" v-if="allSeeker.length > 0">
               <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -479,8 +468,7 @@
                   <div>{{ email }}(Verified)</div>
                   <div>{{ contact_number }}(Not Verified)</div>
                   <div class="text-[10px] text-[red]">
-                    (Please save these detail as it will not be visible when you
-                    come back to this page again)
+                    (Contact detail is displayed only once. Write it down for future use.)
                   </div>
                 </div>
                 <div
@@ -601,7 +589,7 @@ import SuccessModal from "../SuccessModal.vue";
 import EmployerNev from "../Employer/EmployerNavbar.vue";
 import { debounce } from "lodash";
 import { State } from "country-state-city";
-import moment from "moment";
+// import moment from "moment";
 import FooterPage from "../FooterPage.vue";
 
 export default {
@@ -656,7 +644,7 @@ export default {
     const empCountry = ref("");
     const empState = ref("");
     const employernameError = ref("");
-    const last_date = ref("");
+    // const last_date = ref("");
     const primary_skill_experience = ref("");
     const secondary_skill_experience = ref("");
     const work_visa = ref("");
@@ -670,6 +658,8 @@ export default {
     const confirmModelResume = ref(false);
     const download_resume = ref("");
     const resume_contact_id = ref("");
+    const inputStatus = ref(false);
+    const fetchJobStatus = ref(false);
 
     someCountry.value = [
       {
@@ -864,8 +854,8 @@ export default {
         resume_contact_id.value = target_resume_id.value;
 
         const fileName = download_resume.value;
-        // const fileUrl = `https://shreyanjobs.com/backend/public/pdf/${fileName}`;
-        const fileUrl = `http://127.0.0.1:8000/pdf/${fileName}`;
+        const fileUrl = `https://shreyanjobs.com/backend/public/pdf/${fileName}`;
+        // const fileUrl = `http://127.0.0.1:8000/pdf/${fileName}`;
 
         const link = document.createElement("a");
         link.href = fileUrl;
@@ -903,40 +893,46 @@ export default {
       try {
         const authToken = localStorage.getItem("employer_tocken");
 
-        if (datePosted.value.trim() !== "") {
-          const days = parseInt(datePosted.value, 10);
+        // if (datePosted.value.trim() !== "") {
+        //   const days = parseInt(datePosted.value, 10);
 
-          if (!isNaN(days) && [1, 3, 7, 30].includes(days)) {
-            const startDate = moment()
-              .subtract(days, "days")
-              .format("YYYY-MM-DD hh:mm:ss");
-            last_date.value = startDate;
-          }
-        }
+        //   if (!isNaN(days) && [1, 3, 7, 30].includes(days)) {
+        //     const startDate = moment()
+        //       .subtract(days, "days")
+        //       .format("YYYY-MM-DD hh:mm:ss");
+        //     last_date.value = startDate;
+        //   }
+        // }
 
         const formData = new FormData();
         if(searchInput.value == "" || searchInput.value == null)
         {
             allSeeker.value = "";
+            inputStatus.value = true;
             return false;
         }
-        formData.append("searchInput", searchInput.value);
-        formData.append("country", selectedCountry.value);
-        formData.append("state", selectedState.value);
-        formData.append("city", city.value);
-        formData.append("relocate", relocate.value);
-        formData.append("skill", skill.value);
-        formData.append(
-          "primary_skill_experience",
-          primary_skill_experience.value
-        );
-        formData.append(
-          "secondary_skill_experience",
-          secondary_skill_experience.value
-        );
-        formData.append("work_visa", work_visa.value);
+        else
+        {
+            inputStatus.value = false;
 
-        formData.append("created_at", last_date.value);
+        }
+        formData.append("searchInput", searchInput.value);
+        // // formData.append("country", selectedCountry.value);
+        // // formData.append("state", selectedState.value);
+        // // formData.append("city", city.value);
+        // // formData.append("relocate", relocate.value);
+        // // formData.append("skill", skill.value);
+        // // formData.append(
+        // //   "primary_skill_experience",
+        // //   primary_skill_experience.value
+        // // );
+        // formData.append(
+        //   "secondary_skill_experience",
+        //   secondary_skill_experience.value
+        // );
+        // formData.append("work_visa", work_visa.value);
+
+        // formData.append("created_at", last_date.value);
 
         const response = await axios.post(`${apiUrl}/seeker-all`, formData, {
           headers: {
@@ -949,15 +945,20 @@ export default {
         console.log(response.data.seeker_details.length,'response.data.seeker_details.lengthresponse.data.seeker_details.length')
         if(response.data.seeker_details.length == 0)
         {
-             selectedCountry.value = "";
-             selectedState.value = "";
-             city.value = "";
-             relocate.value = "";
-             skill.value = "";
-             primary_skill_experience.value = 0;
-             secondary_skill_experience.value = 0;
-             work_visa.value = "";
-             last_date.value = "";
+            fetchJobStatus.value = true;
+            //  selectedCountry.value = "";
+            //  selectedState.value = "";
+            //  city.value = "";
+            //  relocate.value = "";
+            //  skill.value = "";
+            //  primary_skill_experience.value = 0;
+            //  secondary_skill_experience.value = 0;
+            //  work_visa.value = "";
+            //  last_date.value = "";
+        }
+        else
+        {
+            fetchJobStatus.value = false;
         }
 
 
@@ -990,6 +991,8 @@ export default {
     });
 
     return {
+        fetchJobStatus,
+        inputStatus,
       closeConfirmationmodel,
       getEmployerDeatails,
       resume_contact_id,
