@@ -37,8 +37,8 @@ class SeekerController extends Controller
     }
     public function seeker_skill(Request $request)
     {
-        $seeker_data = Seeker::find($request->seeker_id);
-        $skill_details = explode(',', $seeker_data->skill);
+        $skill_details = Subscription::where('seeker_id',$request->seeker_id)->get();
+        // $skill_details = explode(',', $seeker_data->skill);
         return response()->json([
             'message' => 'Details fetch successfully',
             'success' => 200,
@@ -49,84 +49,79 @@ class SeekerController extends Controller
     public function seeker_addskill(Request $request)
     {
 
-        $seeker = Seeker::find($request->seeker_id);
-        $existingSkills = $seeker->skill;
-        if($existingSkills == null)
-        {
-            $newSkill = $request->skill;
-        }else
-        {
-            $newSkill = $existingSkills . ',' . $request->skill;
+        // $seeker = Seeker::find($request->seeker_id);
+        // $existingSkills = $seeker->skill;
+        // if($existingSkills == null)
+        // {
+        //     $newSkill = $request->skill;
+        // }else
+        // {
+        //     $newSkill = $existingSkills . ',' . $request->skill;
+        // }
+        // $seeker->skill = $newSkill;
+        // $seeker->save();
+
+
+
+
+
+
+        if (!Subscription::where(['seeker_id' => $request->seeker_id, 'skill' => $request->skill])->exists()) {
+            $seeker = Subscription::create([
+                'seeker_id' => $request->seeker_id,
+                'skill' => $request->skill,
+            ]);
+
+            return response()->json([
+                'message' => 'Skill added successfully',
+                'code' => 200,
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'Skill Already Exist   ',
+                'code' => 100,
+            ]);
         }
-        $seeker->skill = $newSkill;
-        $seeker->save();
-
-
-        // if (!in_array($newSkill, $existingSkills)) {
-        //     $existingSkills[] = $newSkill;
-        //     $seeker->skill = $existingSkills;
-        //     $seeker->save();
-        // }
-
-
-
-
-        // if (!Subscription::where(['seeker_id' => $request->seeker_id, 'skill' => $request->skill])->exists()) {
-        //     $seeker = Subscription::create([
-        //         'seeker_id' => $request->seeker_id,
-        //         'skill' => $request->skill,
-        //     ]);
-
-        //     return response()->json([
-        //         'message' => 'Skill added successfully',
-        //         'code' => 200,
-        //     ]);
-        // } else {
-        //     return response()->json([
-        //         'message' => 'Skill Already Exist   ',
-        //         'code' => 100,
-        //     ]);
-        // }
     }
 
     public function seeker_deleteskill(Request $request)
     {
 
         // Fetch the seeker details by ID from the request
-        $seeker_details = Seeker::find($request->seeker_id);
+        // $seeker_details = Seeker::find($request->seeker_id);
 
-            $skill_data = explode(',', $seeker_details->skill);
+        //     $skill_data = explode(',', $seeker_details->skill);
 
-            $filteredItems = array_filter($skill_data, function ($item) use ($request) {
-                return $item !== $request->skill;
-            });
-            if($filteredItems == null)
-            {
-                $newSkills = '';
-            }
-            else
-            {
+        //     $filteredItems = array_filter($skill_data, function ($item) use ($request) {
+        //         return $item !== $request->skill;
+        //     });
+        //     if($filteredItems == null)
+        //     {
+        //         $newSkills = '';
+        //     }
+        //     else
+        //     {
 
-                $newSkills = implode(',', $filteredItems);
-            }
+        //         $newSkills = implode(',', $filteredItems);
+        //     }
 
-            if($newSkills == null)
-            {
-                $seeker_details->skill = null;
+        //     if($newSkills == null)
+        //     {
+        //         $seeker_details->skill = null;
 
-            }
-            else
-            {
+        //     }
+        //     else
+        //     {
 
-                $seeker_details->skill = $newSkills;
-            }
-            $seeker_details->save();
+        //         $seeker_details->skill = $newSkills;
+        //     }
+        //     $seeker_details->save();
 
-            $seeker_data = Seeker::where('id',$request->seeker_id)->first();
-
+        //     $seeker_data = Seeker::where('id',$request->seeker_id)->first();
+        Subscription::find($request->skill)->delete();
         return response()->json([
             'message' => 'Skill Deleted successfully',
-            'code' => $seeker_data->skill,
+            'code' => 200,
         ]);
     }
     public function getSeeker(Request $request)
@@ -161,8 +156,8 @@ class SeekerController extends Controller
                         ->orWhere('secondary_skill', 'LIKE', '%' . $request->searchInput . '%')
                         ->orWhere('state', 'LIKE', '%' . $request->searchInput . '%')
                         ->orWhere('city', 'LIKE', '%' . $request->searchInput . '%')
-                        ->orWhere('country', 'LIKE', '%' . $request->searchInput . '%')
-                        ->orWhere('skill', 'LIKE', '%' . $request->searchInput . '%');
+                        ->orWhere('country', 'LIKE', '%' . $request->searchInput . '%');
+                        // ->orWhere('skill', 'LIKE', '%' . $request->searchInput . '%');
                 });
             }
         }
@@ -178,48 +173,48 @@ class SeekerController extends Controller
         //             ->orWhere('skill', 'LIKE', '%' . $request->searchInput . '%');
         //     });
         // }
-        if ($request->skill != null) {
-            $seekerQuery = $seekerQuery->where('primary_skill', 'LIKE','%' . $request->skill . '%')
-                                        ->orWhere('secondary_skill','LIKE', '%' . $request->skill . '%');
-        }
+        // if ($request->skill != null) {
+        //     $seekerQuery = $seekerQuery->where('primary_skill', 'LIKE','%' . $request->skill . '%')
+        //                                 ->orWhere('secondary_skill','LIKE', '%' . $request->skill . '%');
+        // }
 
-        if ($request->primary_skill_experience != null) {
-            $seekerQuery = $seekerQuery->where('primary_skill_experience', '>=', $request->primary_skill_experience);
-        }
-        if ($request->secondary_skill_experience != null) {
-            $seekerQuery = $seekerQuery->where('secondary_skill_experience', '>=', $request->secondary_skill_experience);
-        }
-        if ($request->country != null) {
-            $seekerQuery = $seekerQuery->where('country', $request->country);
-        }
+        // if ($request->primary_skill_experience != null) {
+        //     $seekerQuery = $seekerQuery->where('primary_skill_experience', '>=', $request->primary_skill_experience);
+        // }
+        // if ($request->secondary_skill_experience != null) {
+        //     $seekerQuery = $seekerQuery->where('secondary_skill_experience', '>=', $request->secondary_skill_experience);
+        // }
+        // if ($request->country != null) {
+        //     $seekerQuery = $seekerQuery->where('country', $request->country);
+        // }
 
-        if ($request->state != null) {
-            $seekerQuery = $seekerQuery->where('state', $request->state);
-        }
+        // if ($request->state != null) {
+        //     $seekerQuery = $seekerQuery->where('state', $request->state);
+        // }
 
-        if ($request->city != null) {
-            $seekerQuery = $seekerQuery->where('city', 'like', '%' . $request->city. '%');
-        }
+        // if ($request->city != null) {
+        //     $seekerQuery = $seekerQuery->where('city', 'like', '%' . $request->city. '%');
+        // }
 
         // $seekerQuery->when($request->has('relocate'), function ($seekerQuery) use ($request) {
         //     $seekerQuery->where('relocate', $request->relocate == true );
         // });
 
-        if ($request->relocate != null) {
-            $seekerQuery = $seekerQuery->where('relocate', $request->relocate == 'true' ? 1 : 0);
-        }
-        if ($request->work_visa != null) {
-            $seekerQuery = $seekerQuery->where('work_authorization', 'like', '%' . $request->work_visa. '%');
-        }
+        // if ($request->relocate != null) {
+        //     $seekerQuery = $seekerQuery->where('relocate', $request->relocate == 'true' ? 1 : 0);
+        // }
+        // if ($request->work_visa != null) {
+        //     $seekerQuery = $seekerQuery->where('work_authorization', 'like', '%' . $request->work_visa. '%');
+        // }
 
-        if ($request->created_at != null) {
+        // if ($request->created_at != null) {
 
-            $startDate = Carbon::parse($request->created_at);
-            $formattedStartDate = $startDate->format('Y-m-d H:i:s');
-            $seekerQuery = $seekerQuery->where('created_at', '>=', $formattedStartDate)->orderByDesc('created_at');
+        //     $startDate = Carbon::parse($request->created_at);
+        //     $formattedStartDate = $startDate->format('Y-m-d H:i:s');
+        //     $seekerQuery = $seekerQuery->where('created_at', '>=', $formattedStartDate)->orderByDesc('created_at');
 
 
-        }
+        // }
 
 
         $seekerQuery = $seekerQuery->where('is_active',2);
@@ -473,11 +468,14 @@ class SeekerController extends Controller
                     'secondary_skill' => $request->secondary_skill,
                     'secondary_skill_experience' => $request->secondary_experience,
                     'resume' => $fileName,
-                    'skill' => json_decode($request->skill, true) ?? [],
                     'relocate' => $request->relocate,
                     'is_active' => 2
                 ]);
 
+                Subscription::create([
+                    'skill'=>$request->skill,
+                    'seeker_id' =>$request->seeker_id
+                ]);
 
 
             return response()->json([

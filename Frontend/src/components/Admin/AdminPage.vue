@@ -414,7 +414,7 @@
             </div>
         </div>
         <div
-            class="absolute inset-0 flex items-center justify-center"
+            class="fixed inset-0 flex items-center justify-center"
             v-if="isLoading"
         >
             <div
@@ -427,7 +427,7 @@
         >
             <div class="bg-white p-8 rounded shadow-lg w-100">
                 <p class="mb-1">
-                    $0.5 will be deducted from your account balance.
+                    $5 will be deducted from your account balance.
                 </p>
                 <p class="mb-3">Do you want to continue ?</p>
 
@@ -669,7 +669,8 @@ export default {
                     (selectedCountry.value = ""),
                     (selectedState_main.value = ""),
                     (job_title.value = "");
-                window.location.reload();
+                    window.location.reload();
+                    window.scrollTo(0, 0);
                 // setTimeout(() => {
                 // }, 2000);
                 localStorage.setItem("addJobMessage", true);
