@@ -83,7 +83,7 @@ class AdminJobController extends Controller
 
 
         $adminJobs->increment('search_count', 1);
-        $adminJobs->where('created_at', '>', now()->subDays(60)->endOfDay());
+        $adminJobs->where('created_at', '>', now()->subDays(30)->endOfDay());
 
         $jobs = $adminJobs->orderByDesc('created_at')->get();
 
@@ -268,7 +268,7 @@ class AdminJobController extends Controller
 
     public function employerJob($id)
     {
-        $job = AdminJob::where('job_owner_id', $id)->where('created_at', '>', now()->subDays(60)->endOfDay())->get();
+        $job = AdminJob::where('job_owner_id', $id)->where('created_at', '>', now()->subDays(30)->endOfDay())->latest()->get();
         return response()->json($job, 200);
     }
 }

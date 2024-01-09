@@ -909,6 +909,7 @@ export default {
         {
             allSeeker.value = "";
             inputStatus.value = true;
+            fetchJobStatus.value = false;
             return false;
         }
         else

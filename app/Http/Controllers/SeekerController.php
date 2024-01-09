@@ -21,6 +21,7 @@ use App\Models\EmployerTransactionHistory;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Exception;
+use Illuminate\Support\Facades\Date;
 
 class SeekerController extends Controller
 {
@@ -628,6 +629,8 @@ class SeekerController extends Controller
                 'code' => 100
             ]);
         }
+        Seeker::where('email', $request->email)
+            ->update(['last_accessed_date' => Date::now()]);
         $token = $seeker->createToken('SeekerToken')->plainTextToken;
 
         return response()->json([
