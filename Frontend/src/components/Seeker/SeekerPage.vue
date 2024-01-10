@@ -348,9 +348,9 @@
                     class="rounded-lg m-auto w-full shadow-[rgba(100, 100, 111, 0.2) 0px 5px 30px 0px] mt-6"
                 >
                     <div class="text-start">
-                        <h1 class="text-[#414552] text-[20px] font-semibold">
+                        <!-- <h1 class="text-[#414552] text-[20px] font-semibold">
                             Search Jobs by skill or Job Role
-                        </h1>
+                        </h1> -->
                         <div v-if="jobStatus == false">
                             <p>Waiting for job listing</p>
                         </div>
@@ -1038,9 +1038,9 @@
                     Email will be sent to you for any new job posting with this
                     skill.
                 </p>
-                <p class="mb-4 text-sm">
-                    You can add/remove skills in “Manage Subscription” under the
-                    Profile Page.
+                <p class="mb-4 text-sm"><b>
+                    Please specify only one skill at a time. More skills can be added from profile page (Manage
+                    Subscription).</b>
                 </p>
                 <div class="flex items-center mb-4">
                     <label
@@ -1051,6 +1051,7 @@
                     <input
                         id=""
                         v-model="skillInput"
+                        placeholder="Enter only one skill (Example : Oracle, java,.net etc.). Do not enter your Email ID here."
                         type="text"
                         class="border-2 border-gray-400 px-4 py-2 rounded-md w-full focus:outline-none focus:border-blue-500"
                     />

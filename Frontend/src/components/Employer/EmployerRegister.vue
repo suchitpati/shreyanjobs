@@ -334,6 +334,8 @@
               >
                 Submit
               </button>
+              <div class="text-[14px] mt-1">It may take 1 – 2 mins to receive the OTP in email.</div>
+
             </div>
           </div>
         </div>
@@ -475,6 +477,16 @@ export default {
                 isoCode: "BR",
             },
         ];
+
+        function IsEmail(email) {
+        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (emailRegex.test(email)) {
+           return false;
+        }else{
+           return true;
+        }
+      }
+
     const registerEmployer = async () => {
       try {
         if (companyname.value == null || companyname.value == "") {
@@ -497,6 +509,15 @@ export default {
         } else {
           emailError.value = "";
         }
+
+        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (emailRegex.test(email.value) == false) {
+            emailError.value = "Please valid Email";
+            return false;
+        }else{
+            emailError.value = "";
+        }
+
 
         if (password.value == null || password.value == "") {
           passwordError.value = "Please Enter Password";
@@ -667,6 +688,7 @@ export default {
     });
 
     return {
+        IsEmail,
       stateError,
       companyname,
       companynameError,

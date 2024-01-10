@@ -168,6 +168,7 @@
               >
                 Submit
               </button>
+              <div class="text-[14px] mt-1">It may take 1 – 2 mins to receive the OTP in email.</div>
             </div>
           </div>
         </div>
@@ -452,7 +453,7 @@
                         type="text"
                         id="field1"
                         v-model="skill"
-                        placeholder="Enter your skill"
+                        placeholder="Enter only one skill (Example : Oracle, java, .net etc.). Do not enter your Email ID here."
                       />
                       <div
                         class="text-red-600 block text-[14px] text-left"
@@ -460,7 +461,7 @@
                       >
                         {{ err_skill }}
                       </div>
-                      <div class="text-start text-[13px]">Email will be sent to you for any new job posting with this skill. You can add/remove skills in “Manage Subscription” under the Profile Page.</div>
+                      <div class="text-start text-[13px]">Please specify only one skill at a time. More skills can be added from profile page (Manage Subscription).</div>
                     </div>
 
 
@@ -569,7 +570,7 @@ export default {
     const selectedState = ref("");
     const selectedState_main = ref("");
 
-    const steps = ref(1);
+    const steps = ref(3);
     const enter_otp = ref("");
 
     const final_otp = ref("");
@@ -673,6 +674,15 @@ export default {
         } else {
           emailError.value = "";
         }
+
+        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (emailRegex.test(email.value) == false) {
+            emailError.value = "Please valid Email";
+            return false;
+        }else{
+            emailError.value = "";
+        }
+
         if (password.value == null || password.value == "") {
           passwordError.value = "Please Enter Password";
           return false;

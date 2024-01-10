@@ -220,7 +220,7 @@ class SeekerController extends Controller
 
         $seekerQuery = $seekerQuery->where('is_active',2);
 
-        $seekerdetails = $seekerQuery->get();
+        $seekerdetails = $seekerQuery->orderBy('last_accessed_date', 'DESC')->get();
         // return response()->json([
         //     'success' => 200,
         //     'seeker_details' => $seeker_details

@@ -122,8 +122,8 @@
                                     class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline mr-2 ml-2"
                                     type="radio"
                                     v-model="gender"
-                                    value="0"
-                                    :checked="gender === 0"
+                                    value="2"
+                                    :checked="gender === 2"
                                 />Female
                             </div>
                             <div
@@ -415,13 +415,15 @@
                                         >Download</span
                                     >
                                 </label>
-
+                                <div class="flex text-sm py-1">
+                                <b>Replace Resume :</b>
                                 <input
-                                    class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
+                                    class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-[80%] ml-3"
                                     type="file"
                                     id="file"
                                     @change="image_details"
                                 />
+                            </div>
                                 <div class="text-xs text-left text-gray-500">
                                     ( Only Doc,docx & pdf file extantion are
                                     allowed,Files must be less than 3 MB )

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="">
     <SuccessModal v-if="showLogoutModal" :message="successMessage" />
     <div
       v-if="showSuccessModal"
@@ -16,13 +16,12 @@
       </div>
     </div>
     <EmployerNev />
-    <div class="text-right pr-[105px] bg-[#ebf4ff] text-[18px]">
-      Welcome,{{ employername }} (Employer)
+    <div class="text-right bg-[#ebf4ff] text-[18px]">
+      <div class="max-w-[1080px] mx-auto">Welcome,{{ employername }} (Employer)</div>
     </div>
 
     <div class="bg-[#ebf4ff] py-7">
-      <div class="w-full mx-auto px-[20px]">
-
+      <div class="max-w-[1080px] mx-auto px-[20px]">
         <div
           class="bg-[#d3ddff4f] rounded-lg py-4 sm:px-8 px-4 w-full shadow-[rgba(100,_100,_111,_0.2)_0px_0px_10px_0px] hover:shadow-[rgba(100,_100,_111,_0.2)_0px_0px_20px_0px] transition-[.5s]"
         >
@@ -33,9 +32,9 @@
               Search Resume
             </h1>
             <div class="text-center">
-                <div
+              <div
                 class="flex items-center justify-center px-[20px] gap-6 w-[65%] mx-auto md:pt-[28px] pt-5 sm:mb-1 mb-10 md:w-full"
-                >
+              >
                 <div class="flex items-center justify-center w-[40%] relative">
                   <input
                     class="rounded-[40px] md:py-[16px] sm:py-[15px] py-[12px] px-4 sm:pl-[60px] pl-[40px] focus:shadow-outline w-full shadow-[0_25px_60px_rgba(113,106,147,.2)]"
@@ -58,13 +57,12 @@
                 >
                   Search
                 </button>
-
-
               </div>
-
             </div>
-            <div class="text-[red]  " v-if="inputStatus"> Please Enter something</div>
-            <div  class="text-[red]  " v-if="fetchJobStatus">No data found</div>
+            <div class="text-[red]" v-if="inputStatus">
+              Please Enter something
+            </div>
+            <div class="text-[red]" v-if="fetchJobStatus">No data found</div>
             <!-- <div v-if="!allSeeker.length" class="text-[25px] mt-3 text-[red]">
               Please use the search filters to find your matching Resume
             </div> -->
@@ -418,7 +416,7 @@
               v-for="person in allSeeker"
               :key="person.email"
             >
-              <div class="grid grid-cols-4 bg-white p-2">
+              <div class="grid grid-cols-5 bg-white p-2">
                 <div class="font-bold text-base">
                   Name:
                   <span class="font-normal pl-1">{{ person.fullname }}</span>
@@ -439,6 +437,12 @@
                   Work Visa:
                   <span class="font-normal pl-1">{{
                     person.work_authorization
+                  }}</span>
+                </div>
+                <div class="font-bold text-base">
+                  Last Accessed date :
+                  <span class="font-normal pl-1">{{
+                    person.last_accessed_date ? person.last_accessed_date : "-"
                   }}</span>
                 </div>
               </div>
@@ -468,7 +472,8 @@
                   <div>{{ email }}(Verified)</div>
                   <div>{{ contact_number }}(Not Verified)</div>
                   <div class="text-[10px] text-[red]">
-                    (Contact detail is displayed only once. Write it down for future use.)
+                    (Contact detail is displayed only once. Write it down for
+                    future use.)
                   </div>
                 </div>
                 <div
@@ -818,7 +823,7 @@ export default {
     const downloadResume = async () => {
       const fileName = download_resume.value;
       const fileUrl = `https://shreyanjobs.com/backend/public/pdf/${fileName}`;
-    //   const fileUrl = `http://127.0.0.1:8000/pdf/${fileName}`;
+      //   const fileUrl = `http://127.0.0.1:8000/pdf/${fileName}`;
 
       const link = document.createElement("a");
       link.href = fileUrl;
@@ -864,7 +869,6 @@ export default {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-
       } catch (error) {
         console.error(error);
       }
@@ -905,17 +909,13 @@ export default {
         // }
 
         const formData = new FormData();
-        if(searchInput.value == "" || searchInput.value == null)
-        {
-            allSeeker.value = "";
-            inputStatus.value = true;
-            fetchJobStatus.value = false;
-            return false;
-        }
-        else
-        {
-            inputStatus.value = false;
-
+        if (searchInput.value == "" || searchInput.value == null) {
+          allSeeker.value = "";
+          inputStatus.value = true;
+          fetchJobStatus.value = false;
+          return false;
+        } else {
+          inputStatus.value = false;
         }
         formData.append("searchInput", searchInput.value);
         // // formData.append("country", selectedCountry.value);
@@ -943,26 +943,24 @@ export default {
 
         console.log(response, "response");
         allSeeker.value = response.data.seeker_details;
-        console.log(response.data.seeker_details.length,'response.data.seeker_details.lengthresponse.data.seeker_details.length')
-        if(response.data.seeker_details.length == 0)
-        {
-            fetchJobStatus.value = true;
-            //  selectedCountry.value = "";
-            //  selectedState.value = "";
-            //  city.value = "";
-            //  relocate.value = "";
-            //  skill.value = "";
-            //  primary_skill_experience.value = 0;
-            //  secondary_skill_experience.value = 0;
-            //  work_visa.value = "";
-            //  last_date.value = "";
+        console.log(
+          response.data.seeker_details.length,
+          "response.data.seeker_details.lengthresponse.data.seeker_details.length"
+        );
+        if (response.data.seeker_details.length == 0) {
+          fetchJobStatus.value = true;
+          //  selectedCountry.value = "";
+          //  selectedState.value = "";
+          //  city.value = "";
+          //  relocate.value = "";
+          //  skill.value = "";
+          //  primary_skill_experience.value = 0;
+          //  secondary_skill_experience.value = 0;
+          //  work_visa.value = "";
+          //  last_date.value = "";
+        } else {
+          fetchJobStatus.value = false;
         }
-        else
-        {
-            fetchJobStatus.value = false;
-        }
-
-
       } catch (error) {
         console.error(error);
       }
@@ -987,13 +985,13 @@ export default {
     onMounted(() => {
       countries_state.value = someCountry.value;
 
-    //   fetchSeeker();
+      //   fetchSeeker();
       getEmployerDeatails();
     });
 
     return {
-        fetchJobStatus,
-        inputStatus,
+      fetchJobStatus,
+      inputStatus,
       closeConfirmationmodel,
       getEmployerDeatails,
       resume_contact_id,
