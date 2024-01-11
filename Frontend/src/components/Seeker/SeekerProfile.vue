@@ -725,6 +725,8 @@ export default {
             const link = document.createElement("a");
             link.href = fileUrl;
             link.download = fileName;
+            link.target = "_blank";
+
 
             // Append the link to the DOM (optional, but required for some browsers)
             document.body.appendChild(link);

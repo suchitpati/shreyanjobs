@@ -16,8 +16,10 @@
       </div>
     </div>
     <EmployerNev />
-    <div class="text-right bg-[#ebf4ff] text-[18px]">
-      <div class="max-w-[1080px] mx-auto">Welcome,{{ employername }} (Employer)</div>
+    <div class="text-right bg-[#ebf4ff]">
+      <div class="text-[18px] max-w-[1080px] mx-auto">
+        Welcome,{{ employername }}
+      </div>
     </div>
 
     <div class="bg-[#ebf4ff] py-7">
@@ -31,7 +33,7 @@
             >
               Search Resume
             </h1>
-            <div class="text-center">
+            <!-- <div class="text-center">
               <div
                 class="flex items-center justify-center px-[20px] gap-6 w-[65%] mx-auto md:pt-[28px] pt-5 sm:mb-1 mb-10 md:w-full"
               >
@@ -43,7 +45,6 @@
                     @keyup.enter="fetchSeeker"
                     placeholder="Search resume by name, skill, location"
                   />
-                  <!-- @input="handleSearch" -->
 
                   <img
                     src="../../assets/search.svg"
@@ -62,17 +63,47 @@
             <div class="text-[red]" v-if="inputStatus">
               Please Enter something
             </div>
-            <div class="text-[red]" v-if="fetchJobStatus">No data found</div>
+            <div class="text-[red]" v-if="fetchJobStatus">No data found</div> -->
             <!-- <div v-if="!allSeeker.length" class="text-[25px] mt-3 text-[red]">
               Please use the search filters to find your matching Resume
             </div> -->
-            <!-- <div
-              v-if="allSeeker.length > 0"
+            <div
               class="rounded-2xl p-4 sm:p-7 top-[10px] m-auto max-w-[1080px] w-full bg-[#d3ddff4f] shadow-[0px_0px_14px_0px_rgba(255,255,255,1);] transition-[.5s] mt-4"
             >
               <div
                 class="grid grid-cols-8 md:gap-4 gap-3 max-w-[1200px] m-auto items-end"
               >
+                <div class="">
+                  <label
+                    class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
+                    for="field1"
+                  >
+                    Skill
+                  </label>
+                  <input
+                    class="border text-sm rounded-lg py-2 h-[36px] px-4 outline-[#264dd9] focus:shadow-outline w-full"
+                    type="text"
+                    id="field1"
+                    placeholder="Skill"
+                    v-model="skill"
+                  />
+                </div>
+                <div class="">
+                  <label
+                    class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
+                    for="field1"
+                  >
+                    Yrs. Of exp
+                  </label>
+                  <input
+                    min="0"
+                    class="border text-sm rounded-lg h-[36px] py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
+                    type="number"
+                    id="field1"
+                    v-model="primary_secondary_skill_experience"
+                    placeholder="0"
+                  />
+                </div>
                 <div class="">
                   <label
                     class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
@@ -161,7 +192,7 @@
                   </select>
                 </div>
 
-                <div class="">
+                <!-- <div class="">
                   <label
                     class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
                     for="field1"
@@ -175,8 +206,8 @@
                     placeholder="Skill"
                     v-model="skill"
                   />
-                </div>
-                <div class="">
+                </div> -->
+                <!-- <div class="">
                   <label
                     class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
                     for="field1"
@@ -207,7 +238,7 @@
                     v-model="secondary_skill_experience"
                     placeholder="0"
                   />
-                </div>
+                </div> -->
                 <div class="">
                   <label
                     class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
@@ -223,11 +254,35 @@
                     placeholder="Work Visa"
                   />
                 </div>
+                <div class="">
+                  <div class="flex justify-between">
+                    <div>
+                      <label
+                        class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
+                        for="field2"
+                      >
+                        Last Accessed
+                      </label>
+                    </div>
+                  </div>
+                  <select
+                    v-model="last_accessed"
+                    class="block w-full bg-white border text-sm rounded-lg p-2"
+                  >
+                    <option value="">Select One</option>
+                    <option value="3">3 days</option>
+                    <option value="7">1 week</option>
+                    <option value="30">1 month,</option>
+                    <option value="90">3 months</option>
+                  </select>
+                </div>
 
                 <div class="w-full flex justify-between gap-6"></div>
               </div>
-            </div> -->
-
+            </div>
+            <div v-if="allSeeker.length == 0 && showBlankDiv == false">
+              No profile match
+            </div>
             <!-- <div class="mt-8 flow-root" v-if="allSeeker.length > 0">
               <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div
@@ -411,6 +466,7 @@
                 </div>
               </div>
             </div> -->
+
             <div
               class="grid text-left p-4 mt-2"
               v-for="person in allSeeker"
@@ -642,6 +698,7 @@ export default {
     const contactno = ref("");
     const contactnoError = ref("");
     const searchInput = ref("");
+    const last_accessed = ref("");
 
     const city = ref("");
     const datePosted = ref("");
@@ -652,6 +709,8 @@ export default {
     // const last_date = ref("");
     const primary_skill_experience = ref("");
     const secondary_skill_experience = ref("");
+    const primary_secondary_skill_experience = ref("");
+
     const work_visa = ref("");
     const target_id = ref("");
     const confirmModel = ref(false);
@@ -665,6 +724,8 @@ export default {
     const resume_contact_id = ref("");
     const inputStatus = ref(false);
     const fetchJobStatus = ref(false);
+
+    const showBlankDiv = ref(false);
 
     someCountry.value = [
       {
@@ -907,22 +968,45 @@ export default {
         //     last_date.value = startDate;
         //   }
         // }
-
-        const formData = new FormData();
-        if (searchInput.value == "" || searchInput.value == null) {
+        if (
+          (skill.value == "" || skill.value == null) &&
+          (primary_secondary_skill_experience.value == "" ||
+            primary_secondary_skill_experience.value == null) &&
+          (selectedCountry.value == "" || selectedCountry.value == null) &&
+          (selectedState.value == "" || selectedState.value == null) &&
+          (city.value == "" || city.value == null) &&
+          (relocate.value == "" || relocate.value == null) &&
+          (work_visa.value == "" || work_visa.value == null) &&
+          (last_accessed.value == "" || last_accessed.value == null)
+        ) {
+          console.log(skill.value, "skill");
           allSeeker.value = "";
-          inputStatus.value = true;
-          fetchJobStatus.value = false;
+
+          showBlankDiv.value = true;
           return false;
-        } else {
-          inputStatus.value = false;
         }
-        formData.append("searchInput", searchInput.value);
-        // // formData.append("country", selectedCountry.value);
-        // // formData.append("state", selectedState.value);
-        // // formData.append("city", city.value);
-        // // formData.append("relocate", relocate.value);
-        // // formData.append("skill", skill.value);
+        const formData = new FormData();
+        // if (searchInput.value == "" || searchInput.value == null) {
+        //   allSeeker.value = "";
+        //   inputStatus.value = true;
+        //   fetchJobStatus.value = false;
+        //   return false;
+        // } else {
+        //   inputStatus.value = false;
+        // }
+        // formData.append("searchInput", searchInput.value);
+        formData.append("country", selectedCountry.value);
+        formData.append("state", selectedState.value);
+        formData.append("city", city.value);
+        formData.append("relocate", relocate.value);
+        formData.append("skill", skill.value);
+        formData.append(
+          "primary_secondary_skill_experience",
+          primary_secondary_skill_experience.value
+        );
+        formData.append("work_visa", work_visa.value);
+        formData.append("last_accessed", last_accessed.value);
+
         // // formData.append(
         // //   "primary_skill_experience",
         // //   primary_skill_experience.value
@@ -948,6 +1032,8 @@ export default {
           "response.data.seeker_details.lengthresponse.data.seeker_details.length"
         );
         if (response.data.seeker_details.length == 0) {
+          showBlankDiv.value = false;
+
           fetchJobStatus.value = true;
           //  selectedCountry.value = "";
           //  selectedState.value = "";
@@ -970,12 +1056,14 @@ export default {
         skill,
         primary_skill_experience,
         secondary_skill_experience,
+        primary_secondary_skill_experience,
         relocate,
         country,
         state,
         selectedState,
         city,
         work_visa,
+        last_accessed,
       ],
       () => {
         fetchSeeker();
@@ -990,6 +1078,9 @@ export default {
     });
 
     return {
+      showBlankDiv,
+      last_accessed,
+      primary_secondary_skill_experience,
       fetchJobStatus,
       inputStatus,
       closeConfirmationmodel,

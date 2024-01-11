@@ -38,7 +38,7 @@ class SeekerController extends Controller
     }
     public function seeker_skill(Request $request)
     {
-        $skill_details = Subscription::where('seeker_id',$request->seeker_id)->get();
+        $skill_details = Subscription::where('seeker_id', $request->seeker_id)->get();
         // $skill_details = explode(',', $seeker_data->skill);
         return response()->json([
             'message' => 'Details fetch successfully',
@@ -127,6 +127,62 @@ class SeekerController extends Controller
     }
     public function getSeeker(Request $request)
     {
+
+        if ($request->hasAny(['searchInput', 'skill', 'primary_skill_experience', 'secondary_skill_experience', 'country', 'state', 'city', 'relocate', 'work_visa', 'created_at'])) {
+
+            $seekerQuery = new Seeker();
+            if ($request->skill != null) {
+                $seekerQuery = $seekerQuery->where(function ($query) use ($request) {
+                    $query->where('primary_skill', 'LIKE', '%' . $request->skill . '%')
+                        ->orWhere('secondary_skill', 'LIKE', '%' . $request->skill . '%');
+                });
+            }
+            if ($request->country != null) {
+                $seekerQuery = $seekerQuery->where('country', $request->country);
+            }
+
+            if ($request->primary_secondary_skill_experience != null) {
+                $seekerQuery = $seekerQuery->where(function ($query) use ($request) {
+                    $query->where('primary_skill_experience', '>=', $request->primary_secondary_skill_experience)
+                        ->orWhere('secondary_skill_experience', '>=', $request->primary_secondary_skill_experience);
+                });
+            }
+
+            if ($request->state != null) {
+                $seekerQuery = $seekerQuery->where('state', $request->state);
+            }
+            if ($request->city != null) {
+                $seekerQuery = $seekerQuery->where('city', 'like', '%' . $request->city . '%');
+            }
+
+            if ($request->relocate != null) {
+                $seekerQuery = $seekerQuery->where('relocate', $request->relocate == 'true' ? 1 : 0);
+            }
+
+            if ($request->work_visa != null) {
+                $seekerQuery = $seekerQuery->where('work_authorization', 'like', '%' . $request->work_visa . '%');
+            }
+
+            if ($request->last_accessed != null) {
+                $seekerQuery = $seekerQuery->where('last_accessed_date', '>', now()->subDays($request->last_accessed)->endOfDay());
+            }
+
+            $seekerQuery = $seekerQuery->where('is_active', 2);
+
+            $seekerdetails = $seekerQuery->orderBy('last_accessed_date', 'DESC')->get();
+
+            return response()->json([
+                'success' => 200,
+                'seeker_details' => $seekerdetails
+            ]);
+        }
+        else
+        {
+            return response()->json([
+                'success' => 200,
+                'seeker_details' => $seekerdetails
+            ]);
+        }
         // $seekerQuery = new Seeker();
 
         // if ($request->searchInput != null) {
@@ -147,21 +203,18 @@ class SeekerController extends Controller
 
         // }
 
-        $seekerQuery = new Seeker();
-        if ($request->hasAny(['searchInput', 'skill', 'primary_skill_experience', 'secondary_skill_experience', 'country', 'state', 'city', 'relocate', 'work_visa', 'created_at'])) {
+        // if ($request->searchInput != null) {
+        //     $seekerQuery = $seekerQuery->where(function ($query) use ($request) {
+        //         $query->where('fullname', 'LIKE', '%' . $request->searchInput . '%')
+        //             ->orWhere('primary_skill', 'LIKE', '%' . $request->searchInput . '%')
+        //             ->orWhere('secondary_skill', 'LIKE', '%' . $request->searchInput . '%')
+        //             ->orWhere('state', 'LIKE', '%' . $request->searchInput . '%')
+        //             ->orWhere('city', 'LIKE', '%' . $request->searchInput . '%')
+        //             ->orWhere('country', 'LIKE', '%' . $request->searchInput . '%');
+        //             // ->orWhere('skill', 'LIKE', '%' . $request->searchInput . '%');
+        //     });
+        // }
 
-            if ($request->searchInput != null) {
-                $seekerQuery = $seekerQuery->where(function ($query) use ($request) {
-                    $query->where('fullname', 'LIKE', '%' . $request->searchInput . '%')
-                        ->orWhere('primary_skill', 'LIKE', '%' . $request->searchInput . '%')
-                        ->orWhere('secondary_skill', 'LIKE', '%' . $request->searchInput . '%')
-                        ->orWhere('state', 'LIKE', '%' . $request->searchInput . '%')
-                        ->orWhere('city', 'LIKE', '%' . $request->searchInput . '%')
-                        ->orWhere('country', 'LIKE', '%' . $request->searchInput . '%');
-                        // ->orWhere('skill', 'LIKE', '%' . $request->searchInput . '%');
-                });
-            }
-        }
 
         // if ($request->searchInput != null) {
         //     $seekerQuery = $seekerQuery->where(function ($query) use ($request) {
@@ -218,18 +271,6 @@ class SeekerController extends Controller
         // }
 
 
-        $seekerQuery = $seekerQuery->where('is_active',2);
-
-        $seekerdetails = $seekerQuery->orderBy('last_accessed_date', 'DESC')->get();
-        // return response()->json([
-        //     'success' => 200,
-        //     'seeker_details' => $seeker_details
-
-        // ]);
-        return response()->json([
-            'success' => 200,
-            'seeker_details' => $seekerdetails
-        ]);
 
 
         //     $seekerQuery = Seeker::where('is_active', 2);
@@ -273,13 +314,12 @@ class SeekerController extends Controller
         $seeker = Seeker::where('id', $id)->get(['email', 'contact_number']);
 
         $employer = Employer::find($employe_id);
-        if($employer->acct_balance < 0.5)
-        {
+        if ($employer->acct_balance < 0.5) {
             return response()->json([
-                    'code' => 100,
-                    'message' => "Insufficient balance",
-                    'status' => 'error'
-                ]);
+                'code' => 100,
+                'message' => "Insufficient balance",
+                'status' => 'error'
+            ]);
         }
         $begin_balance = $employer->acct_balance;
         $end_balance = $employer->acct_balance - 0.50;
@@ -308,13 +348,12 @@ class SeekerController extends Controller
         $seeker = Seeker::where('id', $id)->get(['resume']);
 
         $employer = Employer::find($employe_id);
-        if($employer->acct_balance < 0.5)
-        {
+        if ($employer->acct_balance < 0.5) {
             return response()->json([
-                    'code' => 100,
-                    'message' => "Insufficient balance",
-                    'status' => 'error'
-                ]);
+                'code' => 100,
+                'message' => "Insufficient balance",
+                'status' => 'error'
+            ]);
         }
         $begin_balance = $employer->acct_balance;
         $end_balance = $employer->acct_balance - 0.50;
@@ -473,10 +512,10 @@ class SeekerController extends Controller
                     'is_active' => 2
                 ]);
 
-                Subscription::create([
-                    'skill'=>$request->skill,
-                    'seeker_id' =>$request->seeker_id
-                ]);
+            Subscription::create([
+                'skill' => $request->skill,
+                'seeker_id' => $request->seeker_id
+            ]);
 
 
             return response()->json([

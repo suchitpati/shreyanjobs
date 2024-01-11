@@ -174,15 +174,16 @@ class AdminJobController extends Controller
 
         foreach ($subscription_data as $sub) {
             $found = strpos(strtolower($skill), strtolower($sub->skill)) !== false;
+            $found1 = strpos(strtolower($job_title), strtolower($sub->job_title)) !== false;
 
-            if ($found) {
+
+            if ($found || $found1) {
                 $foundSubscriptions[] = $sub->seeker_id;
             }
         }
 
         $uniqueFoundSubscriptions = array_unique($foundSubscriptions);
         $subscription_data = Seeker::whereIn('id', $uniqueFoundSubscriptions)->get();
-
         if (isset($subscription_data)) {
 
             foreach ($subscription_data as $sub) {
