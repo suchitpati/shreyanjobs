@@ -33,7 +33,7 @@ Route::post('sendOtp', [UserSubscriptionController::class, 'sendOtp']);
 Route::post('addSubscriber', [UserSubscriptionController::class, 'addSubscriber']);
 
 //UserJobApplication
-Route::post('UserJobApplication',[UserJobApplication::class,'UserJobApplication']);
+// Route::post('UserJobApplication',[UserJobApplication::class,'UserJobApplication']);
 
 //Seeker Routes
 
@@ -93,6 +93,8 @@ Route::get('admin/getAdmin', [AdminController::class, 'getAdmin'])->middleware('
 
 
 Route::get('/employer-job/{id}', [AdminJobController::class, 'employerJob']);
+Route::delete('/employer-job/{id}', [AdminJobController::class, 'destroy']);
+
 
 Route::get('/countries', [CountryController::class, 'index']);
 Route::get('/countries/{country}/states', [CountryController::class, 'states']);

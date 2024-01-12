@@ -349,6 +349,10 @@
 
                                     <router-link :to="'/employer-job-edit/' + job.id">Edit</router-link>
                                    </button>
+                                   <button class="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 ml-2 rounded-md focus:outline-none focus:shadow-outline" @click="openDeletePostModel(job.id)" >
+                                        Delete
+                                   </button>
+
 
                     </div>
                     </div>
@@ -501,6 +505,31 @@
           class="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"
         ></div>
       </div>
+
+      <div
+      class="modal fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center"
+      v-if="deletePostConfirmation"
+    >
+      <div class="bg-white p-8 rounded shadow-lg w-100">
+
+        <p class="mb-3">Are you sure to delete post?</p>
+
+        <div class="flex justify-end">
+          <button
+            class="mr-2 px-4 py-2 bg-gray-500 text-white rounded"
+            @click="closeDeletePostModel"
+          >
+            No
+          </button>
+          <button
+            class="px-4 py-2 bg-green-500 text-white rounded"
+            @click="deletePost"
+          >
+            Yes
+          </button>
+        </div>
+      </div>
+    </div>
     </div>
   </template>
 
@@ -555,6 +584,9 @@
       const isEmployerLogged = ref(false);
       const isSeekerLogged = ref(false);
       const jobStatus = ref(false);
+      const deletePostConfirmation = ref(false);
+      const deletePostId = ref('');
+
 
       const someCountry = ref([]);
 
@@ -729,6 +761,37 @@
           });
       });
 
+      const openDeletePostModel = (deleteId) => {
+        deletePostId.value = deleteId;
+        deletePostConfirmation.value = true;
+      }
+
+      const closeDeletePostModel = () => {
+        deletePostConfirmation.value = false;
+      }
+
+      const deletePost = debounce(async () => {
+
+        try {
+            console.log(deletePostId.value,'deletePostIddeletePostId');
+        const deleteId = deletePostId.value;
+        deletePostConfirmation.value = false;
+        isLoading.value = true;
+
+          const response = await axios.delete(`${apiUrl}/employer-job/${deleteId}`);
+          isLoading.value = false;
+
+          window.location.reload();
+
+          console.log(response.value,'asdasdas');
+        } catch (error) {
+          console.error(error);
+        }
+
+
+      });
+
+
       const addSubscriber = debounce(async () => {
         final_otp.value = enter_otp.value;
         // final_otp.value = final_otp.value.trim();
@@ -829,6 +892,11 @@
         fetchJobs();
       });
       return {
+        deletePostId,
+        deletePost,
+        closeDeletePostModel,
+        openDeletePostModel,
+        deletePostConfirmation,
         jobStatus,
         seekerLogout,
         data,
