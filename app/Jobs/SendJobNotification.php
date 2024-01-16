@@ -30,8 +30,12 @@ class SendJobNotification implements ShouldQueue
    protected $duration;
    protected $skill;
    protected $additional_detail;
+   protected $remote;
+   protected $country;
 
-    public function __construct($email,$title,$description,$location,$duration,$skill,$additional_detail)
+
+
+    public function __construct($email,$title,$description,$location,$duration,$skill,$additional_detail,$remote,$country)
     {
         $this->email = $email;
         $this->title = $title;
@@ -40,6 +44,9 @@ class SendJobNotification implements ShouldQueue
         $this->duration = $duration;
         $this->skill = $skill;
         $this->additional_detail = $additional_detail;
+        $this->remote = $remote;
+        $this->country = $country;
+
     }
 
     /**
@@ -53,7 +60,7 @@ class SendJobNotification implements ShouldQueue
 
 
 
-                Mail::to($this->email)->send(new JobMail($this->title,$this->description,$this->location,$this->duration,$this->skill,$this->additional_detail));
+                Mail::to($this->email)->send(new JobMail($this->title,$this->description,$this->location,$this->duration,$this->skill,$this->additional_detail,$this->remote,$this->country));
                 Log::info("Request Cycle with Queues Ends");
 
         }

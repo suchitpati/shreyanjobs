@@ -15,6 +15,24 @@
         </button>
       </div>
     </div>
+
+    <div
+      v-if="showResumeModal"
+      class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-75"
+    >
+      <div class="bg-white p-8 rounded-lg shadow-lg">
+        <h2 class="text-2xl font-bold mb-4">
+          Resume is not available for this candidate. Please contact the
+          candidate via email/ phone
+        </h2>
+        <button
+          @click="closeResumeErrorModal"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        >
+          Close
+        </button>
+      </div>
+    </div>
     <EmployerNev />
     <div class="text-right bg-[#ebf4ff]">
       <div class="text-[18px] max-w-[1080px] mx-auto">
@@ -726,6 +744,7 @@ export default {
     const fetchJobStatus = ref(false);
 
     const showBlankDiv = ref(false);
+    const showResumeModal = ref(false);
 
     someCountry.value = [
       {
@@ -916,20 +935,24 @@ export default {
         }
         viewContactStatus.value = !viewContactStatus.value;
         console.log(response, "response");
-        download_resume.value = response.data.seeker_details[0].resume;
-        resume_contact_id.value = target_resume_id.value;
+        if (response.data.status == "not") {
+          showResumeModal.value = true;
+        } else {
+          download_resume.value = response.data.seeker_details[0].resume;
+          resume_contact_id.value = target_resume_id.value;
 
-        const fileName = download_resume.value;
-        const fileUrl = `https://shreyanjobs.com/backend/public/pdf/${fileName}`;
-        // const fileUrl = `http://127.0.0.1:8000/pdf/${fileName}`;
+          const fileName = download_resume.value;
+          const fileUrl = `https://shreyanjobs.com/backend/public/pdf/${fileName}`;
+          // const fileUrl = `http://127.0.0.1:8000/pdf/${fileName}`;
 
-        const link = document.createElement("a");
-        link.href = fileUrl;
-        link.download = fileName;
-        link.target = "_blank";
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+          const link = document.createElement("a");
+          link.href = fileUrl;
+          link.download = fileName;
+          link.target = "_blank";
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }
       } catch (error) {
         console.error(error);
       }
@@ -953,6 +976,10 @@ export default {
       );
 
       employername.value = response.data.employer_details.employername;
+    };
+
+    const closeResumeErrorModal = async () => {
+      showResumeModal.value = false;
     };
     const fetchSeeker = debounce(async () => {
       try {
@@ -1078,6 +1105,8 @@ export default {
     });
 
     return {
+      closeResumeErrorModal,
+      showResumeModal,
       showBlankDiv,
       last_accessed,
       primary_secondary_skill_experience,

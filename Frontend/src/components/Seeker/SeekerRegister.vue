@@ -168,7 +168,9 @@
               >
                 Submit
               </button>
-              <div class="text-[14px] mt-1">It may take 1 – 2 mins to receive the OTP in email.</div>
+              <div class="text-[14px] mt-1">
+                It may take 1 – 2 mins to receive the OTP in email.
+              </div>
             </div>
           </div>
         </div>
@@ -319,7 +321,6 @@
                         >
                           {{ err_work_authorization }}
                         </div>
-
                       </div>
 
                       <div class="sm:w-[50%] mb-4">
@@ -439,33 +440,43 @@
                       </div>
                     </div>
                     <div
-                    class="w-full flex sm:flex-row flex-col justify-between sm:gap-6 gap-2"
-                  >
-                    <div class="sm:w-[100%] mb-4">
-                      <label
-                        class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
-                        for="field2"
-                      >
-                      Skill for Email Subscription
-                      </label>
-                      <input
-                        class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
-                        type="text"
-                        id="field1"
-                        v-model="skill"
-                        placeholder="Enter only one skill (Example : Oracle, java, .net etc.). Do not enter your Email ID here."
-                      />
-                      <div
-                        class="text-red-600 block text-[14px] text-left"
-                        v-if="err_skill != ''"
-                      >
-                        {{ err_skill }}
+                      class="w-full flex sm:flex-row flex-col justify-between sm:gap-6 gap-2"
+                    >
+                      <div class="sm:w-[100%] mb-4">
+                        <div class="flex">
+                          <div>
+                            <label
+                              class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
+                              for="field2"
+                            >
+                              Skill for Email Subscription
+                            </label>
+                          </div>
+                          <div>
+                            (Email will be sent to you for any new job with this
+                            skill)
+                          </div>
+                        </div>
+
+                        <input
+                          class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
+                          type="text"
+                          id="field1"
+                          v-model="skill"
+                          placeholder="Enter only one skill (Example : Oracle, java, .net etc.). Do not enter your Email ID here."
+                        />
+                        <div
+                          class="text-red-600 block text-[14px] text-left"
+                          v-if="err_skill != ''"
+                        >
+                          {{ err_skill }}
+                        </div>
+                        <div class="text-start text-[13px] bg-blue-500 text-white ">
+                          Please specify only one skill. More skills
+                          can be added from profile page (Manage Subscription).
+                        </div>
                       </div>
-                      <div class="text-start text-[13px]">Please specify only one skill at a time. More skills can be added from profile page (Manage Subscription).</div>
                     </div>
-
-
-                  </div>
                     <div
                       class="w-full flex sm:flex-row flex-col justify-between sm:gap-6 gap-2 items-center"
                     >
@@ -570,7 +581,7 @@ export default {
     const selectedState = ref("");
     const selectedState_main = ref("");
 
-    const steps = ref(3);
+    const steps = ref(1);
     const enter_otp = ref("");
 
     const final_otp = ref("");
@@ -605,55 +616,55 @@ export default {
     const someCountry = ref([]);
 
     someCountry.value = [
-            {
-                name: "United States",
-                isoCode: "US",
-            },
-            {
-                name: "Canada",
-                isoCode: "CA",
-            },
-            {
-                name: "United Kingdom",
-                isoCode: "GB",
-            },
-            {
-                name: "Australia",
-                isoCode: "AU",
-            },
-            {
-                name: "Singapore",
-                isoCode: "SG",
-            },
-            {
-                name: "France",
-                isoCode: "FR",
-            },
-            {
-                name: "Germany",
-                isoCode: "DE",
-            },
-            {
-                name: "China",
-                isoCode: "CN",
-            },
-            {
-                name: "India",
-                isoCode: "IN",
-            },
-            {
-                name: "Japan",
-                isoCode: "JP",
-            },
-            {
-                name: "Saudi Arabia",
-                isoCode: "SA",
-            },
-            {
-                name: "Brazil",
-                isoCode: "BR",
-            },
-        ];
+      {
+        name: "United States",
+        isoCode: "US",
+      },
+      {
+        name: "Canada",
+        isoCode: "CA",
+      },
+      {
+        name: "United Kingdom",
+        isoCode: "GB",
+      },
+      {
+        name: "Australia",
+        isoCode: "AU",
+      },
+      {
+        name: "Singapore",
+        isoCode: "SG",
+      },
+      {
+        name: "France",
+        isoCode: "FR",
+      },
+      {
+        name: "Germany",
+        isoCode: "DE",
+      },
+      {
+        name: "China",
+        isoCode: "CN",
+      },
+      {
+        name: "India",
+        isoCode: "IN",
+      },
+      {
+        name: "Japan",
+        isoCode: "JP",
+      },
+      {
+        name: "Saudi Arabia",
+        isoCode: "SA",
+      },
+      {
+        name: "Brazil",
+        isoCode: "BR",
+      },
+    ];
     const closeSuccessModal = () => {
       showSuccessModal.value = false;
     };
@@ -677,10 +688,10 @@ export default {
 
         var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (emailRegex.test(email.value) == false) {
-            emailError.value = "Please valid Email";
-            return false;
-        }else{
-            emailError.value = "";
+          emailError.value = "Please valid Email";
+          return false;
+        } else {
+          emailError.value = "";
         }
 
         if (password.value == null || password.value == "") {
@@ -861,12 +872,29 @@ export default {
       } else {
         err_secondary_experience.value = "";
       }
+
       if (skill.value == null || skill.value == "") {
-        err_skill.value = "The skill field is required";
-        return false;
-      } else {
-        err_skill.value = "";
-      }
+          err_skill.value = "The skill field is required";
+          return false;
+        } else {
+            err_skill.value = "";
+        }
+
+        var skillRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (skillRegex.test(skill.value) == true) {
+            err_skill.value = "Do not enter your email here. Please specify only one skill to get email notification";
+            return false;
+          } else {
+            err_skill.value = "";
+          }
+
+          var commaPattern = /,/;
+          if (commaPattern.test(skill.value) == true) {
+            err_skill.value = "Comma (,) is not allowed. Please specify ONLY one skill to get email notification";
+            return false;
+          } else {
+            err_skill.value = "";
+          }
 
       if (
         parseInt(secondary_experience.value) < 0 ||
@@ -970,8 +998,8 @@ export default {
     });
 
     return {
-        skill,
-        err_skill,
+      skill,
+      err_skill,
       isLoading,
       state,
       country,

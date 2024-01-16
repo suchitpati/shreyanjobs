@@ -158,10 +158,13 @@ class AdminJobController extends Controller
         ]);
         $job_title = $request->job_title;
         $detailed_description = $request->detailed_description;
-        $location = $request->country;
+        $location = $request->city.','.$request->state.','.$request->country;
         $duration = $request->employment_type;
         $skill = $request->skill;
+        $country = $request->country;
         $additional_detail = "No additional detail";
+
+        $remote = $request->remote;
 
         if (isset($request->additional_detail)) {
             $additional_detail = $request->additional_detail;
@@ -174,7 +177,7 @@ class AdminJobController extends Controller
 
         foreach ($subscription_data as $sub) {
             $found = strpos(strtolower($skill), strtolower($sub->skill)) !== false;
-            $found1 = strpos(strtolower($job_title), strtolower($sub->job_title)) !== false;
+            $found1 = strpos(strtolower($job_title), strtolower($sub->skill)) !== false;
 
 
             if ($found || $found1) {
@@ -188,7 +191,7 @@ class AdminJobController extends Controller
 
             foreach ($subscription_data as $sub) {
 
-                SendJobNotification::dispatch($sub->email, $job_title, $detailed_description, $location, $duration, $skill, $additional_detail);
+                SendJobNotification::dispatch($sub->email, $job_title, $detailed_description, $location, $duration, $skill, $additional_detail,$remote,$country);
             }
         }
 
