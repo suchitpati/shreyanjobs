@@ -22,8 +22,10 @@ class JobMail extends Mailable
     protected $duration;
     protected $skill;
     protected $additional_detail;
+    protected $remote;
+    protected $country;
 
-    public function __construct($title,$description,$location,$duration,$skill,$additional_detail)
+    public function __construct($title,$description,$location,$duration,$skill,$additional_detail,$remote,$country)
     {
         $this->title = $title;
         $this->description = $description;
@@ -31,6 +33,8 @@ class JobMail extends Mailable
         $this->duration = $duration;
         $this->skill = $skill;
         $this->additional_detail = $additional_detail;
+        $this->remote = $remote;
+        $this->country = $country;
     }
 
     /**
@@ -40,6 +44,6 @@ class JobMail extends Mailable
      */
     public function build()
     {
-        return $this->view('jobEmail')->with(['title'=> $this->title,'description'=> $this->description,'location' => $this->location,'duration' => $this->duration,'skill' => $this->skill,'additional_detail' => $this->additional_detail] )->subject($this->title.':New Job Notification from shreyanjobs.com');
+        return $this->view('jobEmail')->with(['title'=> $this->title,'description'=> $this->description,'location' => $this->location,'duration' => $this->duration,'skill' => $this->skill,'additional_detail' => $this->additional_detail,'remote' => $this->remote,'country' => $this->country] )->subject($this->title.':New Job Notification from shreyanjobs.com');
     }
 }

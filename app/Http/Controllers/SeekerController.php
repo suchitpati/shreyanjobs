@@ -22,6 +22,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Exception;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\Storage;
 
 class SeekerController extends Controller
 {
@@ -175,9 +176,7 @@ class SeekerController extends Controller
                 'success' => 200,
                 'seeker_details' => $seekerdetails
             ]);
-        }
-        else
-        {
+        } else {
             return response()->json([
                 'success' => 200,
                 'seeker_details' => $seekerdetails
@@ -370,12 +369,28 @@ class SeekerController extends Controller
             'action_name' => 'View Resume',
             'job_seeker_id' => $id
         ]);
-        return response()->json([
-            'message' => 'Details fetch successfully',
-            'success' => 200,
-            'seeker_details' => $seeker
+        // $test = url('/pdf/' . $seeker[0]->resume);
+        $filePath = public_path('pdf/' . $seeker[0]->resume);
 
-        ]);
+        if (is_file($filePath)) {
+            return response()->json([
+                'message' => 'Details fetch successfully',
+                'success' => 200,
+                'seeker_details' => $seeker[0]->resume,
+                'status' => 'exist'
+
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'Details fetch successfully',
+                'success' => 200,
+                'seeker_details' => $seeker[0]->resume,
+                'status' => 'not'
+
+            ]);
+        }
+
+
     }
 
     public function updatePassword(Request $request)
