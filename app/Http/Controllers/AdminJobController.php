@@ -129,76 +129,81 @@ class AdminJobController extends Controller
         ]);
 
         $employer = Employer::find($request->job_owner_id);
-        if ($employer->acct_balance < 5) {
-            return response()->json([
-                'code' => 100,
-                'message' => "Insufficient balance",
-                'status' => 'error'
-            ]);
-        }
-        $begin_balance = $employer->acct_balance;
-        $end_balance = $employer->acct_balance - 5;
+        if($employer->role != 1)
+        {
+            if ($employer->acct_balance < 5) {
+                return response()->json([
+                    'code' => 100,
+                    'message' => "Insufficient balance",
+                    'status' => 'error'
+                ]);
+            }
+            $begin_balance = $employer->acct_balance;
+            $end_balance = $employer->acct_balance - 5;
 
-        $employer->acct_balance = $end_balance;
-        $employer->save();
+            $employer->acct_balance = $end_balance;
+            $employer->save();
+        }
 
         $job = AdminJob::create($validatedData);
 
 
 
-
-
-        EmployerTransactionHistory::create([
-            'employer_id' => $request->job_owner_id,
-            'begin_balance' => $begin_balance,
-            'transaction_amount' => 5,
-            'end_balance' => $end_balance,
-            'transaction_date' => Carbon::now(),
-            'action_name' => 'Job Posting',
-        ]);
-        $job_title = $request->job_title;
-        $detailed_description = $request->detailed_description;
-        $location = $request->city.','.$request->state.','.$request->country;
-        $duration = $request->employment_type;
-        $skill = $request->skill;
-        $country = $request->country;
-        $additional_detail = "No additional detail";
-
-        $remote = $request->remote;
-
-        if (isset($request->additional_detail)) {
-            $additional_detail = $request->additional_detail;
+        if($employer->role != 1)
+        {
+            EmployerTransactionHistory::create([
+                'employer_id' => $request->job_owner_id,
+                'begin_balance' => $begin_balance,
+                'transaction_amount' => 5,
+                'end_balance' => $end_balance,
+                'transaction_date' => Carbon::now(),
+                'action_name' => 'Job Posting',
+            ]);
         }
+
+        // $job_title = $request->job_title;
+        // $detailed_description = $request->detailed_description;
+        // $location = $request->city . ',' . $request->state . ',' . $request->country;
+        // $duration = $request->employment_type;
+        // $skill = $request->skill;
+        // $country = $request->country;
+        // $additional_detail = "No additional detail";
+
+        // $remote = $request->remote;
+
+        // if (isset($request->additional_detail)) {
+        //     $additional_detail = $request->additional_detail;
+        // }
 
         // $searchTerms = explode(' ', $skill);
 
-        $subscription_data = Subscription::all();
-        $foundSubscriptions = [];
+        // $subscription_data = Subscription::all();
+        // $foundSubscriptions = [];
 
-        foreach ($subscription_data as $sub) {
-            $found = strpos(strtolower($skill), strtolower($sub->skill)) !== false;
-            $found1 = strpos(strtolower($job_title), strtolower($sub->skill)) !== false;
+        // foreach ($subscription_data as $sub) {
+        //     $found = strpos(strtolower($skill), strtolower($sub->skill)) !== false;
+        //     $found1 = strpos(strtolower($job_title), strtolower($sub->skill)) !== false;
 
 
-            if ($found || $found1) {
-                $foundSubscriptions[] = $sub->seeker_id;
-            }
-        }
+        //     if ($found || $found1) {
+        //         $foundSubscriptions[] = $sub->seeker_id;
+        //     }
+        // }
 
-        $uniqueFoundSubscriptions = array_unique($foundSubscriptions);
-        $subscription_data = Seeker::whereIn('id', $uniqueFoundSubscriptions)->get();
-        if (isset($subscription_data)) {
+        // $uniqueFoundSubscriptions = array_unique($foundSubscriptions);
+        // $subscription_data = Seeker::whereIn('id', $uniqueFoundSubscriptions)->get();
+        // if (isset($subscription_data)) {
 
-            foreach ($subscription_data as $sub) {
+        //     foreach ($subscription_data as $sub) {
 
-                SendJobNotification::dispatch($sub->email, $job_title, $detailed_description, $location, $duration, $skill, $additional_detail,$remote,$country);
-            }
-        }
+        //         SendJobNotification::dispatch($sub->email, $job_title, $detailed_description, $location, $duration, $skill, $additional_detail, $remote, $country);
+        //     }
+        // }
 
 
         // SendJobNotification::dispatch($subscription_data,$request->job_title);
 
-        return response()->json($subscription_data, 201);
+        return response()->json($job, 201);
     }
 
     /**
@@ -274,5 +279,17 @@ class AdminJobController extends Controller
     {
         $job = AdminJob::where('job_owner_id', $id)->where('created_at', '>', now()->subDays(30)->endOfDay())->latest()->get();
         return response()->json($job, 200);
+    }
+
+    public function totalData()
+    {
+        $total_seeker = Seeker::where('is_active', 2)->count();
+        $total_employer = Employer::where('is_active', 1)->count();
+
+        return response()->json([
+            'success' => 200,
+            'total_seeker' => $total_seeker,
+            'total_employer' => $total_employer
+        ]);
     }
 }

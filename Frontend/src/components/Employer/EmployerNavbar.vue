@@ -1,41 +1,46 @@
 <template>
-    <div class=" bg-[#ebf4ff] relative">
-        <div class="max-w-[1080px] mx-auto flex justify-between gap-4  pt-5 pb-5">
+    <div class="bg-[#ebf4ff] relative">
+      <div class="max-w-[1080px] mx-auto flex flex-col md:flex-row items-center justify-between gap-4 pt-5 pb-5">
 
-            <div>
-              <img class="w-[150px]" src="../../assets/logo-no-background.png" alt="" />
-            </div>
-
-            <!-- Success Modal -->
-            <!-- ... Your existing success modal code ... -->
-
-            <!-- Loading spinner -->
-            <div class="absolute inset-0 flex items-center justify-center" v-if="isLoading">
-              <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
-            </div>
-
-            <!-- Buttons Section -->
-            <div class="flex items-center gap-4">
-              <button @click="addJob" class="bg-blue-500 text-[15px] text-white font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] ">
-                Post Job
-              </button>
-              <button @click="viewJob" class="bg-blue-500 text-[15px] text-white font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] ">
-                  View/ Edit Jobs
-              </button>
-              <button @click="searchResume" class="bg-blue-500 text-[15px] text-white font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] ">
-                Search Resume
-              </button>
-              <button @click="home" class="bg-blue-500 text-[15px] text-white font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] ">
-                  Job Search
-              </button>
-              <button @click="employerProfile" class="bg-blue-500 text-[15px] text-white font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] ">
-                Profile
-              </button>
-              <button @click="employerLogout" class="bg-blue-500 text-[15px] text-white font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] ">
-                Logout
-              </button>
-            </div>
+        <div class="mb-4 md:mb-0">
+          <img class="w-[150px]" src="../../assets/logo-no-background.png" alt="" />
         </div>
+
+        <!-- Success Modal -->
+        <!-- ... Your existing success modal code ... -->
+
+        <!-- Loading spinner -->
+        <div class="absolute inset-0 flex items-center justify-center" v-if="isLoading">
+          <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
+        </div>
+
+        <!-- Buttons Section -->
+        <div class="flex flex-col md:flex-row items-center gap-4">
+          <button @click="addJob" class="bg-blue-500 text-[15px] text-white font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] mb-2 md:mb-0">
+            Post Job
+          </button>
+          <button @click="viewJob" class="bg-blue-500 text-[15px] text-white font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] mb-2 md:mb-0">
+            View/ Edit Jobs
+          </button>
+          <button @click="searchResume" class="bg-blue-500 text-[15px] text-white font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] mb-2 md:mb-0">
+            Search Resume
+          </button>
+          <button @click="home" class="bg-blue-500 text-[15px] text-white font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] mb-2 md:mb-0">
+            Job Search
+          </button>
+
+          <button v-if="employer_role == 1"  @click="admintask" class="bg-blue-500 text-[15px] text-white font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] mb-2 md:mb-0">
+            Admin task
+          </button>
+
+          <button @click="employerProfile" class="bg-blue-500 text-[15px] text-white font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] mb-2 md:mb-0">
+            Profile
+          </button>
+          <button @click="employerLogout" class="bg-blue-500 text-[15px] text-white font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] mb-2 md:mb-0 m-auto">
+            Logout
+          </button>
+        </div>
+      </div>
     </div>
   </template>
 
@@ -52,6 +57,8 @@ export default {
     const showLogoutModal = ref(false);
     const successMessage = ref("");
     const isDropdown = ref(false);
+
+    const employer_role = localStorage.getItem('employer_role');
     const employerLogout = async () => {
       try {
         const authToken = localStorage.getItem("employer_tocken");
@@ -92,6 +99,9 @@ export default {
     const employerProfile = async () => {
       router.push("/employer-profile");
     };
+    const admintask = async () => {
+      router.push("/admin-task");
+    };
 
     const addJob = async () => {
       router.push("/add-job");
@@ -114,6 +124,8 @@ export default {
     };
 
     return {
+        admintask,
+        employer_role,
         viewJob,
       isDropdown,
       toggleDropdown,

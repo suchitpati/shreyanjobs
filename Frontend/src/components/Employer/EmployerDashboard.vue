@@ -745,6 +745,7 @@ export default {
 
     const showBlankDiv = ref(false);
     const showResumeModal = ref(false);
+    const employer_role = ref("");
 
     someCountry.value = [
       {
@@ -855,7 +856,11 @@ export default {
 
     const openConfirmationmodel = async (id) => {
       target_id.value = id;
-      confirmModel.value = !confirmModel.value;
+      if (employer_role.value != 1) {
+        confirmModel.value = !confirmModel.value;
+      } else {
+        fetchSeeekerContactDetail();
+      }
     };
     const closeConfirmationmodel = () => {
       confirmModel.value = !confirmModel.value;
@@ -877,7 +882,9 @@ export default {
             },
           }
         );
-        confirmModel.value = !confirmModel.value;
+        if (employer_role.value != 1) {
+          confirmModel.value = !confirmModel.value;
+        }
         if (response.data.code == 100) {
           showSuccessModal.value = true;
           return false;
@@ -894,7 +901,11 @@ export default {
 
     const openResumeConfirmationmodel = async (id) => {
       target_resume_id.value = id;
-      confirmModelResume.value = !confirmModelResume.value;
+      if (employer_role.value != 1) {
+        confirmModelResume.value = !confirmModelResume.value;
+      } else {
+        fetchSeeekerResumeDetail();
+      }
       console.log(target_resume_id, "target_idtarget_idtarget_idtarget_id");
     };
     const closeResumeconfirmModel = () => {
@@ -928,7 +939,9 @@ export default {
             },
           }
         );
-        confirmModelResume.value = !confirmModelResume.value;
+        if (employer_role.value != 1) {
+          confirmModelResume.value = !confirmModelResume.value;
+        }
         if (response.data.code == 100) {
           showSuccessModal.value = true;
           return false;
@@ -976,6 +989,8 @@ export default {
       );
 
       employername.value = response.data.employer_details.employername;
+      employer_role.value = response.data.employer_details.role;
+      console.log("employer_role", employer_role.value);
     };
 
     const closeResumeErrorModal = async () => {
@@ -1105,6 +1120,7 @@ export default {
     });
 
     return {
+      employer_role,
       closeResumeErrorModal,
       showResumeModal,
       showBlankDiv,

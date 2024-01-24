@@ -313,28 +313,31 @@ class SeekerController extends Controller
         $seeker = Seeker::where('id', $id)->get(['email', 'contact_number']);
 
         $employer = Employer::find($employe_id);
-        if ($employer->acct_balance < 0.5) {
-            return response()->json([
-                'code' => 100,
-                'message' => "Insufficient balance",
-                'status' => 'error'
+        if ($employer->role != 1) {
+
+            if ($employer->acct_balance < 0.5) {
+                return response()->json([
+                    'code' => 100,
+                    'message' => "Insufficient balance",
+                    'status' => 'error'
+                ]);
+            }
+            $begin_balance = $employer->acct_balance;
+            $end_balance = $employer->acct_balance - 0.50;
+
+            $employer->acct_balance = $end_balance;
+            $employer->save();
+
+            EmployerTransactionHistory::create([
+                'employer_id' => $employe_id,
+                'begin_balance' => $begin_balance,
+                'transaction_amount' => 0.50,
+                'end_balance' => $end_balance,
+                'transaction_date' => Carbon::now(),
+                'action_name' => 'View Contact',
+                'job_seeker_id' => $id
             ]);
         }
-        $begin_balance = $employer->acct_balance;
-        $end_balance = $employer->acct_balance - 0.50;
-
-        $employer->acct_balance = $end_balance;
-        $employer->save();
-
-        EmployerTransactionHistory::create([
-            'employer_id' => $employe_id,
-            'begin_balance' => $begin_balance,
-            'transaction_amount' => 0.50,
-            'end_balance' => $end_balance,
-            'transaction_date' => Carbon::now(),
-            'action_name' => 'View Contact',
-            'job_seeker_id' => $id
-        ]);
         return response()->json([
             'message' => 'Details fetch successfully',
             'success' => 200,
@@ -347,28 +350,31 @@ class SeekerController extends Controller
         $seeker = Seeker::where('id', $id)->get(['resume']);
 
         $employer = Employer::find($employe_id);
-        if ($employer->acct_balance < 0.5) {
-            return response()->json([
-                'code' => 100,
-                'message' => "Insufficient balance",
-                'status' => 'error'
+        if ($employer->role != 1) {
+
+            if ($employer->acct_balance < 0.5) {
+                return response()->json([
+                    'code' => 100,
+                    'message' => "Insufficient balance",
+                    'status' => 'error'
+                ]);
+            }
+            $begin_balance = $employer->acct_balance;
+            $end_balance = $employer->acct_balance - 0.50;
+
+            $employer->acct_balance = $end_balance;
+            $employer->save();
+
+            EmployerTransactionHistory::create([
+                'employer_id' => $employe_id,
+                'begin_balance' => $begin_balance,
+                'transaction_amount' => 0.50,
+                'end_balance' => $end_balance,
+                'transaction_date' => Carbon::now(),
+                'action_name' => 'View Resume',
+                'job_seeker_id' => $id
             ]);
         }
-        $begin_balance = $employer->acct_balance;
-        $end_balance = $employer->acct_balance - 0.50;
-
-        $employer->acct_balance = $end_balance;
-        $employer->save();
-
-        EmployerTransactionHistory::create([
-            'employer_id' => $employe_id,
-            'begin_balance' => $begin_balance,
-            'transaction_amount' => 0.50,
-            'end_balance' => $end_balance,
-            'transaction_date' => Carbon::now(),
-            'action_name' => 'View Resume',
-            'job_seeker_id' => $id
-        ]);
         // $test = url('/pdf/' . $seeker[0]->resume);
         $filePath = public_path('pdf/' . $seeker[0]->resume);
 
@@ -376,7 +382,7 @@ class SeekerController extends Controller
             return response()->json([
                 'message' => 'Details fetch successfully',
                 'success' => 200,
-                'seeker_details' => $seeker[0]->resume,
+                'seeker_details' => $seeker,
                 'status' => 'exist'
 
             ]);
@@ -384,13 +390,11 @@ class SeekerController extends Controller
             return response()->json([
                 'message' => 'Details fetch successfully',
                 'success' => 200,
-                'seeker_details' => $seeker[0]->resume,
+                'seeker_details' => $seeker,
                 'status' => 'not'
 
             ]);
         }
-
-
     }
 
     public function updatePassword(Request $request)

@@ -497,6 +497,8 @@ export default {
     const addJobMessage = ref(false);
     const addJobMessageStatus = ref(false);
     const employername = ref("");
+    const employer_role = ref("");
+
     const city = ref("");
     const confirmModel = ref(false);
 
@@ -603,7 +605,10 @@ export default {
         ? JSON.parse(JSON.stringify(selectedCountryObj)).name
         : "";
 
-      confirmModel.value = !confirmModel.value;
+      if (employer_role.value != 1) {
+        confirmModel.value = !confirmModel.value;
+      }
+      //   confirmModel.value = !confirmModel.value;
 
       // const employer_id = localStorage.getItem("employer_id");
 
@@ -755,7 +760,11 @@ export default {
         err_detail.value = "The detailed description field is required";
         return false;
       }
-      confirmModel.value = !confirmModel.value;
+      if (employer_role.value == 1) {
+        addJob();
+      } else {
+        confirmModel.value = !confirmModel.value;
+      }
     };
     const getEmployerDeatails = async () => {
       const employer_id = localStorage.getItem("employer_id");
@@ -783,6 +792,8 @@ export default {
       email.value = response.data.employer_details.emailid;
       contact_number.value = response.data.employer_details.contactno;
       employername.value = response.data.employer_details.employername;
+      employer_role.value = response.data.employer_details.role;
+      console.log("employer_role", employer_role.value);
     };
     watch(detailed_description, (newValue) => {
       remaining.value = 2000 - newValue.length;
@@ -842,6 +853,7 @@ export default {
     });
 
     return {
+      employer_role,
       opemConfirmationmodel,
       confirmModel,
       addJobMessageStatus,
