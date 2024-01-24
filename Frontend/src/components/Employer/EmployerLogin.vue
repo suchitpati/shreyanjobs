@@ -274,6 +274,10 @@ export default {
                         response.data.employer_id
                     );
                     localStorage.setItem(
+                        "employer_role",
+                        response.data.role
+                    );
+                    localStorage.setItem(
                         "employer_tocken",
                         response.data.token
                     );

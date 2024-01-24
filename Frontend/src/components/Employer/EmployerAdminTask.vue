@@ -1,0 +1,118 @@
+<template>
+  <div>
+    <EmployerNev />
+
+    <div class="bg-[#ebf4ff] py-7 overflow-y-auto">
+      <div class="max-w-[1080px] w-full mx-auto px-[20px]">
+        <div class="text-[#1890da] sm:text-[26px] text-[22px] font-semibold mt-[0px] sm:mb-[0px] mb-[25px] cursor-pointer ">Admin Task</div>
+
+
+
+        <div
+          class="bg-[#d3ddff4f] rounded-lg py-4 sm:px-8 px-4 w-full shadow-[rgba(100,_100,_111,_0.2)_0px_0px_10px_0px] hover:shadow-[rgba(100,_100,_111,_0.2)_0px_0px_20px_0px] transition-[.5s]"
+        >
+          <h2
+            class="text-[#1890da] sm:text-[22px] text-[28px] font-semibold mt-[0px] sm:mb-[0px] mb-[25px] text-left"
+          >
+            Send Email Notification
+          </h2>
+          <div class="mt-4" v-for="job in jobDetail" :key="job.id">
+            <div
+              class="w-full flex sm:flex-row flex-col justify-between sm:gap-6 gap-2"
+            >
+              <div
+                class="border border-gray-500 flex justify-between w-full p-4 items-center rounded-lg"
+              >
+                <div>
+                  <p class="font-bold text-[15px] text-gray-800">
+                    {{ job.short_description }}
+                  </p>
+                </div>
+                <div>
+                  <p class="font-bold text-[15px] text-gray-800">
+                    {{ job.job_title }}
+                  </p>
+                </div>
+                <div>
+                  <button
+                    class="py-[5px] px-[15px] rounded-full bg-[#3B82F6] text-white font-bold text-[15px]"
+                    @click="sendJobEmailNotification(job.id)"
+                  >
+                    Send Email Notification
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="">
+      <FooterPage />
+    </div>
+    <div
+      class="absolute inset-0 flex items-center justify-center"
+      v-if="isLoading"
+    >
+      <div
+        class="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"
+      ></div>
+    </div>
+  </div>
+</template>
+
+  <script>
+import { reactive, ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
+import axios from "axios";
+import apiUrl from "../../api";
+import SuccessModal from "../SuccessModal.vue";
+import EmployerNev from "../Employer/EmployerNavbar.vue";
+import FooterPage from "../FooterPage.vue";
+
+export default {
+  components: {
+    SuccessModal,
+    EmployerNev,
+    FooterPage,
+  },
+  setup() {
+    const data = reactive({});
+    const acct_balance = ref("");
+
+    const states = ref([]);
+
+    const router = useRouter();
+
+    const jobDetail = ref("");
+    const isLoading = ref(false);
+
+    const getJobEmailNotification = async () => {
+      const response = await axios.get(`${apiUrl}/admin-task`);
+      jobDetail.value = response.data.JobDetails;
+      console.log("response", response.data);
+    };
+
+    const sendJobEmailNotification = async (id) => {
+        isLoading.value = true;
+      const response = await axios.post(`${apiUrl}/send-notification-email`, {
+        id,
+      });
+      isLoading.value = false;
+
+      console.log("response", response);
+      window.location.reload();
+    };
+    onMounted(() => {
+      getJobEmailNotification();
+    });
+
+    return {
+        isLoading,
+      sendJobEmailNotification,
+      jobDetail,
+    };
+  },
+};
+</script>
+

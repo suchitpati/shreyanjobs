@@ -17,6 +17,7 @@ import EmployerLogin from './components/Employer/EmployerLogin.vue'
 import EmployerRegister from './components/Employer/EmployerRegister.vue'
 import EmployerForgotPassword from './components/Employer/ForgotPassword.vue'
 import EmployerProfile from './components/Employer/EmployerProfile.vue'
+import AdminTask from './components/Employer/EmployerAdminTask.vue'
 import EmployerDashboard from './components/Employer/EmployerDashboard.vue'
 import EmployerUpdatePassword from './components/Employer/UpdatePassword.vue';
 import EmployerJobView from './components/Employer/EmployerJobView.vue';
@@ -97,6 +98,11 @@ const routes = [
     path: '/employer-profile',
     name: 'employer-profile',
     component: EmployerProfile,
+  },
+  {
+    path: '/admin-task',
+    name: 'admin-task',
+    component: AdminTask,
   },
   {
     path: '/employer-dashboard',

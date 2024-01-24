@@ -7,11 +7,12 @@
       </p>
       <div class="bg-white">
         <div
-          class="justify-between flex-wrap max-w-[1080px] w-full sm:px-[20px] px-[16px] sm:grid flex sm:grid-cols-2 mx-auto items-center"
+          class="max-w-[1080px] mx-auto sm:px-[20px] px-[16px] flex flex-col sm:flex-row items-center"
         >
-          <div class="sm:w-full xs:w-auto w-[50%] order-1">
+          <!-- Logo Section -->
+          <div class="sm:w-full xs:w-auto w-full mb-4">
             <img
-              class="md:w-[230px] w-[150px]"
+              class="md:w-[230px] w-[150px] mx-auto"
               src="../../assets/logo-no-background.png"
               alt=""
             />
@@ -23,7 +24,7 @@
                       </h1> -->
           <div
             v-if="isEmployerLogged == true"
-            class="sm:w-full xs:w-auto w-[50%] xs:order-3 order-2 flex justify-end gap-[5px]"
+            class="sm:w-full xs:w-auto w-full flex flex-col sm:flex-row justify-center sm:justify-end gap-[10px]"
           >
             <router-link to="/add-job">
               <button
@@ -46,11 +47,18 @@
                 Search Resume
               </button>
             </router-link>
-            <router-link to="/">
+            <router-link to="/" v-if="employer_role == 1">
               <button
                 class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] focus:outline-none focus:shadow-outline"
               >
                 Job Search
+              </button>
+            </router-link>
+            <router-link to="/admin-task">
+              <button
+                class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] focus:outline-none focus:shadow-outline"
+              >
+                Admin Task
               </button>
             </router-link>
             <router-link to="/employer-profile">
@@ -63,7 +71,7 @@
 
             <button
               @click="employerLogout"
-              class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] focus:outline-none focus:shadow-outline"
+              class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] focus:outline-none focus:shadow-outline m-auto"
             >
               Logout
             </button>
@@ -156,6 +164,10 @@
         >
           Search
         </button>
+        <div class="text-red-600 text-[16px]"        >
+          {{ total_seeker }} Active Job seeker profile<br />
+          {{ total_employer }} Registered Employered
+        </div>
       </div>
     </div>
     <div class="max-w-[980px] text-[12px] w-full m-auto pr-3">
@@ -927,10 +939,11 @@
         </p>
         <p class="mb-4 text-sm">
           <b>
-            Please specify only one skill at a time. More skills can be added
-            from profile page (Manage Subscription).</b
+            Please specify only one skill. More skills can be added from profile
+            page (Manage Subscription).</b
           >
         </p>
+        <p class="text-red-600" v-if="err_skill">{{ err_skill }}</p>
         <div class="flex items-center mb-4">
           <label for="" class="mr-2 text-gray-700 font-semibold">Skill:</label>
           <input
@@ -1053,9 +1066,14 @@ export default {
 
     const skillInput = ref("");
     const skillInput1s = ref("");
+    const err_skill = ref("");
 
     const deletePostConfirmation = ref(false);
     const deletePostId = ref("");
+    const total = ref("");
+    const total_seeker = ref(0);
+    const total_employer = ref(0);
+    const employer_role = ref("");
     someCountry.value = [
       {
         name: "United States",
@@ -1109,6 +1127,10 @@ export default {
 
     if (localStorage.getItem("employer_tocken") != null) {
       isEmployerLogged.value = true;
+    }
+
+    if (localStorage.getItem("employer_role") != null) {
+      employer_role.value = localStorage.getItem("employer_role");
     }
 
     if (localStorage.getItem("seeker_tocken") != null) {
@@ -1448,6 +1470,31 @@ export default {
     const addSeeekerSkillDetail = debounce(async () => {
       const seeker_id = localStorage.getItem("seeker_id");
 
+      if (skillInput.value == null || skillInput.value == "") {
+        err_skill.value = "The skill field is required";
+        return false;
+      } else {
+        err_skill.value = "";
+      }
+
+      var skillRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (skillRegex.test(skillInput.value) == true) {
+        err_skill.value =
+          "Do not enter your email here. Please specify only one skill to get email notification";
+        return false;
+      } else {
+        err_skill.value = "";
+      }
+
+      var commaPattern = /,/;
+      if (commaPattern.test(skillInput.value) == true) {
+        err_skill.value =
+          "Comma (,) is not allowed. Please specify ONLY one skill to get email notification";
+        return false;
+      } else {
+        err_skill.value = "";
+      }
+
       const formData = new FormData();
       formData.append("skill", skillInput.value);
       formData.append("seeker_id", seeker_id);
@@ -1505,7 +1552,11 @@ export default {
         const response = await axios.get(`${apiUrl}/admin-jobs`, {
           params,
         });
+        const total = await axios.get(`${apiUrl}/total-data`);
+        total_seeker.value = total.data.total_seeker;
+        total_employer.value = total.data.total_employer;
 
+        console.log("total", total.data.total_seeker);
         jobStatus.value = true;
         jobs.value = response.data;
         jobs.value.forEach((job) => {
@@ -1576,6 +1627,10 @@ export default {
       }
     });
     return {
+      total_seeker,
+      total_employer,
+      total,
+      err_skill,
       deletePostId,
       deletePost,
       closeDeletePostModel,
@@ -1649,6 +1704,7 @@ export default {
       enter_otp,
       isLoading,
       isEmployerLogged,
+      employer_role,
       isSeekerLogged,
       // handleSearch
     };
@@ -1670,5 +1726,51 @@ export default {
   background-size: contain;
   background-position: 50%;
   background-repeat: no-repeat;
+}
+.menu-button {
+  border: 1px solid #1890da;
+  background-color: #fff;
+  color: #1890da;
+  padding: 7px 15px;
+  margin-bottom: 5px; /* Adjust the spacing between buttons */
+  border-radius: 26px;
+  font-weight: bold;
+  cursor: pointer;
+  outline: none;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.menu-button:hover {
+  background-color: #f7f7f9;
+  color: #1890da;
+}
+
+/* Media query for mobile devices */
+@media screen and (max-width: 767px) {
+  .menu-button {
+    width: 100%; /* Make buttons full width on small screens */
+  }
+
+  /* Style for the vertical logo */
+  .flex img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .sm\:order-2 {
+    order: 1;
+  }
+
+  .sm\:order-1 {
+    order: 2;
+  }
+}
+.flex {
+  display: flex;
+}
+@media (max-width: 767px) {
+  .flex {
+    flex-direction: column; /* Change flex direction to column */
+  }
 }
 </style>

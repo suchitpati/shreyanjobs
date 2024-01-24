@@ -22,7 +22,7 @@
         Welcome,{{ employername }}
       </div>
     </div>
-    <div class="text-right bg-[#ebf4ff]">
+    <div class="text-right bg-[#ebf4ff]" v-if="employer_role != 1">
         <div class="text-[18px] max-w-[1080px] mx-auto">
             Account Balance : ${{ acct_balance }}
         </div>
@@ -328,6 +328,8 @@ export default {
     const updateProfileMessage = ref(false);
     const updateProfileMessageStatus = ref(false);
     const acct_balance = ref("");
+    const employer_role = localStorage.getItem('employer_role');
+
     someCountry.value = [
       {
         name: "United States",
@@ -572,6 +574,7 @@ export default {
     });
 
     return {
+        employer_role,
       acct_balance,
       updateProfileMessageStatus,
       updateProfileMessage,

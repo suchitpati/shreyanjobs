@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendJobNotification;
 use App\Models\Employer;
 use Illuminate\Http\Request;
 use App\Mail\EmployerOtpMail;
+use App\Models\AdminJob;
+use App\Models\Seeker;
+use App\Models\Subscription;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
@@ -159,6 +163,62 @@ class EmployerController extends Controller
         }
     }
 
+    public function admintask()
+    {
+        $job = AdminJob::where('email_send_status', 0)->get();
+        return response()->json([
+            'JobDetails' => $job,
+            'success' => 200,
+        ]);
+    }
+
+    public function sendJobEmailNotification(Request $request)
+    {
+        $job = AdminJob::where('id', $request->id)->first();
+        $skill = $job->skill;
+        $job_title = $job->job_title;
+        $detailed_description = $job->detailed_description;
+        $location = $job->city . ',' . $job->state . ',' . $job->country;
+        $duration = $job->employment_type;
+        $country = $job->country;
+        $additional_detail = "No additional detail";
+
+        $remote = $job->remote;
+
+        if (isset($job->additional_detail)) {
+            $additional_detail = $job->additional_detail;
+        }
+
+        $subscription_data = Subscription::all();
+        $foundSubscriptions = [];
+
+        foreach ($subscription_data as $sub) {
+            $found = strpos(strtolower($skill), strtolower($sub->skill)) !== false;
+            $found1 = strpos(strtolower($job_title), strtolower($sub->skill)) !== false;
+
+
+            if ($found || $found1) {
+                $foundSubscriptions[] = $sub->seeker_id;
+            }
+        }
+
+        $uniqueFoundSubscriptions = array_unique($foundSubscriptions);
+        $subscription_data = Seeker::whereIn('id', $uniqueFoundSubscriptions)->get();
+        if (isset($subscription_data)) {
+
+            foreach ($subscription_data as $sub) {
+
+                SendJobNotification::dispatch($sub->email, $job_title, $detailed_description, $location, $duration, $skill, $additional_detail, $remote, $country);
+            }
+        }
+        AdminJob::where('id', $request->id)
+            ->update(['email_send_status' => 1]);
+        return response()->json([
+            'JobDetails' => $job,
+            'success' => 200,
+        ]);
+    }
+
     public function verifyRegisterOtp(Request $request)
     {
 
@@ -223,7 +283,8 @@ class EmployerController extends Controller
         return response()->json([
             'message' => 'Login successful',
             'token' => $token,
-            'employer_id' => $employer->id
+            'employer_id' => $employer->id,
+            'role' => $employer->role,
         ], 200);
     }
 

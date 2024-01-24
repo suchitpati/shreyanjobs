@@ -34,8 +34,8 @@
       </button>
 
       <button
-        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"
-        @click="seekerLogout"
+      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline text-center"
+      @click="seekerLogout"
       >
         Logout
       </button>
