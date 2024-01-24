@@ -47,14 +47,14 @@
                 Search Resume
               </button>
             </router-link>
-            <router-link to="/" v-if="employer_role == 1">
+            <router-link to="/" >
               <button
                 class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] focus:outline-none focus:shadow-outline"
               >
                 Job Search
               </button>
             </router-link>
-            <router-link to="/admin-task">
+            <router-link to="/admin-task" v-if="employer_role == 1">
               <button
                 class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] focus:outline-none focus:shadow-outline"
               >
