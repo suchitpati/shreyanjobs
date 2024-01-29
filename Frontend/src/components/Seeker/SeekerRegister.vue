@@ -471,9 +471,11 @@
                         >
                           {{ err_skill }}
                         </div>
-                        <div class="text-start text-[13px] bg-blue-500 text-white ">
-                          Please specify only one skill. More skills
-                          can be added from profile page (Manage Subscription).
+                        <div
+                          class="text-start text-[13px] bg-blue-500 text-white"
+                        >
+                          Please specify only one skill. More skills can be
+                          added from profile page (Manage Subscription).
                         </div>
                       </div>
                     </div>
@@ -614,6 +616,7 @@ export default {
     const skill = ref("");
     const err_skill = ref("");
     const someCountry = ref([]);
+    const is_active = ref("");
 
     someCountry.value = [
       {
@@ -874,27 +877,29 @@ export default {
       }
 
       if (skill.value == null || skill.value == "") {
-          err_skill.value = "The skill field is required";
-          return false;
-        } else {
-            err_skill.value = "";
-        }
+        err_skill.value = "The skill field is required";
+        return false;
+      } else {
+        err_skill.value = "";
+      }
 
-        var skillRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-          if (skillRegex.test(skill.value) == true) {
-            err_skill.value = "Do not enter your email here. Please specify only one skill to get email notification";
-            return false;
-          } else {
-            err_skill.value = "";
-          }
+      var skillRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (skillRegex.test(skill.value) == true) {
+        err_skill.value =
+          "Do not enter your email here. Please specify only one skill to get email notification";
+        return false;
+      } else {
+        err_skill.value = "";
+      }
 
-          var commaPattern = /,/;
-          if (commaPattern.test(skill.value) == true) {
-            err_skill.value = "Comma (,) is not allowed. Please specify ONLY one skill to get email notification";
-            return false;
-          } else {
-            err_skill.value = "";
-          }
+      var commaPattern = /,/;
+      if (commaPattern.test(skill.value) == true) {
+        err_skill.value =
+          "Comma (,) is not allowed. Please specify ONLY one skill to get email notification";
+        return false;
+      } else {
+        err_skill.value = "";
+      }
 
       if (
         parseInt(secondary_experience.value) < 0 ||
@@ -945,6 +950,9 @@ export default {
             if (response.data.error == 100) {
               alert(response.data.message);
             } else {
+              localStorage.removeItem("seeker_id");
+              localStorage.removeItem("is_active");
+
               showSuccessModal.value = true;
               setTimeout(() => {
                 router.push("/seeker-login");
@@ -991,6 +999,11 @@ export default {
     };
     watch([country]);
     onMounted(() => {
+      is_active.value = localStorage.getItem("is_active");
+      if (is_active.value == 1) {
+        steps.value = 3;
+        seeker_id.value = localStorage.getItem("seeker_id");
+      }
       countries_state.value = someCountry.value;
       console.log(countries_state.value, "countries_state.value");
       fetchCountries();
@@ -998,6 +1011,7 @@ export default {
     });
 
     return {
+      is_active,
       skill,
       err_skill,
       isLoading,

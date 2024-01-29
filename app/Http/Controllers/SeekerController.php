@@ -674,10 +674,13 @@ class SeekerController extends Controller
             ]);
         }
 
-        if ($seeker->is_active == 1) {
+        if ($seeker->is_active == 1) {;
+
             return response()->json([
+                'seeker_id' => $seeker->id,
                 'message' => 'Your Account Registration did not complete last time. Please re-register the account',
-                'code' =>  100
+                'is_active' =>$seeker->is_active,
+                'code' =>  200
             ]);
         }
 

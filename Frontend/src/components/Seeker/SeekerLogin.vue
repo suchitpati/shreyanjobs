@@ -176,22 +176,33 @@ export default {
         if (response.data.code == 100) {
           validationError.value = response.data.message;
         } else {
-          showSuccessModal.value = true;
-          localStorage.setItem("seeker_id", response.data.seeker_id);
-          localStorage.setItem("seeker_tocken", response.data.token);
 
-          // Set a timer to remove data after 60 minutes
-          setTimeout(() => {
-            // Remove data from local storage
-            localStorage.removeItem("seeker_id", response.data.seeker_id);
-            localStorage.removeItem("seeker_tocken", response.data.token);
-            window.location.reload();
+        if(response.data.is_active == 1)
+        {
+            localStorage.setItem("seeker_id", response.data.seeker_id);
+            localStorage.setItem("is_active", response.data.is_active);
+            router.push("/seeker-register");
 
-          }, 60 * 60 * 1000);
+        }
+        else
+        {
+            showSuccessModal.value = true;
+            localStorage.setItem("seeker_id", response.data.seeker_id);
+            localStorage.setItem("seeker_tocken", response.data.token);
 
-          setTimeout(() => {
-            router.push("/");
-          }, 1000);
+            // Set a timer to remove data after 60 minutes
+            setTimeout(() => {
+              // Remove data from local storage
+              localStorage.removeItem("seeker_id", response.data.seeker_id);
+              localStorage.removeItem("seeker_tocken", response.data.token);
+              window.location.reload();
+
+            }, 60 * 60 * 1000);
+
+            setTimeout(() => {
+              router.push("/");
+            }, 1000);
+        }
         }
       } catch (error) {
         console.error(error);

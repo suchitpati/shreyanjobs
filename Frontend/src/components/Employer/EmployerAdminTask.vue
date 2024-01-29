@@ -4,9 +4,11 @@
 
     <div class="bg-[#ebf4ff] py-7 overflow-y-auto">
       <div class="max-w-[1080px] w-full mx-auto px-[20px]">
-        <div class="text-[#1890da] sm:text-[26px] text-[22px] font-semibold mt-[0px] sm:mb-[0px] mb-[25px] cursor-pointer ">Admin Task</div>
-
-
+        <div
+          class="text-[#1890da] sm:text-[26px] text-[22px] font-semibold mt-[0px] sm:mb-[0px] mb-[25px] cursor-pointer"
+        >
+          Admin Task
+        </div>
 
         <div
           class="bg-[#d3ddff4f] rounded-lg py-4 sm:px-8 px-4 w-full shadow-[rgba(100,_100,_111,_0.2)_0px_0px_10px_0px] hover:shadow-[rgba(100,_100,_111,_0.2)_0px_0px_20px_0px] transition-[.5s]"
@@ -51,7 +53,7 @@
       <FooterPage />
     </div>
     <div
-      class="absolute inset-0 flex items-center justify-center"
+      class="fixed inset-0 flex items-center justify-center"
       v-if="isLoading"
     >
       <div
@@ -62,28 +64,19 @@
 </template>
 
   <script>
-import { reactive, ref, onMounted } from "vue";
-import { useRouter } from "vue-router";
+import { ref, onMounted } from "vue";
 import axios from "axios";
 import apiUrl from "../../api";
-import SuccessModal from "../SuccessModal.vue";
 import EmployerNev from "../Employer/EmployerNavbar.vue";
 import FooterPage from "../FooterPage.vue";
+import { debounce } from "lodash";
 
 export default {
   components: {
-    SuccessModal,
     EmployerNev,
     FooterPage,
   },
   setup() {
-    const data = reactive({});
-    const acct_balance = ref("");
-
-    const states = ref([]);
-
-    const router = useRouter();
-
     const jobDetail = ref("");
     const isLoading = ref(false);
 
@@ -93,8 +86,8 @@ export default {
       console.log("response", response.data);
     };
 
-    const sendJobEmailNotification = async (id) => {
-        isLoading.value = true;
+    const sendJobEmailNotification = debounce(async (id) => {
+      isLoading.value = true;
       const response = await axios.post(`${apiUrl}/send-notification-email`, {
         id,
       });
@@ -102,13 +95,13 @@ export default {
 
       console.log("response", response);
       window.location.reload();
-    };
+    });
     onMounted(() => {
       getJobEmailNotification();
     });
 
     return {
-        isLoading,
+      isLoading,
       sendJobEmailNotification,
       jobDetail,
     };

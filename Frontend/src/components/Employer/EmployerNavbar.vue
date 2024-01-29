@@ -81,6 +81,8 @@ export default {
         );
         localStorage.removeItem("employer_tocken");
         localStorage.removeItem("employer_id");
+        localStorage.removeItem("employer_role");
+
         isLoading.value = false;
         if (response.data.message) {
           successMessage.value = response.data.message;
