@@ -4,9 +4,11 @@
 
     <div class="bg-[#ebf4ff] py-7 overflow-y-auto">
       <div class="max-w-[1080px] w-full mx-auto px-[20px]">
-        <div class="text-[#1890da] sm:text-[26px] text-[22px] font-semibold mt-[0px] sm:mb-[0px] mb-[25px] cursor-pointer ">Admin Task</div>
-
-
+        <div
+          class="text-[#1890da] sm:text-[26px] text-[22px] font-semibold mt-[0px] sm:mb-[0px] mb-[25px] cursor-pointer"
+        >
+          Admin Task
+        </div>
 
         <div
           class="bg-[#d3ddff4f] rounded-lg py-4 sm:px-8 px-4 w-full shadow-[rgba(100,_100,_111,_0.2)_0px_0px_10px_0px] hover:shadow-[rgba(100,_100,_111,_0.2)_0px_0px_20px_0px] transition-[.5s]"
@@ -62,13 +64,12 @@
 </template>
 
   <script>
-import {  ref, onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import axios from "axios";
 import apiUrl from "../../api";
 import EmployerNev from "../Employer/EmployerNavbar.vue";
 import FooterPage from "../FooterPage.vue";
 import { debounce } from "lodash";
-
 
 export default {
   components: {
@@ -76,8 +77,6 @@ export default {
     FooterPage,
   },
   setup() {
-
-
     const jobDetail = ref("");
     const isLoading = ref(false);
 
@@ -87,9 +86,8 @@ export default {
       console.log("response", response.data);
     };
 
-        const sendJobEmailNotification = debounce(async (id) => {
-
-        isLoading.value = true;
+    const sendJobEmailNotification = debounce(async (id) => {
+      isLoading.value = true;
       const response = await axios.post(`${apiUrl}/send-notification-email`, {
         id,
       });
@@ -103,7 +101,7 @@ export default {
     });
 
     return {
-        isLoading,
+      isLoading,
       sendJobEmailNotification,
       jobDetail,
     };

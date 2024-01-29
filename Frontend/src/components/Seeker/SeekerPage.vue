@@ -47,7 +47,7 @@
                 Search Resume
               </button>
             </router-link>
-            <router-link to="/" >
+            <router-link to="/">
               <button
                 class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] focus:outline-none focus:shadow-outline"
               >
@@ -139,49 +139,56 @@
     ></div>
 
     <div class="bg-white">
+        <div class="text-red-600">This website can be viewed better on any latest browser on a laptop/ desktop. If you must use a phone, please use the landscape mode</div>
       <div
-        class="flex items-center max-w-[1080px] px-[20px] gap-6 w-[65%] mx-auto p-5 justify-center sm:mb-1 mb-10 md:w-full"
+        class="flex items-center max-w-[980px] py-3 gap-6 w-[65%] mx-auto justify-between sm:pb-1 pb-10 md:w-full"
       >
-        <div class="flex items-center justify-center w-[29%] relative">
-          <input
-            class="rounded-[40px] md:py-[16px] sm:py-[15px] py-[12px] px-4 sm:pl-[60px] pl-[40px] focus:shadow-outline w-full shadow-[0_25px_60px_rgba(113,106,147,.2)]"
-            type="text"
-            v-model="searchInput"
-            @keyup.enter="fetchJobs"
-            placeholder="Search jobs by skill or job Role"
-          />
-          <!-- @input="handleSearch" -->
+        <div class="flex gap-10">
+          <div class="flex items-center justify-center relative">
+            <input
+              class="rounded-[40px] md:py-[16px] sm:py-[15px] py-[12px] px-4 sm:pl-[60px] pl-[40px] focus:shadow-outline  shadow-[0_25px_60px_rgba(113,106,147,.2)] w-[500px]"
+              type="text"
+              v-model="searchInput"
+              @keyup.enter="fetchJobs"
+              placeholder="Search jobs by skill or job Role"
+            />
+            <!-- @input="handleSearch" -->
 
-          <img
-            src="../../assets/search.svg"
-            alt="search"
-            class="sm:w-[24px] w-[20px] absolute sm:left-[24px] left-[14px] top-[50%] translate-y-[-50%] opacity-50"
-          />
+            <img
+              src="../../assets/search.svg"
+              alt="search"
+              class="sm:w-[24px] w-[20px] absolute sm:left-[24px] left-[14px] top-[50%] translate-y-[-50%] opacity-50"
+            />
+          </div>
+          <button
+            class="bg-blue-700 rounded-[30px] text-white md:p-[13px_30px] sm:p-[7px_20px] p-[5px_14px]"
+            @click="fetchJobs"
+          >
+            Search
+          </button>
         </div>
-        <button
-          class="bg-blue-700 rounded-[30px] text-white md:p-[13px_30px] sm:p-[7px_20px] p-[5px_14px]"
-          @click="fetchJobs"
-        >
-          Search
-        </button>
-        <div class="text-red-600 text-[16px]"        >
+        <div class="text-red-600 text-[16px]">
           {{ total_seeker }} Active Job seeker profile<br />
-          {{ total_employer }} Registered Employered
+          {{ total_employer }} Registered Employers
         </div>
       </div>
     </div>
-    <div class="max-w-[980px] text-[12px] w-full m-auto pr-3">
-      <div class="m-auto p-auto text-center">
-        <span
-          v-if="mailSentMessageStatus === 'true'"
-          class="text-green-600 text-[16px]"
-          >Your resume has been submitted to the employer</span
-        >
+    <div class="bg-[#fff] py-2">
+      <div
+        class="max-w-[980px] text-[12px] w-full m-auto pr-3 "
+      >
+        <div class="m-auto p-auto text-center">
+          <span
+            v-if="mailSentMessageStatus === 'true'"
+            class="text-green-600 text-[16px]"
+            >Your resume has been submitted to the employer</span
+          >
+        </div>
+        <div class="text-right">For any issue in accessing shreyanjobs.com</div>
+        <div class="text-right">please email to support@shreyanjobs.com</div>
       </div>
-      <div class="text-right">For any issue in accessing shreyanjobs.com</div>
-      <div class="text-right">please email to support@shreyanjobs.com</div>
     </div>
-    <div class="bg-[linear-gradient(180deg,#f5f4fa,rgba(251,251,253,0))]">
+    <div class="bg-[linear-gradient(180deg,#f5f4fa,rgba(251,251,253,0))] py-5">
       <div>
         <!-- <h1
                       class="text-black md:text-[36px] sm:text-[28px] text-[22px] font-bold pt-[40px]"
@@ -192,7 +199,7 @@
       </div>
 
       <div
-        class="rounded-2xl p-4 sm:p-7 top-[10px] m-auto max-w-[980px] w-full bg-[#d3ddff4f] shadow-[0px_0px_14px_0px_rgba(255,255,255,1);] transition-[.5s]"
+        class="rounded-2xl p-4 sm:p-7 top-[10px] m-auto max-w-[980px] w-full bg-[#d3ddff4f] shadow-[0px_0px_14px_0px_rgba(255,255,255,1);] transition-[.5s] "
       >
         <div
           class="grid grid-cols-7 md:gap-4 gap-3 max-w-[1200px] m-auto items-center"
