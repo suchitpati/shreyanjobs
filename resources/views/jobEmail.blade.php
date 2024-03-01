@@ -8,31 +8,53 @@
     <title>Document</title>
 </head>
 
-<body>
-    New Job Notification from shreyanjobs.com for subscribed skill :{{ $skill }}. Please login to shreyanjobs.com
-    to apply for this job. <br>
-    <br>
-    <br>
+<body style="font-family:'courier new',font-weight : 600">
 
-    Job Title :{{ $title }} &nbsp; &nbsp; &nbsp; &nbsp; Location:
-    @if ($remote == 1)
-       Remote({{$country}})
-    @else
-    {{ $location }}
-    @endif
-     &nbsp; &nbsp; &nbsp; &nbsp;
-    Duration:{{ $duration }}
-    <br>
-    <br>
-    Additional Job Detail :
-    <br>
-    {!! nl2br($additional_detail) !!}
-    <br>
-    <br>
-    Job Description :
-    <br>
-    {!! nl2br($description) !!}
+    <div class="gmail_font">
 
+        <h4>New Jobs Report from shreyanjobs.com based on your subscribed skill (Jobs posted in last
+            24 Hours)</h6>
+            <br>
+            <br>
+            ***********************************************************************************
+
+            <h4>
+                # PLEASE DO NOT REPLY TO THIS EMAIL. # <br />
+                # APPLY FOR THESE JOBS DIRECTLY on www.shreyanjobs.com #
+                </h6>
+                <br>
+                ***********************************************************************************
+                <br>
+                ----------------------------------------
+                <br>
+
+                @foreach ($data as $mail)
+                    <br>
+                    Job Title &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                    :&nbsp;&nbsp;&nbsp;&nbsp;{{ $mail->job_title }}
+                    <br>
+                    Job Location &nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;{{ $mail->country }}
+                    <br>
+                    skill Required &nbsp; &nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;{{ $mail->skill }}
+                    <br>
+                    <br>
+
+                    Apply (Login as Job Seeker, Search for this Job & Apply)
+
+                    ----------------------------------------
+                    <br>
+                    ----------------------------------------
+                @endforeach ()
+
+
+                <br>
+                Regards,
+                <br>
+                Support Team
+                <br>
+                www.shreyanjobs.com
+                <br>
+    </div>
 
 
 
