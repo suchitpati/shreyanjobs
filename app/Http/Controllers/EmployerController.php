@@ -12,6 +12,9 @@ use App\Models\Subscription;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\JobMail;
+use App\Models\BatchJob;
+use App\Models\BatchJobLog;
 
 class EmployerController extends Controller
 {
@@ -223,11 +226,21 @@ class EmployerController extends Controller
 
     public function sendJobEmailNotification(Request $request)
     {
+        if($request->seeker_start_id != null)
+        {
+            $seekers = Seeker::with('subscription')->where('id', '>', $request->seeker_start_id)->get();
+        }
+        else{
+            $seekers = Seeker::with('subscription')->get();
+        }
         $AdminJob = AdminJob::where('created_at', '>=', Carbon::now()->subDay())->get();
-        $seekers = Seeker::with('subscription')->get();
         $foundSubscriptions = [];
+        $cnt = 0;
+        $process_count = 1;
+        $email_sent_count = 1;
 
         foreach ($seekers as $seeker) {
+            Seeker::where('id', $seeker->id)->update(['new_jobs_report_time' => now()]);
             $seekerSubscriptions = array_map('strtolower', $seeker->subscription->pluck('skill')->toArray());
             $matchedJobIds = [];
 
@@ -244,6 +257,7 @@ class EmployerController extends Controller
             }
 
             if (!empty($matchedJobIds)) {
+
                 $foundSubscriptions[] = [
                     'seeker_id' => $seeker->id,
                     'job_id' => $matchedJobIds,
@@ -251,7 +265,54 @@ class EmployerController extends Controller
 
                 $matchedJobs = AdminJob::whereIn('id', $matchedJobIds)->get();
 
-                SendJobNotification::dispatch($seeker->email, $matchedJobs);
+
+                try {
+                    if ($cnt % 5 == 0) {
+                        if (BatchJob::where('status', 1)->exists()) {
+                            Mail::to($seeker->email)->send(new JobMail($matchedJobs));
+                        } else {
+                            break;
+                        }
+                    } else {
+                        Mail::to($seeker->email)->send(new JobMail($matchedJobs));
+                    }
+                } catch (\Exception $e) {
+                    BatchJob::where('id', 1)->update(['status' => 0]);
+
+                    BatchJobLog::latest('id')->first()->update([
+                        'status' => 'FAILED',  //(RUNNING, COMPLETED, FAILED)
+                        'job_end_time' => now(),
+                        'error_message' => $e->getMessage()
+                    ]);
+                    break;
+                }
+
+
+                if ($cnt == 0) {
+                    BatchJobLog::create([
+                        'batch_job_name' => 'SEND_NEW_JOB_NOTIFICATION',
+                        'status' => 'RUNNING',  //(RUNNING, COMPLETED, FAILED)
+                        'process_count' => $process_count, //(Number of Seeker ID processed – Email sent or not)
+                        'email_sent_count' => $email_sent_count, //(Number of Job seekers, for which email is sent) Meanse success
+                        'job_start_time' => now(),
+                    ]);
+                } else {
+                    BatchJobLog::latest('id')->first()->update([
+                        'process_count' => $process_count, //(Number of Seeker ID processed – Email sent or not)
+                        'email_sent_count' => $email_sent_count, //(Number of Job seekers, for which email is sent) Meanse success
+                    ]);
+                }
+
+                $process_count = $process_count + 1;
+                $email_sent_count = $email_sent_count + 1;
+                $cnt++;
+
+                // SendJobNotification::dispatch($seeker->email, $matchedJobs);
+            }
+            $lastSeeker = Seeker::latest('id')->first();
+
+            if ($lastSeeker->id == $seeker->id) {
+                BatchJobLog::latest('id')->first()->update(['status' => 'COMPLETED', 'job_end_time' => now()]);
             }
         }
 

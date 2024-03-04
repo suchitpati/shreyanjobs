@@ -733,7 +733,9 @@ class SeekerController extends Controller
 
         $employer = Employer::find($request->employer_id);
         $Seeker = Seeker::find($request->seeker_id);
+
         $adminjob = AdminJob::find($request->id);
+        AdminJob::where('id',$request->id)->update('apply_count',$adminjob->apply_count + 1);
         $remote = $adminjob->remote;
 
         $cover_letter = $request->cover_letter;

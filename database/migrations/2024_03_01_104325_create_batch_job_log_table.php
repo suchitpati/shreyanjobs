@@ -19,9 +19,9 @@ class CreateBatchJobLogTable extends Migration
             $table->string('status');
             $table->integer('process_count');
             $table->integer('email_sent_count');
-            $table->timestamp('job_start_time');
-            $table->timestamp('job_end_time')->default(now()); // Set a default value (current timestamp)
-            $table->text('error_message');
+            $table->timestamp('job_start_time')->nullable();
+            $table->timestamp('job_end_time')->nullable(); // Set a default value (current timestamp)
+            $table->text('error_message')->nullable();
             $table->timestamps();
         });
     }

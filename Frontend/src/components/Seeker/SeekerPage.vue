@@ -761,8 +761,9 @@
                     <!-- Posted Date
                                           {{ formateDate(job.created_at) }} -->
 
-                    (Searched for
-                    {{ job.search_count }} times )
+
+
+                    {{ job.apply_count }} Job Seeker(s) have applied for this job
                   </p>
                 </div>
               </div>

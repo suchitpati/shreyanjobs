@@ -1,4 +1,4 @@
-<template>
+    <template>
   <div>
     <EmployerNev />
 
@@ -18,7 +18,34 @@
           >
             Send Email Notification
           </h2>
-          <div class="mt-4" v-for="job in jobDetail" :key="job.id">
+          <div
+              class="w-full flex sm:flex-row flex-col justify-between sm:gap-6 gap-2"
+            >
+              <div
+                class="border border-gray-500 flex justify-between w-full p-4 items-center rounded-lg"
+              >
+                <div>
+                  <p class="font-bold text-[15px] text-gray-800">
+                    <!-- {{ job.short_description }} -->
+                    <input type="text" v-model="seeker_start_id" class="border border-gray-400 rounded-lg py-2 px-4 " placeholder="Job Seeker Start ID">(Optional)
+                  </p>
+                </div>
+                <div>
+                  <p class="font-bold text-[15px] text-gray-800">
+                    <!-- {{ job.job_title }} -->
+                  </p>
+                </div>
+                <div>
+                  <button
+                    class="py-[5px] px-[15px] rounded-full bg-[#3B82F6] text-white font-bold text-[15px]"
+                    @click="sendJobEmailNotification()"
+                  >
+                    Send Email Notification
+                  </button>
+                </div>
+              </div>
+            </div>
+          <!-- <div class="mt-4" v-for="job in jobDetail" :key="job.id">
             <div
               class="w-full flex sm:flex-row flex-col justify-between sm:gap-6 gap-2"
             >
@@ -45,7 +72,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -79,28 +106,30 @@ export default {
   setup() {
     const jobDetail = ref("");
     const isLoading = ref(false);
-
+    const seeker_start_id = ref('');
     const getJobEmailNotification = async () => {
       const response = await axios.get(`${apiUrl}/admin-task`);
       jobDetail.value = response.data.JobDetails;
       console.log("response", response.data);
     };
 
-    const sendJobEmailNotification = debounce(async (id) => {
+    const sendJobEmailNotification = debounce(async () => {
       isLoading.value = true;
+      seeker_start_id.value = seeker_start_id.value;
       const response = await axios.post(`${apiUrl}/send-notification-email`, {
-        id,
+        'seeker_start_id' : seeker_start_id.value,
       });
       isLoading.value = false;
 
       console.log("response", response);
-      window.location.reload();
+    //   window.location.reload();
     });
     onMounted(() => {
       getJobEmailNotification();
     });
 
     return {
+        seeker_start_id,
       isLoading,
       sendJobEmailNotification,
       jobDetail,
