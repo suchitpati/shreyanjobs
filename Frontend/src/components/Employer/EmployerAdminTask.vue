@@ -9,7 +9,9 @@
         >
           Admin Task
         </div>
-
+        <span  v-if="sendJobEmailStatus === 'true'" class="text-green-600"
+        >Job SEND_NEW_JOB_NOTIFICATION is completed successfully</span
+      >
         <div
           class="bg-[#d3ddff4f] rounded-lg py-4 sm:px-8 px-4 w-full shadow-[rgba(100,_100,_111,_0.2)_0px_0px_10px_0px] hover:shadow-[rgba(100,_100,_111,_0.2)_0px_0px_20px_0px] transition-[.5s]"
         >
@@ -107,6 +109,10 @@ export default {
     const jobDetail = ref("");
     const isLoading = ref(false);
     const seeker_start_id = ref('');
+    const sendJobEmailStatus = ref(false);
+    const sendJobMessage = ref(false);
+
+
     const getJobEmailNotification = async () => {
       const response = await axios.get(`${apiUrl}/admin-task`);
       jobDetail.value = response.data.JobDetails;
@@ -115,20 +121,38 @@ export default {
 
     const sendJobEmailNotification = debounce(async () => {
       isLoading.value = true;
-      seeker_start_id.value = seeker_start_id.value;
       const response = await axios.post(`${apiUrl}/send-notification-email`, {
         'seeker_start_id' : seeker_start_id.value,
       });
+      localStorage.setItem("sendJobEmailStatus", true);
+      localStorage.setItem("sendJobMessage", true);
+
       isLoading.value = false;
 
       console.log("response", response);
-    //   window.location.reload();
+      window.location.reload();
     });
     onMounted(() => {
       getJobEmailNotification();
+
+      sendJobMessage.value = localStorage.getItem("sendJobMessage");
+      sendJobEmailStatus.value = localStorage.getItem("sendJobEmailStatus");
+
+      if (sendJobMessage.value && !sendJobEmailStatus.value) {
+        localStorage.setItem("sendJobEmailStatus", true);
+      }
+
+      if (sendJobMessage.value && sendJobEmailStatus) {
+        localStorage.setItem("sendJobEmailStatus", false);
+      }
+
+
+
     });
 
     return {
+        sendJobMessage,
+        sendJobEmailStatus,
         seeker_start_id,
       isLoading,
       sendJobEmailNotification,

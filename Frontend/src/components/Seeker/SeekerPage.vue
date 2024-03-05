@@ -108,27 +108,38 @@
           >
             <router-link to="/employer-login">
               <button
-                class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[10px] py-[7px] px-[18px] md:px-[26px] rounded-[26px] focus:outline-none focus:shadow-outline"
+                class="border-gray-600 hover:bg-[#f7f7f9] border-r-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[10px] h-20 py-[7px] px-[18px] md:px-[26px] focus:outline-none focus:shadow-outline"
               >
-                <span>Post</span>
-                Job
+                <span>Post a job</span>
               </button>
             </router-link>
             <router-link to="/employer-login">
               <button
-                class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[10px] py-[7px] px-[18px] md:px-[26px] rounded-[26px] focus:outline-none focus:shadow-outline"
+                class="border-gray-600 hover:bg-[#f7f7f9] border-r-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[10px] h-20 py-[7px] px-[18px] md:px-[26px] focus:outline-none focus:shadow-outline"
               >
-                <span>Employer</span>
+                <span>Employer</span> <br />
                 Login
               </button>
             </router-link>
             <router-link to="/seeker-login">
               <button
-                class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[10px] py-[7px] px-[18px] md:px-[26px] rounded-[26px] focus:outline-none focus:shadow-outline"
+                class="border-gray-600 hover:bg-[#f7f7f9] border-r-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[10px] h-20 py-[7px] px-[18px] md:px-[26px] focus:outline-none focus:shadow-outline"
               >
-                Job Seeker Login
+                <span>Jobs Seeker</span> <br />
+                Login
               </button>
             </router-link>
+
+              <button
+                class="border-gray-600 hover:bg-[#f7f7f9] border-r-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[10px] h-20 py-[7px] px-[18px] md:px-[26px] focus:outline-none focus:shadow-outline"
+              >
+                <span>Bench Sales Recruiter</span> <br />
+                Login <span class="text-red-600 font-bold">(Coming soon)</span>
+                <br />
+                <span class="text-[12px] text-gray-600 font-light"
+                  >(Manage multiple consultants from one login)</span
+                >
+              </button>
           </div>
         </div>
       </div>
@@ -139,14 +150,17 @@
     ></div>
 
     <div class="bg-white">
-        <div class="text-red-600">This website can be viewed better on any latest browser on a laptop/ desktop. If you must use a phone, please use the landscape mode</div>
+      <div class="text-red-600">
+        This website can be viewed better on any latest browser on a laptop/
+        desktop. If you must use a phone, please use the landscape mode
+      </div>
       <div
         class="flex items-center max-w-[980px] py-3 gap-6 w-[65%] mx-auto justify-between sm:pb-1 pb-10 md:w-full"
       >
         <div class="flex gap-10">
           <div class="flex items-center justify-center relative">
             <input
-              class="rounded-[40px] md:py-[16px] sm:py-[15px] py-[12px] px-4 sm:pl-[60px] pl-[40px] focus:shadow-outline  shadow-[0_25px_60px_rgba(113,106,147,.2)] w-[500px]"
+              class="rounded-[40px] md:py-[16px] sm:py-[15px] py-[12px] px-4 sm:pl-[60px] pl-[40px] focus:shadow-outline shadow-[0_25px_60px_rgba(113,106,147,.2)] w-[500px]"
               type="text"
               v-model="searchInput"
               @keyup.enter="fetchJobs"
@@ -174,9 +188,7 @@
       </div>
     </div>
     <div class="bg-[#fff] py-2">
-      <div
-        class="max-w-[980px] text-[12px] w-full m-auto pr-3 "
-      >
+      <div class="max-w-[980px] text-[12px] w-full m-auto pr-3">
         <div class="m-auto p-auto text-center">
           <span
             v-if="mailSentMessageStatus === 'true'"
@@ -199,7 +211,7 @@
       </div>
 
       <div
-        class="rounded-2xl p-4 sm:p-7 top-[10px] m-auto max-w-[980px] w-full bg-[#d3ddff4f] shadow-[0px_0px_14px_0px_rgba(255,255,255,1);] transition-[.5s] "
+        class="rounded-2xl p-4 sm:p-7 top-[10px] m-auto max-w-[980px] w-full bg-[#d3ddff4f] shadow-[0px_0px_14px_0px_rgba(255,255,255,1);] transition-[.5s]"
       >
         <div
           class="grid grid-cols-7 md:gap-4 gap-3 max-w-[1200px] m-auto items-center"
@@ -761,9 +773,8 @@
                     <!-- Posted Date
                                           {{ formateDate(job.created_at) }} -->
 
-
-
-                    {{ job.apply_count }} Job Seeker(s) have applied for this job
+                    {{ job.apply_count }} Job Seeker(s) have applied for this
+                    job
                   </p>
                 </div>
               </div>

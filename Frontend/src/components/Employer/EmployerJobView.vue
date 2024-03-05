@@ -3,6 +3,17 @@
       <!-- Rest of the form content -->
 
       <EmployerNev />
+      <div class="text-right bg-[#ebf4ff]">
+        <div class="text-[18px] max-w-[1080px] mx-auto">
+          Welcome,{{ employername }}
+        </div>
+      </div>
+
+      <div class="text-right bg-[#ebf4ff]" v-if="employer_role != 1">
+          <div class="text-[18px] max-w-[1080px] mx-auto">
+              Account Balance : ${{ acct_balance }}
+          </div>
+        </div>
 
        <div class=" bg-[#ebf4ff]">
 
@@ -586,7 +597,10 @@
       const jobStatus = ref(false);
       const deletePostConfirmation = ref(false);
       const deletePostId = ref('');
+      const employername = ref("");
 
+      const acct_balance = ref("");
+      const employer_role = ref("");
 
       const someCountry = ref([]);
 
@@ -821,6 +835,36 @@
           });
       });
 
+      const getEmployerDeatails = async () => {
+      const employer_id = localStorage.getItem("employer_id");
+
+      const authToken = localStorage.getItem("employer_tocken");
+
+      if (!authToken) {
+        console.log("Authentication token is missing.");
+        return;
+      }
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      };
+      const response = await axios.post(
+        `${apiUrl}/employer-profile`,
+        {
+          employer_id: employer_id,
+        },
+        config
+      );
+
+      employername.value = response.data.employer_details.employername;
+      acct_balance.value = response.data.employer_details.acct_balance;
+
+      employer_role.value = response.data.employer_details.role;
+      console.log("employer_role", employer_role.value);
+    };
+
       const seekerLogout = async () => {
         try {
           const authToken = localStorage.getItem("seeker_tocken");
@@ -890,8 +934,14 @@
         console.log(countries_state.value, "countries_state");
         fetchCountries();
         fetchJobs();
+        getEmployerDeatails();
+
       });
       return {
+        employer_role,
+        acct_balance,
+        employername,
+        getEmployerDeatails,
         deletePostId,
         deletePost,
         closeDeletePostModel,

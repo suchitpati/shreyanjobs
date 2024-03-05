@@ -40,6 +40,12 @@
       </div>
     </div>
 
+    <div class="text-right bg-[#ebf4ff]" v-if="employer_role != 1">
+        <div class="text-[18px] max-w-[1080px] mx-auto">
+            Account Balance : ${{ acct_balance }}
+        </div>
+      </div>
+
     <div class="bg-[#ebf4ff] py-7">
       <div class="max-w-[1080px] mx-auto px-[20px]">
         <div
@@ -717,6 +723,7 @@ export default {
     const contactnoError = ref("");
     const searchInput = ref("");
     const last_accessed = ref("");
+    const acct_balance = ref("");
 
     const city = ref("");
     const datePosted = ref("");
@@ -989,6 +996,8 @@ export default {
       );
 
       employername.value = response.data.employer_details.employername;
+      acct_balance.value = response.data.employer_details.acct_balance;
+
       employer_role.value = response.data.employer_details.role;
       console.log("employer_role", employer_role.value);
     };
@@ -1198,6 +1207,8 @@ export default {
       err_remote,
       email,
       contact_number,
+      acct_balance ,
+
     };
   },
 };
