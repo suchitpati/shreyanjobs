@@ -22,6 +22,12 @@
       </div>
     </div>
 
+    <div class="text-right bg-[#ebf4ff]" v-if="employer_role != 1">
+        <div class="text-[18px] max-w-[1080px] mx-auto">
+            Account Balance : ${{ acct_balance }}
+        </div>
+      </div>
+
     <div class="bg-[#ebf4ff] py-0">
       <div class="max-w-[980px] w-full mx-auto px-[20px]">
         <div class="flex justify-between items-center mb-5">
@@ -498,6 +504,7 @@ export default {
     const addJobMessageStatus = ref(false);
     const employername = ref("");
     const employer_role = ref("");
+    const acct_balance = ref("");
 
     const city = ref("");
     const confirmModel = ref(false);
@@ -792,6 +799,8 @@ export default {
       email.value = response.data.employer_details.emailid;
       contact_number.value = response.data.employer_details.contactno;
       employername.value = response.data.employer_details.employername;
+      acct_balance.value = response.data.employer_details.acct_balance;
+
       employer_role.value = response.data.employer_details.role;
       console.log("employer_role", employer_role.value);
     };
@@ -853,6 +862,7 @@ export default {
     });
 
     return {
+        acct_balance,
       employer_role,
       opemConfirmationmodel,
       confirmModel,

@@ -9,8 +9,12 @@ use App\Mail\EmployerOtpMail;
 use App\Models\AdminJob;
 use App\Models\Seeker;
 use App\Models\Subscription;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\JobMail;
+use App\Models\BatchJob;
+use App\Models\BatchJobLog;
 
 class EmployerController extends Controller
 {
@@ -33,7 +37,7 @@ class EmployerController extends Controller
             Mail::to($request->email)->send(new EmployerOtpMail($maildata));
 
 
-             Employer::where('emailid', $request->email)->update([
+            Employer::where('emailid', $request->email)->update([
                 'companyname' => $request->companyname,
                 'companyurl' => $request->companywebsite,
                 'employername' => $request->employername,
@@ -172,52 +176,152 @@ class EmployerController extends Controller
         ]);
     }
 
+    // public function sendJobEmailNotification(Request $request)
+    // {
+    //     $job = AdminJob::where('id', $request->id)->first();
+    //     $skill = $job->skill;
+    //     $job_title = $job->job_title;
+    //     $detailed_description = $job->detailed_description;
+    //     $location = $job->city . ',' . $job->state . ',' . $job->country;
+    //     $duration = $job->employment_type;
+    //     $country = $job->country;
+    //     $additional_detail = "No additional detail";
+
+    //     $remote = $job->remote;
+
+    //     if (isset($job->additional_detail)) {
+    //         $additional_detail = $job->additional_detail;
+    //     }
+
+    //     $subscription_data = Subscription::all();
+    //     $foundSubscriptions = [];
+
+    //     foreach ($subscription_data as $sub) {
+    //         $found = strpos(strtolower($skill), strtolower($sub->skill)) !== false;
+    //         $found1 = strpos(strtolower($job_title), strtolower($sub->skill)) !== false;
+
+
+    //         if ($found || $found1) {
+    //             $foundSubscriptions[] = $sub->seeker_id;
+    //         }
+    //     }
+
+    //     $uniqueFoundSubscriptions = array_unique($foundSubscriptions);
+    //     $subscription_data = Seeker::whereIn('id', $uniqueFoundSubscriptions)->get();
+    //     if (isset($subscription_data)) {
+
+    //         foreach ($subscription_data as $sub) {
+
+    //             SendJobNotification::dispatch($sub->email, $job_title, $detailed_description, $location, $duration, $skill, $additional_detail, $remote, $country);
+    //         }
+    //     }
+    //     AdminJob::where('id', $request->id)
+    //         ->update(['email_send_status' => 1]);
+    //     return response()->json([
+    //         'JobDetails' => $job,
+    //         'success' => 200,
+    //     ]);
+    // }
+
+
     public function sendJobEmailNotification(Request $request)
     {
-        $job = AdminJob::where('id', $request->id)->first();
-        $skill = $job->skill;
-        $job_title = $job->job_title;
-        $detailed_description = $job->detailed_description;
-        $location = $job->city . ',' . $job->state . ',' . $job->country;
-        $duration = $job->employment_type;
-        $country = $job->country;
-        $additional_detail = "No additional detail";
-
-        $remote = $job->remote;
-
-        if (isset($job->additional_detail)) {
-            $additional_detail = $job->additional_detail;
+        if($request->seeker_start_id != null)
+        {
+            $seekers = Seeker::with('subscription')->where('id', '>', $request->seeker_start_id)->get();
         }
-
-        $subscription_data = Subscription::all();
+        else{
+            $seekers = Seeker::with('subscription')->get();
+        }
+        $AdminJob = AdminJob::where('created_at', '>=', Carbon::now()->subDay())->get();
         $foundSubscriptions = [];
+        $cnt = 0;
+        $process_count = 1;
+        $email_sent_count = 1;
 
-        foreach ($subscription_data as $sub) {
-            $found = strpos(strtolower($skill), strtolower($sub->skill)) !== false;
-            $found1 = strpos(strtolower($job_title), strtolower($sub->skill)) !== false;
+        foreach ($seekers as $seeker) {
+            Seeker::where('id', $seeker->id)->update(['new_jobs_report_time' => now()]);
+            $seekerSubscriptions = array_map('strtolower', $seeker->subscription->pluck('skill')->toArray());
+            $matchedJobIds = [];
+
+            foreach ($AdminJob as $job) {
+                $jobSkills = strtolower($job->skill);
+
+                $matchingSubscriptions = array_filter($seekerSubscriptions, function ($subscriptionSkill) use ($jobSkills) {
+                    return strpos($jobSkills, $subscriptionSkill) !== false;
+                });
+
+                if (!empty($matchingSubscriptions)) {
+                    $matchedJobIds[] = $job->id;
+                }
+            }
+
+            if (!empty($matchedJobIds)) {
+
+                $foundSubscriptions[] = [
+                    'seeker_id' => $seeker->id,
+                    'job_id' => $matchedJobIds,
+                ];
+
+                $matchedJobs = AdminJob::whereIn('id', $matchedJobIds)->get();
 
 
-            if ($found || $found1) {
-                $foundSubscriptions[] = $sub->seeker_id;
+                try {
+                    if ($cnt % 5 == 0) {
+                        if (BatchJob::where('status', 1)->exists()) {
+                            Mail::to($seeker->email)->send(new JobMail($matchedJobs));
+                        } else {
+                            break;
+                        }
+                    } else {
+                        Mail::to($seeker->email)->send(new JobMail($matchedJobs));
+                    }
+                } catch (\Exception $e) {
+                    BatchJob::where('id', 1)->update(['status' => 0]);
+
+                    BatchJobLog::latest('id')->first()->update([
+                        'status' => 'FAILED',  //(RUNNING, COMPLETED, FAILED)
+                        'job_end_time' => now(),
+                        'error_message' => $e->getMessage()
+                    ]);
+                    break;
+                }
+
+
+                if ($cnt == 0) {
+                    BatchJobLog::create([
+                        'batch_job_name' => 'SEND_NEW_JOB_NOTIFICATION',
+                        'status' => 'RUNNING',  //(RUNNING, COMPLETED, FAILED)
+                        'process_count' => $process_count, //(Number of Seeker ID processed – Email sent or not)
+                        'email_sent_count' => $email_sent_count, //(Number of Job seekers, for which email is sent) Meanse success
+                        'job_start_time' => now(),
+                    ]);
+                } else {
+                    BatchJobLog::latest('id')->first()->update([
+                        'process_count' => $process_count, //(Number of Seeker ID processed – Email sent or not)
+                        'email_sent_count' => $email_sent_count, //(Number of Job seekers, for which email is sent) Meanse success
+                    ]);
+                }
+
+                $process_count = $process_count + 1;
+                $email_sent_count = $email_sent_count + 1;
+                $cnt++;
+
+                // SendJobNotification::dispatch($seeker->email, $matchedJobs);
+            }
+            $lastSeeker = Seeker::latest('id')->first();
+
+            if ($lastSeeker->id == $seeker->id) {
+                BatchJobLog::latest('id')->first()->update(['status' => 'COMPLETED', 'job_end_time' => now()]);
             }
         }
 
-        $uniqueFoundSubscriptions = array_unique($foundSubscriptions);
-        $subscription_data = Seeker::whereIn('id', $uniqueFoundSubscriptions)->get();
-        if (isset($subscription_data)) {
-
-            foreach ($subscription_data as $sub) {
-
-                SendJobNotification::dispatch($sub->email, $job_title, $detailed_description, $location, $duration, $skill, $additional_detail, $remote, $country);
-            }
-        }
-        AdminJob::where('id', $request->id)
-            ->update(['email_send_status' => 1]);
         return response()->json([
-            'JobDetails' => $job,
+            'JobDetails' => array_map('unserialize', array_unique(array_map('serialize', $foundSubscriptions))),
             'success' => 200,
         ]);
     }
+
 
     public function verifyRegisterOtp(Request $request)
     {
