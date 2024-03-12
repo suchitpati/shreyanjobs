@@ -39,7 +39,7 @@
                     <br>
                     <br>
 
-                    Apply (Login as Job Seeker, Search for this Job & Apply)
+                    <a href="www.shreyanjobs.com">Apply</a> (Login as Job Seeker, Search for this Job & Apply)
 
                     ----------------------------------------
                     <br>

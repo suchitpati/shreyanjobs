@@ -12,6 +12,10 @@
         <span  v-if="sendJobEmailStatus === 'true'" class="text-green-600"
         >Job SEND_NEW_JOB_NOTIFICATION is completed successfully</span
       >
+
+      <span  v-if="batchJobStatus === true"  class="text-green-600"
+      >Job SEND_NEW_JOB_NOTIFICATION is Disabled </span
+    >
         <div
           class="bg-[#d3ddff4f] rounded-lg py-4 sm:px-8 px-4 w-full shadow-[rgba(100,_100,_111,_0.2)_0px_0px_10px_0px] hover:shadow-[rgba(100,_100,_111,_0.2)_0px_0px_20px_0px] transition-[.5s]"
         >
@@ -112,11 +116,26 @@ export default {
     const sendJobEmailStatus = ref(false);
     const sendJobMessage = ref(false);
 
+    const batchJobStatus = ref(false);
 
     const getJobEmailNotification = async () => {
       const response = await axios.get(`${apiUrl}/admin-task`);
       jobDetail.value = response.data.JobDetails;
       console.log("response", response.data);
+    };
+
+    const checkBatchJobStatus = async () => {
+      const response = await axios.get(`${apiUrl}/check-batchJob-status`);
+
+      console.log("response", response.data);
+      if(response.data.JobDetails.status == 0)
+      {
+          batchJobStatus.value = true;
+      }
+      else
+      {
+        batchJobStatus.value = false;
+      }
     };
 
     const sendJobEmailNotification = debounce(async () => {
@@ -134,7 +153,7 @@ export default {
     });
     onMounted(() => {
       getJobEmailNotification();
-
+      checkBatchJobStatus();
       sendJobMessage.value = localStorage.getItem("sendJobMessage");
       sendJobEmailStatus.value = localStorage.getItem("sendJobEmailStatus");
 
@@ -151,6 +170,7 @@ export default {
     });
 
     return {
+        batchJobStatus,
         sendJobMessage,
         sendJobEmailStatus,
         seeker_start_id,

@@ -82,7 +82,7 @@ class AdminJobController extends Controller
         });
 
 
-        $adminJobs->increment('search_count', 1);
+        // $adminJobs->increment('search_count', 1);
         $adminJobs->where('created_at', '>', now()->subDays(30)->endOfDay());
 
         $jobs = $adminJobs->orderByDesc('created_at')->get();

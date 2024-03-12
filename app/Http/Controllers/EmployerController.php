@@ -176,6 +176,15 @@ class EmployerController extends Controller
         ]);
     }
 
+    public function checkBatchJobStatus()
+    {
+        $job = BatchJob::where('batch_job_name', 'SEND_NEW_JOB_NOTIFICATION')->first();
+        return response()->json([
+            'JobDetails' => $job,
+            'success' => 200,
+        ]);
+    }
+
     // public function sendJobEmailNotification(Request $request)
     // {
     //     $job = AdminJob::where('id', $request->id)->first();
@@ -226,20 +235,27 @@ class EmployerController extends Controller
 
     public function sendJobEmailNotification(Request $request)
     {
-        if($request->seeker_start_id != null)
-        {
-            $seekers = Seeker::with('subscription')->where('id', '>', $request->seeker_start_id)->get();
-        }
-        else{
+        if ($request->seeker_start_id != null) {
+            $seekers = Seeker::with('subscription')->where('id', '>=', $request->seeker_start_id)->get();
+        } else {
             $seekers = Seeker::with('subscription')->get();
         }
         $AdminJob = AdminJob::where('created_at', '>=', Carbon::now()->subDay())->get();
         $foundSubscriptions = [];
         $cnt = 0;
         $process_count = 1;
-        $email_sent_count = 1;
+        $email_sent_count = 0;
 
         foreach ($seekers as $seeker) {
+            if ($cnt == 0) {
+                BatchJobLog::create([
+                    'batch_job_name' => 'SEND_NEW_JOB_NOTIFICATION',
+                    'status' => 'RUNNING',  //(RUNNING, COMPLETED, FAILED)
+                    'job_start_time' => now(),
+                    'process_count' => $process_count,
+                    'email_sent_count' => $email_sent_count
+                ]);
+            }
             Seeker::where('id', $seeker->id)->update(['new_jobs_report_time' => now()]);
             $seekerSubscriptions = array_map('strtolower', $seeker->subscription->pluck('skill')->toArray());
             $matchedJobIds = [];
@@ -288,32 +304,32 @@ class EmployerController extends Controller
                 }
 
 
-                if ($cnt == 0) {
-                    BatchJobLog::create([
-                        'batch_job_name' => 'SEND_NEW_JOB_NOTIFICATION',
-                        'status' => 'RUNNING',  //(RUNNING, COMPLETED, FAILED)
-                        'process_count' => $process_count, //(Number of Seeker ID processed – Email sent or not)
-                        'email_sent_count' => $email_sent_count, //(Number of Job seekers, for which email is sent) Meanse success
-                        'job_start_time' => now(),
-                    ]);
-                } else {
-                    BatchJobLog::latest('id')->first()->update([
-                        'process_count' => $process_count, //(Number of Seeker ID processed – Email sent or not)
-                        'email_sent_count' => $email_sent_count, //(Number of Job seekers, for which email is sent) Meanse success
-                    ]);
-                }
 
-                $process_count = $process_count + 1;
                 $email_sent_count = $email_sent_count + 1;
-                $cnt++;
+                BatchJobLog::latest('id')->first()->update([
+                    'email_sent_count' => $email_sent_count, //(Number of Job seekers, for which email is sent) Meanse success
+                ]);
+
 
                 // SendJobNotification::dispatch($seeker->email, $matchedJobs);
             }
+
+
+
+            BatchJobLog::latest('id')->first()->update([
+                'process_count' => $process_count, //(Number of Seeker ID processed – Email sent or not)
+            ]);
+
+
             $lastSeeker = Seeker::latest('id')->first();
+
 
             if ($lastSeeker->id == $seeker->id) {
                 BatchJobLog::latest('id')->first()->update(['status' => 'COMPLETED', 'job_end_time' => now()]);
             }
+            $process_count = $process_count + 1;
+
+            $cnt++;
         }
 
         return response()->json([
