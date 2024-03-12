@@ -83,6 +83,8 @@ Route::post('/employer-update-profile',[EmployerController::class,'updateemploye
 
 Route::post('/employer-update-password',[EmployerController::class,'updatePassword']);
 Route::get('/admin-task',[EmployerController::class,'admintask']);
+Route::get('/check-batchJob-status',[EmployerController::class,'checkBatchJobStatus']);
+
 Route::post('/send-notification-email',[EmployerController::class,'sendJobEmailNotification']);
 
 
