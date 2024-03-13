@@ -296,9 +296,14 @@ class EmployerController extends Controller
                     BatchJob::where('id', 1)->update(['status' => 0]);
 
                     BatchJobLog::latest('id')->first()->update([
-                        'status' => 'FAILED',  //(RUNNING, COMPLETED, FAILED)
+                        'status' => 'STOPPED/DISABLED',  //(RUNNING, COMPLETED, FAILED)
                         'job_end_time' => now(),
                         'error_message' => $e->getMessage()
+                    ]);
+                    return response()->json([
+                        'status' => 'STOPPED/DISABLED',
+                        'message' => 'Job SEND_NEW_JOB_NOTIFICATION is Disabled. The job is stopped after processing seeker ID '.$seeker->id,
+                        'error' => 100,
                     ]);
                     break;
                 }
