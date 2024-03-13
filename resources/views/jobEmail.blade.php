@@ -33,7 +33,11 @@
                     Job Title &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
                     :&nbsp;&nbsp;&nbsp;&nbsp;{{ $mail->job_title }}
                     <br>
-                    Job Location &nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;{{ $mail->country }}
+                    Job Location &nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;   @if ($remote == 1)
+                    Remote({{$country}})
+                 @else
+                 {{ $mail->city . ',' . $mail->state . ',' . $mail->country }}
+                 @endif
                     <br>
                     skill Required &nbsp; &nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;{{ $mail->skill }}
                     <br>

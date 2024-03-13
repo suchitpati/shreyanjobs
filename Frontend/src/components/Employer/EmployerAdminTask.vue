@@ -16,6 +16,9 @@
       <span  v-if="batchJobStatus === true"  class="text-green-600"
       >Job SEND_NEW_JOB_NOTIFICATION is Disabled </span
     >
+    <span   v-if="batchJobError === true"  class="text-green-600"
+    >{{batchJobErrorMessage  }} </span
+  >
         <div
           class="bg-[#d3ddff4f] rounded-lg py-4 sm:px-8 px-4 w-full shadow-[rgba(100,_100,_111,_0.2)_0px_0px_10px_0px] hover:shadow-[rgba(100,_100,_111,_0.2)_0px_0px_20px_0px] transition-[.5s]"
         >
@@ -44,7 +47,7 @@
                 <div>
                   <button
                     class="py-[5px] px-[15px] rounded-full bg-[#3B82F6] text-white font-bold text-[15px]"
-                    @click="sendJobEmailNotification()"
+                    @click="sendJobEmailNotification()" :disabled="batchJobStatus === true || batchJobError === true"
                   >
                     Send Email Notification
                   </button>
@@ -117,6 +120,9 @@ export default {
     const sendJobMessage = ref(false);
 
     const batchJobStatus = ref(false);
+    const batchJobError = ref(false);
+    const batchJobErrorMessage = ref('');
+
 
     const getJobEmailNotification = async () => {
       const response = await axios.get(`${apiUrl}/admin-task`);
@@ -143,13 +149,24 @@ export default {
       const response = await axios.post(`${apiUrl}/send-notification-email`, {
         'seeker_start_id' : seeker_start_id.value,
       });
-      localStorage.setItem("sendJobEmailStatus", true);
-      localStorage.setItem("sendJobMessage", true);
+      if(response.data.error == 100)
+      {
+        batchJobErrorMessage.value = response.data.message;
+        batchJobError.value = true;
+        console.log(response.data.message,'response.data.message');
+        isLoading.value = false;
 
-      isLoading.value = false;
+      }
+      else
+      {
+          localStorage.setItem("sendJobEmailStatus", true);
+          localStorage.setItem("sendJobMessage", true);
 
-      console.log("response", response);
-      window.location.reload();
+          isLoading.value = false;
+
+          console.log("response", response);
+          window.location.reload();
+      }
     });
     onMounted(() => {
       getJobEmailNotification();
@@ -170,6 +187,8 @@ export default {
     });
 
     return {
+        batchJobErrorMessage,
+        batchJobError,
         batchJobStatus,
         sendJobMessage,
         sendJobEmailStatus,
