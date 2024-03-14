@@ -33,8 +33,8 @@
                     Job Title &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
                     :&nbsp;&nbsp;&nbsp;&nbsp;{{ $mail->job_title }}
                     <br>
-                    Job Location &nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;   @if ($remote == 1)
-                    Remote({{$country}})
+                    Job Location &nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;   @if ($mail->remote == 1)
+                    Remote({{$mail->country}})
                  @else
                  {{ $mail->city . ',' . $mail->state . ',' . $mail->country }}
                  @endif
