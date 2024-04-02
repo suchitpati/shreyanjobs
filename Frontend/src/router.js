@@ -10,8 +10,8 @@ import SeekerRegister from './components/Seeker/SeekerRegister.vue'
 import ForgotPassword from './components/Seeker/ForgotPassword.vue'
 import SeekerProfile from './components/Seeker/SeekerProfile.vue'
 import SeekerUpdatePassword from './components/Seeker/UpdatePassword.vue';
-
-
+import RecruiterLogin from './components/Recruitment/RecruiterLogin.vue';
+import RecruiterRegister from './components/Recruitment/RecruiterRegister.vue';
 
 import EmployerLogin from './components/Employer/EmployerLogin.vue'
 import EmployerRegister from './components/Employer/EmployerRegister.vue'
@@ -123,6 +123,16 @@ const routes = [
     path: '/employer-update-password',
     name: 'employer-update-password',
     component: EmployerUpdatePassword,
+  },
+  {
+    path: '/recruiter-login',
+    name: 'recruiter-login',
+    component: RecruiterLogin,
+  },
+  {
+    path: '/recruiter-register',
+    name: 'recruiter-register',
+    component: RecruiterRegister,
   },
 
 ];

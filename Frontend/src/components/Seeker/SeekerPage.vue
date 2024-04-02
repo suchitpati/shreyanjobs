@@ -130,6 +130,7 @@
               </button>
             </router-link>
 
+            <router-link to="/recruiter-login">
               <button
                 class="border-gray-600 hover:bg-[#f7f7f9] border-r-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[10px] h-20 py-[7px] px-[18px] md:px-[26px] focus:outline-none focus:shadow-outline"
               >
@@ -140,6 +141,7 @@
                   >(Manage multiple consultants from one login)</span
                 >
               </button>
+            </router-link>
           </div>
         </div>
       </div>

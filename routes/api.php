@@ -5,8 +5,10 @@ use App\Http\Controllers\AdminJobController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\EmployerController;
 use App\Http\Controllers\SeekerController;
+use App\Http\Controllers\RecruiterController;
 use App\Http\Controllers\UserSubscriptionController;
 use App\Http\Controllers\UserJobApplication;
+use App\Models\Recruiter;
 use App\Models\Seeker;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -107,3 +109,8 @@ Route::delete('/employer-job/{id}', [AdminJobController::class, 'destroy']);
 Route::get('/countries', [CountryController::class, 'index']);
 Route::get('/countries/{country}/states', [CountryController::class, 'states']);
 
+
+
+//recruiter Routes
+Route::post('/recruiter-register', [RecruiterController::class, 'recruiter_register']);
+Route::post('/validateOtp', [RecruiterController::class, 'validateOtp']);
