@@ -82,17 +82,11 @@ Route::post('/employer-send-forgot-email-otp',[EmployerController::class,'sendFo
 Route::post('/employer-check-forgot-otp',[EmployerController::class,'checkForgotOtp']);
 Route::post('/employer-update-forgot-password',[EmployerController::class,'updateForgotPassword']);
 Route::post('/employer-update-profile',[EmployerController::class,'updateemployer_profile']);
-
 Route::post('/employer-update-password',[EmployerController::class,'updatePassword']);
 Route::get('/admin-task',[EmployerController::class,'admintask']);
 Route::get('/check-batchJob-status',[EmployerController::class,'checkBatchJobStatus']);
 
 Route::post('/send-notification-email',[EmployerController::class,'sendJobEmailNotification']);
-
-
-
-
-
 
 
 
@@ -110,7 +104,12 @@ Route::get('/countries', [CountryController::class, 'index']);
 Route::get('/countries/{country}/states', [CountryController::class, 'states']);
 
 
-
 //recruiter Routes
 Route::post('/recruiter-register', [RecruiterController::class, 'recruiter_register']);
 Route::post('/validateOtp', [RecruiterController::class, 'validateOtp']);
+Route::post('/recruiter-login',[RecruiterController::class,'loginrecruiter']);
+Route::post('/recruiter-logout', [RecruiterController::class, 'recruiterLogout']);
+// Route::post('/recruiter-update-forgot-password',[RecruiterController::class,'updateForgotPassword']);
+Route::post('/recruiter-send-forgot-email-otp',[RecruiterController::class,'sendForgotEmailOtp']);
+Route::post('/recruiter-check-forgot-otp',[RecruiterController::class,'checkForgotOtp']);
+Route::post('/recruiter-update-forgot-password',[RecruiterController::class,'updateForgotPassword']);

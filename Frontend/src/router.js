@@ -10,8 +10,11 @@ import SeekerRegister from './components/Seeker/SeekerRegister.vue'
 import ForgotPassword from './components/Seeker/ForgotPassword.vue'
 import SeekerProfile from './components/Seeker/SeekerProfile.vue'
 import SeekerUpdatePassword from './components/Seeker/UpdatePassword.vue';
+
 import RecruiterLogin from './components/Recruitment/RecruiterLogin.vue';
 import RecruiterRegister from './components/Recruitment/RecruiterRegister.vue';
+import RecruiterForgotPassword from './components/Recruitment/ForgotPassword.vue';
+import RecruiterPage from './components/Recruitment/RecruiterPage.vue';
 
 import EmployerLogin from './components/Employer/EmployerLogin.vue'
 import EmployerRegister from './components/Employer/EmployerRegister.vue'
@@ -22,7 +25,6 @@ import EmployerDashboard from './components/Employer/EmployerDashboard.vue'
 import EmployerUpdatePassword from './components/Employer/UpdatePassword.vue';
 import EmployerJobView from './components/Employer/EmployerJobView.vue';
 import EmployerJobEdit from './components/Employer/EmployerJobEdit.vue';
-
 
 const loggedIn = localStorage.getItem('accessToken');
 
@@ -129,10 +131,21 @@ const routes = [
     name: 'recruiter-login',
     component: RecruiterLogin,
   },
+
   {
     path: '/recruiter-register',
     name: 'recruiter-register',
     component: RecruiterRegister,
+  },
+  {
+    path: '/recruiter-forgot-password',
+    name: 'recruiter-forgot-password',
+    component: RecruiterForgotPassword,
+  },
+  {
+    path: '/recruiter',
+    name: 'recruiter',
+    component: RecruiterPage,
   },
 
 ];

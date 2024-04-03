@@ -422,7 +422,7 @@ setup(){
       }
     }
 
-    const validateOtp = async () => {
+const validateOtp = async () => {
       try {
         isLoading.value = true;
 
@@ -431,7 +431,7 @@ setup(){
         await axios
           .post(`${apiUrl}/validateOtp`, {
             otp: final_otp.value,
-            seeker_id: seeker_id.value,
+            recruiter_id: recruiter_id.value,
           })
           .then((response) => {
             console.log(response);
@@ -440,7 +440,13 @@ setup(){
               otpError.value = true;
               return false;
             } else {
-              steps.value = 3;
+              const elementToHide = document.querySelector(".enter_otp_class");
+              elementToHide.classList.add("hidden");
+
+              showSuccessModal.value = true;
+              setTimeout(() => {
+                router.push("/recruiter-login");
+              }, 2000);
             }
           })
           .catch((error) => {
@@ -450,6 +456,7 @@ setup(){
         console.error(error);
       }
     };
+
 
 return{
     IsEmail,

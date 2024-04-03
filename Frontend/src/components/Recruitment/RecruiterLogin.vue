@@ -43,7 +43,7 @@
                         <h5
                             class="text-2xl underline text-[#1890da] font-bold mb-5"
                         >
-                        Recruiter Registration
+                            Recruiter Registration
                         </h5>
                         <div class="flex py-3">
                             <div class="flex">
@@ -136,7 +136,7 @@
                         <h1
                             class="sm:text-[28px] text-[22px] font-bold mt-[20px] sm:mb-[5px] mb-[30px] text-[#1890da]"
                         >
-                        Recruiter Login
+                            Recruiter Login
                         </h1>
                         <div class="flex justify-center gap-[5px]">
                             Don't have account ?
@@ -187,7 +187,7 @@
                                     id="field1"
                                     placeholder="Password"
                                     v-model="password"
-                                    @keyup.enter="employerLogin"
+                                    @keyup.enter="recruiterLogin"
                                 />
                                 <div
                                     v-if="passwordError"
@@ -198,14 +198,14 @@
                             </div>
                             <button
                                 class="bg-[#1890da] hover:bg-blue-500 text-white font-bold py-2 px-8 mb-[20px] rounded focus:outline-none focus:shadow-outline mt-[40px]"
-                                @click="employerLogin"
+                                @click="recruiterLogin"
                             >
                                 Sign in
                             </button>
                             <div class="flex justify-center gap-[5px]">
                                 Forgot your password?
                                 <router-link
-                                    to="/employer-forgot-password"
+                                    to="/recruiter-forgot-password"
                                     class="hover:underline hover:decoration-[#FF0000] text-[#FF0000]"
                                     >click here</router-link
                                 >
@@ -219,9 +219,99 @@
 </template>
 
 <script>
+import { reactive, ref } from "vue";
+import { useRouter } from "vue-router";
+import axios from "axios";
 
+import apiUrl from "../../api";
+
+export default {
+    setup() {
+        const data = reactive({});
+
+        const email = ref("");
+        const emailError = ref("");
+        const passwordError = ref("");
+        const validationError = ref("");
+
+        const password = ref("");
+        const showSuccessModal = ref(false);
+
+        const router = useRouter();
+        const route = useRouter();
+
+        const closeSuccessModal = () => {
+            showSuccessModal.value = false;
+        };
+
+        const recruiterLogin = async () => {
+            try {
+                console.log(email.value, "email.value");
+                if (email.value == null || email.value == "") {
+                    emailError.value = "Please Enter Email";
+                    return false;
+                } else {
+                    emailError.value = "";
+                }
+                if (password.value == null || password.value == "") {
+                    passwordError.value = "Please Enter Password";
+                    return false;
+                } else {
+                    passwordError.value = "";
+                }
+
+                const response = await axios.post(`${apiUrl}/recruiter-login`, {
+                    email: email.value,
+                    password: password.value,
+                });
+
+                if (response.data.code == 100) {
+                    validationError.value = response.data.message;
+                } else {
+                    showSuccessModal.value = true;
+                    localStorage.setItem(
+                        "recruiter_id",
+                        response.data.recruiter_id
+                    );
+                    localStorage.setItem(
+                        "recruiter_role",
+                        response.data.role
+                    );
+                    localStorage.setItem(
+                        "recruiter_tocken",
+                        response.data.token
+                    );
+                    setTimeout(() => {
+                        // Remove data from local storage
+                        localStorage.removeItem("recruiter_id");
+                        localStorage.removeItem("recruiter_tocken");
+                        window.location.reload();
+                    }, 60 * 60 * 1000);
+
+                    setTimeout(() => {
+                        router.push("/");
+                    }, 1000);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        return {
+            data,
+            recruiterLogin,
+            email,
+            password,
+            showSuccessModal,
+            closeSuccessModal,
+            router,
+            route,
+            emailError,
+            passwordError,
+            validationError,
+        };
+    },
+};
 </script>
 
-<style scoped>
-
-</style>
+<style></style>
