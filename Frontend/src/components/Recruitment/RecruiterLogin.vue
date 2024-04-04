@@ -289,7 +289,7 @@ export default {
                     }, 60 * 60 * 1000);
 
                     setTimeout(() => {
-                        router.push("/");
+                        router.push("/manage-consultant");
                     }, 1000);
                 }
             } catch (error) {

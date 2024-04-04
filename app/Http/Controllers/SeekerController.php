@@ -667,22 +667,22 @@ class SeekerController extends Controller
             ]);
         }
 
-        // if ($seeker->is_active == 0) {
-        //     return response()->json([
-        //         'message' => 'Your Account Registration did not complete last time. Please re-register the account',
-        //         'code' =>  100
-        //     ]);
-        // }
+        if ($seeker->is_active == 0) {
+            return response()->json([
+                'message' => 'Your Account Registration did not complete last time. Please re-register the account',
+                'code' =>  100
+            ]);
+        }
 
-        // if ($seeker->is_active == 1) {;
+        if ($seeker->is_active == 1) {;
 
-        //     return response()->json([
-        //         'seeker_id' => $seeker->id,
-        //         'message' => 'Your Account Registration did not complete last time. Please re-register the account',
-        //         'is_active' =>$seeker->is_active,
-        //         'code' =>  200
-        //     ]);
-        // }
+            return response()->json([
+                'seeker_id' => $seeker->id,
+                'message' => 'Your Account Registration did not complete last time. Please re-register the account',
+                'is_active' =>$seeker->is_active,
+                'code' =>  200
+            ]);
+        }
 
         if (!$seeker || !Hash::check($request->password, $seeker->password)) {
             return response()->json([

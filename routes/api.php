@@ -12,6 +12,8 @@ use App\Models\Recruiter;
 use App\Models\Seeker;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\consultantsController;
+use App\Models\consultantas;
 
 /*
 |--------------------------------------------------------------------------
@@ -71,6 +73,7 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
     Route::post('/seeker-logout', [SeekerController::class, 'seekerLogout']);
     Route::post('/employer-profile', [EmployerController::class, 'employe_profile']);
 
+
 });
 Route::resource('admin-jobs', AdminJobController::class);
 Route::get('total-data', [AdminJobController::class,'totalData']);
@@ -113,3 +116,11 @@ Route::post('/recruiter-logout', [RecruiterController::class, 'recruiterLogout']
 Route::post('/recruiter-send-forgot-email-otp',[RecruiterController::class,'sendForgotEmailOtp']);
 Route::post('/recruiter-check-forgot-otp',[RecruiterController::class,'checkForgotOtp']);
 Route::post('/recruiter-update-forgot-password',[RecruiterController::class,'updateForgotPassword']);
+
+
+
+//consultants
+Route::post('/add-Consultants-Details', [consultantsController::class, 'addConsultantsDetails']);
+Route::post('/update-Consultants-Details', [consultantsController::class, 'updateConsultantsDetails']);
+Route::post('/delete-Consultants-Details', [consultantsController::class, 'deleteConsultantsDetails']);
+Route::post('/consultants-Details',[consultantsController::class,'ConsultantDetails']);

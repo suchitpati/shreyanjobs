@@ -102,34 +102,9 @@
               Logout
             </button>
           </div>
-          <div
-            v-if="isRecruiterLogged == true"
-            class="sm:w-full xs:w-auto w-[50%] xs:order-3 order-2 flex justify-end gap-[10px]"
-          >
-            <router-link to="/">
-              <button
-                class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] focus:outline-none focus:shadow-outline"
-              >
-                Job Search
-              </button>
-            </router-link>
 
-            <router-link to="/seeker-profile">
-              <button
-                class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] focus:outline-none focus:shadow-outline"
-              >
-                Manage Consultants
-              </button>
-            </router-link>
-            <button
-              @click="seekerLogout"
-              class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max text-[#1890da] font-bold md:py-[5px] py-[7px] px-[18px] md:px-[26px] rounded-[26px] focus:outline-none focus:shadow-outline"
-            >
-              Logout
-            </button>
-          </div>
           <div
-            v-if="isSeekerLogged == false && isEmployerLogged == false && isRecruiterLogged == false"
+            v-if="isSeekerLogged == false && isEmployerLogged == false"
             class="sm:w-full xs:w-auto w-[50%] xs:order-3 order-2 flex justify-end gap-[10px]"
           >
             <router-link to="/employer-login">
