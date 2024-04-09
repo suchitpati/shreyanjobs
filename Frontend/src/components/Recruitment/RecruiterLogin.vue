@@ -273,10 +273,7 @@ export default {
                         "recruiter_id",
                         response.data.recruiter_id
                     );
-                    localStorage.setItem(
-                        "recruiter_role",
-                        response.data.role
-                    );
+
                     localStorage.setItem(
                         "recruiter_tocken",
                         response.data.token

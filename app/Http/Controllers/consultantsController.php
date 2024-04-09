@@ -10,6 +10,25 @@ use Illuminate\Support\Facades\Hash;
 class consultantsController extends Controller
 {
     public function addConsultantsDetails(Request $request){
+
+
+        if ($request->file('resume')) {
+
+            $allowedExtensions = ['pdf', 'doc', 'docx'];
+            // $maxFileSize = 3 * 1024;
+
+            if (in_array($request->file('resume')->getClientOriginalExtension(), $allowedExtensions)) {
+                $fileName = time() . '.' . $request->file('resume')->getClientOriginalExtension();
+                $request->file('resume')->move(public_path('pdf'), $fileName);
+            } else {
+                return response()->json([
+                    'message' => 'Only PDF and DOC files are allowed, and the file must be less than 3MB.',
+                    'error' => 100,
+                ]);
+            }
+
+
+
         $Constant = consultantas::create([
             'fullname' => $request->fullname,
             'country' => $request->country,
@@ -21,10 +40,11 @@ class consultantsController extends Controller
             'primary_skill_experience' => $request->primary_skill_experience,
             'secondary_skill'=>$request->secondary_skill,
             'secondary_skill_experience'=>$request->secondary_skill_experience,
-            'resume'=>$request->resume,
-            'is_active' => 0,
+            'resume'=>$fileName,
+            'is_active' => 1,
             'new_job_report_time'=>$request->new_job_report_time
         ]);
+
 
         return response()->json([
             'message' => 'Details added successfully',
@@ -32,6 +52,13 @@ class consultantsController extends Controller
             'employer_id' => $Constant->id
 
         ]);
+    } else {
+        return response()->json([
+            'message' => 'No Resume file provided',
+            'error' => 100,
+        ]);
+    }
+
     }
     public function updateConsultantsDetails(Request $request, $id){
         $Constant = consultantas::find($id);
@@ -84,7 +111,7 @@ class consultantsController extends Controller
 
     }
 
-    public function ConsultantDetails(Request $request)
+    public function consultantDetails(Request $request)
     {
         $consultantas = consultantas::find($request->consultants_id);
         return response()->json([
@@ -93,4 +120,16 @@ class consultantsController extends Controller
             'consultant_details' => $consultantas
         ]);
     }
+
+    public function getAllConsultants(Request $request)
+    {
+        $consultantas = consultantas::all();
+        return response()->json([
+            'message' => 'Details fetch successfully',
+            'success' => 200,
+            'consultant_details' => $consultantas
+        ]);
+    }
+
 }
+

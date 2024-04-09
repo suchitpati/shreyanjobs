@@ -1,6 +1,6 @@
 <template>
     <footer class="footer">
-      <p class="bg-green-700 text-white">© 2023 Shreyan Technology LLC, USA. All rights Reserved.</p>
+      <p class="bg-green-700 text-white">© 2024 Shreyan Technology LLC, USA. All rights Reserved.</p>
     </footer>
 </template>
 

@@ -72,6 +72,8 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
     Route::post('/employer-logout',[EmployerController::class,'logout']);
     Route::post('/seeker-logout', [SeekerController::class, 'seekerLogout']);
     Route::post('/employer-profile', [EmployerController::class, 'employe_profile']);
+    Route::post('/recruiter-logout', [RecruiterController::class, 'recruiterLogout']);
+
 
 
 });
@@ -111,7 +113,6 @@ Route::get('/countries/{country}/states', [CountryController::class, 'states']);
 Route::post('/recruiter-register', [RecruiterController::class, 'recruiter_register']);
 Route::post('/validateOtp', [RecruiterController::class, 'validateOtp']);
 Route::post('/recruiter-login',[RecruiterController::class,'loginrecruiter']);
-Route::post('/recruiter-logout', [RecruiterController::class, 'recruiterLogout']);
 // Route::post('/recruiter-update-forgot-password',[RecruiterController::class,'updateForgotPassword']);
 Route::post('/recruiter-send-forgot-email-otp',[RecruiterController::class,'sendForgotEmailOtp']);
 Route::post('/recruiter-check-forgot-otp',[RecruiterController::class,'checkForgotOtp']);
@@ -123,4 +124,6 @@ Route::post('/recruiter-update-forgot-password',[RecruiterController::class,'upd
 Route::post('/add-Consultants-Details', [consultantsController::class, 'addConsultantsDetails']);
 Route::post('/update-Consultants-Details', [consultantsController::class, 'updateConsultantsDetails']);
 Route::post('/delete-Consultants-Details', [consultantsController::class, 'deleteConsultantsDetails']);
-Route::post('/consultants-Details',[consultantsController::class,'ConsultantDetails']);
+Route::post('/consultants-Details',[consultantsController::class,'consultantDetails']);
+Route::get('/get-all-consultants',[consultantsController::class,'getAllConsultants']);
+

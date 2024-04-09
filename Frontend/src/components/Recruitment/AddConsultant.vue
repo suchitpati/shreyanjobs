@@ -1,5 +1,7 @@
 <template>
     <div>
+        <RecruiterNavbar />
+
         <SuccessModal v-if="showLogoutModal" :message="successMessage" />
         <div
             v-if="showSuccessModal"
@@ -32,7 +34,12 @@
                     class="text-green-600"
                     >Profile is updated successfully</span
                 > -->
-
+                <div
+                v-if="validationError"
+                class="text-red-600 block text-[20px] text-center"
+              >
+                {{ validationError }}
+              </div>
                 <div
                     class="bg-[#d3ddff4f] rounded-lg py-4 sm:px-8 px-4 w-full shadow-[rgba(100,_100,_111,_0.2)_0px_0px_10px_0px] hover:shadow-[rgba(100,_100,_111,_0.2)_0px_0px_20px_0px] transition-[.5s]"
                 >
@@ -53,8 +60,15 @@
                                     type="text"
                                     id="field1"
                                     v-model="fullname"
+                                    placeholder="Full Name"
 
                                 />
+                                <div
+                                class="text-red-600 block text-[14px] text-left"
+                                v-if="fullnamenameError != ''"
+                            >
+                                {{ fullnamenameError }}
+                            </div>
                             </div>
                         </div>
 
@@ -288,7 +302,7 @@
                             class="w-full flex sm:flex-row flex-col justify-between sm:gap-6 gap-2"
                         >
                             <div class="sm:w-[100%] mb-4">
-                                <label
+                                <!-- <label
                                     class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
                                     for="field1"
                                 >
@@ -299,9 +313,9 @@
                                         @click="downloadPDF"
                                         >Download</span
                                     >
-                                </label>
+                                </label> -->
                                 <div class="flex text-sm py-1">
-                                <b>Replace Resume :</b>
+                                <b>Upload Resume :</b>
                                 <input
                                     class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-[80%] ml-3"
                                     type="file"
@@ -352,12 +366,14 @@ import SuccessModal from "../SuccessModal.vue";
 import { debounce } from "lodash";
 import { State } from "country-state-city";
 // import SeekerNavbar from "../Seeker/SeekerNavbar.vue";
+import RecruiterNavbar from "../Recruitment/RecruiterNavbar.vue";
+
 import FooterPage from "../FooterPage.vue";
 
 export default {
     components: {
         SuccessModal,
-        // SeekerNavbar,
+        RecruiterNavbar,
         FooterPage,
     },
     setup() {
@@ -413,6 +429,8 @@ export default {
         const employernameError = ref("");
 
         const skillError = ref("");
+        const validationError = ref("");
+
         const relocate = ref(0);
         const file = ref("");
         const isLoading = ref(false);
@@ -554,7 +572,7 @@ export default {
             document.body.removeChild(link);
         };
 
-        const addConsultant = async () => {
+const addConsultant = async () => {
     try {
         if (fullname.value == null || fullname.value == "") {
             fullnamenameError.value = "Please Enter Consultant Name";
@@ -562,7 +580,115 @@ export default {
         } else {
             fullnamenameError.value = "";
         }
+        if (selectedCountry.value == null || selectedCountry.value == "") {
+        err_country.value = "The country field is required";
+        return false;
+      } else {
+        err_country.value = "";
+      }
+      if (selectedState.value == null || selectedState.value == "") {
+        err_state.value = "The State field is required";
+        return false;
+      } else {
+        err_state.value = "";
+      }
+      if (city.value == null || city.value == "") {
+        err_city.value = "The City field is required";
+        return false;
+      } else {
+        err_city.value = "";
+      }
+    //   if (contact_number.value == null || contact_number.value == "") {
+    //     err_contact_number.value = "The field is required";
+    //     return false;
+    //   } else {
+    //     err_contact_number.value = "";
+    //   }
+      if (work_authorization.value == null || work_authorization.value == "") {
+        err_work_authorization.value =
+          "The work authorization field is required";
+        return false;
+      } else {
+        err_work_authorization.value = "";
+      }
+    //   if (total_experience.value == null || total_experience.value == "") {
+    //     err_total_experience.value = "The Total Experience field is required";
+    //     return false;
+    //   } else {
+    //     err_total_experience.value = "";
+    //   }
+    //   if (
+    //     parseInt(total_experience.value) < 0 ||
+    //     parseInt(total_experience.value) == 0
+    //   ) {
+    //     err_total_experience.value =
+    //       "Please enter Total Experience greater then 0 ";
+    //     return false;
+    //   } else {
+    //     err_total_experience.value = "";
+    //   }
 
+      if (primary_skill.value == null || primary_skill.value == "") {
+        err_primary_skill.value = "The Primary skill is required";
+        return false;
+      } else {
+        err_primary_skill.value = "";
+      }
+      if (primary_skill_experience.value == null || primary_skill_experience.value == "") {
+        err_primary_skill_experience.value =
+          "The primary experience field is required";
+        return false;
+      } else {
+        err_primary_skill_experience.value = "";
+      }
+      if (
+        parseInt(primary_skill_experience.value) < 0 ||
+        parseInt(primary_skill_experience.value) == 0
+      ) {
+        err_primary_skill_experience.value =
+          "Please enter primary Experience greater then 0 ";
+        return false;
+      } else {
+        err_primary_skill_experience.value = "";
+      }
+      if (secondary_skill.value == null || secondary_skill.value == "") {
+        err_secondary_skill.value = "The secondary skill field is required";
+        return false;
+      } else {
+        err_secondary_skill.value = "";
+      }
+      if (
+        secondary_skill_experience.value == null ||
+        secondary_skill_experience.value == ""
+      ) {
+        err_secondary_skill_experience.value =
+          "The secondary experience field is required";
+        return false;
+      } else {
+        err_secondary_skill_experience.value = "";
+      }
+
+
+    //   if (
+    //     parseInt(secondary_experience.value) < 0 ||
+    //     parseInt(secondary_experience.value) == 0
+    //   ) {
+    //     err_secondary_experience.value =
+    //       "Please enter secondary Experience greater then 0 ";
+    //     return false;
+    //   } else {
+    //     err_secondary_experience.value = "";
+    //   }
+    //   if (file.value == null || file.value == "") {
+    //     err_file.value = "Pleas select file";
+    //     return false;
+    //   } else {
+    //     err_file.value = "";
+    //   }
+
+      if (relocate.value == true) {
+        relocate.value = 1;
+      }
         const formData = new FormData();
         formData.append("fullname", fullname.value);
         formData.append("country", selectedCountry.value);
@@ -574,13 +700,25 @@ export default {
         formData.append("primary_skill_experience", primary_skill_experience.value);
         formData.append("secondary_skill", secondary_skill.value);
         formData.append("secondary_skill_experience", secondary_skill_experience.value);
-        formData.append("resume", resume.value);
-
+        formData.append("resume", file.value);
+      alert('11');
         const consultantResponse = await axios.post(`${apiUrl}/add-Consultants-Details`, formData);
-        console.log(consultantResponse.data);
+        console.log(consultantResponse.data.error,'asdasd');
+        alert('12');
+
+        if (consultantResponse.data.error == 100) {
+              validationError.value = consultantResponse.data.message;
+              return false
+        }
+        else
+        {
+            router.push("/manage-consultant");
+
+        }
         // Handle consultant response data as needed
 
     } catch (error) {
+        alert('asd');
         console.error(error);
         // Handle error
     }
@@ -671,6 +809,7 @@ export default {
         });
 
         return {
+            validationError,
             addConsultant,
             downloadPDF,
             updateSeekerProfileMessageStatus,

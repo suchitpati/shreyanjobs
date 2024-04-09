@@ -16,6 +16,8 @@ import RecruiterRegister from './components/Recruitment/RecruiterRegister.vue';
 import RecruiterForgotPassword from './components/Recruitment/ForgotPassword.vue';
 import ManageConsultant from './components/Recruitment/ManageConsultant.vue';
 import AddConsultant from './components/Recruitment/AddConsultant.vue';
+import EditConsultant from './components/Recruitment/EditConsultant.vue';
+
 
 import EmployerLogin from './components/Employer/EmployerLogin.vue'
 import EmployerRegister from './components/Employer/EmployerRegister.vue'
@@ -139,6 +141,11 @@ const routes = [
     component: RecruiterRegister,
   },
   {
+    path: '/edit-recruiter',
+    name: 'edit-recruiter',
+    component: RecruiterRegister,
+  },
+  {
     path: '/recruiter-forgot-password',
     name: 'recruiter-forgot-password',
     component: RecruiterForgotPassword,
@@ -152,6 +159,11 @@ const routes = [
     path: '/add-consultant',
     name: 'add-consultant',
     component: AddConsultant,
+  },
+  {
+    path: '/edit-consultant/:id',
+    name: 'edit-consultant',
+    component: EditConsultant,
   },
 
 ];

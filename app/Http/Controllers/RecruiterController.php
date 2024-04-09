@@ -133,12 +133,12 @@ public function loginrecruiter(Request $request){
         ]);
     }
 
-    //  $token = $recruiter->createToken('RecruiterToken')->plainTextToken;
+     $token = $recruiter->createToken('RecruiterToken')->plainTextToken;
     // return response()->json(['token'=>$token]);
 
     return response()->json([
         'message' => 'Login successful',
-        // 'token' => $token,
+        'token' => $token,
         'recruiter_id' => $recruiter->id,
         'role' => $recruiter->role,
     ], 200);
@@ -209,7 +209,6 @@ public function checkForgotOtp(Request $request)
     $user = $request->user();
 
     $user->tokens()->where('name', 'RecruiterToken')->delete();
-    return response()->json(['user'=>$user]);
 
     return response()->json(['message' => 'Logged out successfully'], 200);
 }
