@@ -111,12 +111,17 @@ Route::get('/countries/{country}/states', [CountryController::class, 'states']);
 
 //recruiter Routes
 Route::post('/recruiter-register', [RecruiterController::class, 'recruiter_register']);
+Route::post('/recruiter-details', [RecruiterController::class, 'recruiterDetails']);
+Route::post('/recruiter-details-by-consultants', [RecruiterController::class, 'recruiterDetailsByConsultants']);
+Route::post('/recruiter-update', [RecruiterController::class, 'recruiterUpdate']);
 Route::post('/validateOtp', [RecruiterController::class, 'validateOtp']);
 Route::post('/recruiter-login',[RecruiterController::class,'loginrecruiter']);
 // Route::post('/recruiter-update-forgot-password',[RecruiterController::class,'updateForgotPassword']);
 Route::post('/recruiter-send-forgot-email-otp',[RecruiterController::class,'sendForgotEmailOtp']);
 Route::post('/recruiter-check-forgot-otp',[RecruiterController::class,'checkForgotOtp']);
 Route::post('/recruiter-update-forgot-password',[RecruiterController::class,'updateForgotPassword']);
+Route::post('/consultants-job-appply',[RecruiterController::class,'consultantsJobApply']);
+
 
 
 
@@ -124,6 +129,7 @@ Route::post('/recruiter-update-forgot-password',[RecruiterController::class,'upd
 Route::post('/add-Consultants-Details', [consultantsController::class, 'addConsultantsDetails']);
 Route::post('/update-Consultants-Details', [consultantsController::class, 'updateConsultantsDetails']);
 Route::post('/delete-Consultants-Details', [consultantsController::class, 'deleteConsultantsDetails']);
+Route::post('/status-Consultants-Details', [consultantsController::class, 'statusConsultantsDetails']);
 Route::post('/consultants-Details',[consultantsController::class,'consultantDetails']);
 Route::get('/get-all-consultants',[consultantsController::class,'getAllConsultants']);
 

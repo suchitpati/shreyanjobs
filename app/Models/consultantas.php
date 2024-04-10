@@ -22,6 +22,7 @@ class consultantas extends Model
         'secondary_skill_experience',
         'resume',
         'is_active',
-        'new_job_report_time'
+        'new_job_report_time',
+        'recruiter_id'
     ];
 }

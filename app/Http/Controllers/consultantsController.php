@@ -42,7 +42,8 @@ class consultantsController extends Controller
             'secondary_skill_experience'=>$request->secondary_skill_experience,
             'resume'=>$fileName,
             'is_active' => 1,
-            'new_job_report_time'=>$request->new_job_report_time
+            'new_job_report_time'=>$request->new_job_report_time,
+            'recruiter_id' => $request->recruiter_id
         ]);
 
 
@@ -60,13 +61,32 @@ class consultantsController extends Controller
     }
 
     }
-    public function updateConsultantsDetails(Request $request, $id){
+    public function updateConsultantsDetails(Request $request){
+        $id = $request->consultant_id;
         $Constant = consultantas::find($id);
         if(!$Constant){
             return response()->json([
                 'message' => 'Consultant not found',
                 'error' => 404
             ], 404);
+        }
+
+
+        $allowedExtensions = ['pdf', 'doc', 'docx'];
+        // $maxFileSize = 3 * 1024;
+        if ($request->hasFile('pdf')) {
+
+            if (in_array($request->file('pdf')->getClientOriginalExtension(), $allowedExtensions)) {
+                $fileName = time() . '.' . $request->file('pdf')->getClientOriginalExtension();
+                $request->file('pdf')->move(public_path('pdf'), $fileName);
+            } else {
+                return response()->json([
+                    'message' => 'Only PDF and DOC files are allowed, and the file must be less than 3MB.',
+                    'error' => 100,
+                ]);
+            }
+        } else {
+            $fileName = $request->resume;
         }
 
         $Constant->update([
@@ -80,7 +100,7 @@ class consultantsController extends Controller
             'primary_skill_experience' => $request->primary_skill_experience,
             'secondary_skill'=>$request->secondary_skill,
             'secondary_skill_experience'=>$request->secondary_skill_experience,
-            'resume'=>$request->resume,
+            'resume'=>$fileName,
             'is_active' => $request->is_active,
             'new_job_report_time'=>$request->new_job_report_time
         ]);
@@ -92,7 +112,9 @@ class consultantsController extends Controller
         ]);
     }
 
-    public function deleteConsultantsDetails($id){
+    public function deleteConsultantsDetails(Request $request){
+        $id = $request->id;
+
         $Constant = consultantas::find($id);
         if(!$Constant){
             return response()->json([
@@ -106,7 +128,28 @@ class consultantsController extends Controller
         return response()->json([
             'message' => 'Details deleted successfully',
             'success' => 200,
-            'employer_id' => $id
+            'consultantas_id' => $id
+        ]);
+
+    }
+
+    public function statusConsultantsDetails(Request $request){
+        $id = $request->id;
+
+        $Constant = consultantas::find($id);
+        $Constant->is_active = $Constant->is_active == 0 ?  1 : 0 ;
+        $Constant->save();
+
+        if(!$Constant){
+            return response()->json([
+                'message' => 'Consultant not found',
+                'error' => 404
+            ], 404);
+        }
+        return response()->json([
+            'message' => 'Status updated successfully',
+            'success' => 200,
+            'consultantas_id' => $id
         ]);
 
     }
@@ -130,6 +173,7 @@ class consultantsController extends Controller
             'consultant_details' => $consultantas
         ]);
     }
+
 
 }
 

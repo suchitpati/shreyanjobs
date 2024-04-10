@@ -98,12 +98,13 @@
 
                         </div>
                         <div
-                          class="px-4 py-2 border border-transparent border-r-gray-300 w-[80px] text-center"
+                          class="px-4 py-2 border border-transparent border-r-gray-300 w-[80px] text-center underline"
                         >
-                          <a class="cursor-pointer">Inactive</a>
+                          <a class="cursor-pointer" @click="statusConsultant(person.id)">{{person.is_active != 1  ? 'Active' : 'Inactive'}}</a>
                         </div>
-                        <div class="px-4 py-2 w-[80px]">
-                          <a class="cursor-pointer">Delete</a>
+                        <div class="px-4 py-2 w-[80px] underline">
+
+                          <a class="cursor-pointer" @click="deleteConsultant(person.id)">Delete</a>
                         </div>
                       </div>
                     </td>
@@ -145,7 +146,7 @@ export default {
 
     const recruiterLogout = async () => {
       try {
-        const authToken = localStorage.getItem("recruiter_token");
+        const authToken = localStorage.getItem("recruiter_tocken");
 
         if (!authToken) {
           console.log("Authentication token is missing.");
@@ -162,7 +163,7 @@ export default {
           null,
           config
         );
-        localStorage.removeItem("recruiter_token");
+        localStorage.removeItem("recruiter_tocken");
         localStorage.removeItem("recruiter_id");
 
         if (response.data.message) {
@@ -179,6 +180,28 @@ export default {
         console.log(error);
       }
     };
+    const deleteConsultant = async (id) => {
+        const response = await axios.post(
+          `${apiUrl}/delete-Consultants-Details`,
+        {
+            'id' : id
+        });
+        window.location.reload();
+
+        console.log(response)
+    }
+
+    const statusConsultant = async (id) => {
+        const response = await axios.post(
+          `${apiUrl}/status-Consultants-Details`,
+        {
+            'id' : id
+        });
+        window.location.reload();
+
+        console.log(response)
+    }
+
 
     const viewJobs = async () => {
       console.log("View Jobs functionality not implemented yet.");
@@ -193,6 +216,8 @@ export default {
       fetchConsultants();
     });
     return {
+        statusConsultant,
+        deleteConsultant,
       recruiterLogout,
       viewJobs,
       showProfileModal,

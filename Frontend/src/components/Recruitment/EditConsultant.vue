@@ -327,7 +327,7 @@
             </div>
             <button
               class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-8 mb-4 mt-4 rounded-full focus:outline-none focus:shadow-outline"
-              @click="addConsultant"
+              @click="updateConsultant"
             >
               Update
             </button>
@@ -583,7 +583,7 @@ export default {
 
     };
 
-    const addConsultant = async () => {
+    const updateConsultant = async () => {
       try {
         if (fullname.value == null || fullname.value == "") {
           fullnamenameError.value = "Please Enter Consultant Name";
@@ -705,6 +705,8 @@ export default {
         if (relocate.value == true) {
           relocate.value = 1;
         }
+        const consultant_id = route.params.id;
+
         const formData = new FormData();
         formData.append("fullname", fullname.value);
         formData.append("country", selectedCountry.value);
@@ -722,14 +724,16 @@ export default {
           "secondary_skill_experience",
           secondary_skill_experience.value
         );
-        formData.append("resume", file.value);
-        alert("11");
+
+        formData.append("pdf", file.value);
+        formData.append("resume", resume.value);
+        formData.append("consultant_id", consultant_id);
+
         const consultantResponse = await axios.post(
-          `${apiUrl}/add-Consultants-Details`,
+          `${apiUrl}/update-Consultants-Details`,
           formData
         );
         console.log(consultantResponse.data.error, "asdasd");
-        alert("12");
 
         if (consultantResponse.data.error == 100) {
           validationError.value = consultantResponse.data.message;
@@ -739,7 +743,6 @@ export default {
         }
         // Handle consultant response data as needed
       } catch (error) {
-        alert("asd");
         console.error(error);
         // Handle error
       }
@@ -798,7 +801,6 @@ export default {
     return {
         downloadPDF,
       validationError,
-      addConsultant,
       updateSeekerProfileMessageStatus,
       updateSeekerProfileMessage,
       isLoading,
@@ -861,6 +863,7 @@ export default {
       defaultSelectedState,
       apiUrl,
       fullnamenameError,
+      updateConsultant
     };
   },
 };

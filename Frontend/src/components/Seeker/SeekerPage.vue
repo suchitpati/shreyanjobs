@@ -114,12 +114,12 @@
               </button>
             </router-link>
             <router-link to="/manage-consultant">
-                <button
-                  class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] focus:outline-none focus:shadow-outline"
-                >
-                  Manage Consultants
-                </button>
-              </router-link>
+              <button
+                class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] focus:outline-none focus:shadow-outline"
+              >
+                Manage Consultants
+              </button>
+            </router-link>
             <router-link to="/seeker-profile">
               <button
                 class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] focus:outline-none focus:shadow-outline"
@@ -128,14 +128,18 @@
               </button>
             </router-link>
             <button
-              @click="seekerLogout"
+              @click="consultantLogout"
               class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max text-[#1890da] font-bold md:py-[5px] py-[7px] px-[18px] md:px-[26px] rounded-[26px] focus:outline-none focus:shadow-outline"
             >
               Logout
             </button>
           </div>
           <div
-            v-if="isSeekerLogged == false && isEmployerLogged == false && isRecruiterLogged == false"
+            v-if="
+              isSeekerLogged == false &&
+              isEmployerLogged == false &&
+              isRecruiterLogged == false
+            "
             class="sm:w-full xs:w-auto w-[50%] xs:order-3 order-2 flex justify-end gap-[10px]"
           >
             <router-link to="/employer-login">
@@ -216,10 +220,8 @@
           </button>
         </div>
         <div class="text-[16px]">
-          <!-- {{ total_seeker }} Active Job seeker profile<br />
-          {{ total_employer }} Registered Employers -->
-          Welcome {{}}
-          (Bench Sales Recruiter)
+          {{ total_seeker }} Active Job seeker profile<br />
+          {{ total_employer }} Registered Employers
         </div>
       </div>
     </div>
@@ -698,7 +700,9 @@
 
                     <div
                       v-if="
-                        isSeekerLogged == false && isEmployerLogged == false
+                        isSeekerLogged == false &&
+                        isEmployerLogged == false &&
+                        isRecruiterLogged == false
                       "
                     >
                       <button
@@ -729,6 +733,19 @@
                         Applied
                       </button>
                     </div>
+
+                    <div
+                      class="text-right mt-2"
+                      v-if="isRecruiterLogged == true"
+                    >
+                      <button
+                        class="py-2 px-4 rounded-lg text-white bg-blue-600"
+                        @click="openConsultantModel(job.id)"
+                      >
+                        Apply For Consultant
+                      </button>
+                    </div>
+
                     <div
                       v-if="
                         isEmployerLogged == true &&
@@ -983,6 +1000,101 @@
         </div>
       </div>
     </div>
+    <div v-if="isActiveConsultant">
+      <div class="fixed inset-0 bg-black bg-opacity-40 z-5">
+        <div class="w-full h-full flex justify-center items-center">
+          <div
+            class="max-w-[700px] w-full rounded-lg bg-[#d3ddff] p-5 relative"
+          >
+            <div
+              class="absolute top-3 right-5 cursor-pointer"
+              @click="openConsultantModel()"
+            >
+              x
+            </div>
+            <div>
+              <!-- <span v-if="mailSentMessageStatus === 'true'" class="text-green-600">Your resume has been submitted to the employer</span> -->
+              <div class="text-xl font-semibold text-center mb-5">
+                Select Consultant to Apply
+              </div>
+              <div class="py-5">
+                <table class="table-auto bg-white mx-auto">
+                  <thead>
+                    <tr>
+                      <th class="px-4 py-2 border border-gray-300"></th>
+                      <th class="px-4 py-2 border border-gray-300">Name</th>
+                      <th class="px-4 py-2 border border-gray-300">Location</th>
+                      <th class="px-4 py-2 border border-gray-300">
+                        Primary Skill
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody
+                    v-for="consultants in consultants_data"
+                    :key="consultants.id"
+                  >
+                    <tr>
+                      <td>
+                        <input
+                          type="checkbox"
+                          @change="handleCheckboxChange(consultants.id)"
+                        />
+                      </td>
+
+                      <td class="px-4 py-2 border border-gray-300">
+                        {{ consultants.fullname }}
+                      </td>
+                      <td class="px-4 py-2 border border-gray-300">
+                        {{ consultants.city }} ,{{ consultants.state }},
+                        {{ consultants.country }}
+                      </td>
+                      <td class="px-4 py-2 border border-gray-300">
+                        {{ consultants.primary_skill }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="mb-5">
+                <div class="text-black font-semibold mr-3 mb-2">
+                  Cover Letter or Additional Note to the Employer
+                </div>
+                <textarea
+                  name="textfield"
+                  id=""
+                  cols="60"
+                  rows="5"
+                  maxlength="200"
+                  class="border border-black rounded-lg"
+                  v-model="cover_letter"
+                ></textarea>
+                <div class="text-end">
+                  <span class="text-blue-700 text-[16px] mr-[45px]"
+                    >Characters left: {{ remaining_cover_detail }}/200</span
+                  >
+                </div>
+              </div>
+              <div class="flex justify-end">
+                <div>
+                  <button
+                    class="bg-blue-400 px-5 mr-3 py-3 rounded-xl text-white"
+                    @click="consultantJobmail(jobOriginalId)"
+                  >
+                    Apply</button
+                  ><button
+                    class="bg-red-400 px-5 py-3 rounded-xl text-white"
+                    @click="openConsultantModel()"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div
       v-if="skillModelStatus"
       class="modal fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center"
@@ -1074,6 +1186,8 @@ export default {
     const cover_letter = ref("");
     const resume = ref("");
     const isActive = ref(false);
+    const isActiveConsultant = ref(false);
+
     const data = reactive({});
     const searchInput = ref("");
     const jobs = ref([]);
@@ -1131,6 +1245,9 @@ export default {
     const fullname = ref("");
     const total_employer = ref(0);
     const employer_role = ref("");
+    const consultants_data = ref({});
+    const selectedConsultants = ref([]); // Array to store selected consultant IDs
+
     someCountry.value = [
       {
         name: "United States",
@@ -1366,6 +1483,13 @@ export default {
       jobOriginalId.value = job_id;
       jobOriginalEmployerId.value = employer_id;
     };
+
+    const openConsultantModel = (job_id) => {
+        jobOriginalId.value = job_id;
+
+      isActiveConsultant.value = !isActiveConsultant.value;
+    };
+
     const fetchCountries = debounce(async () => {
       await axios
         .get(`${apiUrl}/countries`)
@@ -1461,6 +1585,35 @@ export default {
       // console.log("hffhff", employer_id);
     };
 
+    function handleCheckboxChange(consultantId) {
+      const index = selectedConsultants.value.indexOf(consultantId);
+
+      if (index === -1) {
+        selectedConsultants.value.push(consultantId);
+      } else {
+        selectedConsultants.value.splice(index, 1);
+      }
+    }
+
+    const consultantJobmail = async (job_id) => {
+        if(selectedConsultants.value.length > 0)
+        {
+            console.log(selectedConsultants.value,'selectedConsultantsselectedConsultants');
+        }
+        else
+        {
+            alert('Please select atleast one Consultant');
+            return false;
+        }
+
+      const response = await axios.post(`${apiUrl}/consultants-job-appply`, {
+        consultant_ids: selectedConsultants.value,
+        job_id : job_id
+      });
+
+      console.log(response, "responseresponseresponse");
+    };
+
     const employerLogout = async () => {
       try {
         const authToken = localStorage.getItem("employer_tocken");
@@ -1492,7 +1645,17 @@ export default {
         console.log(error);
       }
     };
-
+    const fetchConsultants = async () => {
+      const recruiter_id = localStorage.getItem("recruiter_id");
+      const response = await axios.post(
+        `${apiUrl}/recruiter-details-by-consultants`,
+        {
+          recruiter_id: recruiter_id,
+        }
+      );
+      consultants_data.value = response.data.consultantas_details;
+      console.log(response);
+    };
     const seekerLogout = async () => {
       try {
         const authToken = localStorage.getItem("seeker_tocken");
@@ -1518,6 +1681,39 @@ export default {
         if (response.data.message) {
           setTimeout(() => {
             router.push("/seeker-login");
+          }, 1000);
+        }
+
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    const consultantLogout = async () => {
+      try {
+        const authToken = localStorage.getItem("recruiter_tocken");
+
+        if (!authToken) {
+          console.log("Authentication token is missing.");
+          return;
+        }
+
+        const config = {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        };
+        const response = await axios.post(
+          `${apiUrl}/recruiter-logout`,
+          null,
+          config
+        );
+        localStorage.removeItem("recruiter_tocken");
+        localStorage.removeItem("recruiter_id");
+
+        if (response.data.message) {
+          setTimeout(() => {
+            router.push("/recruiter-login");
           }, 1000);
         }
 
@@ -1663,6 +1859,12 @@ export default {
       // countries_state.value = Country.getAllCountries();
       countries_state.value = someCountry.value;
 
+      const recruiter_id = localStorage.getItem("recruiter_id");
+
+      if (recruiter_id != null) {
+        fetchConsultants();
+      }
+
       console.log(countries_state.value, "countries_state");
       const seeker_id = localStorage.getItem("seeker_id");
       if (seeker_id != null) {
@@ -1671,6 +1873,7 @@ export default {
       seekerLoggedId.value = localStorage.getItem("seeker_id");
       fetchCountries();
       fetchJobs();
+
       employer_id.value = localStorage.getItem("employer_id");
 
       mailSentMessage.value = localStorage.getItem("mailSentMessage");
@@ -1687,6 +1890,13 @@ export default {
       }
     });
     return {
+      consultantJobmail,
+      handleCheckboxChange,
+      consultants_data,
+      fetchConsultants,
+      isActiveConsultant,
+      openConsultantModel,
+      consultantLogout,
       total_seeker,
       total_employer,
       total,
