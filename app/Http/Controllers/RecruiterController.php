@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendConsultantJobMailToEmployer;
 use App\Mail\RecruiterMail;
 use Illuminate\Http\Request;
 use App\Models\Recruiter;
@@ -11,6 +12,7 @@ use App\Models\consultantas;
 use App\Models\Employer;
 use App\Models\Seeker;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Date;
@@ -226,18 +228,16 @@ class RecruiterController extends Controller
             'success' => 200,
             'recruiter_details' => $recruiter
         ]);
-
     }
     public function recruiterDetailsByConsultants(Request $request)
     {
         $id = $request->recruiter_id;
-        $consultantas =  consultantas::where('recruiter_id',$id)->get();
+        $consultantas =  consultantas::where('recruiter_id', $id)->get();
         return response()->json([
             'message' => 'Details fetch successfully',
             'success' => 200,
             'consultantas_details' => $consultantas
         ]);
-
     }
 
     public function recruiterUpdate(Request $request)
@@ -255,23 +255,49 @@ class RecruiterController extends Controller
             'success' => 200,
             'recruiter_details' => $recruiter
         ]);
-
     }
 
     public function consultantsJobApply(Request $request)
     {
         $consultantasIds = $request->consultant_ids;
         $job_id = $request->job_id;
-        $job_details = AdminJob::where('id',$job_id)->first();
+        $recruiter_id = $request->recruiter_id;
 
-        $consultant_data = consultantas::whereIn('id',$consultantasIds)->get();
+        $job_details = AdminJob::where('id', $job_id)->first();
+        $job_title = $job_details->job_title;
+        $city = $job_details->city;
+        $country = $job_details->country;
+        $detailed_description = $job_details->detailed_description;
+        $state = $job_details->state;
+        $additional_detail = $job_details->additional_detail;
+        $remote = $job_details->remote;
+
+
+        $cover_letter = $request->consultants_cover_letter;
+        if ($cover_letter == null  || $cover_letter == "") {
+            $cover_letter = "-";
+        }
+
 
         $employer = Employer::find($job_details->job_owner_id);
+        $employer_emailid =  $employer->emailid;
+        $employername = $employer->employername;
 
-        // $adminjob = AdminJob::find($request->id);
-        // $apply_count = $adminjob->apply_count + 1;
-        // AdminJob::where('id',$request->id)->update(['apply_count' => $apply_count]);
-        // $remote = $adminjob->remote;
+
+        $recruiter_details = Recruiter::where('id', $recruiter_id)->first();
+        $recruiter_emailid =  $recruiter_details->emailid;
+        $recruiter_name =  $recruiter_details->fullname;
+
+
+
+
+        $consultant_data = consultantas::whereIn('id', $consultantasIds)->get();
+        try {
+            SendConsultantJobMailToEmployer::dispatch($employer_emailid, $recruiter_emailid, $job_title, $consultant_data, $employername, $city, $country, $additional_detail, $detailed_description, $state, $remote, $cover_letter,$recruiter_name);
+        } catch (Exception $e) {
+            dd($e);
+        }
+
 
         $cover_letter = $request->cover_letter;
         if ($cover_letter == null  || $cover_letter == "") {
@@ -281,7 +307,7 @@ class RecruiterController extends Controller
         return response()->json([
             'message' => 'Details fetch successfully',
             'success' => 200,
-            'recruiter_details' => $employer
+            'recruiter_details' => $recruiter_details
         ]);
     }
 }

@@ -1066,7 +1066,7 @@
                   rows="5"
                   maxlength="200"
                   class="border border-black rounded-lg"
-                  v-model="cover_letter"
+                  v-model="consultants_cover_letter"
                 ></textarea>
                 <div class="text-end">
                   <span class="text-blue-700 text-[16px] mr-[45px]"
@@ -1184,6 +1184,8 @@ import axios from "axios";
 export default {
   setup() {
     const cover_letter = ref("");
+    const consultants_cover_letter = ref("");
+
     const resume = ref("");
     const isActive = ref(false);
     const isActiveConsultant = ref(false);
@@ -1485,7 +1487,7 @@ export default {
     };
 
     const openConsultantModel = (job_id) => {
-        jobOriginalId.value = job_id;
+      jobOriginalId.value = job_id;
 
       isActiveConsultant.value = !isActiveConsultant.value;
     };
@@ -1596,19 +1598,22 @@ export default {
     }
 
     const consultantJobmail = async (job_id) => {
-        if(selectedConsultants.value.length > 0)
-        {
-            console.log(selectedConsultants.value,'selectedConsultantsselectedConsultants');
-        }
-        else
-        {
-            alert('Please select atleast one Consultant');
-            return false;
-        }
+      if (selectedConsultants.value.length > 0) {
+        console.log(
+          selectedConsultants.value,
+          "selectedConsultantsselectedConsultants"
+        );
+      } else {
+        alert("Please select atleast one Consultant");
+        return false;
+      }
+      const recruiter_id = localStorage.getItem("recruiter_id");
 
       const response = await axios.post(`${apiUrl}/consultants-job-appply`, {
         consultant_ids: selectedConsultants.value,
-        job_id : job_id
+        job_id: job_id,
+        recruiter_id: recruiter_id,
+        consultants_cover_letter : consultants_cover_letter.value
       });
 
       console.log(response, "responseresponseresponse");
@@ -1850,6 +1855,19 @@ export default {
         // Trim the excess characters
         cover_letter.value = cover_letter.value.substring(0, 200);
       }
+
+      if (newValue != null) {
+        remaining_cover_detail.value = 200 - newValue.length;
+      }
+    });
+
+    watch(consultants_cover_letter, (newValue) => {
+      if (consultants_cover_letter.value.length > 200) {
+        // Trim the excess characters
+        consultants_cover_letter.value =
+          consultants_cover_letter.value.substring(0, 200);
+      }
+
       if (newValue != null) {
         remaining_cover_detail.value = 200 - newValue.length;
       }
@@ -1922,6 +1940,7 @@ export default {
       file,
       image_details,
       cover_letter,
+      consultants_cover_letter,
       jobmail,
       getSeekerDeatails,
       resume,
