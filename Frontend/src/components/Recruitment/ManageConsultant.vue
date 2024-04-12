@@ -2,8 +2,7 @@
   <div>
     <div class="bg-[#ebf4ff] relative">
       <div class="max-w-[1080px] mx-auto px-[20px]">
-        <div class=" bg-[#ebf4ff]">
-
+        <div class="bg-[#ebf4ff]">
           <RecruiterNavbar />
 
           <SuccessModal v-if="showLogoutModal" :message="successMessage" />
@@ -21,7 +20,6 @@
               </button>
             </div>
           </div>
-
         </div>
       </div>
     </div>
@@ -29,7 +27,7 @@
       <div class="max-w-[1080px] mx-auto px-[20px]">
         <div class="flex justify-end bg-[#ebf4ff] px-11 py-5">
           <div>
-            <p>Welcome Skip 1</p>
+            <p>Welcome {{ recruiter_name }}</p>
             <p>(branch slaes recruter)</p>
           </div>
         </div>
@@ -61,56 +59,72 @@
                   the job and will not searchable by Employer/IT Recruiter
                 </p>
               </div>
-              <table class="table-auto w-full bg-white">
-                <thead>
-                  <tr>
-                    <th class="px-4 py-2 border border-gray-300">No</th>
-                    <th class="px-4 py-2 border border-gray-300">Name</th>
-                    <th class="px-4 py-2 border border-gray-300">Location</th>
-                    <th class="px-4 py-2 border border-gray-300">
-                      Primary Skills
-                    </th>
-                    <th class="px-4 py-2 border border-gray-300">Status</th>
-                    <th class="px-4 py-2 border border-gray-300">Action</th>
-                  </tr>
-                </thead>
-                <tbody v-for="person in allConsultant" :key="person.email">
-                  <tr>
-                    <td class="px-4 py-2 border border-gray-300">
-                      {{ person.id }}
-                    </td>
-                    <td class="px-4 py-2 border border-gray-300">
-                      {{ person.fullname }}
-                    </td>
-                    <td class="px-4 py-2 border border-gray-300">
-                      {{ person.city }},{{ person.state }},{{ person.country }}
-                    </td>
-                    <td class="px-4 py-2 border border-gray-300">
-                      {{ person.primary_skill }}
-                    </td>
-                    <td class="px-4 py-2 border border-gray-300">{{person.is_active == 1 ? 'Active' : 'Inactive'}}</td>
-                    <td class="border border-gray-300 w-[240px]">
-                      <div class="flex">
-                        <div
-                          class="px-4 py-2 border border-transparent border-r-gray-300 w-[80px] text-center underline"
-                        >
-                        <router-link :to="'/edit-consultant/' + person.id">Edit</router-link>
-
+              <div class="overflow-x-auto">
+                <table class="w-full max-w-[700px] bg-white">
+                  <thead>
+                    <tr>
+                      <th class="px-4 py-2 border border-gray-300">No</th>
+                      <th class="px-4 py-2 border border-gray-300">Name</th>
+                      <th class="px-4 py-2 border border-gray-300">Location</th>
+                      <th class="px-4 py-2 border border-gray-300">
+                        Primary Skills
+                      </th>
+                      <th class="px-4 py-2 border border-gray-300">Status</th>
+                      <th class="px-4 py-2 border border-gray-300">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody v-for="person in allConsultant" :key="person.email">
+                    <tr>
+                      <td class="px-4 py-2 border border-gray-300">
+                        {{ person.id }}
+                      </td>
+                      <td class="px-4 py-2 border border-gray-300">
+                        {{ person.fullname }}
+                      </td>
+                      <td class="px-4 py-2 border border-gray-300">
+                        {{ person.city }},{{ person.state }},{{
+                          person.country
+                        }}
+                      </td>
+                      <td class="px-4 py-2 border border-gray-300">
+                        {{ person.primary_skill }}
+                      </td>
+                      <td class="px-4 py-2 border border-gray-300">
+                        {{ person.is_active == 1 ? "Active" : "Inactive" }}
+                      </td>
+                      <td class="border border-gray-300 w-[240px]">
+                        <div class="flex">
+                          <div
+                            class="px-4 py-2 border border-transparent border-r-gray-300 w-[80px] text-center underline"
+                          >
+                            <router-link :to="'/edit-consultant/' + person.id"
+                              >Edit</router-link
+                            >
+                          </div>
+                          <div
+                            class="px-4 py-2 border border-transparent border-r-gray-300 w-[80px] text-center underline"
+                          >
+                            <a
+                              class="cursor-pointer"
+                              @click="statusConsultant(person.id)"
+                              >{{
+                                person.is_active != 1 ? "Active" : "Inactive"
+                              }}</a
+                            >
+                          </div>
+                          <div class="px-4 py-2 w-[80px] underline">
+                            <a
+                              class="cursor-pointer"
+                              @click="deleteConsultant(person.id)"
+                              >Delete</a
+                            >
+                          </div>
                         </div>
-                        <div
-                          class="px-4 py-2 border border-transparent border-r-gray-300 w-[80px] text-center underline"
-                        >
-                          <a class="cursor-pointer" @click="statusConsultant(person.id)">{{person.is_active != 1  ? 'Active' : 'Inactive'}}</a>
-                        </div>
-                        <div class="px-4 py-2 w-[80px] underline">
-
-                          <a class="cursor-pointer" @click="deleteConsultant(person.id)">Delete</a>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
@@ -125,22 +139,28 @@ import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import RecruiterNavbar from "../Recruitment/RecruiterNavbar.vue";
 
-
 export default {
-    components: {
-        RecruiterNavbar
-    },
+  components: {
+    RecruiterNavbar,
+  },
   setup() {
     const router = useRouter();
 
     const showLogoutModal = ref(false);
     const successMessage = ref("");
+    const recruiter_name = ref("");
     const consultant = ref({});
     const allConsultant = ref({});
 
     const fetchConsultants = async () => {
-      const response = await axios.get(`${apiUrl}/get-all-consultants`);
-      allConsultant.value = response.data.consultant_details;
+      const recruiter_id = localStorage.getItem("recruiter_id");
+      const response = await axios.post(
+        `${apiUrl}/recruiter-details-by-consultants`,
+        {
+          recruiter_id: recruiter_id,
+        }
+      );
+      allConsultant.value = response.data.consultantas_details;
       console.log(response.data.consultant_details, "responseresponseresponse");
     };
 
@@ -181,32 +201,42 @@ export default {
       }
     };
     const deleteConsultant = async (id) => {
-        const response = await axios.post(
-          `${apiUrl}/delete-Consultants-Details`,
+      const response = await axios.post(
+        `${apiUrl}/delete-Consultants-Details`,
         {
-            'id' : id
-        });
-        window.location.reload();
+          id: id,
+        }
+      );
+      window.location.reload();
 
-        console.log(response)
-    }
+      console.log(response);
+    };
 
     const statusConsultant = async (id) => {
-        const response = await axios.post(
-          `${apiUrl}/status-Consultants-Details`,
+      const response = await axios.post(
+        `${apiUrl}/status-Consultants-Details`,
         {
-            'id' : id
-        });
-        window.location.reload();
+          id: id,
+        }
+      );
+      window.location.reload();
 
-        console.log(response)
-    }
-
+      console.log(response);
+    };
 
     const viewJobs = async () => {
       console.log("View Jobs functionality not implemented yet.");
     };
+    const fetchRecruiterDetails = async () => {
+      const recruiter_id = localStorage.getItem("recruiter_id");
 
+      const recruiterResponse = await axios.post(
+        `${apiUrl}/recruiter-details`,
+        { id: recruiter_id }
+      );
+      recruiter_name.value = recruiterResponse.data.recruiter_details.fullname;
+      console.log(recruiterResponse, "recruiterResponse");
+    };
     const showProfileModal = ref(false);
     const closeProfileModal = () => {
       showProfileModal.value = false;
@@ -214,10 +244,13 @@ export default {
 
     onMounted(() => {
       fetchConsultants();
+      fetchRecruiterDetails();
     });
     return {
-        statusConsultant,
-        deleteConsultant,
+      recruiter_name,
+      fetchRecruiterDetails,
+      statusConsultant,
+      deleteConsultant,
       recruiterLogout,
       viewJobs,
       showProfileModal,

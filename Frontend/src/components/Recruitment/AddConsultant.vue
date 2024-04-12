@@ -18,9 +18,13 @@
       </div>
     </div>
     <!-- <SeekerNavbar /> -->
-    <!-- <div class="text-right pr-[105px] bg-[#ebf4ff] text-[18px]">
-            Welcome,{{ fullname }} (Job Seeker)
-        </div> -->
+    <div class="bg-[#ebf4ff] py-7">
+      <div class="max-w-[1080px] w-full mx-auto">
+        <div class="text-right bg-[#ebf4ff] text-[18px]">
+          Welcome,{{ recruiter_name }} <br> (Job Seeker)
+        </div>
+      </div>
+    </div>
 
     <div class="bg-[#ebf4ff] py-7">
       <div class="max-w-[1080px] w-full mx-auto px-[20px]">
@@ -297,18 +301,6 @@
               class="w-full flex sm:flex-row flex-col justify-between sm:gap-6 gap-2"
             >
               <div class="sm:w-[100%] mb-4">
-                <!-- <label
-                                    class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
-                                    for="field1"
-                                >
-                                    Resume : {{ resume }}
-
-                                    <span
-                                        class="text-blue-500 underline cursor-pointer ml-4"
-                                        @click="downloadPDF"
-                                        >Download</span
-                                    >
-                                </label> -->
                 <div class="flex text-sm py-1">
                   <b>Upload Resume :</b>
                   <input
@@ -380,6 +372,7 @@ export default {
   setup() {
     const data = reactive({});
     const fullname = ref("");
+    const recruiter_name = ref("");
     const work_authorization = ref("");
     const primary_skill = ref("");
     const primary_skill_experience = ref("");
@@ -549,29 +542,15 @@ export default {
         });
     });
 
-    const downloadPDF = async () => {
-      const seeker_id = localStorage.getItem("seeker_id");
+    const fetchRecruiterDetails = async () => {
+      const recruiter_id = localStorage.getItem("recruiter_id");
 
-      const response = await axios.post(`${apiUrl}/seeker-profile`, {
-        seeker_id,
-      });
-      console.log("response", response);
-      resume.value = response.data.seeker_details.resume;
-      const fileName = resume.value;
-      const fileUrl = `https://shreyanjobs.com/backend/public/pdf/${fileName}`;
-      // const fileUrl = `http://127.0.0.1:8000/pdf/${fileName}`;
-
-      // Create a temporary anchor element
-      const link = document.createElement("a");
-      link.href = fileUrl;
-      link.download = fileName;
-      link.target = "_blank";
-
-      document.body.appendChild(link);
-
-      link.click();
-
-      document.body.removeChild(link);
+      const recruiterResponse = await axios.post(
+        `${apiUrl}/recruiter-details`,
+        { id: recruiter_id }
+      );
+      recruiter_name.value = recruiterResponse.data.recruiter_details.fullname;
+      console.log(recruiterResponse, "recruiterResponse");
     };
 
     const addConsultant = async () => {
@@ -718,10 +697,13 @@ export default {
           secondary_skill_experience.value
         );
         formData.append("resume", file.value);
+        isLoading.value = true;
         const consultantResponse = await axios.post(
           `${apiUrl}/add-Consultants-Details`,
           formData
         );
+        isLoading.value = false;
+
         console.log(consultantResponse.data.error, "asdasd");
 
         if (consultantResponse.data.error == 100) {
@@ -738,48 +720,6 @@ export default {
       }
     };
 
-    const fetchSkill = async () => {
-      const seeker_id = localStorage.getItem("seeker_id");
-      const response = await axios.post(`${apiUrl}/seeker-skill`, {
-        seeker_id: seeker_id,
-      });
-      if (response.data.skill_details == null) {
-        all_skill.value = null;
-      } else {
-        all_skill.value = response.data.skill_details;
-      }
-      console.log(all_skill.value, "all_skill");
-    };
-
-    const addSkill = async () => {
-      const seeker_id = localStorage.getItem("seeker_id");
-
-      const response = await axios.post(`${apiUrl}/seeker-skill-add`, {
-        seeker_id: seeker_id,
-        skill: skill.value,
-      });
-      if (response.data.code == 100) {
-        skillError.value = response.data.message;
-      } else {
-        skillError.value = "";
-      }
-
-      console.log(response.data, "responseresponseresponse");
-      skill.value = "";
-      fetchSkill();
-    };
-    const deleteSkill = async (skill) => {
-      const seeker_id = localStorage.getItem("seeker_id");
-
-      console.log(skill, "deleteSkilldeleteSkilldeleteSkill");
-      const response = await axios.post(`${apiUrl}/seeker-skill-delete`, {
-        seeker_id: seeker_id,
-        skill: skill,
-      });
-
-      console.log(response, "responseresponseresponse");
-      fetchSkill();
-    };
     function changeSection() {
       if (section.value == 1) {
         section.value = 2;
@@ -816,13 +756,14 @@ export default {
       countries_state.value = someCountry.value;
 
       fetchCountries();
-      fetchSkill();
+      fetchRecruiterDetails();
     });
 
     return {
+      recruiter_name,
+      fetchRecruiterDetails,
       validationError,
       addConsultant,
-      downloadPDF,
       updateSeekerProfileMessageStatus,
       updateSeekerProfileMessage,
       isLoading,
@@ -832,8 +773,6 @@ export default {
       relocate,
       err_city,
       skillError,
-      addSkill,
-      deleteSkill,
       all_skill,
       err_file,
       changeSection,

@@ -38,10 +38,16 @@
             class="w-full bg-white rounded-lg py-4 sm:px-8 px-4 lg:ml-[20px] shadow-[rgba(100,_100,_111,_0.2)_0px_5px_30px_0px]"
           >
             <h1
-              class="sm:text-[28px] text-[22px] font-bold mt-[20px] sm:mb-[50px] mb-[30px] text-[#1890da]"
+              class="sm:text-[28px] text-[22px] font-bold mt-[20px] sm:mb-[5px] mb-[1px] text-[#1890da]"
             >
-              Register to your account
+              Bench Sales Recruiter Registration
             </h1>
+            <div class="text-red-600 mt-0">
+              Enter the details of bench sales recruiter below.
+            </div>
+            <div class="text-red-600">
+              (**Consultants can be added after you login)
+            </div>
             <div
               v-if="validationError"
               class="text-red-600 block text-[20px] text-center"
@@ -328,6 +334,19 @@ export default {
         } else {
           fullnamenameError.value = "";
         }
+        if (companyname.value == null || companyname.value == "") {
+          companynameError.value = "Please Enter Comapany Name";
+          return false;
+        } else {
+          companynameError.value = "";
+        }
+
+        if (companyurl.value == null || companyurl.value == "") {
+          companyurlError.value = "Please Enter Comapany Url";
+          return false;
+        } else {
+          companyurlError.value = "";
+        }
 
         if (email.value == null || email.value == "") {
           emailError.value = "Please Enter Email";
@@ -343,12 +362,7 @@ export default {
         } else {
           emailError.value = "";
         }
-        if (contactno.value == null || contactno.value == "") {
-          contactnoError.value = "Enter contact no";
-          return false;
-        } else {
-          contactnoError.value = "";
-        }
+
 
         if (password.value == null || password.value == "") {
           passwordError.value = "Please Enter Password";
@@ -382,19 +396,7 @@ export default {
         } else {
           matchpasswordError.value = "";
         }
-        if (companyname.value == null || companyname.value == "") {
-          companynameError.value = "Please Enter Comapany Name";
-          return false;
-        } else {
-          companynameError.value = "";
-        }
 
-        if (companyurl.value == null || companyurl.value == "") {
-          companyurlError.value = "Please Enter Comapany Url";
-          return false;
-        } else {
-          companyurlError.value = "";
-        }
 
         const formData = new FormData();
         formData.append("fullname", fullname.value);
@@ -403,6 +405,7 @@ export default {
         formData.append("password", password.value);
         formData.append("companyname", companyname.value);
         formData.append("companyurl", companyurl.value);
+        isLoading.value = true;
 
         await axios
           .post(`${apiUrl}/recruiter-register`, formData)
@@ -432,7 +435,7 @@ export default {
         final_otp.value = enter_otp.value;
 
         await axios
-          .post(`${apiUrl}/validateOtp`, {
+          .post(`${apiUrl}/recruiter-validate-otp`, {
             otp: final_otp.value,
             recruiter_id: recruiter_id.value,
           })
@@ -446,7 +449,7 @@ export default {
               const elementToHide = document.querySelector(".enter_otp_class");
               elementToHide.classList.add("hidden");
 
-              showSuccessModal.value = true;
+            //   showSuccessModal.value = true;
               setTimeout(() => {
                 router.push("/recruiter-login");
               }, 2000);

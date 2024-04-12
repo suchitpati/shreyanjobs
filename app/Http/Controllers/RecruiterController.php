@@ -30,54 +30,13 @@ class RecruiterController extends Controller
             'body' => 'Your OTP is ' . $otp,
         ];
 
-        if (Recruiter::where(['emailid' => $email, 'is_active' => 1])->exists()) {
+        if (Recruiter::where(['emailid' => $email])->exists()) {
             return response()->json([
                 'message' => 'Account Already exist',
                 'error' => 100
             ]);
-        } elseif (Recruiter::where(['emailid' => $email, 'is_active' => 0])->exists()) {
-            Mail::to($email)->send(new RecruiterOtpMail($maildata));
-
-            Recruiter::where('emailid', $email)->update([
-                'fullname' => $request->fullname,
-                'contactno' => $request->contactno,
-                'password' => Hash::make($request->password),
-                'companyname' => $request->companyname,
-                'companyurl' => $request->companyurl,
-                //'last_login_date' => $request->last_login_date,
-                'otp' => $otp,
-                'is_active' => 0,
-            ]);
-
-            $recruiter = Recruiter::where('emailid', $email)->first();
-
-            return response()->json([
-                'message' => 'Recruiter OTP sent successfully',
-                'success' => 200,
-                'recruiter_id' => $recruiter->id
-            ]);
-        } elseif (Recruiter::where(['emailid' => $email, 'is_active' => 1])->exists()) {
-            Mail::to($email)->send(new RecruiterOtpMail($maildata));
-
-            Recruiter::where('emailid', $email)->update([
-                'fullname' => $request->fullname,
-                'contactno' => $request->contactno,
-                'password' => Hash::make($request->password),
-                'companyname' => $request->companyname,
-                'companyurl' => $request->companyurl,
-                // 'last_login_date' => $request->last_login_date,
-                'otp' => $otp,
-                'is_active' => 0,
-            ]);
-
-            $recruiter = Recruiter::where('emailid', $email)->first();
-
-            return response()->json([
-                'message' => 'Recruiter OTP sent successfully',
-                'success' => 200,
-                'recruiter_id' => $recruiter->id
-            ]);
-        } else {
+        }
+        else {
             Mail::to($email)->send(new RecruiterOtpMail($maildata));
 
             $recruiter = Recruiter::create([
@@ -101,7 +60,8 @@ class RecruiterController extends Controller
     }
     public function validateOtp(Request $request)
     {
-        if (Recruiter::where(['otp' => $request->otp])->exists()) {
+        $recruiter = Recruiter::where('id', $request->recruiter_id)->first();
+        if ($recruiter->otp == $request->otp) {
             Recruiter::where('id', $request->recruiter_id)
                 ->update(['is_active' => 1]);
 
@@ -127,19 +87,35 @@ class RecruiterController extends Controller
                 'code' => 100
             ]);
         }
-        // if ($recruiter->is_active == 0) {
-        //     return response()->json([
-        //         'message' => 'Your Account Registration did not complete last time. Please re-register the account',
-        //         'code' => 100
-        //     ]);
-        // }
+
         if (!$recruiter || !Hash::check($request->password, $recruiter->password)) {
             return response()->json([
                 'message' => 'Invalid credentials',
                 'code' => 100
             ]);
         }
+        if ($recruiter->is_active == 0) {
+            $email = $request->email;
+            $otp = rand(100000, 999999);
 
+            $maildata = [
+                'title' => 'Varification OTP',
+                'body' => 'Your OTP is ' . $otp,
+            ];
+            Mail::to($email)->send(new RecruiterOtpMail($maildata));
+
+            Recruiter::where('emailid', $email)->update([
+                'otp' => $otp,
+            ]);
+
+
+            return response()->json([
+                'message' => 'Your Account Registration did not complete last time. Please re-register the account',
+                'code' => 401,
+                'recruiter_id' => $recruiter->id,
+
+            ]);
+        }
         $token = $recruiter->createToken('RecruiterToken')->plainTextToken;
         // return response()->json(['token'=>$token]);
 
@@ -239,6 +215,17 @@ class RecruiterController extends Controller
             'consultantas_details' => $consultantas
         ]);
     }
+    public function activeConsultantsData(Request $request)
+    {
+        $id = $request->recruiter_id;
+        $consultantas =  consultantas::where('recruiter_id', $id)->where('is_active',1)->get();
+        return response()->json([
+            'message' => 'Details fetch successfully',
+            'success' => 200,
+            'consultantas_details' => $consultantas
+        ]);
+    }
+
 
     public function recruiterUpdate(Request $request)
     {
@@ -293,7 +280,7 @@ class RecruiterController extends Controller
 
         $consultant_data = consultantas::whereIn('id', $consultantasIds)->get();
         try {
-            SendConsultantJobMailToEmployer::dispatch($employer_emailid, $recruiter_emailid, $job_title, $consultant_data, $employername, $city, $country, $additional_detail, $detailed_description, $state, $remote, $cover_letter,$recruiter_name);
+            SendConsultantJobMailToEmployer::dispatch($employer_emailid, $recruiter_emailid, $job_title, $consultant_data, $employername, $city, $country, $additional_detail, $detailed_description, $state, $remote, $cover_letter, $recruiter_name);
         } catch (Exception $e) {
             dd($e);
         }
@@ -305,9 +292,21 @@ class RecruiterController extends Controller
         }
 
         return response()->json([
-            'message' => 'Details fetch successfully',
+            'message' => 'Job Apply susscessfully',
             'success' => 200,
             'recruiter_details' => $recruiter_details
+        ]);
+    }
+
+    public function updatePassword(Request $request)
+    {
+        if (Recruiter::where(['id' => $request->recruiter_id])->exists()) {
+        }
+        Recruiter::where('id', $request->recruiter_id)
+            ->update(['password' => Hash::make($request->password)]);
+        return response()->json([
+            'message' => 'password updated sucessfully',
+            'success' => $request->all(),
         ]);
     }
 }

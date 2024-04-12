@@ -120,7 +120,7 @@
                 Manage Consultants
               </button>
             </router-link>
-            <router-link to="/seeker-profile">
+            <router-link to="/edit-recruiter">
               <button
                 class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] focus:outline-none focus:shadow-outline"
               >
@@ -1004,7 +1004,7 @@
       <div class="fixed inset-0 bg-black bg-opacity-40 z-5">
         <div class="w-full h-full flex justify-center items-center">
           <div
-            class="max-w-[700px] w-full rounded-lg bg-[#d3ddff] p-5 relative"
+            class="max-w-[800px] w-full rounded-lg bg-[#d3ddff] p-5 relative"
           >
             <div
               class="absolute top-3 right-5 cursor-pointer"
@@ -1018,8 +1018,8 @@
                 Select Consultant to Apply
               </div>
               <div class="py-5">
-                <table class="table-auto bg-white mx-auto">
-                  <thead>
+                <table class="bg-white mx-auto ">
+                  <thead >
                     <tr>
                       <th class="px-4 py-2 border border-gray-300"></th>
                       <th class="px-4 py-2 border border-gray-300">Name</th>
@@ -1607,6 +1607,9 @@ export default {
         alert("Please select atleast one Consultant");
         return false;
       }
+
+      isLoading.value = true;
+
       const recruiter_id = localStorage.getItem("recruiter_id");
 
       const response = await axios.post(`${apiUrl}/consultants-job-appply`, {
@@ -1616,7 +1619,14 @@ export default {
         consultants_cover_letter : consultants_cover_letter.value
       });
 
+      isLoading.value = false;
+      isActiveConsultant.value = !isActiveConsultant.value;
+
+
+
       console.log(response, "responseresponseresponse");
+
+
     };
 
     const employerLogout = async () => {
@@ -1653,7 +1663,7 @@ export default {
     const fetchConsultants = async () => {
       const recruiter_id = localStorage.getItem("recruiter_id");
       const response = await axios.post(
-        `${apiUrl}/recruiter-details-by-consultants`,
+        `${apiUrl}/active-consultants-data`,
         {
           recruiter_id: recruiter_id,
         }

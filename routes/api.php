@@ -57,7 +57,6 @@ Route::post('/seeker-skill', [SeekerController::class, 'seeker_skill']);
 Route::post('/seeker-skill-add', [SeekerController::class, 'seeker_addskill']);
 Route::post('/seeker-skill-delete', [SeekerController::class, 'seeker_deleteskill']);
 Route::post('/seeker-update-password',[SeekerController::class,'updatePassword']);
-Route::post('/seeker-update-password',[SeekerController::class,'updatePassword']);
 Route::get('/seeker-contact-detail/{id}/{employe_id}',[SeekerController::class,'seekerContactDetail']);
 Route::get('/seeker-resume-detail/{id}/{employe_id}',[SeekerController::class,'seekerResumeDetail']);
 Route::post('/apply-job-email',[SeekerController::class,'applyJobMail']);
@@ -113,14 +112,18 @@ Route::get('/countries/{country}/states', [CountryController::class, 'states']);
 Route::post('/recruiter-register', [RecruiterController::class, 'recruiter_register']);
 Route::post('/recruiter-details', [RecruiterController::class, 'recruiterDetails']);
 Route::post('/recruiter-details-by-consultants', [RecruiterController::class, 'recruiterDetailsByConsultants']);
+Route::post('/active-consultants-data', [RecruiterController::class, 'activeConsultantsData']);
+
 Route::post('/recruiter-update', [RecruiterController::class, 'recruiterUpdate']);
-Route::post('/validateOtp', [RecruiterController::class, 'validateOtp']);
+Route::post('/recruiter-validate-otp', [RecruiterController::class, 'validateOtp']);
 Route::post('/recruiter-login',[RecruiterController::class,'loginrecruiter']);
 // Route::post('/recruiter-update-forgot-password',[RecruiterController::class,'updateForgotPassword']);
 Route::post('/recruiter-send-forgot-email-otp',[RecruiterController::class,'sendForgotEmailOtp']);
 Route::post('/recruiter-check-forgot-otp',[RecruiterController::class,'checkForgotOtp']);
 Route::post('/recruiter-update-forgot-password',[RecruiterController::class,'updateForgotPassword']);
 Route::post('/consultants-job-appply',[RecruiterController::class,'consultantsJobApply']);
+Route::post('/recruiter-update-password',[RecruiterController::class,'updatePassword']);
+
 
 
 
