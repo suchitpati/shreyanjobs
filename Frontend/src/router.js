@@ -11,6 +11,16 @@ import ForgotPassword from './components/Seeker/ForgotPassword.vue'
 import SeekerProfile from './components/Seeker/SeekerProfile.vue'
 import SeekerUpdatePassword from './components/Seeker/UpdatePassword.vue';
 
+import RecruiterLogin from './components/Recruitment/RecruiterLogin.vue';
+import RecruiterRegister from './components/Recruitment/RecruiterRegister.vue';
+import RecruiterEdit from './components/Recruitment/RecruiterEdit.vue';
+
+import RecruiterForgotPassword from './components/Recruitment/ForgotPassword.vue';
+import ManageConsultant from './components/Recruitment/ManageConsultant.vue';
+import AddConsultant from './components/Recruitment/AddConsultant.vue';
+import EditConsultant from './components/Recruitment/EditConsultant.vue';
+import RecruiterUpdatePassword from './components/Recruitment/UpdatePassword.vue';
+
 
 
 import EmployerLogin from './components/Employer/EmployerLogin.vue'
@@ -22,7 +32,6 @@ import EmployerDashboard from './components/Employer/EmployerDashboard.vue'
 import EmployerUpdatePassword from './components/Employer/UpdatePassword.vue';
 import EmployerJobView from './components/Employer/EmployerJobView.vue';
 import EmployerJobEdit from './components/Employer/EmployerJobEdit.vue';
-
 
 const loggedIn = localStorage.getItem('accessToken');
 
@@ -123,6 +132,48 @@ const routes = [
     path: '/employer-update-password',
     name: 'employer-update-password',
     component: EmployerUpdatePassword,
+  },
+  {
+    path: '/recruiter-login',
+    name: 'recruiter-login',
+    component: RecruiterLogin,
+  },
+
+  {
+    path: '/recruiter-register',
+    name: 'recruiter-register',
+    component: RecruiterRegister,
+  },
+  {
+    path: '/edit-recruiter',
+    name: 'edit-recruiter',
+    component: RecruiterEdit,
+  },
+  {
+    path: '/recruiter-forgot-password',
+    name: 'recruiter-forgot-password',
+    component: RecruiterForgotPassword,
+  },
+  {
+    path: '/recruiter-update-password',
+    name: 'recruiter-update-password',
+    component: RecruiterUpdatePassword,
+  },
+
+  {
+    path: '/manage-consultant',
+    name: 'manage-consultant',
+    component: ManageConsultant,
+  },
+  {
+    path: '/add-consultant',
+    name: 'add-consultant',
+    component: AddConsultant,
+  },
+  {
+    path: '/edit-consultant/:id',
+    name: 'edit-consultant',
+    component: EditConsultant,
   },
 
 ];

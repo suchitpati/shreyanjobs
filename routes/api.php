@@ -5,11 +5,15 @@ use App\Http\Controllers\AdminJobController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\EmployerController;
 use App\Http\Controllers\SeekerController;
+use App\Http\Controllers\RecruiterController;
 use App\Http\Controllers\UserSubscriptionController;
 use App\Http\Controllers\UserJobApplication;
+use App\Models\Recruiter;
 use App\Models\Seeker;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\consultantsController;
+use App\Models\consultantas;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,7 +57,6 @@ Route::post('/seeker-skill', [SeekerController::class, 'seeker_skill']);
 Route::post('/seeker-skill-add', [SeekerController::class, 'seeker_addskill']);
 Route::post('/seeker-skill-delete', [SeekerController::class, 'seeker_deleteskill']);
 Route::post('/seeker-update-password',[SeekerController::class,'updatePassword']);
-Route::post('/seeker-update-password',[SeekerController::class,'updatePassword']);
 Route::get('/seeker-contact-detail/{id}/{employe_id}',[SeekerController::class,'seekerContactDetail']);
 Route::get('/seeker-resume-detail/{id}/{employe_id}',[SeekerController::class,'seekerResumeDetail']);
 Route::post('/apply-job-email',[SeekerController::class,'applyJobMail']);
@@ -68,6 +71,9 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
     Route::post('/employer-logout',[EmployerController::class,'logout']);
     Route::post('/seeker-logout', [SeekerController::class, 'seekerLogout']);
     Route::post('/employer-profile', [EmployerController::class, 'employe_profile']);
+    Route::post('/recruiter-logout', [RecruiterController::class, 'recruiterLogout']);
+
+
 
 });
 Route::resource('admin-jobs', AdminJobController::class);
@@ -80,17 +86,11 @@ Route::post('/employer-send-forgot-email-otp',[EmployerController::class,'sendFo
 Route::post('/employer-check-forgot-otp',[EmployerController::class,'checkForgotOtp']);
 Route::post('/employer-update-forgot-password',[EmployerController::class,'updateForgotPassword']);
 Route::post('/employer-update-profile',[EmployerController::class,'updateemployer_profile']);
-
 Route::post('/employer-update-password',[EmployerController::class,'updatePassword']);
 Route::get('/admin-task',[EmployerController::class,'admintask']);
 Route::get('/check-batchJob-status',[EmployerController::class,'checkBatchJobStatus']);
 
 Route::post('/send-notification-email',[EmployerController::class,'sendJobEmailNotification']);
-
-
-
-
-
 
 
 
@@ -106,4 +106,33 @@ Route::delete('/employer-job/{id}', [AdminJobController::class, 'destroy']);
 
 Route::get('/countries', [CountryController::class, 'index']);
 Route::get('/countries/{country}/states', [CountryController::class, 'states']);
+
+
+//recruiter Routes
+Route::post('/recruiter-register', [RecruiterController::class, 'recruiter_register']);
+Route::post('/recruiter-details', [RecruiterController::class, 'recruiterDetails']);
+Route::post('/recruiter-details-by-consultants', [RecruiterController::class, 'recruiterDetailsByConsultants']);
+Route::post('/active-consultants-data', [RecruiterController::class, 'activeConsultantsData']);
+
+Route::post('/recruiter-update', [RecruiterController::class, 'recruiterUpdate']);
+Route::post('/recruiter-validate-otp', [RecruiterController::class, 'validateOtp']);
+Route::post('/recruiter-login',[RecruiterController::class,'loginrecruiter']);
+// Route::post('/recruiter-update-forgot-password',[RecruiterController::class,'updateForgotPassword']);
+Route::post('/recruiter-send-forgot-email-otp',[RecruiterController::class,'sendForgotEmailOtp']);
+Route::post('/recruiter-check-forgot-otp',[RecruiterController::class,'checkForgotOtp']);
+Route::post('/recruiter-update-forgot-password',[RecruiterController::class,'updateForgotPassword']);
+Route::post('/consultants-job-appply',[RecruiterController::class,'consultantsJobApply']);
+Route::post('/recruiter-update-password',[RecruiterController::class,'updatePassword']);
+
+
+
+
+
+//consultants
+Route::post('/add-Consultants-Details', [consultantsController::class, 'addConsultantsDetails']);
+Route::post('/update-Consultants-Details', [consultantsController::class, 'updateConsultantsDetails']);
+Route::post('/delete-Consultants-Details', [consultantsController::class, 'deleteConsultantsDetails']);
+Route::post('/status-Consultants-Details', [consultantsController::class, 'statusConsultantsDetails']);
+Route::post('/consultants-Details',[consultantsController::class,'consultantDetails']);
+Route::get('/get-all-consultants',[consultantsController::class,'getAllConsultants']);
 

@@ -40,7 +40,7 @@
             <h1
               class="sm:text-[28px] text-[22px] font-bold mt-[20px] sm:mb-[5px] mb-[30px] text-[#1890da]"
             >
-              Job Seeker Login
+            Job Seeker Login
             </h1>
             <div class="flex justify-center gap-[5px]">
               Don't have account ?

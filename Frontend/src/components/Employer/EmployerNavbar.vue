@@ -119,7 +119,6 @@ export default {
     const  viewJob = async() =>
     {
         router.push("/employer-job-view");
-
     }
      const toggleDropdown = async () => {
       isDropdown.value = !isDropdown.value;
