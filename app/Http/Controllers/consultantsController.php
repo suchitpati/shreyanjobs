@@ -123,14 +123,20 @@ class consultantsController extends Controller
             ], 404);
         }
 
-        $Constant->delete();
 
+        if($Constant->is_active == 1){
+            return response()->json([
+                'message' => 'Can not delete active Consultant',
+                'error' =>100
+            ]);
+        }
+
+        // $Constant->delete();
         return response()->json([
             'message' => 'Details deleted successfully',
             'success' => 200,
-            'consultantas_id' => $id
+            'consultantas_id' => $Constant
         ]);
-
     }
 
     public function statusConsultantsDetails(Request $request){

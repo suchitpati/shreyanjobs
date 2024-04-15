@@ -714,7 +714,7 @@ export default {
         }
         // Handle consultant response data as needed
       } catch (error) {
-        alert("asd");
+        // alert("asd");
         console.error(error);
         // Handle error
       }

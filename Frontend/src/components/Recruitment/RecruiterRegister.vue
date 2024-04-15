@@ -103,7 +103,7 @@
                   class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
                   for="field2"
                 >
-                  Company website URL
+                  Company website URL (Optional)
                 </label>
                 <input
                   class="border border-gray-400 rounded-lg py-2 px-4 mb-1 outline-[#264dd9] focus:shadow-outline w-full"
@@ -341,17 +341,17 @@ export default {
           companynameError.value = "";
         }
 
-        if (companyurl.value == null || companyurl.value == "") {
-          companyurlError.value = "Please Enter Comapany Url";
-          return false;
-        } else {
-          companyurlError.value = "";
-        }
+        // if (companyurl.value == null || companyurl.value == "") {
+        //   companyurlError.value = "Please Enter Comapany Url";
+        //   return false;
+        // } else {
+        //   companyurlError.value = "";
+        // }
 
         if (email.value == null || email.value == "") {
           emailError.value = "Please Enter Email";
           return false;
-        } else {
+        } else {contactno
           emailError.value = "";
         }
 

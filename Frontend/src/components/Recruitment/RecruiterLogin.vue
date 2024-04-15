@@ -35,7 +35,9 @@
         >
           <div class="p-[20px_20px_50px_20px]">
             <h5 class="text-2xl underline text-[#1890da] font-bold mb-5">
-              Recruiter Registration
+                <router-link
+                to="/recruiter-register"
+                > Bench Sales Recruiter Registration</router-link>
             </h5>
             <div class="flex py-3">
               <div class="flex">
