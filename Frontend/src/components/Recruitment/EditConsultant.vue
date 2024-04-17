@@ -28,12 +28,12 @@
                       class="text-[#1890da] sm:text-[26px] text-[22px] font-semibold mt-[30px] sm:mb-[40px] mb-[25px]"
                   >
                       Admin Page - Post Job Requirement
-                  </h1> -->
-        <!-- <span
-                    v-if="updateSeekerProfileMessageStatus === 'true'"
+                  </h1>
+        <span
+                    v-if="updateConsultantProfileMessageStatus === 'true'"
                     class="text-green-600"
                     >Profile is updated successfully</span
-                > -->
+        >-->
         <div
           v-if="validationError"
           class="text-red-600 block text-[20px] text-center"
@@ -298,17 +298,17 @@
             >
               <div class="sm:w-[100%] mb-4">
                 <label
-                                    class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
-                                    for="field1"
-                                >
-                                    Resume : {{ resume }}
+                  class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
+                  for="field1"
+                >
+                  Resume : {{ resume }}
 
-                                    <span
-                                        class="text-blue-500 underline cursor-pointer ml-4"
-                                        @click="downloadPDF"
-                                        >Download</span
-                                    >
-                                </label>
+                  <span
+                    class="text-blue-500 underline cursor-pointer ml-4"
+                    @click="downloadPDF"
+                    >Download</span
+                  >
+                </label>
                 <div class="flex text-sm py-1">
                   <b>Replace Resume :</b>
                   <input
@@ -427,8 +427,8 @@ export default {
     const relocate = ref(0);
     const file = ref("");
     const isLoading = ref(false);
-    const updateSeekerProfileMessage = ref(false);
-    const updateSeekerProfileMessageStatus = ref(false);
+    const updateConsultantProfileMessage = ref(false);
+    const updateConsultantProfileMessageStatus = ref(false);
 
     someCountry.value = [
       {
@@ -538,7 +538,6 @@ export default {
         });
     });
 
-
     const getConsultantDeatails = async () => {
       const consultant_id = route.params.id;
 
@@ -557,11 +556,11 @@ export default {
       const response = await axios.post(
         `${apiUrl}/consultants-Details`,
         {
-            consultants_id: consultant_id,
+          consultants_id: consultant_id,
         },
         config
-    );
-    console.log('response',response.data.consultant_details)
+      );
+      console.log("response", response.data.consultant_details);
       fullname.value = response.data.consultant_details.fullname;
       selectedCountry.value = response.data.consultant_details.country;
       selectedState.value = response.data.consultant_details.state;
@@ -571,16 +570,16 @@ export default {
         ? State.getStatesOfCountry(selectedCountry.value)
         : "";
 
-        work_authorization.value = response.data.consultant_details.work_authorization;
-        primary_skill.value = response.data.consultant_details.primary_skill;
-        primary_skill_experience.value = response.data.consultant_details.primary_skill_experience;
-        secondary_skill.value = response.data.consultant_details.secondary_skill;
-        secondary_skill_experience.value = response.data.consultant_details.secondary_skill_experience;
-        relocate.value = response.data.consultant_details.relocate;
-        resume.value = response.data.consultant_details.resume;
-
-
-
+      work_authorization.value =
+        response.data.consultant_details.work_authorization;
+      primary_skill.value = response.data.consultant_details.primary_skill;
+      primary_skill_experience.value =
+        response.data.consultant_details.primary_skill_experience;
+      secondary_skill.value = response.data.consultant_details.secondary_skill;
+      secondary_skill_experience.value =
+        response.data.consultant_details.secondary_skill_experience;
+      relocate.value = response.data.consultant_details.relocate;
+      resume.value = response.data.consultant_details.resume;
     };
 
     const updateConsultant = async () => {
@@ -739,6 +738,10 @@ export default {
           validationError.value = consultantResponse.data.message;
           return false;
         } else {
+          localStorage.setItem("consultantMessageStatus", 2);
+          localStorage.setItem("updateConsultantProfileMessage", true);
+
+          localStorage.setItem("updateConsultantProfileMessageStatus", true);
           router.push("/manage-consultant");
         }
         // Handle consultant response data as needed
@@ -748,61 +751,57 @@ export default {
       }
     };
 
-
-
     const downloadPDF = async () => {
+      const fileName = resume.value;
+      // const fileUrl = `https://shreyanjobs.com/backend/public/pdf/${fileName}`;
+      const fileUrl = `http://127.0.0.1:8000/pdf/${fileName}`;
 
-            const fileName = resume.value;
-            // const fileUrl = `https://shreyanjobs.com/backend/public/pdf/${fileName}`;
-            const fileUrl = `http://127.0.0.1:8000/pdf/${fileName}`;
-
-            const link = document.createElement("a");
-            link.href = fileUrl;
-            link.download = fileName;
-            link.target = "_blank";
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        };
+      const link = document.createElement("a");
+      link.href = fileUrl;
+      link.download = fileName;
+      link.target = "_blank";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    };
     const image_details = async (event) => {
-            file.value = event.target.files[0];
-        };
+      file.value = event.target.files[0];
+    };
     onMounted(() => {
-        getConsultantDeatails();
+      getConsultantDeatails();
       console.log(route.params.id, "route.params.id");
 
-      updateSeekerProfileMessage.value = localStorage.getItem(
-        "updateSeekerProfileMessage"
-      );
-      updateSeekerProfileMessageStatus.value = localStorage.getItem(
-        "updateSeekerProfileMessageStatus"
-      );
+      //   updateConsultantProfileMessage.value = localStorage.getItem(
+      //     "updateConsultantProfileMessage"
+      //   );
+      //   updateConsultantProfileMessageStatus.value = localStorage.getItem(
+      //     "updateConsultantProfileMessageStatus"
+      //   );
 
-      if (
-        updateSeekerProfileMessage.value &&
-        !updateSeekerProfileMessageStatus.value
-      ) {
-        localStorage.setItem("updateSeekerProfileMessageStatus", true);
-      }
+      //   if (
+      //     updateConsultantProfileMessage.value &&
+      //     !updateConsultantProfileMessageStatus.value
+      //   ) {
+      //     localStorage.setItem("updateConsultantProfileMessageStatus", true);
+      //   }
 
-      if (
-        updateSeekerProfileMessage.value &&
-        updateSeekerProfileMessageStatus
-      ) {
-        localStorage.setItem("updateSeekerProfileMessageStatus", false);
-      }
+      //   if (
+      //     updateConsultantProfileMessage.value &&
+      //     updateConsultantProfileMessageStatus
+      //   ) {
+      //     localStorage.setItem("updateConsultantProfileMessageStatus", false);
+      //   }
 
       countries_state.value = someCountry.value;
 
       fetchCountries();
     });
 
-
     return {
-        downloadPDF,
+      downloadPDF,
       validationError,
-      updateSeekerProfileMessageStatus,
-      updateSeekerProfileMessage,
+      updateConsultantProfileMessageStatus,
+      updateConsultantProfileMessage,
       isLoading,
       resume,
       image_details,
@@ -863,7 +862,7 @@ export default {
       defaultSelectedState,
       apiUrl,
       fullnamenameError,
-      updateConsultant
+      updateConsultant,
     };
   },
 };

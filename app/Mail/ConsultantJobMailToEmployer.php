@@ -30,12 +30,11 @@ class ConsultantJobMailToEmployer extends Mailable
      *
      * @return void
      */
-    public function __construct($job_title, $consultant_data, $employername, $city, $country, $additional_detail, $detailed_description, $state, $remote, $cover_letter,$recruiter_name)
+    public function __construct($job_title, $consultant_data, $city, $country, $additional_detail, $detailed_description, $state, $remote, $cover_letter,$recruiter_name)
     {
 
         $this->job_title = $job_title;
         $this->consultant_data = $consultant_data;
-        $this->employername = $employername;
         $this->city = $city;
         $this->country = $country;
         $this->additional_detail = $additional_detail;
@@ -61,7 +60,6 @@ class ConsultantJobMailToEmployer extends Mailable
             'job_title' => $this->job_title,
             'consultant_data' => $this->consultant_data,
             'country' => $this->country,
-            'employername' => $this->employername,
             'city' => $this->city,
             'additional_detail' => $this->additional_detail,
             'state' => $this->state,

@@ -258,29 +258,21 @@ class RecruiterController extends Controller
         $state = $job_details->state;
         $additional_detail = $job_details->additional_detail;
         $remote = $job_details->remote;
-
+        $employer_emailid =  $job_details->email;
 
         $cover_letter = $request->consultants_cover_letter;
         if ($cover_letter == null  || $cover_letter == "") {
             $cover_letter = "-";
         }
-
-
-        $employer = Employer::find($job_details->job_owner_id);
-        $employer_emailid =  $employer->emailid;
-        $employername = $employer->employername;
-
-
         $recruiter_details = Recruiter::where('id', $recruiter_id)->first();
         $recruiter_emailid =  $recruiter_details->emailid;
         $recruiter_name =  $recruiter_details->fullname;
 
 
 
-
         $consultant_data = consultantas::whereIn('id', $consultantasIds)->get();
         try {
-            SendConsultantJobMailToEmployer::dispatch($employer_emailid, $recruiter_emailid, $job_title, $consultant_data, $employername, $city, $country, $additional_detail, $detailed_description, $state, $remote, $cover_letter, $recruiter_name);
+            SendConsultantJobMailToEmployer::dispatch($employer_emailid, $recruiter_emailid, $job_title, $consultant_data, $city, $country, $additional_detail, $detailed_description, $state, $remote, $cover_letter, $recruiter_name);
         } catch (Exception $e) {
             dd($e);
         }

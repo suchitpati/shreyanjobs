@@ -7,11 +7,13 @@
 
           <SuccessModal v-if="showLogoutModal" :message="successMessage" />
           <div
-            v-if="showSuccessModal"
+            v-if="showSuccessModal1"
             class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-75"
           >
             <div class="bg-white p-8 rounded-lg shadow-lg">
-              <h2 class="text-2xl font-bold mb-4">Job Updated Successfully!</h2>
+              <h2 class="text-2xl font-bold mb-4">
+                Can not delete active Consultant
+              </h2>
               <button
                 @click="closeSuccessModal"
                 class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -28,7 +30,7 @@
         <div class="flex justify-end bg-[#ebf4ff] px-11 py-5">
           <div>
             <p>Welcome {{ recruiter_name }}</p>
-            <p>(branch slaes recruter)</p>
+            <p>(Bench Sales Recruiter)</p>
           </div>
         </div>
       </div>
@@ -39,9 +41,35 @@
           <div
             class="bg-[#d3ddff4f] rounded-lg py-4 sm:px-8 px-4 w-full shadow-[rgba(100,_100,_111,_0.2)_0px_0px_10px_0px] hover:shadow-[rgba(100,_100,_111,_0.2)_0px_0px_20px_0px] transition-[.5s]"
           >
+            <span
+              v-if="
+                updateConsultantProfileMessageStatus === 'true' &&
+                consultantMessageStatus == 2
+              "
+              class="text-green-600"
+              >Profile is updated successfully</span
+            >
+            <span
+              v-if="
+                updateConsultantProfileMessageStatus === 'true' &&
+                consultantMessageStatus == 1
+              "
+              class="text-green-600"
+              >Consultant is Added successfully</span
+            >
+            <span
+              v-if="
+                updateConsultantProfileMessageStatus === 'true' &&
+                consultantMessageStatus == 3
+              "
+              class="text-green-600"
+              >Consultant is Deleted successfully</span
+            >
             <div class="consultant-table p-10">
               <div class="flex justify-between py-2">
-                <h2 class="font-bold text-xl">Consultants List</h2>
+                <h2 class="font-bold text-xl">
+                  Consultants List
+                </h2>
                 <!-- <button
                   class="underline-offset-3 underline text-[15px] text-sky-500 font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] mb-2 md:mb-0"
                 >
@@ -73,10 +101,13 @@
                       <th class="px-4 py-2 border border-gray-300">Action</th>
                     </tr>
                   </thead>
-                  <tbody v-for="person in allConsultant" :key="person.email">
+                  <tbody
+                    v-for="(person, index) in allConsultant"
+                    :key="person.email"
+                  >
                     <tr>
                       <td class="px-4 py-2 border border-gray-300">
-                        {{ person.id }}
+                        {{ index + 1 }}
                       </td>
                       <td class="px-4 py-2 border border-gray-300">
                         {{ person.fullname }}
@@ -101,23 +132,78 @@
                               >Edit</router-link
                             >
                           </div>
-                          <div
-                            class="px-4 py-2 border border-transparent border-r-gray-300 w-[80px] text-center underline"
-                          >
+                          <!-- <div
+                                                        class="px-4 py-2 border border-transparent border-r-gray-300 w-[80px] text-center underline"
+                                                    >
+                                                        <a
+                                                            class="cursor-pointer"
+                                                            @click="
+                                                                deleteConsultant(
+                                                                    person.id
+                                                                )
+                                                            "
+                                                            >{{
+                                                                person.is_active !=
+                                                                1
+                                                                    ? "Active"
+                                                                    : "Inactive"
+                                                            }}</a
+                                                        >
+                                                    </div>
+                                                    <div
+                                                        class="px-4 py-2 w-[80px] underline"
+                                                    >
+                                                        <a
+                                                            class="cursor-pointer"
+                                                            @click="
+                                                                showSuccessModal = true
+                                                            "
+                                                            >Delete</a
+                                                        >
+                                                    </div> -->
+                          <div class="px-4 py-2 w-[80px] underline">
                             <a
                               class="cursor-pointer"
                               @click="statusConsultant(person.id)"
                               >{{
                                 person.is_active != 1 ? "Active" : "Inactive"
-                              }}</a
-                            >
+                              }}
+                            </a>
                           </div>
                           <div class="px-4 py-2 w-[80px] underline">
                             <a
                               class="cursor-pointer"
-                              @click="deleteConsultant(person.id)"
+                              @click="showSuccessModal = true"
                               >Delete</a
                             >
+                          </div>
+                          <div
+                            v-if="showSuccessModal"
+                            class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-75"
+                          >
+                            <div class="bg-white p-8 rounded-lg shadow-lg">
+                              <h2 class="text-2xl font-bold mb-4">
+                                Are you sure you want to delete this consultant?
+                              </h2>
+                              <div
+                                v-if="validationError"
+                                class="text-red-600 block text-[20px] text-center"
+                              >
+                                {{ validationError }}
+                              </div>
+                              <button
+                                @click="deleteConsultant(person.id)"
+                                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                              >
+                                Ok
+                              </button>
+                              <button
+                                @click="showSuccessModal = false"
+                                class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded ml-4"
+                              >
+                                Cancel
+                              </button>
+                            </div>
                           </div>
                         </div>
                       </td>
@@ -151,7 +237,19 @@ export default {
     const recruiter_name = ref("");
     const consultant = ref({});
     const allConsultant = ref({});
+    const showSuccessModal = ref(false);
+    const showSuccessModal1 = ref(false);
 
+    const personToDeleteId = ref(null);
+    const validationError = ref("");
+    const updateConsultantProfileMessage = ref(false);
+    const updateConsultantProfileMessageStatus = ref(false);
+    const consultantMessageStatus = ref(false);
+
+    const closeSuccessModal = () => {
+      showSuccessModal.value = false;
+      showSuccessModal1.value = false;
+    };
     const fetchConsultants = async () => {
       const recruiter_id = localStorage.getItem("recruiter_id");
       const response = await axios.post(
@@ -200,6 +298,19 @@ export default {
         console.log(error);
       }
     };
+
+    // const deleteConsultant = async (id) => {confirmDelete
+    //   const response = await axios.post(
+    //     `${apiUrl}/delete-Consultants-Details`,
+    //     {
+    //     id: id,
+    //     }
+    //   );
+    //   window.location.reload();
+    //   showSuccessModal.value = false;
+    //   console.log(response);
+    // };
+
     const deleteConsultant = async (id) => {
       const response = await axios.post(
         `${apiUrl}/delete-Consultants-Details`,
@@ -207,11 +318,27 @@ export default {
           id: id,
         }
       );
-      window.location.reload();
+      console.log("response==>", response);
+      showSuccessModal.value = false;
 
-      console.log(response);
+      if (response.data.error == 100) {
+          validationError.value = response.data.error.message;
+          showSuccessModal1.value = true;
+        console.log("response==>", response);
+      } else {
+        localStorage.setItem("consultantMessageStatus", 3);
+        localStorage.setItem("updateConsultantProfileMessage", true);
+
+        localStorage.setItem("updateConsultantProfileMessageStatus", true);
+              window.location.reload();
+
+      }
     };
 
+    const confirmDelete = (id) => {
+      personToDeleteId.value = id;
+      showSuccessModal.value = true;
+    };
     const statusConsultant = async (id) => {
       const response = await axios.post(
         `${apiUrl}/status-Consultants-Details`,
@@ -245,18 +372,50 @@ export default {
     onMounted(() => {
       fetchConsultants();
       fetchRecruiterDetails();
+      consultantMessageStatus.value = localStorage.getItem(
+        "consultantMessageStatus"
+      );
+      updateConsultantProfileMessage.value = localStorage.getItem(
+        "updateConsultantProfileMessage"
+      );
+      updateConsultantProfileMessageStatus.value = localStorage.getItem(
+        "updateConsultantProfileMessageStatus"
+      );
+
+      if (
+        updateConsultantProfileMessage.value &&
+        !updateConsultantProfileMessageStatus.value
+      ) {
+        localStorage.setItem("updateConsultantProfileMessageStatus", true);
+      }
+
+      if (
+        updateConsultantProfileMessage.value &&
+        updateConsultantProfileMessageStatus
+      ) {
+        localStorage.setItem("updateConsultantProfileMessageStatus", false);
+      }
     });
     return {
+      consultantMessageStatus,
+      updateConsultantProfileMessageStatus,
+      updateConsultantProfileMessage,
+      showSuccessModal1,
       recruiter_name,
       fetchRecruiterDetails,
       statusConsultant,
       deleteConsultant,
+      personToDeleteId,
+      validationError,
+      confirmDelete,
       recruiterLogout,
       viewJobs,
       showProfileModal,
       closeProfileModal,
       consultant,
       allConsultant,
+      showSuccessModal,
+      closeSuccessModal,
     };
   },
 };

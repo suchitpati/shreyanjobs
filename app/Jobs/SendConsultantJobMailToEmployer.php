@@ -21,7 +21,6 @@ class SendConsultantJobMailToEmployer implements ShouldQueue
     protected $recruiter_emailid;
     protected $job_title;
     protected $consultant_data;
-    protected $employername;
     protected $city;
     protected $country;
     protected $additional_detail;
@@ -40,13 +39,12 @@ class SendConsultantJobMailToEmployer implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($employer_emailid, $recruiter_emailid, $job_title, $consultant_data, $employername, $city, $country, $additional_detail, $detailed_description, $state, $remote, $cover_letter,$recruiter_name)
+    public function __construct($employer_emailid, $recruiter_emailid, $job_title, $consultant_data, $city, $country, $additional_detail, $detailed_description, $state, $remote, $cover_letter,$recruiter_name)
     {
         $this->employer_emailid = $employer_emailid;
         $this->recruiter_emailid = $recruiter_emailid;
         $this->job_title = $job_title;
         $this->consultant_data = $consultant_data;
-        $this->employername = $employername;
         $this->city = $city;
         $this->country = $country;
         $this->additional_detail = $additional_detail;
@@ -68,8 +66,8 @@ class SendConsultantJobMailToEmployer implements ShouldQueue
         try {
             Mail::to($this->employer_emailid)
                 ->cc([$this->recruiter_emailid])
-                ->send(new ConsultantJobMailToEmployer($this->job_title, $this->consultant_data, $this->employername, $this->city, $this->country, $this->additional_detail, $this->detailed_description, $this->state,  $this->remote, $this->cover_letter,$this->recruiter_name));
-            Log::info("Request Cycle with Queues Ends");
+                ->send(new ConsultantJobMailToEmployer($this->job_title, $this->consultant_data, $this->city, $this->country, $this->additional_detail, $this->detailed_description, $this->state,  $this->remote, $this->cover_letter,$this->recruiter_name));
+            Log::info($this->employer_emailid);
         } catch (Exception $e) {
             dd($e);
         }

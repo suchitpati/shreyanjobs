@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-[#eaf4ff]">
+  <div class="bg-[#eaf4ff] h-screen">
     <div class="w-full flex justify-end pt-4 pr-4 pl-4">
       <img class="w-[150px]" src="../../assets/logo-no-background.png" alt="" />
       <a
@@ -9,7 +9,7 @@
       </a>
     </div>
     <div
-      class="p-4 h-[calc(100vh-62px)] flex justify-center flex-col gap-6 items-center"
+      class="p-3 h-[calc(100vh-110px)] flex justify-center flex-col gap-6 items-center"
     >
       <div
         class="rounded-lg flex items-center justify-center max-w-[1120px] sm:px-[20px] bg-img w-full"
@@ -38,7 +38,7 @@
             class="w-full bg-white rounded-lg py-4 sm:px-8 px-4 lg:ml-[20px] shadow-[rgba(100,_100,_111,_0.2)_0px_5px_30px_0px]"
           >
             <h1
-              class="sm:text-[28px] text-[22px] font-bold mt-[20px] sm:mb-[5px] mb-[1px] text-[#1890da]"
+              class="sm:text-[28px] text-[22px] font-bold mt-[10px] sm:mb-[5px] mb-[1px] text-[#1890da]"
             >
               Bench Sales Recruiter Registration
             </h1>
@@ -54,7 +54,7 @@
             >
               {{ validationError }}
             </div>
-            <div class="mt-4">
+            <div class="mt-2">
               <div class="w-full">
                 <label
                   class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
@@ -103,7 +103,7 @@
                   class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
                   for="field2"
                 >
-                  Company website URL
+                  Company website URL (Optional)
                 </label>
                 <input
                   class="border border-gray-400 rounded-lg py-2 px-4 mb-1 outline-[#264dd9] focus:shadow-outline w-full"
@@ -142,7 +142,7 @@
                 </div>
               </div>
 
-              <div class="w-full mt-[10px]">
+              <div class="w-full mt-1">
                 <label
                   class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
                   for="field2"
@@ -164,7 +164,7 @@
                 </div>
               </div>
 
-              <div class="w-full mt-[10px]">
+              <div class="w-full mt-1">
                 <label
                   class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
                   for="field2"
@@ -192,7 +192,7 @@
                 </div>
               </div>
 
-              <div class="w-full mt-[10px]">
+              <div class="w-full mt-1">
                 <label
                   class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
                   for="field2"
@@ -215,7 +215,7 @@
               </div>
 
               <button
-                class="bg-[#1890da] hover:bg-blue-500 text-white font-bold py-2 px-8 mb-[20px] rounded focus:outline-none focus:shadow-outline mt-[40px]"
+                class="bg-[#1890da] hover:bg-blue-500 text-white font-bold py-2 px-8 rounded focus:outline-none focus:shadow-outline my-2"
                 @click.prevent="registerRecruiter"
               >
                 Register
@@ -341,17 +341,17 @@ export default {
           companynameError.value = "";
         }
 
-        if (companyurl.value == null || companyurl.value == "") {
-          companyurlError.value = "Please Enter Comapany Url";
-          return false;
-        } else {
-          companyurlError.value = "";
-        }
+        // if (companyurl.value == null || companyurl.value == "") {
+        //   companyurlError.value = "Please Enter Comapany Url";
+        //   return false;
+        // } else {
+        //   companyurlError.value = "";
+        // }
 
         if (email.value == null || email.value == "") {
           emailError.value = "Please Enter Email";
           return false;
-        } else {
+        } else {contactno
           emailError.value = "";
         }
 
