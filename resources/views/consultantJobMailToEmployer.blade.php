@@ -16,21 +16,21 @@
     Job Application for {{ $job_title }} From shreyanjobs.com for the below job.
     <br>
     <br>
-    <b>Consultants Name</b> : @foreach ( $consultant_data as  $consultant)
-    {{$consultant->fullname}},
-            @endforeach
-     (Resume Attached)
+    <b>Consultants Name</b> : @foreach ($consultant_data as $consultant)
+        {{ $consultant->fullname }},
+    @endforeach
+    (Resume Attached)
     <br>
     <br>
     ( ** Note : This candidate does not belong to shreyanjobs.com. The candidate or Bench Sales Recruiter email ID is in
-    CC on this email. Please communicate with that email directly).    <br>
+    CC on this email. Please communicate with that email directly). <br>
     *** shreyanjobs.com is an IT Job Portal - Connecting Job Seekers & Employers/ Recruiters
     <br>
     <br>
-    Bench Sales Recruiter Name ::{{$recruiter_name}}(Email in CC of this email)
+    <b>Bench Sales Recruiter Name :</b>{{ $recruiter_name }}(Email in CC of this email)
     <br>
     <br>
-    <b>Message from Bench Sales Recruiter :</b> :{{ $cover_letter }}
+    <b>Message from Bench Sales Recruiter :</b> {{ $cover_letter }}
     <br>
     <br>
     <b>Job Title</b> : {{ $job_title }} ,

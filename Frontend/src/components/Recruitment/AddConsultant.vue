@@ -708,8 +708,13 @@ export default {
 
         if (consultantResponse.data.error == 100) {
           validationError.value = consultantResponse.data.message;
+
           return false;
         } else {
+            localStorage.setItem("consultantMessageStatus", 1);
+          localStorage.setItem("updateConsultantProfileMessage", true);
+
+          localStorage.setItem("updateConsultantProfileMessageStatus", true);
           router.push("/manage-consultant");
         }
         // Handle consultant response data as needed

@@ -101,7 +101,7 @@ class consultantsController extends Controller
             'secondary_skill'=>$request->secondary_skill,
             'secondary_skill_experience'=>$request->secondary_skill_experience,
             'resume'=>$fileName,
-            'is_active' => $request->is_active,
+            // 'is_active' => $request->is_active,
             'new_job_report_time'=>$request->new_job_report_time
         ]);
 
@@ -123,7 +123,6 @@ class consultantsController extends Controller
             ], 404);
         }
 
-
         if($Constant->is_active == 1){
             return response()->json([
                 'message' => 'Can not delete active Consultant',
@@ -131,7 +130,7 @@ class consultantsController extends Controller
             ]);
         }
 
-        // $Constant->delete();
+        $Constant->delete();
         return response()->json([
             'message' => 'Details deleted successfully',
             'success' => 200,

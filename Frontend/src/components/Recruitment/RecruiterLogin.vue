@@ -49,67 +49,70 @@
                 />
                 <p class="text-base font-bold ps-2">No Registration Fee</p>
               </div>
-              <div class="flex ps-3">
-                <input
-                  type="checkbox"
-                  readonly
-                  checked
-                  class="accent-[green] w-[20px] h-[20[px]"
-                />
-                <p class="text-base font-bold ps-2">No Long-Term Contarct</p>
-              </div>
+
             </div>
             <div class="flex py-3">
-              <div class="flex">
-                <input
-                  type="checkbox"
-                  readonly
-                  checked
-                  class="accent-[green] w-[20px] h-[20[px]"
-                />
-                <p class="text-base font-bold ps-2">
-                  No Monthly Membership Fee
-                </p>
+                <div class="flex">
+                  <input
+                    type="checkbox"
+                    readonly
+                    checked
+                    class="accent-[green] w-[20px] h-[20[px]"
+                  />
+                  <p class="text-base font-bold ps-2">Apply to Jobs for Free</p>
+                </div>
+
               </div>
-              <div class="flex ps-3">
-                <input
-                  type="checkbox"
-                  readonly
-                  checked
-                  class="accent-[green] w-[20px] h-[20[px]"
-                />
-                <p class="text-base font-bold ps-3">Pay-As-You-Use</p>
+              <div class="flex py-3">
+                <div class="flex">
+                  <input
+                    type="checkbox"
+                    readonly
+                    checked
+                    class="accent-[green] w-[20px] h-[20[px]"
+                  />
+                  <p class="text-base font-bold ps-2">Manage multiple Consultants with a single login</p>
+                </div>
+
               </div>
-            </div>
-            <div class="flex py-3">
-              <input
-                type="checkbox"
-                readonly
-                checked
-                class="accent-[green] w-[20px] h-[20[px]"
-              />
-              <div
-                class="border border-[#1890da] rounded-lg text-left p-2 ms-3 font-bold w-[80%]"
-              >
-                <p>A Nominal Fixed Cost per Use</p>
-                <p class="italic">- $5 to Post a Job for 30 Day</p>
-                <p class="italic">
-                  - $0.5 to view Job Seeker Email and Contact number
-                </p>
-                <p class="italic">- $0.5 to View Candidate's Resume</p>
+              <div class="flex py-3">
+                <div class="flex">
+                  <input
+                    type="checkbox"
+                    readonly
+                    checked
+                    class="accent-[green] w-[20px] h-[20[px]"
+                  />
+                  <p class="text-base font-bold ps-2">Apply Jobs for multiple Consultants with a single click</p>
+                </div>
+
               </div>
-            </div>
-            <div class="flex py-3">
-              <input
-                type="checkbox"
-                readonly
-                checked
-                class="accent-[green] w-[20px] h-[20[px]"
-              />
-              <p class="ps-3 font-bold">
-                $50 Credit to use after successful Registration
-              </p>
-            </div>
+              <div class="flex py-3">
+                <div class="flex">
+                  <input
+                    type="checkbox"
+                    readonly
+                    checked
+                    class="accent-[green] w-[20px] h-[20[px]"
+                  />
+                  <p class="text-base font-bold ps-2">Get Email Notification for new matching jobs</p>
+                </div>
+
+              </div>
+              <div class="flex py-3">
+                <div class="flex">
+                  <input
+                    type="checkbox"
+                    readonly
+                    checked
+                    class="accent-[green] w-[20px] h-[20[px]"
+                  />
+                  <p class="text-base font-bold ps-2">Consultant's profile is searchable by Employers/IT Recruiters</p>
+                </div>
+
+              </div>
+
+
           </div>
           <!-- <img src="../../assets/illustration.svg" alt="" class="m-auto mr-0" /> -->
         </div>
@@ -123,7 +126,7 @@
             <h1
               class="sm:text-[28px] text-[22px] font-bold mt-[20px] sm:mb-[5px] mb-[30px] text-[#1890da]"
             >
-              Recruiter Login
+            Bench Sales Recruiter Login
             </h1>
             <div class="flex justify-center gap-[5px]">
               Don't have account ?

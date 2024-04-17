@@ -1618,7 +1618,7 @@ export default {
         recruiter_id: recruiter_id,
         consultants_cover_letter : consultants_cover_letter.value
       });
-
+      consultants_cover_letter.value ="";
       isLoading.value = false;
       isActiveConsultant.value = !isActiveConsultant.value;
 
