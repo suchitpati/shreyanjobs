@@ -26,7 +26,8 @@ class AdminJob extends Model
         'contact_number',
         'additional_detail',
         'technical_skill',
-        'job_owner_id'
+        'job_owner_id',
+        'paid'
     ];
 
     public function seekerdata()

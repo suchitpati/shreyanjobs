@@ -6,6 +6,7 @@ use App\Jobs\SendJobNotification;
 use App\Models\AdminJob;
 use App\Models\Employer;
 use App\Models\EmployerTransactionHistory;
+use App\Models\ProfileCounter;
 use App\Models\Seeker;
 use App\Models\Subscription;
 use Illuminate\Http\Request;
@@ -115,6 +116,7 @@ class AdminJobController extends Controller
             'state' => 'nullable|string',
             'city' => 'nullable|string',
             'remote' => 'required|boolean',
+            'paid' => 'required|boolean',
             'skill' => 'required|string',
             'year_of_experience' => 'required|integer',
             'employment_type' => 'required|string',
@@ -127,11 +129,13 @@ class AdminJobController extends Controller
             'technical_skill' => 'nullable|string',
             'job_owner_id' => 'required|integer',
         ]);
-
+        // return response()->json([
+        //     'message' => $request->paid,
+        //     'status' => $request->remote
+        // ]);
         $employer = Employer::find($request->job_owner_id);
-        if($employer->role != 1)
-        {
-            if ($employer->acct_balance < 5) {
+        if ($employer->role != 1 && $request->paid == true ) {
+            if ($employer->acct_balance < 1) {
                 return response()->json([
                     'code' => 100,
                     'message' => "Insufficient balance",
@@ -139,7 +143,7 @@ class AdminJobController extends Controller
                 ]);
             }
             $begin_balance = $employer->acct_balance;
-            $end_balance = $employer->acct_balance - 5;
+            $end_balance = $employer->acct_balance - 1;
 
             $employer->acct_balance = $end_balance;
             $employer->save();
@@ -149,12 +153,11 @@ class AdminJobController extends Controller
 
 
 
-        if($employer->role != 1)
-        {
+        if ($employer->role != 1 && $request->paid == true) {
             EmployerTransactionHistory::create([
                 'employer_id' => $request->job_owner_id,
                 'begin_balance' => $begin_balance,
-                'transaction_amount' => 5,
+                'transaction_amount' => 1,
                 'end_balance' => $end_balance,
                 'transaction_date' => Carbon::now(),
                 'action_name' => 'Job Posting',
@@ -283,13 +286,16 @@ class AdminJobController extends Controller
 
     public function totalData()
     {
-        $total_seeker = Seeker::where('is_active', 2)->count();
-        $total_employer = Employer::where('is_active', 1)->count();
+        $total_seeker = ProfileCounter::where('profile_type', 'job_seekers')->select('profle_count')->first();
+
+        $total_employer = ProfileCounter::where('profile_type', 'employers_recruiters')->select('profle_count')->first();
+        $total_bench_sales_recruiters = ProfileCounter::where('profile_type', 'bench_sales_recruiters')->select('profle_count')->first();
 
         return response()->json([
             'success' => 200,
-            'total_seeker' => $total_seeker,
-            'total_employer' => $total_employer
+            'total_seeker' => $total_seeker->profle_count,
+            'total_employer' => $total_employer->profle_count,
+            'total_bench_sales_recruiters' => $total_bench_sales_recruiters->profle_count,
         ]);
     }
 }

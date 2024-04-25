@@ -24,6 +24,6 @@ class Employer extends Model
         'city',
         'otp',
         'is_active',
-        'acct_balance'
+        'acct_balance',
     ];
 }

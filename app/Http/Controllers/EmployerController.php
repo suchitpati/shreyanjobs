@@ -48,7 +48,7 @@ class EmployerController extends Controller
                 'city' => $request->city,
                 'otp' => $otp,
                 'is_active' => 0,
-                'acct_balance' => 50
+                'acct_balance' => 10
 
             ]);
 
@@ -77,7 +77,7 @@ class EmployerController extends Controller
                 'city' => $request->city,
                 'otp' => $otp,
                 'is_active' => 0,
-                'acct_balance' => 50
+                'acct_balance' => 10
             ]);
 
             return response()->json([
