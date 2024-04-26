@@ -92,6 +92,9 @@ Route::get('/check-batchJob-status',[EmployerController::class,'checkBatchJobSta
 
 Route::post('/send-notification-email',[EmployerController::class,'sendJobEmailNotification']);
 
+Route::post('/list-matching-resumes',[EmployerController::class,'listMatchingResumes']);
+
+
 
 
 //Admin Routes

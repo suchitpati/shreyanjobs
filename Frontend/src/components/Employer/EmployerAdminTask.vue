@@ -165,7 +165,7 @@ export default {
           isLoading.value = false;
 
           console.log("response", response);
-          window.location.reload();
+        //   window.location.reload();
       }
     });
     onMounted(() => {

@@ -47,7 +47,7 @@
                 Search Resume
               </button>
             </router-link>
-            <router-link to="/">
+            <router-link to="/job-search">
               <button
                 class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] focus:outline-none focus:shadow-outline"
               >
@@ -80,7 +80,7 @@
             v-if="isSeekerLogged == true"
             class="sm:w-full xs:w-auto w-[50%] xs:order-3 order-2 flex justify-end gap-[10px]"
           >
-            <router-link to="/">
+            <router-link to="/job-search">
               <button
                 class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] focus:outline-none focus:shadow-outline"
               >
@@ -106,7 +106,7 @@
             v-if="isRecruiterLogged == true"
             class="sm:w-full xs:w-auto w-[50%] xs:order-3 order-2 flex justify-end gap-[10px]"
           >
-            <router-link to="/">
+            <router-link to="/job-search">
               <button
                 class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] focus:outline-none focus:shadow-outline"
               >
@@ -831,7 +831,9 @@
                   </p>
                 </div>
                 <div class="flex justify-end">
-                  <p class="text-yellow-700 font-bold text-xl">{{job.paid == 1 ? 'Premium' : ''}}</p>
+                  <p class="text-yellow-700 font-bold text-xl">
+                    {{ job.paid == 1 ? "Premium" : "" }}
+                  </p>
                 </div>
               </div>
             </div>
@@ -1626,6 +1628,8 @@ export default {
       isActiveConsultant.value = !isActiveConsultant.value;
 
       console.log(response, "responseresponseresponse");
+      window.location.reload();
+      selectedConsultants.value = [];
     };
 
     const employerLogout = async () => {

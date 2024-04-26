@@ -113,7 +113,7 @@ export default {
       router.push("/employer-dashboard");
     };
     const home = async () => {
-      router.push("/");
+      router.push("/job-search");
     };
 
     const  viewJob = async() =>

@@ -30,6 +30,7 @@ import EmployerDashboard from "./components/Employer/EmployerDashboard.vue";
 import EmployerUpdatePassword from "./components/Employer/UpdatePassword.vue";
 import EmployerJobView from "./components/Employer/EmployerJobView.vue";
 import EmployerJobEdit from "./components/Employer/EmployerJobEdit.vue";
+import ListMatchingResumes from "./components/Employer/ListMatchingResumes.vue";
 import HomePage from "../src/components/HomePage.vue";
 
 const loggedIn = localStorage.getItem("accessToken");
@@ -46,7 +47,7 @@ const routes = [
         component: Admin,
     },
     {
-        path: "/job-search-page",
+        path: "/job-search",
         name: "SeekerPage",
         component: SeekerPage,
     },
@@ -121,6 +122,11 @@ const routes = [
         path: "/employer-dashboard",
         name: "employer-dashboard",
         component: EmployerDashboard,
+    },
+    {
+        path: "/list-matching-resumes/:id",
+        name: "list-matching-resumes",
+        component: ListMatchingResumes,
     },
     {
         path: "/employer-job-view",
