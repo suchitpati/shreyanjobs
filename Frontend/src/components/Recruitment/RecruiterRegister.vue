@@ -20,7 +20,7 @@
         >
           <div class="bg-white p-8 rounded-lg shadow-lg">
             <h2 class="text-2xl font-bold mb-4">
-              Registration Completed Successfully
+                Bench Sales Recruiter account is created successfully.
             </h2>
             <button
               @click="closeSuccessModal"
@@ -449,7 +449,7 @@ export default {
               const elementToHide = document.querySelector(".enter_otp_class");
               elementToHide.classList.add("hidden");
 
-            //   showSuccessModal.value = true;
+              showSuccessModal.value = true;
               setTimeout(() => {
                 router.push("/recruiter-login");
               }, 2000);
@@ -500,3 +500,8 @@ export default {
 };
 </script>
 
+<style>
+  .hidden {
+    display: none !important;
+  }
+</style>

@@ -35,7 +35,7 @@
         </div>
       </div>
     </div>
-    <div class="bg-[#ebf4ff] py-7">
+    <div class="bg-[#ebf4ff] py-7 h-screen">
       <div class="max-w-[1080px] mx-auto px-[20px]">
         <div class="px-11">
           <div

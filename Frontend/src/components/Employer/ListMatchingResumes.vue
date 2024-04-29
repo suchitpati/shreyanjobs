@@ -631,7 +631,6 @@ export default {
 
     return {
       backToViewEditJob,
-      job_title,
       employer_role,
       closeResumeErrorModal,
       showResumeModal,
