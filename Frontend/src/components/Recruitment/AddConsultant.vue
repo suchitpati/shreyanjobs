@@ -21,7 +21,7 @@
     <div class="bg-[#ebf4ff] py-7">
       <div class="max-w-[1080px] w-full mx-auto">
         <div class="text-right bg-[#ebf4ff] text-[18px]">
-          Welcome,{{ recruiter_name }} <br> (Job Seeker)
+          Welcome,{{ recruiter_name }} <br> (Bench Sales Consultant)
         </div>
       </div>
     </div>

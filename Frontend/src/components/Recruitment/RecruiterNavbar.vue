@@ -125,7 +125,7 @@ export default {
       router.push("/manage-consultant");
     };
     const home = async () => {
-      router.push("/");
+      router.push("/job-search");
     };
     const editConsultant = async () => {
       router.push("/edit-recruiter");

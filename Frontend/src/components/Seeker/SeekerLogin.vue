@@ -30,9 +30,73 @@
             </button>
           </div>
         </div>
-        <div class="w-[50%] md:block hidden">
-          <img src="../../assets/illustration.svg" alt="" class="m-auto mr-0" />
+        <div
+        class="w-[50%] md:block hidden shadow-[rgba(100,_100,_111,_0.2)_0px_5px_30px_0px] rounded-lg mr-[10%]"
+      >
+        <div class="p-[20px_20px_50px_20px]">
+          <h5 class="text-2xl underline text-[#1890da] font-bold mb-5">
+              <router-link
+              to="/seeker-register"
+              > Job Seeker registration </router-link>
+          </h5>
+          <div class="flex py-3">
+            <div class="flex">
+              <input
+                type="checkbox"
+                readonly
+                checked
+                class="accent-[green] w-[20px] h-[20[px]"
+              />
+              <p class="text-base font-bold ps-2">Search Jobs with advanced filters</p>
+            </div>
+
+          </div>
+          <div class="flex py-3">
+              <div class="flex">
+                <input
+                  type="checkbox"
+                  readonly
+                  checked
+                  class="accent-[green] w-[20px] h-[20[px]"
+                />
+                <p class="text-base font-bold ps-2">Apply for jobs with one click</p>
+              </div>
+
+            </div>
+            <div class="flex py-3">
+              <div class="flex">
+                <input
+                  type="checkbox"
+                  readonly
+                  checked
+                  class="accent-[green] w-[20px] h-[20[px]"
+                />
+                <p class="text-base font-bold ps-2">Receive New Job Notification in Email</p>
+              </div>
+
+            </div>
+            <div class="flex py-3">
+              <div class="flex">
+                <input
+                  type="checkbox"
+                  readonly
+                  checked
+                  class="accent-[green] w-[20px] h-[20[px]"
+                />
+                <p class="text-base font-bold ps-2">Resume visible to all Registered Employers</p>
+              </div>
+
+            </div>
+
+
+
         </div>
+        <!-- <img src="../../assets/illustration.svg" alt="" class="m-auto mr-0" /> -->
+      </div>
+        <!-- <div class="w-[50%] md:block hidden">
+
+          <img src="../../assets/illustration.svg" alt="" class="m-auto mr-0" />
+        </div> -->
         <div class="md:w-[50%] w-full md:max-w-[100%] max-w-[500px]">
           <div
             class="w-full bg-white rounded-lg py-4 sm:px-8 px-4 lg:ml-[20px] shadow-[rgba(100,_100,_111,_0.2)_0px_5px_30px_0px]"
@@ -40,7 +104,7 @@
             <h1
               class="sm:text-[28px] text-[22px] font-bold mt-[20px] sm:mb-[5px] mb-[30px] text-[#1890da]"
             >
-            Job Seeker Login
+              Job Seeker Login
             </h1>
             <div class="flex justify-center gap-[5px]">
               Don't have account ?
@@ -119,7 +183,6 @@
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -176,16 +239,11 @@ export default {
         if (response.data.code == 100) {
           validationError.value = response.data.message;
         } else {
-
-        if(response.data.is_active == 1)
-        {
+          if (response.data.is_active == 1) {
             localStorage.setItem("seeker_id", response.data.seeker_id);
             localStorage.setItem("is_active", response.data.is_active);
             router.push("/seeker-register");
-
-        }
-        else
-        {
+          } else {
             showSuccessModal.value = true;
             localStorage.setItem("seeker_id", response.data.seeker_id);
             localStorage.setItem("seeker_tocken", response.data.token);
@@ -196,13 +254,12 @@ export default {
               localStorage.removeItem("seeker_id", response.data.seeker_id);
               localStorage.removeItem("seeker_tocken", response.data.token);
               window.location.reload();
-
             }, 60 * 60 * 1000);
 
             setTimeout(() => {
               router.push("/");
             }, 1000);
-        }
+          }
         }
       } catch (error) {
         console.error(error);

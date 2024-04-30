@@ -102,7 +102,7 @@ export default {
     };
 
     const home = async () => {
-      router.push("/");
+      router.push("/job-search");
     };
     return {
       seekerLogout,

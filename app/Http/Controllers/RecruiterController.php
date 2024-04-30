@@ -247,6 +247,8 @@ class RecruiterController extends Controller
     public function consultantsJobApply(Request $request)
     {
         $consultantasIds = $request->consultant_ids;
+        $consultantCount = count($consultantasIds);
+
         $job_id = $request->job_id;
         $recruiter_id = $request->recruiter_id;
 
@@ -259,7 +261,8 @@ class RecruiterController extends Controller
         $additional_detail = $job_details->additional_detail;
         $remote = $job_details->remote;
         $employer_emailid =  $job_details->email;
-
+        $job_details->apply_count =  $job_details->apply_count + $consultantCount;
+        $job_details->save();
         $cover_letter = $request->consultants_cover_letter;
         if ($cover_letter == null  || $cover_letter == "") {
             $cover_letter = "-";

@@ -43,7 +43,9 @@
                         <h5
                             class="text-2xl underline text-[#1890da] font-bold mb-5"
                         >
-                            Employer Registration
+                        <router-link
+                        to="/employer-register"
+                        >   Employer Registration </router-link>
                         </h5>
                         <div class="flex py-3">
                             <div class="flex">
@@ -54,20 +56,10 @@
                                     class="accent-[green] w-[20px] h-[20[px]"
                                 />
                                 <p class="text-base font-bold ps-2">
-                                    No Registration Fee
+                                    Post job for Free
                                 </p>
                             </div>
-                            <div class="flex ps-3">
-                                <input
-                                    type="checkbox"
-                                    readonly
-                                    checked
-                                    class="accent-[green] w-[20px] h-[20[px]"
-                                />
-                                <p class="text-base font-bold ps-2">
-                                    No Long-Term Contarct
-                                </p>
-                            </div>
+
                         </div>
                         <div class="flex py-3">
                             <div class="flex">
@@ -78,21 +70,12 @@
                                     class="accent-[green] w-[20px] h-[20[px]"
                                 />
                                 <p class="text-base font-bold ps-2">
-                                    No Monthly Membership Fee
+                                    Matching Resumes list for Premium job
                                 </p>
                             </div>
-                            <div class="flex ps-3">
-                                <input
-                                    type="checkbox"
-                                    readonly
-                                    checked
-                                    class="accent-[green] w-[20px] h-[20[px]"
-                                />
-                                <p class="text-base font-bold ps-3">
-                                    Pay-As-You-Use
-                                </p>
-                            </div>
+
                         </div>
+
                         <div class="flex py-3">
                             <input
                                 type="checkbox"
@@ -100,20 +83,9 @@
                                 checked
                                 class="accent-[green] w-[20px] h-[20[px]"
                             />
-                            <div
-                                class="border border-[#1890da] rounded-lg text-left p-2 ms-3 font-bold w-[80%]"
-                            >
-                                <p>A Nominal Fixed Cost per Use</p>
-                                <p class="italic">
-                                    - $5 to Post a Job for 30 Day
-                                </p>
-                                <p class="italic">
-                                    - $0.5 to view Job Seeker Email and Contact number
-                                </p>
-                                <p class="italic">
-                                    - $0.5 to View Candidate's Resume
-                                </p>
-                            </div>
+                            <p class="ps-3 font-bold">
+                                $10 initial credit
+                            </p>
                         </div>
                         <div class="flex py-3">
                             <input
@@ -123,7 +95,29 @@
                                 class="accent-[green] w-[20px] h-[20[px]"
                             />
                             <p class="ps-3 font-bold">
-                                $50 Credit to use after successful Registration
+                                Search Resume with Advanced Filter
+                            </p>
+                        </div>
+                        <div class="flex py-3">
+                            <input
+                                type="checkbox"
+                                readonly
+                                checked
+                                class="accent-[green] w-[20px] h-[20[px]"
+                            />
+                            <p class="ps-1 font-bold">
+                               View Job Seeker’s Contact and resume(Fee applicable)
+                            </p>
+                        </div>
+                        <div class="flex py-3">
+                            <input
+                                type="checkbox"
+                                readonly
+                                checked
+                                class="accent-[green] w-[20px] h-[20[px]"
+                            />
+                            <p class="ps-3 font-bold">
+                                Premium Job notification to active Job Seekers
                             </p>
                         </div>
                     </div>

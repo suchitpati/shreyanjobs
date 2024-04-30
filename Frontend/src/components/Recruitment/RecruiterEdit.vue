@@ -1,6 +1,16 @@
 <template>
-  <div class="bg-[#eaf4ff]">
+  <div class="bg-[#eaf4ff] h-screen">
     <RecruiterNavbar />
+    <div class="bg-[#ebf4ff]">
+      <div class="max-w-[1080px] mx-auto px-[20px]">
+        <div class="flex justify-end bg-[#ebf4ff] px-11 py-5">
+          <div>
+            <p>Welcome {{ recruiter_name }}</p>
+            <p>(Bench Sales Recruiter)</p>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- <div class="w-full flex justify-end pt-4 pr-4 pl-4">
         <img class="w-[150px]" src="../../assets/logo-no-background.png" alt="" />
@@ -10,8 +20,9 @@
           >Home
         </a>
       </div> -->
+
     <div
-      class="p-4 h-[calc(100vh-150px)] flex justify-center flex-col gap-6 items-center"
+      class="flex justify-center flex-col gap-6 items-center"
     >
       <div
         class="rounded-lg flex items-center justify-center max-w-[1120px] sm:px-[20px] bg-img w-full"
@@ -32,7 +43,8 @@
             </button>
           </div>
         </div>
-        <div class=" w-full  max-w-[700px]">
+
+        <div class="w-full max-w-[700px]">
           <div
             class="w-full bg-[#d3ddff4f] rounded-lg py-4 sm:px-8 px-4 lg:ml-[20px] shadow-[rgba(100,_100,_111,_0.2)_0px_5px_30px_0px]"
           >
@@ -131,10 +143,10 @@
                   />
                 </div>
                 <router-link
-                to="/recruiter-update-password"
-                class="hover:underline text-red-600 pt-5 w-[250px]"
-                >Change Password</router-link
-            >
+                  to="/recruiter-update-password"
+                  class="hover:underline text-red-600 pt-5 w-[250px]"
+                  >Change Password</router-link
+                >
                 <div
                   v-if="emailError"
                   class="text-red-600 block text-[14px] text-left"
@@ -289,6 +301,8 @@ export default {
     const final_otp = ref("");
 
     const recruiter_data = ref({});
+    const recruiter_name = ref("");
+
     const closeSuccessModal = () => {
       showSuccessModal.value = false;
     };
@@ -301,6 +315,17 @@ export default {
         return true;
       }
     }
+
+    const fetchRecruiterDetails = async () => {
+      const recruiter_id = localStorage.getItem("recruiter_id");
+
+      const recruiterResponse = await axios.post(
+        `${apiUrl}/recruiter-details`,
+        { id: recruiter_id }
+      );
+      recruiter_name.value = recruiterResponse.data.recruiter_details.fullname;
+      console.log(recruiterResponse, "recruiterResponse");
+    };
     const updateRecruiter = async () => {
       try {
         if (fullname.value == null || fullname.value == "") {
@@ -405,10 +430,12 @@ export default {
     };
 
     onMounted(() => {
-      getRecruiter();
+      fetchRecruiterDetails(), getRecruiter();
     });
 
     return {
+      recruiter_name,
+      fetchRecruiterDetails,
       recruiter_data,
       IsEmail,
       stateError,

@@ -23,10 +23,10 @@
     </div>
 
     <div class="text-right bg-[#ebf4ff]" v-if="employer_role != 1">
-        <div class="text-[18px] max-w-[1080px] mx-auto">
-            Account Balance : ${{ acct_balance }}
-        </div>
+      <div class="text-[18px] max-w-[1080px] mx-auto">
+        Account Balance : ${{ acct_balance }}
       </div>
+    </div>
 
     <div class="bg-[#ebf4ff] py-0">
       <div class="max-w-[980px] w-full mx-auto px-[20px]">
@@ -45,8 +45,8 @@
           </div>
         </div>
         <span v-if="addJobMessageStatus === 'true'" class="text-green-600"
-          >Your job was posted successfully and can be viewed in the home
-          page.</span
+          >Your job is posted successfully. You can get a list of matching
+          active resumes for this job from the Edit Job page.</span
         >
         <div
           class="bg-[#d3ddff4f] rounded-lg py-4 sm:px-8 px-4 w-full shadow-[rgba(100,_100,_111,_0.2)_0px_0px_10px_0px] hover:shadow-[rgba(100,_100,_111,_0.2)_0px_0px_20px_0px] transition-[.5s]"
@@ -65,6 +65,12 @@
                   Detail” section below
                 </label>
               </div>
+            </div>
+            <div class="flex justify-start gap-2" v-if="employer_role != 1">
+              <input type="checkbox" v-model="paid" />
+              <p class="text-[#1890da]">
+                <b>Make it Premium job ($1 Posting fee)</b>
+              </p>
             </div>
             <fieldset
               class="border border-gray-400 px-3 pb-[10px] rounded sm:mb-4 mb-7"
@@ -425,7 +431,9 @@
       v-if="confirmModel"
     >
       <div class="bg-white p-8 rounded shadow-lg w-100">
-        <p class="mb-1">$5 will be deducted from your account balance.</p>
+        <p class="mb-1">
+          Do you want to post this job with Premium benefits for just $1?
+        </p>
         <p class="mb-3">Do you want to continue ?</p>
 
         <div class="flex justify-end">
@@ -440,6 +448,31 @@
             class="px-4 py-2 bg-green-500 text-white rounded"
           >
             Yes
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center"
+      v-if="freeJobConfirmModel"
+    >
+      <div class="bg-white p-8 rounded shadow-lg w-100">
+        <p class="mb-1">$1 will be deducted from your account balance.</p>
+        <p class="mb-3">Do you want to continue ?</p>
+
+        <div class="flex justify-end">
+          <button
+            @click="addJob"
+            class="mr-2 px-4 py-2 bg-gray-500 text-white rounded"
+          >
+            No, Please post as Free Job
+          </button>
+          <button
+            @click="makePremiumJob"
+            class="px-4 py-2 bg-green-500 text-white rounded"
+          >
+            Yes, submit Premium job for $1
           </button>
         </div>
       </div>
@@ -470,6 +503,7 @@ export default {
     const country = ref("");
     const state = ref("");
     const remote = ref(false);
+    const paid = ref(false);
     const skill = ref("");
     const year_of_experience = ref("");
     const employment_type = ref("");
@@ -508,6 +542,7 @@ export default {
 
     const city = ref("");
     const confirmModel = ref(false);
+    const freeJobConfirmModel = ref(false);
 
     someCountry.value = [
       {
@@ -611,13 +646,17 @@ export default {
       country.value = selectedCountryObj
         ? JSON.parse(JSON.stringify(selectedCountryObj)).name
         : "";
+      console.log(paid.value, "paid.value");
 
       if (employer_role.value != 1) {
-        confirmModel.value = !confirmModel.value;
-      }
-      //   confirmModel.value = !confirmModel.value;
+        if (freeJobConfirmModel.value == true) {
+          freeJobConfirmModel.value = false;
+        }
 
-      // const employer_id = localStorage.getItem("employer_id");
+        if (confirmModel.value == true) {
+          confirmModel.value = false;
+        }
+      }
 
       try {
         const authToken = localStorage.getItem("accessToken");
@@ -626,7 +665,7 @@ export default {
             Authorization: `Bearer ${authToken}`,
           },
         };
-        console.log("");
+
         const requestData = {
           country: country.value,
           state: selectedState_main.value,
@@ -642,6 +681,7 @@ export default {
           contact_number: contact_number.value,
           additional_detail: additional_detail.value,
           technical_skill: technical_skill.value,
+          paid: paid.value,
           job_owner_id: localStorage.getItem("employer_id"),
         };
         console.log("requestData", requestData);
@@ -685,6 +725,10 @@ export default {
       showSuccessModal.value = false;
     };
 
+    const makePremiumJob = () => {
+      paid.value = true;
+      addJob();
+    };
     const fetchCountries = debounce(async () => {
       await axios
         .get(`${apiUrl}/countries`)
@@ -735,6 +779,7 @@ export default {
       }
     };
     const opemConfirmationmodel = async () => {
+      console.log("paid.valu", paid.value);
       if (selectedCountry.value == null || selectedCountry.value == "") {
         err_country.value = "The country field is required";
         return false;
@@ -767,8 +812,11 @@ export default {
         err_detail.value = "The detailed description field is required";
         return false;
       }
+
       if (employer_role.value == 1) {
         addJob();
+      } else if (employer_role.value != 1 && paid.value == false) {
+        freeJobConfirmModel.value = !freeJobConfirmModel.value;
       } else {
         confirmModel.value = !confirmModel.value;
       }
@@ -862,10 +910,13 @@ export default {
     });
 
     return {
-        acct_balance,
+      makePremiumJob,
+      paid,
+      acct_balance,
       employer_role,
       opemConfirmationmodel,
       confirmModel,
+      freeJobConfirmModel,
       addJobMessageStatus,
       city,
       addJobMessage,

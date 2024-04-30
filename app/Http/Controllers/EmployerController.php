@@ -48,7 +48,7 @@ class EmployerController extends Controller
                 'city' => $request->city,
                 'otp' => $otp,
                 'is_active' => 0,
-                'acct_balance' => 50
+                'acct_balance' => 10
 
             ]);
 
@@ -77,7 +77,7 @@ class EmployerController extends Controller
                 'city' => $request->city,
                 'otp' => $otp,
                 'is_active' => 0,
-                'acct_balance' => 50
+                'acct_balance' => 10
             ]);
 
             return response()->json([
@@ -235,12 +235,17 @@ class EmployerController extends Controller
 
     public function sendJobEmailNotification(Request $request)
     {
+        $thirtyDaysAgo = Carbon::now()->subDays(30)->toDateString();
+
         if ($request->seeker_start_id != null) {
-            $seekers = Seeker::with('subscription')->where('id', '>=', $request->seeker_start_id)->get();
+            $seekers = Seeker::with('subscription')->where('id', '>=', $request->seeker_start_id)->whereDate('last_accessed_date', '>=', $thirtyDaysAgo)->whereNotNull('last_accessed_date')
+                ->get();
         } else {
-            $seekers = Seeker::with('subscription')->get();
+            $seekers = Seeker::with('subscription')->whereDate('last_accessed_date', '>=', $thirtyDaysAgo)->whereNotNull('last_accessed_date')
+                ->get();
         }
-        $AdminJob = AdminJob::where('created_at', '>=', Carbon::now()->subDay())->get();
+        $AdminJob = AdminJob::where('created_at', '>=', Carbon::now()->subDay())->where('paid', 1)->get();
+
         $foundSubscriptions = [];
         $cnt = 0;
         $process_count = 1;
@@ -302,7 +307,7 @@ class EmployerController extends Controller
                     ]);
                     return response()->json([
                         'status' => 'STOPPED/DISABLED',
-                        'message' => 'Job SEND_NEW_JOB_NOTIFICATION is Disabled. The job is stopped after processing seeker ID '.$seeker->id,
+                        'message' => 'Job SEND_NEW_JOB_NOTIFICATION is Disabled. The job is stopped after processing seeker ID ' . $seeker->id,
                         'error' => 100,
                     ]);
                     break;
@@ -420,5 +425,32 @@ class EmployerController extends Controller
         $user->tokens()->where('name', 'EmployerToken')->delete();
 
         return response()->json(['message' => 'Logged out successfully'], 200);
+    }
+
+    public function listMatchingResumes(Request $request)
+    {
+
+        $job_data = AdminJob::find($request->job_id);
+
+        $thirtyDaysAgo = Carbon::now()->subDays(30)->toDateString();
+
+        $seekerdetails = Seeker::where(function ($query) use ($job_data, $thirtyDaysAgo) {
+            $query->where('primary_skill', 'LIKE', '%' . $job_data->skill . '%')
+                ->orWhere('secondary_skill', 'LIKE', '%' . $job_data->skill . '%')
+                ->orWhere('primary_skill', 'LIKE', '%' . $job_data->job_title . '%')
+                ->orWhere('secondary_skill', 'LIKE', '%' . $job_data->job_title . '%')
+                ->whereDate('last_accessed_date', '>=', $thirtyDaysAgo);
+        })
+            ->whereNotNull('last_accessed_date')
+            ->get();
+
+
+
+
+        return response()->json([
+            'success' => 200,
+            'seeker_details' => $seekerdetails,
+            'job_title' => $job_data->job_title
+        ], 200);
     }
 }
