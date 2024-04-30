@@ -67,9 +67,7 @@
             >
             <div class="consultant-table p-10">
               <div class="flex justify-between py-2">
-                <h2 class="font-bold text-xl">
-                  Consultants List
-                </h2>
+                <h2 class="font-bold text-xl">Consultants List</h2>
                 <!-- <button
                   class="underline-offset-3 underline text-[15px] text-sky-500 font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] mb-2 md:mb-0"
                 >
@@ -123,51 +121,22 @@
                       <td class="px-4 py-2 border border-gray-300">
                         {{ person.is_active == 1 ? "Active" : "Inactive" }}
                       </td>
-                      <td class="border border-gray-300 w-[240px]">
+                      <td class="border border-gray-300 ">
                         <div class="flex">
                           <div
-                            class="px-4 py-2 border border-transparent border-r-gray-300 w-[80px] text-center underline"
+                            class="px-4 py-2 border border-transparent border-r-gray-300 w-[60px] text-center underline"
                           >
                             <router-link :to="'/edit-consultant/' + person.id"
                               >Edit</router-link
                             >
                           </div>
-                          <!-- <div
-                                                        class="px-4 py-2 border border-transparent border-r-gray-300 w-[80px] text-center underline"
-                                                    >
-                                                        <a
-                                                            class="cursor-pointer"
-                                                            @click="
-                                                                deleteConsultant(
-                                                                    person.id
-                                                                )
-                                                            "
-                                                            >{{
-                                                                person.is_active !=
-                                                                1
-                                                                    ? "Active"
-                                                                    : "Inactive"
-                                                            }}</a
-                                                        >
-                                                    </div>
-                                                    <div
-                                                        class="px-4 py-2 w-[80px] underline"
-                                                    >
-                                                        <a
-                                                            class="cursor-pointer"
-                                                            @click="
-                                                                showSuccessModal = true
-                                                            "
-                                                            >Delete</a
-                                                        >
-                                                    </div> -->
-                          <div class="px-4 py-2 w-[80px] underline">
+                          <div
+                            class="px-4 py-2 border border-transparent border-r-gray-300 w-[13 0px] text-center underline"
+                          >
                             <a
                               class="cursor-pointer"
                               @click="statusConsultant(person.id)"
-                              >{{
-                                person.is_active != 1 ? "Active" : "Inactive"
-                              }}
+                              >Active/Inactive
                             </a>
                           </div>
                           <div class="px-4 py-2 w-[80px] underline">
@@ -322,16 +291,15 @@ export default {
       showSuccessModal.value = false;
 
       if (response.data.error == 100) {
-          validationError.value = response.data.error.message;
-          showSuccessModal1.value = true;
+        validationError.value = response.data.error.message;
+        showSuccessModal1.value = true;
         console.log("response==>", response);
       } else {
         localStorage.setItem("consultantMessageStatus", 3);
         localStorage.setItem("updateConsultantProfileMessage", true);
 
         localStorage.setItem("updateConsultantProfileMessageStatus", true);
-              window.location.reload();
-
+        window.location.reload();
       }
     };
 

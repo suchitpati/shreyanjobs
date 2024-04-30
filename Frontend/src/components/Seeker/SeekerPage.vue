@@ -233,6 +233,12 @@
             class="text-green-600 text-[16px]"
             >Your resume has been submitted to the employer</span
           >
+
+          <span
+            v-if="jobApplyMessageStatus === 'true'"
+            class="text-green-600 text-[16px]"
+            >Job successfully Applied</span
+          >
         </div>
         <!-- <div class="text-right">For any issue in accessing shreyanjobs.com</div>
         <div class="text-right">please email to support@shreyanjobs.com</div> -->
@@ -1238,7 +1244,10 @@ export default {
     const jobOriginalEmployerId = ref("");
     const remaining_cover_detail = ref(200);
     const mailSentMessage = ref(false);
+    const jobApplyMessage = ref(false);
     const mailSentMessageStatus = ref(false);
+    const jobApplyMessageStatus = ref(false);
+
     const skillModelStatus = ref(false);
 
     const skillInput = ref("");
@@ -1626,6 +1635,8 @@ export default {
       consultants_cover_letter.value = "";
       isLoading.value = false;
       isActiveConsultant.value = !isActiveConsultant.value;
+      localStorage.setItem("jobApplyMessage", true);
+      localStorage.setItem("jobApplyMessageStatus", true);
 
       console.log(response, "responseresponseresponse");
       window.location.reload();
@@ -1916,8 +1927,23 @@ export default {
       if (mailSentMessage.value && mailSentMessageStatus) {
         localStorage.setItem("mailSentMessageStatus", false);
       }
+
+      jobApplyMessage.value = localStorage.getItem("jobApplyMessage");
+      jobApplyMessageStatus.value = localStorage.getItem(
+        "jobApplyMessageStatus"
+      );
+
+      if (jobApplyMessage.value && !jobApplyMessageStatus.value) {
+        localStorage.setItem("jobApplyMessageStatus", true);
+      }
+
+      if (jobApplyMessage.value && jobApplyMessageStatus) {
+        localStorage.setItem("jobApplyMessageStatus", false);
+      }
     });
     return {
+      jobApplyMessage,
+      jobApplyMessageStatus,
       consultantJobmail,
       handleCheckboxChange,
       consultants_data,
