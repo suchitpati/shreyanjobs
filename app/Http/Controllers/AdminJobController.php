@@ -142,10 +142,7 @@ class AdminJobController extends Controller
             'technical_skill' => 'nullable|string',
             'job_owner_id' => 'required|integer',
         ]);
-        // return response()->json([
-        //     'message' => $request->paid,
-        //     'status' => $request->remote
-        // ]);
+
         $employer = Employer::find($request->job_owner_id);
         if ($employer->role != 1 && $request->paid == true) {
             if ($employer->acct_balance < 1) {
