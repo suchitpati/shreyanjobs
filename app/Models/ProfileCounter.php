@@ -9,4 +9,6 @@ class ProfileCounter extends Model
 {
     use HasFactory;
     protected $table = 'profile_counter';
+
+    protected $fillable = ['profile_type','profle_count'];
 }

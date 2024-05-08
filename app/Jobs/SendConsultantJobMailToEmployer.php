@@ -29,17 +29,14 @@ class SendConsultantJobMailToEmployer implements ShouldQueue
     protected $remote;
     protected $cover_letter;
     protected $recruiter_name;
-
-
-
-
+    protected $companyname;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($employer_emailid, $recruiter_emailid, $job_title, $consultant_data, $city, $country, $additional_detail, $detailed_description, $state, $remote, $cover_letter,$recruiter_name)
+    public function __construct($employer_emailid, $recruiter_emailid, $job_title, $consultant_data, $city, $country, $additional_detail, $detailed_description, $state, $remote, $cover_letter,$recruiter_name,$companyname)
     {
         $this->employer_emailid = $employer_emailid;
         $this->recruiter_emailid = $recruiter_emailid;
@@ -53,6 +50,7 @@ class SendConsultantJobMailToEmployer implements ShouldQueue
         $this->remote = $remote;
         $this->cover_letter = $cover_letter;
         $this->recruiter_name = $recruiter_name;
+        $this->companyname = $companyname;
 
     }
 
@@ -66,7 +64,7 @@ class SendConsultantJobMailToEmployer implements ShouldQueue
         try {
             Mail::to($this->employer_emailid)
                 ->cc([$this->recruiter_emailid])
-                ->send(new ConsultantJobMailToEmployer($this->job_title, $this->consultant_data, $this->city, $this->country, $this->additional_detail, $this->detailed_description, $this->state,  $this->remote, $this->cover_letter,$this->recruiter_name));
+                ->send(new ConsultantJobMailToEmployer($this->job_title, $this->consultant_data, $this->city, $this->country, $this->additional_detail, $this->detailed_description, $this->state,  $this->remote, $this->cover_letter,$this->recruiter_name,$this->recruiter_emailid,$this->companyname));
             Log::info($this->employer_emailid);
         } catch (Exception $e) {
             dd($e);

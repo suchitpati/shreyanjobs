@@ -201,17 +201,25 @@
         This website can be viewed better on any latest browser on a laptop/
         desktop. If you must use a phone, please use the landscape mode
       </div>
-      <p class="max-w-[980px] text-left mx-auto">
-        For any issue in accessing shreyanjobs.com please email to
-        support@shreyanjobs.com
-      </p>
+
       <div
-        class="flex items-center max-w-[980px] py-3 gap-6 w-[65%] mx-auto justify-end sm:pb-1 pb-10 md:w-full"
+        class="flex items-center max-w-[980px] py-3 gap-6 mx-auto justify-center sm:pb-1 pb-10 md:w-full"
       >
-        <div class="text-[16px] text-right flex justify-end">
-          {{ total_seeker }} Active Job seeker profile<br />
-          {{ total_employer }} Registered Employers<br />
-          {{ total_bench_sales_recruiters }} Registered Bench Sales Recruiter
+        <div class=" flex items-center justify-center gap-2">
+          <p class="font-bold text-[20px] text-purple-900">*</p>
+          <p class="text-[14px]">
+            {{ total_seeker }} {{ seeker_display_profile_type }}
+          </p>
+          <span class="font-bold text-[20px] text-purple-900">*</span>
+          <p class="text-[14px]">
+            {{ total_employer }} {{ employer_display_profile_type }}
+          </p>
+          <span class="font-bold text-[20px] text-purple-900">*</span>
+          <p class="text-[14px]">
+            {{ total_bench_sales_recruiters }}
+            {{ recruiters_display_profile_type }}
+          </p>
+          <span class="font-bold text-[20px] text-purple-900">*</span>
         </div>
       </div>
     </div>
@@ -372,6 +380,10 @@
         </div>
       </div>
     </div>
+    <p class="max-w-[980px] text-left mx-auto py-2">
+      For any issue in accessing shreyanjobs.com please email to
+      support@shreyanjobs.com
+    </p>
     <div
       v-if="showSuccessSubscrber"
       class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-75"
@@ -780,6 +792,9 @@ export default {
     const total_bench_sales_recruiters = ref(0);
 
     const fullname = ref("");
+    const seeker_display_profile_type = ref("");
+    const recruiters_display_profile_type = ref("");
+    const employer_display_profile_type = ref("");
     const total_employer = ref(0);
     const employer_role = ref("");
     const consultants_data = ref({});
@@ -1354,8 +1369,14 @@ export default {
         const total = await axios.get(`${apiUrl}/total-data`);
         total_seeker.value = total.data.total_seeker;
         total_employer.value = total.data.total_employer;
-        total_bench_sales_recruiters.value = total.data.total_bench_sales_recruiters;
-
+        total_bench_sales_recruiters.value =
+          total.data.total_bench_sales_recruiters;
+        seeker_display_profile_type.value =
+          total.data.seeker_display_profile_type;
+        employer_display_profile_type.value =
+          total.data.employer_display_profile_type;
+        recruiters_display_profile_type.value =
+          total.data.recruiters_display_profile_type;
 
         console.log("total", total.data.total_seeker);
         jobStatus.value = true;
@@ -1448,6 +1469,9 @@ export default {
       }
     });
     return {
+      seeker_display_profile_type,
+      employer_display_profile_type,
+      recruiters_display_profile_type,
       consultantJobmail,
       handleCheckboxChange,
       consultants_data,

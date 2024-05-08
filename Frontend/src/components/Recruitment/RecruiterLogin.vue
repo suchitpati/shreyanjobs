@@ -31,14 +31,15 @@
           </div>
         </div>
         <div
-          class="w-[50%] md:block hidden shadow-[rgba(100,_100,_111,_0.2)_0px_5px_30px_0px] rounded-lg mr-[10%]"
+          class="w-[50%] md:block shadow-[rgba(100,_100,_111,_0.2)_0px_5px_30px_0px] rounded-lg mr-[10%]"
         >
           <div class="p-[20px_20px_50px_20px]">
             <h5 class="text-2xl underline text-[#1890da] font-bold mb-5">
-                <router-link
-                to="/recruiter-register"
-                > Bench Sales Recruiter Registration</router-link>
+              <router-link to="/recruiter-register">
+                Bench Sales Recruiter Registration</router-link
+              >
             </h5>
+
             <div class="flex py-3">
               <div class="flex">
                 <input
@@ -47,72 +48,52 @@
                   checked
                   class="accent-[green] w-[20px] h-[20[px]"
                 />
-                <p class="text-base font-bold ps-2">No Registration Fee</p>
+                <p class="text-base font-bold ps-2">
+                  Manage multiple Consultants with a single login
+                </p>
               </div>
-
             </div>
             <div class="flex py-3">
-                <div class="flex">
+              <div class="flex">
+                <input
+                  type="checkbox"
+                  readonly
+                  checked
+                  class="accent-[green] w-[20px] h-[20[px]"
+                />
+                <p class="text-base font-bold ps-2">
+                  Apply Jobs for multiple Consultants with a single click
+                </p>
+              </div>
+            </div>
+            <div class="flex py-3">
+              <div class="flex">
+                <input
+                  type="checkbox"
+                  readonly
+                  checked
+                  class="accent-[green] w-[20px] h-[20[px]"
+                />
+                <p class="text-base font-bold ps-2">
+                  Get Email Notification for new matching jobs
+                </p>
+              </div>
+            </div>
+            <div class="py-3">
+              <div class="flex items-start">
+                <div>
                   <input
                     type="checkbox"
                     readonly
                     checked
-                    class="accent-[green] w-[20px] h-[20[px]"
+                    class="accent-[green] !w-[20px] !h-[20px]"
                   />
-                  <p class="text-base font-bold ps-2">Apply to Jobs for Free</p>
                 </div>
-
+                <p class="text-md font-bold ps-2 text-left">
+                  Consultant's profile is searchable by Employers/IT Recruiters
+                </p>
               </div>
-              <div class="flex py-3">
-                <div class="flex">
-                  <input
-                    type="checkbox"
-                    readonly
-                    checked
-                    class="accent-[green] w-[20px] h-[20[px]"
-                  />
-                  <p class="text-base font-bold ps-2">Manage multiple Consultants with a single login</p>
-                </div>
-
-              </div>
-              <div class="flex py-3">
-                <div class="flex">
-                  <input
-                    type="checkbox"
-                    readonly
-                    checked
-                    class="accent-[green] w-[20px] h-[20[px]"
-                  />
-                  <p class="text-base font-bold ps-2">Apply Jobs for multiple Consultants with a single click</p>
-                </div>
-
-              </div>
-              <div class="flex py-3">
-                <div class="flex">
-                  <input
-                    type="checkbox"
-                    readonly
-                    checked
-                    class="accent-[green] w-[20px] h-[20[px]"
-                  />
-                  <p class="text-base font-bold ps-2">Get Email Notification for new matching jobs</p>
-                </div>
-
-              </div>
-              <div class="flex py-3">
-                <div class="flex">
-                  <input
-                    type="checkbox"
-                    readonly
-                    checked
-                    class="accent-[green] w-[20px] h-[20[px]"
-                  />
-                  <p class="text-base font-bold ps-2">Consultant's profile is searchable by Employers/IT Recruiters</p>
-                </div>
-
-              </div>
-
-
+            </div>
           </div>
           <!-- <img src="../../assets/illustration.svg" alt="" class="m-auto mr-0" /> -->
         </div>
@@ -126,7 +107,7 @@
             <h1
               class="sm:text-[28px] text-[22px] font-bold mt-[20px] sm:mb-[5px] mb-[30px] text-[#1890da]"
             >
-            Bench Sales Recruiter Login
+              Bench Sales Recruiter Login
             </h1>
             <div class="flex justify-center gap-[5px]">
               Don't have account ?
@@ -340,8 +321,7 @@ export default {
               otpError.value = true;
               return false;
             } else {
-                window.location.reload();
-
+              window.location.reload();
             }
           })
           .catch((error) => {

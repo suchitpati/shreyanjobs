@@ -13,44 +13,56 @@
     Hi,
     <br>
     <br>
-    Job Application for {{ $job_title }} From shreyanjobs.com for the below job.
+    Job Application for <b>{{ $job_title }}</b> From shreyanjobs.com
     <br>
     <br>
-    <b>Consultants Name</b> : @foreach ($consultant_data as $consultant)
-        {{ $consultant->fullname }},
+    Please find attached the resume of my Consultant(s) for the below job Position. Please review the resume and let
+    me know your feedback. My Email ID is in CC of this email.
+    <br>
+    <br>
+    <b>List of Consultants (Resume attached):</b>
+    @foreach ($consultant_data as $key => $consultant)
+    <br> <b>{{$key+1}}.</b> {{ $consultant->fullname }}, Location : {{$consultant->city}},{{$consultant->state}},Visa:{{$consultant->work_authorization}}
     @endforeach
-    (Resume Attached)
+    <br><br>
+    <b>Additional Note from the Bench Sales Recruiter:</b> {!! $cover_letter ? nl2br($cover_letter) : '-' !!}
     <br>
     <br>
-    ( ** Note : This candidate does not belong to shreyanjobs.com. The candidate or Bench Sales Recruiter email ID is in
-    CC on this email. Please communicate with that email directly). <br>
-    *** shreyanjobs.com is an IT Job Portal - Connecting Job Seekers & Employers/ Recruiters
-    <br>
-    <br>
-    <b>Bench Sales Recruiter Name :</b>{{ $recruiter_name }}(Email in CC of this email)
-    <br>
-    <br>
-    <b>Message from Bench Sales Recruiter :</b> {{ $cover_letter }}
-    <br>
-    <br>
-    <b>Job Title</b> : {{ $job_title }} ,
-    @if ($remote)
-        Location : Remote, {{ $country }}
-    @else
-        Location : {{ $city }}, {{ $state }}, {{ $country }}
-    @endif
+    <b>Thanks & Regards, <b>
+            <br>
+            <br>
+            {{ $recruiter_name }}
+            <br>
+            Bench Sales Recruiter
+            <br>
+            {{ $recruiter_emailid }}
+            <br>
+            {{ $companyname }}
+            <br>
+            -------------------------------------------------------------------------------------
 
-    <br>
-    <br>
-    <b>Additional detail</b>
-    <br>
-    {!! nl2br($additional_detail) !!}
-    <br>
-    <br>
-    <b>Detailed description</b>
-    <br>
-    {!! nl2br($detailed_description) !!}
-    <br>
+            <br>
+            <br>
+            <b>Job Title</b> : {{ $job_title }} ,
+            @if ($remote)
+                Location : Remote, {{ $country }}
+            @else
+                Location : {{ $city }}, {{ $state }}, {{ $country }}
+            @endif
+
+            <br>
+            <br>
+            <b>Additional detail</b>
+            <br>
+            {!! $additional_detail ? nl2br($additional_detail) : '-'!!}
+            <br>
+            <br>
+            <b>Detailed description</b>
+            <br>
+            {!! nl2br($detailed_description) !!}
+            <br>
+            -------------------------------------------------------------------------------------
+
 
 
 </body>

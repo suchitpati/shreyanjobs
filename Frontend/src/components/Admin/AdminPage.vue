@@ -45,8 +45,7 @@
           </div>
         </div>
         <span v-if="addJobMessageStatus === 'true'" class="text-green-600"
-          >Your job is posted successfully. You can get a list of matching
-          active resumes for this job from the Edit Job page.</span
+          >Your job is posted successfully.</span
         >
         <div
           class="bg-[#d3ddff4f] rounded-lg py-4 sm:px-8 px-4 w-full shadow-[rgba(100,_100,_111,_0.2)_0px_0px_10px_0px] hover:shadow-[rgba(100,_100,_111,_0.2)_0px_0px_20px_0px] transition-[.5s]"
@@ -431,10 +430,7 @@
       v-if="confirmModel"
     >
       <div class="bg-white p-8 rounded shadow-lg w-100">
-        <p class="mb-1">
-          Do you want to post this job with Premium benefits for just $1?
-        </p>
-        <p class="mb-3">Do you want to continue ?</p>
+        <p class="mb-1">$1 will be deducted from your account balance.</p>
 
         <div class="flex justify-end">
           <button
@@ -458,8 +454,7 @@
       v-if="freeJobConfirmModel"
     >
       <div class="bg-white p-8 rounded shadow-lg w-100">
-        <p class="mb-1">$1 will be deducted from your account balance.</p>
-        <p class="mb-3">Do you want to continue ?</p>
+        <p class="mb-1"> Do you want to post this job with Premium benefits for just $1?</p>
 
         <div class="flex justify-end">
           <button

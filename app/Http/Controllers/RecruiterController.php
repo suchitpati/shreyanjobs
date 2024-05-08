@@ -270,12 +270,14 @@ class RecruiterController extends Controller
         $recruiter_details = Recruiter::where('id', $recruiter_id)->first();
         $recruiter_emailid =  $recruiter_details->emailid;
         $recruiter_name =  $recruiter_details->fullname;
+        $companyname =  $recruiter_details->companyname;
+
 
 
 
         $consultant_data = consultantas::whereIn('id', $consultantasIds)->get();
         try {
-            SendConsultantJobMailToEmployer::dispatch($employer_emailid, $recruiter_emailid, $job_title, $consultant_data, $city, $country, $additional_detail, $detailed_description, $state, $remote, $cover_letter, $recruiter_name);
+            SendConsultantJobMailToEmployer::dispatch($employer_emailid, $recruiter_emailid, $job_title, $consultant_data, $city, $country, $additional_detail, $detailed_description, $state, $remote, $cover_letter, $recruiter_name,$companyname);
         } catch (Exception $e) {
             dd($e);
         }

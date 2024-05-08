@@ -23,14 +23,15 @@ class ConsultantJobMailToEmployer extends Mailable
     protected $remote;
     protected $cover_letter;
     protected $recruiter_name;
-
+    protected $recruiter_emailid;
+    protected $companyname;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($job_title, $consultant_data, $city, $country, $additional_detail, $detailed_description, $state, $remote, $cover_letter,$recruiter_name)
+    public function __construct($job_title, $consultant_data, $city, $country, $additional_detail, $detailed_description, $state, $remote, $cover_letter,$recruiter_name,$recruiter_emailid,$companyname)
     {
 
         $this->job_title = $job_title;
@@ -43,6 +44,8 @@ class ConsultantJobMailToEmployer extends Mailable
         $this->remote = $remote;
         $this->cover_letter = $cover_letter;
         $this->recruiter_name = $recruiter_name;
+        $this->recruiter_emailid = $recruiter_emailid;
+        $this->companyname = $companyname;
 
     }
 
@@ -66,7 +69,9 @@ class ConsultantJobMailToEmployer extends Mailable
             'detailed_description' => $this->detailed_description,
             'cover_letter' => $this->cover_letter,
             'remote' => $this->remote,
-            'recruiter_name' => $this->recruiter_name
+            'recruiter_name' => $this->recruiter_name,
+            'recruiter_emailid' => $this->recruiter_emailid,
+            'companyname' => $this->companyname
         ])->subject($subject);
 
         $path = public_path('pdf');
