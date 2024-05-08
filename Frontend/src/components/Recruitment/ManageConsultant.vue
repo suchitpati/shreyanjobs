@@ -119,7 +119,7 @@
                         {{ person.primary_skill }}
                       </td>
                       <td class="px-4 py-2 border border-gray-300">
-                        {{ person.is_active == 1 ? "Active" : "Inactive" }}
+                        {{ person.is_active == 1 ? "Activate" : "Deactivate" }}
                       </td>
                       <td class="border border-gray-300 ">
                         <div class="flex">
@@ -136,7 +136,7 @@
                             <a
                               class="cursor-pointer"
                               @click="statusConsultant(person.id)"
-                              >Active/Inactive
+                              >{{ person.is_active == 1 ? "Deactivate" : "Activate" }}
                             </a>
                           </div>
                           <div class="px-4 py-2 w-[80px] underline">

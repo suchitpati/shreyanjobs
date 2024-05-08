@@ -31,7 +31,7 @@
           </div>
         </div>
         <div
-        class="w-[50%] md:block hidden shadow-[rgba(100,_100,_111,_0.2)_0px_5px_30px_0px] rounded-lg mr-[10%]"
+        class="w-[50%] md:block shadow-[rgba(100,_100,_111,_0.2)_0px_5px_30px_0px] rounded-lg mr-[10%]"
       >
         <div class="p-[20px_20px_50px_20px]">
           <h5 class="text-2xl underline text-[#1890da] font-bold mb-5">

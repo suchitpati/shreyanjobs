@@ -24,6 +24,16 @@ class AdminJobController extends Controller
     {
         $adminJobs = AdminJob::with('seekerdata');
 
+        $adminJobs->where(function ($query) {
+            $query->where(function ($q) {
+                $q->where('paid', 0) // Free jobs
+                    ->where('created_at', '>=', now()->subDays(2)->startOfDay());
+            })->orWhere(function ($q) {
+                $q->where('paid', 1) // Paid jobs
+                    ->where('created_at', '>=', now()->subDays(7)->startOfDay());
+            });
+        });
+
         // $query = AdminJob::orderBy('created_at', 'DESC');
         // $adminJobs = $query->get();
 
@@ -82,9 +92,12 @@ class AdminJobController extends Controller
             $adminJobs->where('created_at', '>=', $formattedStartDate)->orderByDesc('created_at');
         });
 
+        $adminJobs->orderByRaw("CASE WHEN paid = 1 THEN 0 ELSE 1 END");
 
         // $adminJobs->increment('search_count', 1);
-        $adminJobs->where('created_at', '>', now()->subDays(30)->endOfDay());
+        // $adminJobs->where('created_at', '>', now()->subDays(30)->endOfDay());
+        // $adminJobs->where('created_at', '>', now()->subDays(7)->endOfDay());
+
 
         $jobs = $adminJobs->orderByDesc('created_at')->get();
 
@@ -134,7 +147,7 @@ class AdminJobController extends Controller
         //     'status' => $request->remote
         // ]);
         $employer = Employer::find($request->job_owner_id);
-        if ($employer->role != 1 && $request->paid == true ) {
+        if ($employer->role != 1 && $request->paid == true) {
             if ($employer->acct_balance < 1) {
                 return response()->json([
                     'code' => 100,
@@ -286,14 +299,17 @@ class AdminJobController extends Controller
 
     public function totalData()
     {
-        $total_seeker = ProfileCounter::where('profile_type', 'job_seekers')->select('profle_count')->first();
+        $total_seeker = ProfileCounter::where('profile_type', 'job_seekers')->select('profle_count','display_profile_type')->first();
 
-        $total_employer = ProfileCounter::where('profile_type', 'employers_recruiters')->select('profle_count')->first();
-        $total_bench_sales_recruiters = ProfileCounter::where('profile_type', 'bench_sales_recruiters')->select('profle_count')->first();
+        $total_employer = ProfileCounter::where('profile_type', 'employers_recruiters')->select('profle_count','display_profile_type')->first();
+        $total_bench_sales_recruiters = ProfileCounter::where('profile_type', 'bench_sales_recruiters')->select('profle_count','display_profile_type')->first();
 
         return response()->json([
             'success' => 200,
             'total_seeker' => $total_seeker->profle_count,
+            'seeker_display_profile_type' => $total_seeker->display_profile_type,
+            'employer_display_profile_type' => $total_employer->display_profile_type,
+            'recruiters_display_profile_type' => $total_bench_sales_recruiters->display_profile_type,
             'total_employer' => $total_employer->profle_count,
             'total_bench_sales_recruiters' => $total_bench_sales_recruiters->profle_count,
         ]);
