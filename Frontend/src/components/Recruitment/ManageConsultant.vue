@@ -119,7 +119,7 @@
                         {{ person.primary_skill }}
                       </td>
                       <td class="px-4 py-2 border border-gray-300">
-                        {{ person.is_active == 1 ? "Activate" : "Deactivate" }}
+                        {{ person.is_active == 1 ? "Active" : "Inactive" }}
                       </td>
                       <td class="border border-gray-300 ">
                         <div class="flex">

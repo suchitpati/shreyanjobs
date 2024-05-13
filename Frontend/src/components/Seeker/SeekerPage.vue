@@ -1068,7 +1068,7 @@
               </div>
               <div class="mb-5">
                 <div class="text-black font-semibold mr-3 mb-2">
-                  Cover Letter or Additional Note to the Employer
+                  Cover Letter or Addiasdtional Note to the Employer
                 </div>
                 <textarea
                   name="textfield"
@@ -1078,6 +1078,8 @@
                   maxlength="200"
                   class="border border-black rounded-lg"
                   v-model="consultants_cover_letter"
+                  style="resize: vertical; min-height: 120px; cursor: text; padding-left: 10px;"
+
                 ></textarea>
                 <div class="text-end">
                   <span class="text-blue-700 text-[16px] mr-[45px]"
