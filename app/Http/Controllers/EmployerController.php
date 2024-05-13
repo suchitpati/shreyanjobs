@@ -442,6 +442,7 @@ class EmployerController extends Controller
                 ->whereDate('last_accessed_date', '>=', $thirtyDaysAgo);
         })
             ->whereNotNull('last_accessed_date')
+            ->orderBy('last_accessed_date', 'DESC')
             ->get();
 
 

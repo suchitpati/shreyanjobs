@@ -44,7 +44,15 @@
             >
           </div>
         </div>
-        <span v-if="addJobMessageStatus === 'true'" class="text-green-600"
+        <span
+          v-if="addJobMessageStatus === 'true' && lastJobPaidStatus === 'true'"
+          class="text-green-600"
+          >Your job is posted successfully.you can get a list of matching active
+          resumes for this job from the Edit Job Page.</span
+        >
+        <span
+          v-if="addJobMessageStatus === 'true' && lastJobFreeStatus === 'true'"
+          class="text-green-600"
           >Your job is posted successfully.</span
         >
         <div
@@ -434,16 +442,16 @@
 
         <div class="flex justify-end">
           <button
-            @click="opemConfirmationmodel"
+            @click="makeFreeJob"
             class="mr-2 px-4 py-2 bg-gray-500 text-white rounded"
           >
-            No
+            No,Please post as Free Job
           </button>
           <button
             @click="addJob"
             class="px-4 py-2 bg-green-500 text-white rounded"
           >
-            Yes
+            Yes,submit Premium job for $1
           </button>
         </div>
       </div>
@@ -454,7 +462,9 @@
       v-if="freeJobConfirmModel"
     >
       <div class="bg-white p-8 rounded shadow-lg w-100">
-        <p class="mb-1"> Do you want to post this job with Premium benefits for just $1?</p>
+        <p class="mb-1">
+          Do you want to post this job with Premium benefits for just $1?
+        </p>
 
         <div class="flex justify-end">
           <button
@@ -530,6 +540,8 @@ export default {
     const additional_detail = ref("");
     const technical_skill = ref("");
     const addJobMessage = ref(false);
+    const lastJobPaidStatus = ref(false);
+    const lastJobFreeStatus = ref(false);
     const addJobMessageStatus = ref(false);
     const employername = ref("");
     const employer_role = ref("");
@@ -686,6 +698,12 @@ export default {
           requestData,
           config
         );
+        if (paid.value == true) {
+          console.log("paid.value", paid.value);
+          localStorage.setItem("lastJobPaidStatus", true);
+        } else {
+          localStorage.setItem("lastJobFreeStatus", true);
+        }
         isLoading.value = false;
 
         if (response.data.code == 100) {
@@ -722,6 +740,10 @@ export default {
 
     const makePremiumJob = () => {
       paid.value = true;
+      addJob();
+    };
+    const makeFreeJob = () => {
+      paid.value = false;
       addJob();
     };
     const fetchCountries = debounce(async () => {
@@ -888,6 +910,8 @@ export default {
     onMounted(() => {
       addJobMessage.value = localStorage.getItem("addJobMessage");
       addJobMessageStatus.value = localStorage.getItem("addJobMessageStatus");
+      lastJobPaidStatus.value = localStorage.getItem("lastJobPaidStatus");
+      lastJobFreeStatus.value = localStorage.getItem("lastJobFreeStatus");
 
       if (addJobMessage.value && !addJobMessageStatus.value) {
         localStorage.setItem("addJobMessageStatus", true);
@@ -895,7 +919,14 @@ export default {
 
       if (addJobMessage.value && addJobMessageStatus) {
         localStorage.setItem("addJobMessageStatus", false);
+        localStorage.setItem("lastJobPaidStatus", false);
+        localStorage.setItem("lastJobFreeStatus", false);
+
       }
+
+      console.log(lastJobPaidStatus.value, "lastJobPaidStatus");
+      console.log(lastJobFreeStatus.value, "lastJobFreeStatus");
+
       // countries_state.value = Country.getAllCountries();
       countries_state.value = someCountry.value;
 
@@ -905,6 +936,8 @@ export default {
     });
 
     return {
+      lastJobFreeStatus,
+      lastJobPaidStatus,
       makePremiumJob,
       paid,
       acct_balance,
@@ -921,6 +954,7 @@ export default {
       getEmployerDeatails,
       data,
       addJob,
+      makeFreeJob,
       country,
       state,
       remote,
