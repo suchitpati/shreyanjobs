@@ -43,7 +43,7 @@
             <h1
               class="sm:text-[28px] text-[22px] font-bold mt-[20px] sm:mb-[50px] mb-[30px] text-[#1890da]"
             >
-              Register to your account
+              Employer/ IT Recruiter Registration
             </h1>
             <div
               v-if="validationError"
@@ -57,7 +57,7 @@
                   class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
                   for="field2"
                 >
-                Full Name
+                  Full Name
                 </label>
                 <input
                   class="border border-gray-400 rounded-lg py-2 px-4 mb-1 outline-[#264dd9] focus:shadow-outline w-full"
@@ -334,8 +334,9 @@
               >
                 Submit
               </button>
-              <div class="text-[14px] mt-1">It may take 1 – 2 mins to receive the OTP in email.</div>
-
+              <div class="text-[14px] mt-1">
+                It may take 1 – 2 mins to receive the OTP in email.
+              </div>
             </div>
           </div>
         </div>
@@ -428,64 +429,64 @@ export default {
     const someCountry = ref([]);
 
     someCountry.value = [
-            {
-                name: "United States",
-                isoCode: "US",
-            },
-            {
-                name: "Canada",
-                isoCode: "CA",
-            },
-            {
-                name: "United Kingdom",
-                isoCode: "GB",
-            },
-            {
-                name: "Australia",
-                isoCode: "AU",
-            },
-            {
-                name: "Singapore",
-                isoCode: "SG",
-            },
-            {
-                name: "France",
-                isoCode: "FR",
-            },
-            {
-                name: "Germany",
-                isoCode: "DE",
-            },
-            {
-                name: "China",
-                isoCode: "CN",
-            },
-            {
-                name: "India",
-                isoCode: "IN",
-            },
-            {
-                name: "Japan",
-                isoCode: "JP",
-            },
-            {
-                name: "Saudi Arabia",
-                isoCode: "SA",
-            },
-            {
-                name: "Brazil",
-                isoCode: "BR",
-            },
-        ];
+      {
+        name: "United States",
+        isoCode: "US",
+      },
+      {
+        name: "Canada",
+        isoCode: "CA",
+      },
+      {
+        name: "United Kingdom",
+        isoCode: "GB",
+      },
+      {
+        name: "Australia",
+        isoCode: "AU",
+      },
+      {
+        name: "Singapore",
+        isoCode: "SG",
+      },
+      {
+        name: "France",
+        isoCode: "FR",
+      },
+      {
+        name: "Germany",
+        isoCode: "DE",
+      },
+      {
+        name: "China",
+        isoCode: "CN",
+      },
+      {
+        name: "India",
+        isoCode: "IN",
+      },
+      {
+        name: "Japan",
+        isoCode: "JP",
+      },
+      {
+        name: "Saudi Arabia",
+        isoCode: "SA",
+      },
+      {
+        name: "Brazil",
+        isoCode: "BR",
+      },
+    ];
 
-        function IsEmail(email) {
-        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (emailRegex.test(email)) {
-           return false;
-        }else{
-           return true;
-        }
+    function IsEmail(email) {
+      var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (emailRegex.test(email)) {
+        return false;
+      } else {
+        return true;
       }
+    }
 
     const registerEmployer = async () => {
       try {
@@ -512,12 +513,11 @@ export default {
 
         var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (emailRegex.test(email.value) == false) {
-            emailError.value = "Please valid Email";
-            return false;
-        }else{
-            emailError.value = "";
+          emailError.value = "Please valid Email";
+          return false;
+        } else {
+          emailError.value = "";
         }
-
 
         if (password.value == null || password.value == "") {
           passwordError.value = "Please Enter Password";
@@ -688,7 +688,7 @@ export default {
     });
 
     return {
-        IsEmail,
+      IsEmail,
       stateError,
       companyname,
       companynameError,

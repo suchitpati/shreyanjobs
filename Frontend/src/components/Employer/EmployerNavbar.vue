@@ -89,7 +89,7 @@ export default {
           showLogoutModal.value = true;
 
           setTimeout(() => {
-            router.push("/employer-login");
+            router.push("/");
           }, 1000);
         }
 

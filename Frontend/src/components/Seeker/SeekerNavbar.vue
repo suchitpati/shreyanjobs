@@ -83,12 +83,13 @@ export default {
         localStorage.removeItem("seeker_tocken");
         localStorage.removeItem("seeker_id");
 
+        console.log(response.data.message,'response.data.message');
         if (response.data.message) {
           successMessage.value = response.data.message;
           showLogoutModal.value = true;
 
           setTimeout(() => {
-            router.push("/seeker-login");
+            router.push("/");
           }, 1000);
         }
 

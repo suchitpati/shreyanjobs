@@ -43,7 +43,7 @@
             <h1
               class="sm:text-[28px] text-[22px] font-bold mt-[20px] sm:mb-[50px] mb-[30px] text-[#1890da]"
             >
-              Register to your account
+            Job Seeker Registration
             </h1>
             <div
               v-if="validationError"
@@ -439,7 +439,7 @@
                         </div>
                       </div>
                     </div>
-                    <div
+                    <!-- <div
                       class="w-full flex sm:flex-row flex-col justify-between sm:gap-6 gap-2"
                     >
                       <div class="sm:w-[100%] mb-4">
@@ -478,7 +478,7 @@
                           added from profile page (Manage Subscription).
                         </div>
                       </div>
-                    </div>
+                    </div> -->
                     <div
                       class="w-full flex sm:flex-row flex-col justify-between sm:gap-6 gap-2 items-center"
                     >
@@ -876,30 +876,30 @@ export default {
         err_secondary_experience.value = "";
       }
 
-      if (skill.value == null || skill.value == "") {
-        err_skill.value = "The skill field is required";
-        return false;
-      } else {
-        err_skill.value = "";
-      }
+    //   if (skill.value == null || skill.value == "") {
+    //     err_skill.value = "The skill field is required";
+    //     return false;
+    //   } else {
+    //     err_skill.value = "";
+    //   }
 
-      var skillRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (skillRegex.test(skill.value) == true) {
-        err_skill.value =
-          "Do not enter your email here. Please specify only one skill to get email notification";
-        return false;
-      } else {
-        err_skill.value = "";
-      }
+    //   var skillRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    //   if (skillRegex.test(skill.value) == true) {
+    //     err_skill.value =
+    //       "Do not enter your email here. Please specify only one skill to get email notification";
+    //     return false;
+    //   } else {
+    //     err_skill.value = "";
+    //   }
 
-      var commaPattern = /,/;
-      if (commaPattern.test(skill.value) == true) {
-        err_skill.value =
-          "Comma (,) is not allowed. Please specify ONLY one skill to get email notification";
-        return false;
-      } else {
-        err_skill.value = "";
-      }
+    //   var commaPattern = /,/;
+    //   if (commaPattern.test(skill.value) == true) {
+    //     err_skill.value =
+    //       "Comma (,) is not allowed. Please specify ONLY one skill to get email notification";
+    //     return false;
+    //   } else {
+    //     err_skill.value = "";
+    //   }
 
       if (
         parseInt(secondary_experience.value) < 0 ||
@@ -933,7 +933,7 @@ export default {
       formData.append("primary_experience", primary_experience.value);
       formData.append("secondary_skill", secondary_skill.value);
       formData.append("secondary_experience", secondary_experience.value);
-      formData.append("skill", skill.value);
+    //   formData.append("skill", skill.value);
       formData.append("seeker_id", seeker_id.value);
       formData.append("relocate", relocate.value);
 

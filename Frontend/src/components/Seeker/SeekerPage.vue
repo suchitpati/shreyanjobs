@@ -1108,7 +1108,7 @@
       </div>
     </div>
 
-    <div
+    <!-- <div
       v-if="skillModelStatus"
       class="modal fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center"
     >
@@ -1136,12 +1136,7 @@
         </div>
 
         <div class="flex justify-center">
-          <!-- <button
-                        class="mr-2 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition duration-300"
-                        @click="closeSeeekerSkillDetail"
-                    >
-                        No
-                    </button> -->
+
           <button
             class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition duration-300"
             @click="addSeeekerSkillDetail"
@@ -1150,7 +1145,7 @@
           </button>
         </div>
       </div>
-    </div>
+    </div> -->
     <div
       class="fixed inset-0 flex items-center justify-center z-10"
       v-if="isLoading"
@@ -1705,10 +1700,10 @@ export default {
         );
         localStorage.removeItem("seeker_tocken");
         localStorage.removeItem("seeker_id");
-
-        if (response.data.message) {
+        console.log(response.data,'responseresponseresponseresponseresponse');
+        if (response.data.message.length > 1) {
           setTimeout(() => {
-            router.push("/seeker-login");
+            router.push("/");
           }, 1000);
         }
 
@@ -1741,7 +1736,7 @@ export default {
 
         if (response.data.message) {
           setTimeout(() => {
-            router.push("/recruiter-login");
+            router.push("/");
           }, 1000);
         }
 
