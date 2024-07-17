@@ -17,7 +17,7 @@
     </div>
     <EmployerNev />
     <div class="text-right pr-[105px] bg-[#ebf4ff] text-[18px]">
-      Welcome,{{ employername }} (Employer)
+      Welcome {{ employername }} (Employer)
     </div>
 
     <div class="bg-[#ebf4ff] py-0 h-[calc(100vh-80px)] overflow-y-auto">
@@ -165,11 +165,13 @@
                   id="field2"
                   v-model="employment_type"
                 >
-                  <option value="">Select</option>
-                  <option value="fulltime">Fulltime</option>
-                  <option value="parttime">Parttime</option>
-                  <option value="contract">Contract</option>
-                  <option value="contracttohire">Contract to Hire</option>
+                <option value="">Select</option>
+                <option value="fulltime">Fulltime</option>
+                <option value="parttime">Parttime</option>
+                <option value="contract-c2c">Contract-C2C</option>
+                <option value="contract-w2">Contract-W2</option>
+                <option value="contracttohire">Contract to Hire</option>
+                <option value="contract-others">Contract-Others</option>
                   <!-- <option value="third-party contract">
                                           Third-Party Contract
                                       </option> -->

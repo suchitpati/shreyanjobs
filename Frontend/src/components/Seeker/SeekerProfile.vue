@@ -17,7 +17,7 @@
         </div>
         <SeekerNavbar />
         <div class="text-right pr-[105px] bg-[#ebf4ff] text-[18px]">
-            Welcome,{{ fullname }} (Job Seeker)
+            Welcome {{ fullname }} (Job Seeker)
         </div>
 
         <div class="bg-[#ebf4ff] py-7">

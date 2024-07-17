@@ -25,4 +25,11 @@ class consultantas extends Model
         'new_job_report_time',
         'recruiter_id'
     ];
+
+
+    public function getRecruiter()
+    {
+        return $this->belongsTo(Recruiter::class,'recruiter_id','id');
+    }
 }
+

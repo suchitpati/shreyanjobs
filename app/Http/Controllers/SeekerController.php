@@ -17,6 +17,7 @@ use App\Models\SeekerJobApplication;
 use App\Models\UserJobApplication;
 use Illuminate\Support\Facades\File;
 use App\Jobs\applyJobEmail;
+use App\Models\consultantas;
 use App\Models\EmployerTransactionHistory;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
@@ -132,14 +133,23 @@ class SeekerController extends Controller
         if ($request->hasAny(['searchInput', 'skill', 'primary_skill_experience', 'secondary_skill_experience', 'country', 'state', 'city', 'relocate', 'work_visa', 'created_at'])) {
 
             $seekerQuery = new Seeker();
+            $consultantasQuery = consultantas::with('getRecruiter');
+
+
+
             if ($request->skill != null) {
                 $seekerQuery = $seekerQuery->where(function ($query) use ($request) {
+                    $query->where('primary_skill', 'LIKE', '%' . $request->skill . '%')
+                        ->orWhere('secondary_skill', 'LIKE', '%' . $request->skill . '%');
+                });
+                $consultantasQuery = $consultantasQuery->where(function ($query) use ($request) {
                     $query->where('primary_skill', 'LIKE', '%' . $request->skill . '%')
                         ->orWhere('secondary_skill', 'LIKE', '%' . $request->skill . '%');
                 });
             }
             if ($request->country != null) {
                 $seekerQuery = $seekerQuery->where('country', $request->country);
+                $consultantasQuery = $consultantasQuery->where('country', $request->country);
             }
 
             if ($request->primary_secondary_skill_experience != null) {
@@ -147,21 +157,30 @@ class SeekerController extends Controller
                     $query->where('primary_skill_experience', '>=', $request->primary_secondary_skill_experience)
                         ->orWhere('secondary_skill_experience', '>=', $request->primary_secondary_skill_experience);
                 });
+
+                $consultantasQuery = $consultantasQuery->where(function ($query) use ($request) {
+                    $query->where('primary_skill_experience', '>=', $request->primary_secondary_skill_experience)
+                        ->orWhere('secondary_skill_experience', '>=', $request->primary_secondary_skill_experience);
+                });
             }
 
             if ($request->state != null) {
                 $seekerQuery = $seekerQuery->where('state', $request->state);
+                $consultantasQuery = $consultantasQuery->where('state', $request->state);
             }
             if ($request->city != null) {
                 $seekerQuery = $seekerQuery->where('city', 'like', '%' . $request->city . '%');
+                $consultantasQuery = $consultantasQuery->where('city', 'like', '%' . $request->city . '%');
             }
 
             if ($request->relocate != null) {
                 $seekerQuery = $seekerQuery->where('relocate', $request->relocate == 'true' ? 1 : 0);
+                $consultantasQuery = $consultantasQuery->where('relocate', $request->relocate == 'true' ? 1 : 0);
             }
 
             if ($request->work_visa != null) {
                 $seekerQuery = $seekerQuery->where('work_authorization', 'like', '%' . $request->work_visa . '%');
+                $consultantasQuery = $consultantasQuery->where('work_authorization', 'like', '%' . $request->work_visa . '%');
             }
 
             if ($request->last_accessed != null) {
@@ -169,8 +188,18 @@ class SeekerController extends Controller
             }
 
             $seekerQuery = $seekerQuery->where('is_active', 2);
+            // $consultantasQuery = $consultantasQuery->where('is_active', 1);
 
             $seekerdetails = $seekerQuery->orderBy('last_accessed_date', 'DESC')->get();
+            $consultantasQuery = $consultantasQuery->get();
+
+            $combinedResults = collect();
+            $combinedResults = $combinedResults->concat($seekerdetails);
+            $combinedResults = $combinedResults->concat($consultantasQuery);
+
+            $seekerdetails = $combinedResults->sortByDesc('last_accessed_date')->values();
+
+
 
             return response()->json([
                 'success' => 200,
@@ -494,13 +523,38 @@ class SeekerController extends Controller
 
     public function addSeekerDetails(Request $request)
     {
+
+        // $seeker= Seeker::find($request->seeker_id);
+        // $shortFullname = str_replace(' ', '', substr($seeker->fullname, 0, 15));
+        // $shortprimary_skill = str_replace(' ', '', substr($seeker->primary_skill, 0, 15));
+        // $fileName = "Resume_".$shortFullname.'_'.$shortprimary_skill.'_'.$request->seeker_id. '.' . $request->file('pdf')->getClientOriginalExtension();
+        // dd($fileName);
         if ($request->has('pdf')) {
 
             $allowedExtensions = ['pdf', 'doc', 'docx'];
             // $maxFileSize = 3 * 1024;
 
+
+            //17-7-2024 change to file name
+            // if (in_array($request->file('pdf')->getClientOriginalExtension(), $allowedExtensions)) {
+            //     $fileName = time() . '.' . $request->file('pdf')->getClientOriginalExtension();
+            //     $request->file('pdf')->move(public_path('pdf'), $fileName);
+            // } else {
+            //     return response()->json([
+            //         'message' => 'Only PDF and DOC files are allowed, and the file must be less than 3MB.',
+            //         'error' => 100,
+            //     ]);
+            // }
+
+            $seeker = Seeker::find($request->seeker_id);
+            $shortFullname = str_replace(' ', '', substr($seeker->fullname, 0, 15));
+            $shortprimary_skill = str_replace(' ', '', substr($seeker->primary_skill, 0, 15));
+
+
+
             if (in_array($request->file('pdf')->getClientOriginalExtension(), $allowedExtensions)) {
-                $fileName = time() . '.' . $request->file('pdf')->getClientOriginalExtension();
+                $fileName = "Resume_" . $shortFullname . '_' . $shortprimary_skill . '_' . $request->seeker_id . '.' . $request->file('pdf')->getClientOriginalExtension();
+                // dd($fileName);
                 $request->file('pdf')->move(public_path('pdf'), $fileName);
             } else {
                 return response()->json([
@@ -508,6 +562,8 @@ class SeekerController extends Controller
                     'error' => 100,
                 ]);
             }
+
+
 
 
 
@@ -531,10 +587,10 @@ class SeekerController extends Controller
                     'is_active' => 2
                 ]);
 
-            Subscription::create([
-                'skill' => $request->skill,
-                'seeker_id' => $request->seeker_id
-            ]);
+            // Subscription::create([
+            //     'skill' => $request->skill,
+            //     'seeker_id' => $request->seeker_id
+            // ]);
 
 
             return response()->json([
@@ -679,7 +735,7 @@ class SeekerController extends Controller
             return response()->json([
                 'seeker_id' => $seeker->id,
                 'message' => 'Your Account Registration did not complete last time. Please re-register the account',
-                'is_active' =>$seeker->is_active,
+                'is_active' => $seeker->is_active,
                 'code' =>  200
             ]);
         }
@@ -736,7 +792,7 @@ class SeekerController extends Controller
 
         $adminjob = AdminJob::find($request->id);
         $apply_count = $adminjob->apply_count + 1;
-        AdminJob::where('id',$request->id)->update(['apply_count' => $apply_count]);
+        AdminJob::where('id', $request->id)->update(['apply_count' => $apply_count]);
         $remote = $adminjob->remote;
 
         $cover_letter = $request->cover_letter;

@@ -18,7 +18,9 @@
     <EmployerNev />
     <div class="text-right bg-[#ebf4ff]">
       <div class="text-[18px] max-w-[1080px] mx-auto">
-        Welcome,{{ employername }}
+        Welcome {{ employername }}
+        <br>
+        (Employer/ IT Recruiter)
       </div>
     </div>
 
@@ -200,8 +202,10 @@
                   <option value="">Select</option>
                   <option value="fulltime">Fulltime</option>
                   <option value="parttime">Parttime</option>
-                  <option value="contract">Contract</option>
+                  <option value="contract-c2c">Contract-C2C</option>
+                  <option value="contract-w2">Contract-W2</option>
                   <option value="contracttohire">Contract to Hire</option>
+                  <option value="contract-others">Contract-Others</option>
                   <!-- <option value="third-party contract">
                                         Third-Party Contract
                                     </option> -->

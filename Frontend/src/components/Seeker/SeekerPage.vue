@@ -342,10 +342,12 @@
               v-model="employment_type"
             >
               <option value="">Select</option>
-              <option value="fulltime">Full-time</option>
-              <option value="parttime">Part-time</option>
-              <option value="contract">Contract</option>
-              <option value="contract">Contract Hire</option>
+              <option value="fulltime">Fulltime</option>
+              <option value="parttime">Parttime</option>
+              <option value="contract-c2c">Contract-C2C</option>
+              <option value="contract-w2">Contract-W2</option>
+              <option value="contracttohire">Contract to Hire</option>
+              <option value="contract-others">Contract-Others</option>
             </select>
           </div>
           <div class="">
@@ -548,8 +550,18 @@
                         >
                         <span
                           class="text-[#474d6a]"
-                          v-if="job.employment_type == 'contract'"
-                          >Contract</span
+                          v-if="job.employment_type == 'contract-c2c'"
+                          >Contract-C2C</span
+                        >
+                        <span
+                          class="text-[#474d6a]"
+                          v-if="job.employment_type == 'contract-w2'"
+                          >Contract-W2</span
+                        >
+                        <span
+                          class="text-[#474d6a]"
+                          v-if="job.employment_type == 'contract-others'"
+                          >Contract-Others</span
                         >
                       </div>
                       <div
@@ -1078,8 +1090,12 @@
                   maxlength="200"
                   class="border border-black rounded-lg"
                   v-model="consultants_cover_letter"
-                  style="resize: vertical; min-height: 120px; cursor: text; padding-left: 10px;"
-
+                  style="
+                    resize: vertical;
+                    min-height: 120px;
+                    cursor: text;
+                    padding-left: 10px;
+                  "
                 ></textarea>
                 <div class="text-end">
                   <span class="text-blue-700 text-[16px] mr-[45px]"
@@ -1700,7 +1716,7 @@ export default {
         );
         localStorage.removeItem("seeker_tocken");
         localStorage.removeItem("seeker_id");
-        console.log(response.data,'responseresponseresponseresponseresponse');
+        console.log(response.data, "responseresponseresponseresponseresponse");
         if (response.data.message.length > 1) {
           setTimeout(() => {
             router.push("/");
