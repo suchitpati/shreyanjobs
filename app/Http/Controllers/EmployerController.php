@@ -454,4 +454,61 @@ class EmployerController extends Controller
             'job_title' => $job_data->job_title
         ], 200);
     }
+    function easyJob(Request $request)
+    {
+        return response()->json($request->result, 201);
+
+        dd($request->result);
+        $validatedData = $request->validate([
+            'country' => 'required|string',
+            'state' => 'nullable|string',
+            'city' => 'nullable|string',
+            'remote' => 'required|boolean',
+            'paid' => 'required|boolean',
+            'skill' => 'required|string',
+            'year_of_experience' => 'required|integer',
+            'employment_type' => 'required|string',
+            'short_description' => 'required|string',
+            'detailed_description' => 'required|string',
+            'job_title' => 'required|string',
+            'email' => 'nullable|string',
+            'contact_number'  => 'nullable|string',
+            'additional_detail' => 'nullable|string',
+            'technical_skill' => 'nullable|string',
+            'job_owner_id' => 'required|integer',
+        ]);
+
+        $employer = Employer::find($request->job_owner_id);
+        if ($employer->role != 1 && $request->paid == true) {
+            if ($employer->acct_balance < 1) {
+                return response()->json([
+                    'code' => 100,
+                    'message' => "Insufficient balance",
+                    'status' => 'error'
+                ]);
+            }
+            $begin_balance = $employer->acct_balance;
+            $end_balance = $employer->acct_balance - 1;
+
+            $employer->acct_balance = $end_balance;
+            $employer->save();
+        }
+
+        $job = AdminJob::create($validatedData);
+
+
+
+        // if ($employer->role != 1 && $request->paid == true) {
+        //     EmployerTransactionHistory::create([
+        //         'employer_id' => $request->job_owner_id,
+        //         'begin_balance' => $begin_balance,
+        //         'transaction_amount' => 1,
+        //         'end_balance' => $end_balance,
+        //         'transaction_date' => Carbon::now(),
+        //         'action_name' => 'Job Posting',
+        //     ]);
+        // }
+
+        return response()->json($job, 201);
+    }
 }

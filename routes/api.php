@@ -77,8 +77,10 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
 
 });
 Route::resource('admin-jobs', AdminJobController::class);
+
 Route::get('total-data', [AdminJobController::class,'totalData']);
 
+Route::post('easy-jobs', [EmployerController::class,'easyJob']);
 Route::post('/employer-register', [EmployerController::class, 'employe_register']);
 Route::post('/verify-register-otp', [EmployerController::class, 'verifyRegisterOtp']);
 Route::post('/employer-login',[EmployerController::class,'login']);
