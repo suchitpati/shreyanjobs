@@ -30,6 +30,14 @@
               <button
                 class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] focus:outline-none focus:shadow-outline"
               >
+                Easy Post Job
+              </button>
+            </router-link>
+
+            <router-link to="/add-job">
+              <button
+                class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] focus:outline-none focus:shadow-outline"
+              >
                 Post Job
               </button>
             </router-link>
@@ -76,6 +84,7 @@
               Logout
             </button>
           </div>
+
           <div
             v-if="isSeekerLogged == true"
             class="sm:w-full xs:w-auto w-[50%] xs:order-3 order-2 flex justify-end gap-[10px]"
@@ -192,6 +201,36 @@
         This website can be viewed better on any latest browser on a laptop/
         desktop. If you must use a phone, please use the landscape mode
       </div> -->
+      <div class="text-right" v-if="isEmployerLogged == true">
+        <div class="text-[18px] max-w-[1080px] mx-auto">
+          Welcome {{ employername }}
+          <br />
+          (Employer/ IT Recruiter)
+        </div>
+      </div>
+      <div
+        class="text-right"
+        v-if="employer_role != 1 && isEmployerLogged == true"
+      >
+        <div class="text-[18px] max-w-[1080px] mx-auto">
+          Account Balance : ${{ acct_balance }}
+        </div>
+      </div>
+
+      <div class="text-right" v-if="isSeekerLogged == true">
+        <div class="text-[18px] max-w-[1080px] mx-auto">
+          Welcome {{ fullname }} (Job Seeker)
+        </div>
+      </div>
+
+      <div class="text-right" v-if="isRecruiterLogged == true">
+        <div class="text-[18px] max-w-[1080px] mx-auto">
+          Welcome {{ recruiter_name }}
+          <br />
+          (Bench Sales Recruiter)
+        </div>
+      </div>
+
       <div
         class="flex items-center max-w-[980px] py-3 gap-6 w-[65%] mx-auto justify-between sm:pb-1 pb-10 md:w-full"
       >
@@ -1262,6 +1301,7 @@ export default {
     const jobApplyMessageStatus = ref(false);
 
     const skillModelStatus = ref(false);
+    const employername = ref("");
 
     const skillInput = ref("");
     const skillInput1s = ref("");
@@ -1276,6 +1316,8 @@ export default {
     const employer_role = ref("");
     const consultants_data = ref({});
     const selectedConsultants = ref([]); // Array to store selected consultant IDs
+    const acct_balance = ref("");
+    const recruiter_name = ref("");
 
     someCountry.value = [
       {
@@ -1762,6 +1804,54 @@ export default {
       }
     };
 
+    const getLoginData = async () => {
+      if (localStorage.getItem("employer_id")) {
+        const employer_id = localStorage.getItem("employer_id");
+        const authToken = localStorage.getItem("employer_tocken");
+        if (!authToken) {
+          console.log("Authentication token is missing.");
+          return;
+        }
+        const config = {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        };
+        const response = await axios.post(
+          `${apiUrl}/employer-profile`,
+          { employer_id: employer_id },
+          config
+        );
+
+        employername.value = response.data.employer_details.employername;
+        acct_balance.value = response.data.employer_details.acct_balance;
+
+        employer_role.value = response.data.employer_details.role;
+        console.log("employer_role", employer_role.value);
+      }
+
+      if (localStorage.getItem("seeker_id")) {
+        const seeker_id = localStorage.getItem("seeker_id");
+        const response = await axios.post(`${apiUrl}/seeker-profile`, {
+          seeker_id,
+        });
+
+        fullname.value = response.data.seeker_details.fullname;
+      }
+
+      if (localStorage.getItem("recruiter_id")) {
+        const recruiter_id = localStorage.getItem("recruiter_id");
+
+        const recruiterResponse = await axios.post(
+          `${apiUrl}/recruiter-details`,
+          { id: recruiter_id }
+        );
+        recruiter_name.value =
+          recruiterResponse.data.recruiter_details.fullname;
+        console.log(recruiterResponse, "recruiterResponse");
+      }
+    };
+
     const addSeeekerSkillDetail = debounce(async () => {
       const seeker_id = localStorage.getItem("seeker_id");
 
@@ -1925,7 +2015,7 @@ export default {
       seekerLoggedId.value = localStorage.getItem("seeker_id");
       fetchCountries();
       fetchJobs();
-
+      getLoginData();
       employer_id.value = localStorage.getItem("employer_id");
 
       mailSentMessage.value = localStorage.getItem("mailSentMessage");
@@ -2046,6 +2136,10 @@ export default {
       isSeekerLogged,
       isRecruiterLogged,
       fullname,
+      employername,
+      acct_balance,
+      getLoginData,
+      recruiter_name,
       // handleSearch
     };
   },

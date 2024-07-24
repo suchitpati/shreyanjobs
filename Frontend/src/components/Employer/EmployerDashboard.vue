@@ -523,7 +523,8 @@
                 <div class="font-bold text-base">
                   Last Accessed date :
                   <span class="font-normal pl-1">{{
-                    person.last_accessed_date ? person.last_accessed_date : "-"
+                    person.get_recruiter  ? person.get_recruiter.last_accessed_date : person.last_accessed_date ? person.last_accessed_date : "-"
+
                   }}</span>
                 </div>
               </div>

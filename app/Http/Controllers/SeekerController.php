@@ -193,6 +193,9 @@ class SeekerController extends Controller
             $seekerdetails = $seekerQuery->orderBy('last_accessed_date', 'DESC')->get();
             $consultantasQuery = $consultantasQuery->get();
 
+            $consultantasQuery->each(function ($consultanta) {
+                $consultanta->last_accessed_date = $consultanta->getRecruiter->last_accessed_date ?? null;
+            });
             $combinedResults = collect();
             $combinedResults = $combinedResults->concat($seekerdetails);
             $combinedResults = $combinedResults->concat($consultantasQuery);
@@ -554,7 +557,6 @@ class SeekerController extends Controller
 
             if (in_array($request->file('pdf')->getClientOriginalExtension(), $allowedExtensions)) {
                 $fileName = "Resume_" . $shortFullname . '_' . $shortprimary_skill . '_' . $request->seeker_id . '.' . $request->file('pdf')->getClientOriginalExtension();
-                // dd($fileName);
                 $request->file('pdf')->move(public_path('pdf'), $fileName);
             } else {
                 return response()->json([
@@ -666,8 +668,24 @@ class SeekerController extends Controller
         // $maxFileSize = 3 * 1024;
         if ($request->hasFile('pdf')) {
 
+            // if (in_array($request->file('pdf')->getClientOriginalExtension(), $allowedExtensions)) {
+            //     $fileName = time() . '.' . $request->file('pdf')->getClientOriginalExtension();
+            //     $request->file('pdf')->move(public_path('pdf'), $fileName);
+            // } else {
+            //     return response()->json([
+            //         'message' => 'Only PDF and DOC files are allowed, and the file must be less than 3MB.',
+            //         'error' => 100,
+            //     ]);
+            // }
+
+            $seeker = Seeker::find($request->seeker_id);
+            $shortFullname = str_replace(' ', '', substr($seeker->fullname, 0, 15));
+            $shortprimary_skill = str_replace(' ', '', substr($seeker->primary_skill, 0, 15));
+
+
+
             if (in_array($request->file('pdf')->getClientOriginalExtension(), $allowedExtensions)) {
-                $fileName = time() . '.' . $request->file('pdf')->getClientOriginalExtension();
+                $fileName = "Resume_" . $shortFullname . '_' . $shortprimary_skill . '_' . $request->seeker_id . '.' . $request->file('pdf')->getClientOriginalExtension();
                 $request->file('pdf')->move(public_path('pdf'), $fileName);
             } else {
                 return response()->json([
@@ -675,6 +693,8 @@ class SeekerController extends Controller
                     'error' => 100,
                 ]);
             }
+
+
         } else {
             $fileName = $request->resume;
         }

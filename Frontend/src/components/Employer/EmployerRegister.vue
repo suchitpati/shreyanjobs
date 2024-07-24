@@ -1,15 +1,15 @@
 <template>
-  <div class="bg-[#eaf4ff]">
-    <div class="w-full flex justify-end pt-4 pr-4 pl-4">
-      <img class="w-[150px]" src="../../assets/logo-no-background.png" alt="" />
+  <div class="bg-[#eaf4ff] flex flex-col gap-[50px_0]">
+    <div class="w-full flex items-center justify-between pt-4 pr-4 pl-4 sticky top-0 left-0 bg-[#eaf4ff] py-1">
+      <img class="w-[150px] mx-[auto] md:mx-[0]" src="../../assets/logo-no-background.png" alt="" />
       <a
         href="/"
-        class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[10px] py-[7px] px-[18px] md:px-[26px] rounded-[26px] focus:outline-none"
+        class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] mt-2  text-[#1890da] font-bold py-[10px] py-[7px] px-[18px] md:px-[26px] rounded-[26px] focus:outline-none"
         >Home
       </a>
     </div>
     <div
-      class="p-4 h-[calc(100vh-62px)] flex justify-center flex-col gap-6 items-center"
+      class="p-4 flex justify-center flex-col gap-6 items-center"
     >
       <div
         class="rounded-lg flex items-center justify-center max-w-[1120px] sm:px-[20px] bg-img w-full"

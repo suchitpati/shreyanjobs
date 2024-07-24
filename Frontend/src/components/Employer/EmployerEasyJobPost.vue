@@ -39,6 +39,12 @@
             Easy Job Posting
           </h1>
           <div
+            class="text-red-600 block text-[14px] text-left"
+            v-if="err != ''"
+          >
+            {{ err }}
+          </div>
+          <div
             class="text-[#1890da] sm:text-[22px] text-[22px] font-semibold mt-[0px] sm:mb-[0px] mb-[25px] cursor-pointer underline"
           >
             <router-link to="/employer-job-view"
@@ -109,55 +115,6 @@
         class="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"
       ></div>
     </div>
-    <div
-      class="modal fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center"
-      v-if="confirmModel"
-    >
-      <div class="bg-white p-8 rounded shadow-lg w-100">
-        <p class="mb-1">$1 will be deducted from your account balance.</p>
-
-        <div class="flex justify-end">
-          <button
-            @click="makeFreeJob"
-            class="mr-2 px-4 py-2 bg-gray-500 text-white rounded"
-          >
-            No,Please post as Free Job
-          </button>
-          <button
-            @click="addJob"
-            class="px-4 py-2 bg-green-500 text-white rounded"
-          >
-            Yes,submit Premium job for $1
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <div
-      class="modal fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center"
-      v-if="freeJobConfirmModel"
-    >
-      <div class="bg-white p-8 rounded shadow-lg w-100">
-        <p class="mb-1">
-          Do you want to post this job with Premium benefits for just $1?
-        </p>
-
-        <div class="flex justify-end">
-          <button
-            @click="addJob"
-            class="mr-2 px-4 py-2 bg-gray-500 text-white rounded"
-          >
-            No, Please post as Free Job
-          </button>
-          <button
-            @click="makePremiumJob"
-            class="px-4 py-2 bg-green-500 text-white rounded"
-          >
-            Yes, submit Premium job for $1
-          </button>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -191,6 +148,7 @@ export default {
     const short_description = ref("");
     const job_title = ref("");
     const job_details = ref("");
+    const job_details1 = ref("");
     const showSuccessModal = ref(false);
     const remaining = ref(5000);
     const remaining_additional_detail = ref(500);
@@ -209,6 +167,7 @@ export default {
     const err_detail = ref("");
     const err_job = ref("");
     const err_remote = ref("");
+    const err = ref("");
     const email = ref("");
     const contact_number = ref("");
     const someCountry = ref([]);
@@ -321,106 +280,15 @@ export default {
       states.value = countries.value ? State.getStatesOfCountry("US") : "";
     };
 
-    const addJob = async () => {
-      const selectedCountryObj = await countries_state.value.find(
-        (countrys) => countrys.isoCode === selectedCountry.value
-      );
-
-      country.value = selectedCountryObj
-        ? JSON.parse(JSON.stringify(selectedCountryObj)).name
-        : "";
-      console.log(paid.value, "paid.value");
-
-      if (employer_role.value != 1) {
-        if (freeJobConfirmModel.value == true) {
-          freeJobConfirmModel.value = false;
-        }
-
-        if (confirmModel.value == true) {
-          confirmModel.value = false;
-        }
-      }
-
-      try {
-        const authToken = localStorage.getItem("accessToken");
-        const config = {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        };
-
-        const requestData = {
-          country: country.value,
-          state: selectedState_main.value,
-          city: city.value,
-          remote: remote.value,
-          skill: skill.value,
-          year_of_experience: year_of_experience.value,
-          employment_type: employment_type.value,
-          short_description: short_description.value,
-          job_details: job_details.value,
-          job_title: job_title.value,
-          email: email.value,
-          contact_number: contact_number.value,
-          additional_detail: additional_detail.value,
-          technical_skill: technical_skill.value,
-          paid: paid.value,
-          job_owner_id: localStorage.getItem("employer_id"),
-        };
-        console.log("requestData", requestData);
-        isLoading.value = true;
-        const response = await axios.post(
-          `${apiUrl}/admin-jobs`,
-          requestData,
-          config
-        );
-        if (paid.value == true) {
-          console.log("paid.value", paid.value);
-          localStorage.setItem("lastJobPaidStatus", true);
-        } else {
-          localStorage.setItem("lastJobFreeStatus", true);
-        }
-        isLoading.value = false;
-
-        if (response.data.code == 100) {
-          showSuccessModal.value = true;
-          return false;
-        }
-        console.log(response, "job ===>");
-        (country.value = ""),
-          (state.value = ""),
-          (remote.value = false),
-          (skill.value = ""),
-          (year_of_experience.value = ""),
-          (employment_type.value = ""),
-          (short_description.value = ""),
-          (job_details.value = ""),
-          (selectedState.value = ""),
-          (selectedCountry.value = ""),
-          (selectedState_main.value = ""),
-          (job_title.value = "");
-        window.location.reload();
-        window.scrollTo(0, 0);
-        // setTimeout(() => {
-        // }, 2000);
-        localStorage.setItem("addJobMessage", true);
-        localStorage.setItem("addJobMessageStatus", true);
-      } catch (error) {
-        console.error(error.response.data.errors);
-      }
-    };
-
     const closeSuccessModal = () => {
       showSuccessModal.value = false;
     };
 
     const makePremiumJob = () => {
       paid.value = true;
-      addJob();
     };
     const makeFreeJob = () => {
       paid.value = false;
-      addJob();
     };
     const fetchCountries = debounce(async () => {
       await axios
@@ -439,11 +307,32 @@ export default {
 
     const extractValues = async () => {
       const lines = job_details.value.trim().split("\n");
-      const result = {};
       let currentKey = "";
+      let reachedJobDescription = false;
+
+      job_title.value = "";
+      city.value = "";
+      state.value = "";
+      additional_detail.value = "";
+      skill.value = "";
+      email.value = "";
+      year_of_experience.value = "";
+      contact_number.value = "";
+      technical_skill.value = "";
+      job_details1.value = "";
+      short_description.value="";
+
+
 
       lines.forEach((line) => {
         const trimmedLine = line.trim();
+        if (trimmedLine.toLowerCase().includes("job description")) {
+          reachedJobDescription = true;
+        }
+
+        if (!reachedJobDescription && trimmedLine !== "") {
+          additional_detail.value += trimmedLine + "\n";
+        }
         if (trimmedLine.includes(":")) {
           const [key, value] = trimmedLine
             .split(":")
@@ -457,10 +346,15 @@ export default {
             key.toLowerCase().includes("role") ||
             key.toLowerCase().includes("title")
           ) {
-            result["job_title"] = value;
+            job_title.value = value;
           }
           if (key.toLowerCase().includes("location")) {
-            result["location"] = value;
+            const [city1, stateAndRest] = value.split(",");
+            const state1 = stateAndRest ? stateAndRest.trim().slice(0, 2) : "";
+            console.log("statestate", state1);
+            // result["location"] = `${city.trim()}, ${state}`;
+            city.value = city1.trim();
+            state.value = state1.trim();
           }
 
           if (
@@ -469,49 +363,98 @@ export default {
             key.toLowerCase().includes("employment type") ||
             key.toLowerCase().includes("contract type")
           ) {
-            result["contract_type"] = value;
+            if (value.toLowerCase() == "c2c") {
+              employment_type.value = "contract-c2c";
+            } else if (value.toLowerCase() == "w2") {
+              employment_type.value = "contract-w2";
+            } else if (value.toLowerCase() == "fulltime") {
+              employment_type.value = "fulltime";
+            } else if (value.toLowerCase() == "parttime") {
+              employment_type.value = "parttime";
+            } else {
+              employment_type.value = "contract-others";
+            }
           }
 
-          if (key.toLowerCase().includes("visa")) {
-            result["visa"] = value;
-          }
+
 
           if (
             key.toLowerCase().includes("skill") &&
             !key.toLowerCase().includes("technical skill")
           ) {
-            result["skill"] = value;
+            skill.value = value;
           }
 
           if (key.toLowerCase().includes("email")) {
-            result["email"] = value;
+            email.value = value;
           }
 
-          if (key.toLowerCase().includes("yrs. of exp")  ) {
-            result["exp"] = value;
+          if (
+            key.toLowerCase().includes("yrs. of exp") ||
+            key.toLowerCase().includes("exp")
+          ) {
+            year_of_experience.value = value;
           }
 
-          if (key.toLowerCase().includes("contact number") || key.toLowerCase().includes("employer contact number") ) {
-            result["contact_number"] = value;
+          if (
+            key.toLowerCase().includes("contact number") ||
+            key.toLowerCase().includes("employer contact number")
+          ) {
+            contact_number.value = value;
           }
         } else if (currentKey) {
           console.log(currentKey, "currentKey");
 
           if (currentKey.toLowerCase().includes("technical skill")) {
-            result["technical_skill"] += "\n" + trimmedLine;
+            technical_skill.value += "\n" + trimmedLine;
           }
 
           if (currentKey.toLowerCase().includes("job description")) {
-            result["job_description"] += "\n" + trimmedLine;
+            job_details1.value += "\n" + trimmedLine;
           }
 
           //   result[currentKey] += "\n" + trimmedLine;
         }
       });
-
+      short_description.value =
+        job_title.value +
+        "," +
+        city.value +
+        "," +
+        state.value +
+        "," +
+        employment_type.value;
       const employer_id = localStorage.getItem("employer_id");
 
+      if (job_title.value == "") {
+        err.value = "Job Title not found. Please correct and retry. ";
+        return false;
+      } else {
+        err.value = "";
+      }
+
+      if (city.value == "" || state.value == "") {
+        err.value = "Location not found. Please correct and retry. ";
+        return false;
+      } else {
+        err.value = "";
+      }
+
+      if (job_details1.value == "" ) {
+        err.value = "Job Description not found. Please correct and retry. ";
+        return false;
+      } else {
+        err.value = "";
+      }
+
+      if (skill.value == "") {
+        skill.value = job_title.value;
+      }
+
       const authToken = localStorage.getItem("employer_tocken");
+      country.value = "US";
+      remote.value = 0;
+      paid.value = 0;
 
       if (!authToken) {
         console.log("Authentication token is missing.");
@@ -523,12 +466,30 @@ export default {
           Authorization: `Bearer ${authToken}`,
         },
       };
+
+      const requestData = {
+        employer_id: employer_id.value,
+        country: country.value,
+        state: state.value,
+        city: city.value,
+        remote: remote.value,
+        skill: skill.value,
+        year_of_experience: year_of_experience.value,
+        employment_type: employment_type.value,
+        short_description: short_description.value,
+        detailed_description: job_details1.value,
+        job_title: job_title.value,
+        email: email.value,
+        contact_number: contact_number.value,
+        additional_detail: additional_detail.value,
+        technical_skill: technical_skill.value,
+        paid: paid.value,
+        job_owner_id: localStorage.getItem("employer_id"),
+      };
+
       const response = await axios.post(
         `${apiUrl}/easy-jobs`,
-        {
-          employer_id: employer_id,
-          result: result,
-        },
+        requestData,
         config
       );
 
@@ -569,46 +530,7 @@ export default {
         console.log(error);
       }
     };
-    const opemConfirmationmodel = async () => {
-      console.log("paid.valu", paid.value);
-      if (selectedCountry.value == null || selectedCountry.value == "") {
-        err_country.value = "The country field is required";
-        return false;
-      }
-      if (employment_type.value == null || employment_type.value == "") {
-        err_emp.value = "The employment type field is required";
-        return false;
-      }
-      if (job_title.value == null || job_title.value == "") {
-        err_job.value = "The job title field is required";
-        return false;
-      }
-      if (skill.value == null || skill.value == "") {
-        err_skill.value = "The skill field is required";
-        return false;
-      }
-      if (year_of_experience.value == null || year_of_experience.value == "") {
-        err_exp.value = "The year of experience field is required";
-        return false;
-      }
 
-      if (short_description.value == null || short_description.value == "") {
-        err_short.value = "The short description field is required";
-        return false;
-      }
-      if (job_details.value == null || job_details.value == "") {
-        err_detail.value = "The detailed description field is required";
-        return false;
-      }
-
-      if (employer_role.value == 1) {
-        addJob();
-      } else if (employer_role.value != 1 && paid.value == false) {
-        freeJobConfirmModel.value = !freeJobConfirmModel.value;
-      } else {
-        confirmModel.value = !confirmModel.value;
-      }
-    };
     const getEmployerDeatails = async () => {
       const employer_id = localStorage.getItem("employer_id");
 
@@ -706,6 +628,8 @@ export default {
     });
 
     return {
+      job_details1,
+      err,
       extractValues,
       lastJobFreeStatus,
       lastJobPaidStatus,
@@ -713,7 +637,6 @@ export default {
       paid,
       acct_balance,
       employer_role,
-      opemConfirmationmodel,
       confirmModel,
       freeJobConfirmModel,
       addJobMessageStatus,
@@ -724,7 +647,6 @@ export default {
       isLoading,
       getEmployerDeatails,
       data,
-      addJob,
       makeFreeJob,
       country,
       state,

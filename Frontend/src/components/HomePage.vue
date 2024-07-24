@@ -7,12 +7,12 @@
       </p>
       <div class="bg-white">
         <div
-          class="max-w-[1080px] mx-auto sm:px-[20px] px-[16px] flex flex-col sm:flex-row items-center"
+          class="max-w-[1080px] mx-auto sm:px-[20px] px-[16px] flex flex-col  sm:flex-row items-center"
         >
           <!-- Logo Section -->
-          <div class="sm:w-full xs:w-auto w-full mb-4">
+          <div class=" w-full mb-4">
             <img
-              class="md:w-[230px] w-[150px] mx-auto"
+              class="md:min-w-[230px] w-[150px] mx-auto"
               src="../assets/logo-no-background.png"
               alt=""
             />
@@ -82,7 +82,7 @@
           >
             <router-link to="/job-search">
               <button
-                class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] focus:outline-none focus:shadow-outline"
+                class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-full sm:ml-auto text-[#1890da] font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] focus:outline-none focus:shadow-outline"
               >
                 Job Search
               </button>
@@ -146,7 +146,7 @@
               <button
                 class="border-gray-600 hover:bg-[#f7f7f9] border-r-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[10px] h-20 py-[7px] px-[18px] md:px-[26px] focus:outline-none focus:shadow-outline"
               >
-                <span>Job </span><br />
+                <span>Job </span>
                 Search
               </button>
             </router-link>
@@ -154,7 +154,7 @@
               <button
                 class="border-gray-600 hover:bg-[#f7f7f9] border-r-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[10px] h-20 py-[7px] px-[18px] md:px-[26px] focus:outline-none focus:shadow-outline"
               >
-                <span>Free Job</span><br />
+                <span>Free Job</span>
                 Posting
               </button>
             </router-link>
@@ -162,7 +162,7 @@
               <button
                 class="border-gray-600 hover:bg-[#f7f7f9] border-r-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[10px] h-20 py-[7px] px-[18px] md:px-[26px] focus:outline-none focus:shadow-outline"
               >
-                <span>Employer</span> <br />
+                <span>Employer</span>
                 Login
               </button>
             </router-link>
