@@ -4,6 +4,18 @@
 
     <div class="bg-[#ebf4ff] py-7 overflow-y-auto">
       <div class="max-w-[1080px] w-full mx-auto px-[20px]">
+        <div class="text-right bg-[#ebf4ff]">
+            <div class="text-[18px] max-w-[1080px] mx-auto">
+              Welcome {{ employername }}
+              <br>
+              (Employer/ IT Recruiter)
+            </div>
+          </div>
+          <div class="text-right bg-[#ebf4ff]" v-if="employer_role != 1">
+            <div class="text-[18px] max-w-[1080px] mx-auto">
+                Account Balance : ${{ acct_balance }}
+            </div>
+          </div>
         <div
           class="text-[#1890da] sm:text-[26px] text-[22px] font-semibold mt-[0px] sm:mb-[0px] mb-[25px] cursor-pointer"
         >
@@ -122,6 +134,9 @@ export default {
     const batchJobStatus = ref(false);
     const batchJobError = ref(false);
     const batchJobErrorMessage = ref('');
+    const employername = ref("");
+    const employer_role = ref("");
+    const acct_balance = ref("");
 
 
     const getJobEmailNotification = async () => {
@@ -144,6 +159,35 @@ export default {
       }
     };
 
+    const getEmployerDeatails = async () => {
+      const employer_id = localStorage.getItem("employer_id");
+
+      const authToken = localStorage.getItem("employer_tocken");
+
+      if (!authToken) {
+        console.log("Authentication token is missing.");
+        return;
+      }
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      };
+      const response = await axios.post(
+        `${apiUrl}/employer-profile`,
+        {
+          employer_id: employer_id,
+        },
+        config
+      );
+
+      employername.value = response.data.employer_details.employername;
+      acct_balance.value = response.data.employer_details.acct_balance;
+
+      employer_role.value = response.data.employer_details.role;
+      console.log("employer_role", employer_role.value);
+    };
     const sendJobEmailNotification = debounce(async () => {
       isLoading.value = true;
       const response = await axios.post(`${apiUrl}/send-notification-email`, {
@@ -168,9 +212,12 @@ export default {
           window.location.reload();
       }
     });
+
     onMounted(() => {
       getJobEmailNotification();
       checkBatchJobStatus();
+      getEmployerDeatails();
+
       sendJobMessage.value = localStorage.getItem("sendJobMessage");
       sendJobEmailStatus.value = localStorage.getItem("sendJobEmailStatus");
 
@@ -196,6 +243,10 @@ export default {
       isLoading,
       sendJobEmailNotification,
       jobDetail,
+      getEmployerDeatails,
+      acct_balance,
+      employer_role,
+      employername
     };
   },
 };

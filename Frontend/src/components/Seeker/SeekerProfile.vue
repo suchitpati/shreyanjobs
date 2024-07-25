@@ -3,7 +3,7 @@
         <SuccessModal v-if="showLogoutModal" :message="successMessage" />
         <div
             v-if="showSuccessModal"
-            class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-75"
+            class="fixed inset-0 flex items-center  justify-center bg-gray-900 bg-opacity-75"
         >
             <div class="bg-white p-8 rounded-lg shadow-lg">
                 <h2 class="text-2xl font-bold mb-4">Job Added Successfully!</h2>
@@ -16,7 +16,7 @@
             </div>
         </div>
         <SeekerNavbar />
-        <div class="text-right pr-[105px] bg-[#ebf4ff] text-[18px]">
+        <div class="text-right pr-[397px] bg-[#ebf4ff] text-[18px]">
             Welcome {{ fullname }} (Job Seeker)
         </div>
 

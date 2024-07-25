@@ -52,14 +52,9 @@
             >
           </div>
         </div>
+
         <span
-          v-if="addJobMessageStatus === 'true' && lastJobPaidStatus === 'true'"
-          class="text-green-600"
-          >Your job is posted successfully.you can get a list of matching active
-          resumes for this job from the Edit Job Page.</span
-        >
-        <span
-          v-if="addJobMessageStatus === 'true' && lastJobFreeStatus === 'true'"
+          v-if="addJobMessageStatus === 'true' "
           class="text-green-600"
           >Your job is posted successfully.</span
         >
@@ -97,7 +92,7 @@
 
           <button
             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-8 mb-4 mt-4 rounded-full focus:outline-none focus:shadow-outline"
-            @click="extractValues"
+            @click="addEasyJob"
           >
             Submit
           </button>
@@ -169,6 +164,7 @@ export default {
     const err_remote = ref("");
     const err = ref("");
     const email = ref("");
+    const contact_number1 = ref("");
     const contact_number = ref("");
     const someCountry = ref([]);
     const isLoading = ref(false);
@@ -305,7 +301,7 @@ export default {
       router.push("/admin-profile");
     };
 
-    const extractValues = async () => {
+    const addEasyJob = async () => {
       const lines = job_details.value.trim().split("\n");
       let currentKey = "";
       let reachedJobDescription = false;
@@ -317,7 +313,7 @@ export default {
       skill.value = "";
       email.value = "";
       year_of_experience.value = "";
-      contact_number.value = "";
+      contact_number1.value = "";
       technical_skill.value = "";
       job_details1.value = "";
       short_description.value="";
@@ -400,7 +396,7 @@ export default {
             key.toLowerCase().includes("contact number") ||
             key.toLowerCase().includes("employer contact number")
           ) {
-            contact_number.value = value;
+            contact_number1.value = value;
           }
         } else if (currentKey) {
           console.log(currentKey, "currentKey");
@@ -451,6 +447,11 @@ export default {
         skill.value = job_title.value;
       }
 
+      if (contact_number1.value == "") {
+        contact_number1.value = contact_number.value;
+      }
+
+
       const authToken = localStorage.getItem("employer_tocken");
       country.value = "US";
       remote.value = 0;
@@ -480,7 +481,7 @@ export default {
         detailed_description: job_details1.value,
         job_title: job_title.value,
         email: email.value,
-        contact_number: contact_number.value,
+        contact_number: contact_number1.value,
         additional_detail: additional_detail.value,
         technical_skill: technical_skill.value,
         paid: paid.value,
@@ -492,8 +493,15 @@ export default {
         requestData,
         config
       );
+      if(response.data.success == 200)
+      {
+          window.location.reload();
+            window.scrollTo(0, 0);
+            localStorage.setItem("addJobMessage", true);
+            localStorage.setItem("addJobMessageStatus", true);
+      }
 
-      console.log(response, "extractValues");
+      console.log(response, "addEasyJob");
     };
 
     const adminLogout = async () => {
@@ -628,9 +636,10 @@ export default {
     });
 
     return {
+        contact_number1,
       job_details1,
       err,
-      extractValues,
+      addEasyJob,
       lastJobFreeStatus,
       lastJobPaidStatus,
       makePremiumJob,

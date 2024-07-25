@@ -456,9 +456,7 @@ class EmployerController extends Controller
     }
     function easyJob(Request $request)
     {
-        return response()->json($request->result, 201);
 
-        dd($request->result);
         $validatedData = $request->validate([
             'country' => 'required|string',
             'state' => 'nullable|string',
@@ -509,6 +507,9 @@ class EmployerController extends Controller
         //     ]);
         // }
 
-        return response()->json($job, 201);
+        return response()->json([
+            'message' => 'Job Added successfully',
+            'success' => 200,
+        ]);
     }
 }
