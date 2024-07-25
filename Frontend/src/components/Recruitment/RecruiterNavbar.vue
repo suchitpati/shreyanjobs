@@ -99,7 +99,7 @@ export default {
           showLogoutModal.value = true;
 
           setTimeout(() => {
-            router.push("/recruiter-login");
+            router.push("/");
           }, 1000);
         }
 

@@ -118,6 +118,8 @@ class RecruiterController extends Controller
         }
         $token = $recruiter->createToken('RecruiterToken')->plainTextToken;
         // return response()->json(['token'=>$token]);
+        Recruiter::where(['emailid' => $request->email])
+            ->update(['last_accessed_date' => Date::now()]);
 
         return response()->json([
             'message' => 'Login successful',

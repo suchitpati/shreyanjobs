@@ -290,8 +290,27 @@ class AdminJobController extends Controller
 
     public function employerJob($id)
     {
-        $job = AdminJob::where('job_owner_id', $id)->where('created_at', '>', now()->subDays(30)->endOfDay())->latest()->get();
+        //24-7-2024 updated
+        // $job = AdminJob::where('job_owner_id', $id)->where('created_at', '>', now()->subDays(30)->endOfDay())->latest()->get();
+        // return response()->json($job, 200);
+
+        $job = AdminJob::with('seekerdata')->where('job_owner_id', $id);
+
+
+
+        $job->where(function ($query) {
+            $query->where(function ($q) {
+                $q->where('paid', 0) // Free jobs
+                    ->where('created_at', '>=', now()->subDays(2)->startOfDay());
+            })->orWhere(function ($q) {
+                $q->where('paid', 1) // Paid jobs
+                    ->where('created_at', '>=', now()->subDays(7)->startOfDay());
+            });
+        });
+        $job = $job->orderByDesc('created_at')->get();
+
         return response()->json($job, 200);
+
     }
 
     public function totalData()

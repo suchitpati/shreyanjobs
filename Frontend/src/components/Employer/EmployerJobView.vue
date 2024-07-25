@@ -5,7 +5,9 @@
     <EmployerNev />
     <div class="text-right bg-[#ebf4ff]">
       <div class="text-[18px] max-w-[1080px] mx-auto">
-        Welcome,{{ employername }}
+        Welcome {{ employername }}
+        <br>
+        (Employer/ IT Recruiter)
       </div>
     </div>
 
@@ -373,7 +375,8 @@
                         Delete
                       </button>
 
-                      <button v-if="job.paid == 1"
+                      <button
+                        v-if="job.paid == 1"
                         class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 ml-2 rounded-md focus:outline-none focus:shadow-outline"
                       >
                         <router-link :to="'/list-matching-resumes/' + job.id">
@@ -441,10 +444,14 @@
                     <!-- Posted Date
                                           {{ formateDate(job.created_at) }} -->
 
-                    (Searched for
-                    {{ job.search_count }} times )
+                    {{ job.apply_count }} Job Seeker(s) have applied for this
                   </p>
                 </div>
+                <div class="flex justify-end">
+                    <p class="text-yellow-700 font-bold text-xl">
+                      {{ job.paid == 1 ? "Premium" : "" }}
+                    </p>
+                  </div>
               </div>
             </div>
             <div v-if="jobs.length == 0 && jobStatus == true">

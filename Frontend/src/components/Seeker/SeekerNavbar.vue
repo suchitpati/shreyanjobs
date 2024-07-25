@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-between gap-4 px-11 pt-5 pb-5 bg-[#ebf4ff]">
+  <div class="flex justify-around px-[102px] gap-4  pt-5 pb-5 bg-[#ebf4ff]">
     <div>
       <img class="w-[150px]" src="../../assets/logo-no-background.png" alt="" />
     </div>
@@ -83,12 +83,13 @@ export default {
         localStorage.removeItem("seeker_tocken");
         localStorage.removeItem("seeker_id");
 
+        console.log(response.data.message,'response.data.message');
         if (response.data.message) {
           successMessage.value = response.data.message;
           showLogoutModal.value = true;
 
           setTimeout(() => {
-            router.push("/seeker-login");
+            router.push("/");
           }, 1000);
         }
 

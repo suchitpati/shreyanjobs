@@ -36,7 +36,8 @@
     <EmployerNev />
     <div class="text-right bg-[#ebf4ff]">
       <div class="text-[18px] max-w-[1080px] mx-auto">
-        Welcome,{{ employername }}
+        Welcome {{ employername }}<br>
+        (Employer/ IT Recruiter)
       </div>
     </div>
 
@@ -522,7 +523,8 @@
                 <div class="font-bold text-base">
                   Last Accessed date :
                   <span class="font-normal pl-1">{{
-                    person.last_accessed_date ? person.last_accessed_date : "-"
+                    person.get_recruiter  ? person.get_recruiter.last_accessed_date : person.last_accessed_date ? person.last_accessed_date : "-"
+
                   }}</span>
                 </div>
               </div>
@@ -1123,7 +1125,7 @@ export default {
 
     onMounted(() => {
       countries_state.value = someCountry.value;
-
+      selectedCountry.value = "US";
       //   fetchSeeker();
       getEmployerDeatails();
     });

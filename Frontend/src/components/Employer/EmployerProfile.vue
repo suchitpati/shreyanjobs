@@ -19,7 +19,8 @@
     <EmployerNev />
     <div class="text-right bg-[#ebf4ff]">
       <div class="text-[18px] max-w-[1080px] mx-auto">
-        Welcome,{{ employername }}
+        Welcome {{ employername }}<br>
+        (Employer/ IT Recruiter)
       </div>
     </div>
     <div class="text-right bg-[#ebf4ff]" v-if="employer_role != 1">

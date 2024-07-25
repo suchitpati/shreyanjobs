@@ -3,7 +3,7 @@
         <SuccessModal v-if="showLogoutModal" :message="successMessage" />
         <div
             v-if="showSuccessModal"
-            class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-75"
+            class="fixed inset-0 flex items-center  justify-center bg-gray-900 bg-opacity-75"
         >
             <div class="bg-white p-8 rounded-lg shadow-lg">
                 <h2 class="text-2xl font-bold mb-4">Job Added Successfully!</h2>
@@ -16,8 +16,8 @@
             </div>
         </div>
         <SeekerNavbar />
-        <div class="text-right pr-[105px] bg-[#ebf4ff] text-[18px]">
-            Welcome,{{ fullname }} (Job Seeker)
+        <div class="text-right pr-[397px] bg-[#ebf4ff] text-[18px]">
+            Welcome {{ fullname }} (Job Seeker)
         </div>
 
         <div class="bg-[#ebf4ff] py-7">
@@ -36,7 +36,7 @@
                 <div
                     class="bg-[#d3ddff4f] rounded-lg py-4 sm:px-8 px-4 w-full shadow-[rgba(100,_100,_111,_0.2)_0px_0px_10px_0px] hover:shadow-[rgba(100,_100,_111,_0.2)_0px_0px_20px_0px] transition-[.5s]"
                 >
-                    <div class="float-right" v-if="section == 1">
+                    <!-- <div class="float-right" v-if="section == 1">
                         <button
                             class="bg-blue-500 text-white border px-3 py-1 rounded"
                             @click="changeSection"
@@ -51,7 +51,7 @@
                         >
                             Back to Profile
                         </button>
-                    </div>
+                    </div> -->
                     <div class="mt-4" v-if="section == 1">
                         <div
                             class="w-full flex sm:flex-row flex-col justify-between sm:gap-6 gap-2"

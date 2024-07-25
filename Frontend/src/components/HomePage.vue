@@ -7,12 +7,12 @@
       </p>
       <div class="bg-white">
         <div
-          class="max-w-[1080px] mx-auto sm:px-[20px] px-[16px] flex flex-col sm:flex-row items-center"
+          class="max-w-[1080px] mx-auto sm:px-[20px] px-[16px] flex flex-col  sm:flex-row items-center"
         >
           <!-- Logo Section -->
-          <div class="sm:w-full xs:w-auto w-full mb-4">
+          <div class=" w-full mb-4">
             <img
-              class="md:w-[230px] w-[150px] mx-auto"
+              class="md:min-w-[230px] w-[150px] mx-auto"
               src="../assets/logo-no-background.png"
               alt=""
             />
@@ -82,7 +82,7 @@
           >
             <router-link to="/job-search">
               <button
-                class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] focus:outline-none focus:shadow-outline"
+                class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-full sm:ml-auto text-[#1890da] font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] focus:outline-none focus:shadow-outline"
               >
                 Job Search
               </button>
@@ -146,7 +146,7 @@
               <button
                 class="border-gray-600 hover:bg-[#f7f7f9] border-r-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[10px] h-20 py-[7px] px-[18px] md:px-[26px] focus:outline-none focus:shadow-outline"
               >
-                <span>Job </span><br />
+                <span>Job </span>
                 Search
               </button>
             </router-link>
@@ -154,7 +154,7 @@
               <button
                 class="border-gray-600 hover:bg-[#f7f7f9] border-r-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[10px] h-20 py-[7px] px-[18px] md:px-[26px] focus:outline-none focus:shadow-outline"
               >
-                <span>Free Job</span><br />
+                <span>Free Job</span>
                 Posting
               </button>
             </router-link>
@@ -162,7 +162,7 @@
               <button
                 class="border-gray-600 hover:bg-[#f7f7f9] border-r-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[10px] h-20 py-[7px] px-[18px] md:px-[26px] focus:outline-none focus:shadow-outline"
               >
-                <span>Employer</span> <br />
+                <span>Employer</span>
                 Login
               </button>
             </router-link>
@@ -241,7 +241,7 @@
             <p
               class="underline font-bold text-sky-500 mb-4 text-xl cursor-pointer"
             >
-              <router-link to="/seeker-register"> Job Seeker </router-link>
+              <router-link to="/seeker-login"> Job Seeker </router-link>
             </p>
             <div class="flex gap-5 mb-5">
               <div class="flex flex-col gap-2 w-[50%]">
@@ -268,7 +268,7 @@
             <p
               class="underline font-bold text-sky-500 mb-4 text-xl cursor-pointer"
             >
-              <router-link to="/employer-register">
+              <router-link to="/employer-login">
                 Employer/ IT Recruiter
               </router-link>
             </p>
@@ -305,7 +305,7 @@
             <p
               class="underline font-bold text-sky-500 mb-4 text-xl cursor-pointer"
             >
-              <router-link to="/recruiter-register">
+              <router-link to="/recruiter-login">
                 Bench Sales Recruiter</router-link
               >
             </p>
@@ -640,7 +640,7 @@
       </div>
     </div>
 
-    <div
+    <!-- <div
       v-if="skillModelStatus"
       class="modal fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center"
     >
@@ -668,12 +668,7 @@
         </div>
 
         <div class="flex justify-center">
-          <!-- <button
-                          class="mr-2 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition duration-300"
-                          @click="closeSeeekerSkillDetail"
-                      >
-                          No
-                      </button> -->
+
           <button
             class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition duration-300"
             @click="addSeeekerSkillDetail"
@@ -682,7 +677,7 @@
           </button>
         </div>
       </div>
-    </div>
+    </div> -->
     <div
       class="fixed inset-0 flex items-center justify-center z-10"
       v-if="isLoading"
@@ -1235,12 +1230,9 @@ export default {
         );
         localStorage.removeItem("seeker_tocken");
         localStorage.removeItem("seeker_id");
+        console.log(response.data.message.length,'response.data.message');
 
-        if (response.data.message) {
-          setTimeout(() => {
-            router.push("/seeker-login");
-          }, 1000);
-        }
+        window.location.reload();
 
         console.log(response);
       } catch (error) {

@@ -31,6 +31,7 @@ import EmployerUpdatePassword from "./components/Employer/UpdatePassword.vue";
 import EmployerJobView from "./components/Employer/EmployerJobView.vue";
 import EmployerJobEdit from "./components/Employer/EmployerJobEdit.vue";
 import ListMatchingResumes from "./components/Employer/ListMatchingResumes.vue";
+import EmployerEasyjob from "./components/Employer/EmployerEasyJobPost.vue";
 import HomePage from "../src/components/HomePage.vue";
 
 const loggedIn = localStorage.getItem("accessToken");
@@ -142,6 +143,11 @@ const routes = [
         path: "/employer-update-password",
         name: "employer-update-password",
         component: EmployerUpdatePassword,
+    },
+    {
+        path: "/employer-easy-post",
+        name: "employer-easy-post",
+        component: EmployerEasyjob,
     },
     {
         path: "/recruiter-login",

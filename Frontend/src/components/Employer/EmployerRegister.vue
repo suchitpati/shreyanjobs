@@ -1,15 +1,15 @@
 <template>
-  <div class="bg-[#eaf4ff]">
-    <div class="w-full flex justify-end pt-4 pr-4 pl-4">
-      <img class="w-[150px]" src="../../assets/logo-no-background.png" alt="" />
+  <div class="bg-[#eaf4ff] flex flex-col gap-[50px_0]">
+    <div class="w-full flex items-center justify-between pt-4 pr-4 pl-4 sticky top-0 left-0 bg-[#eaf4ff] py-1">
+      <img class="w-[150px] mx-[auto] md:mx-[0]" src="../../assets/logo-no-background.png" alt="" />
       <a
         href="/"
-        class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[10px] py-[7px] px-[18px] md:px-[26px] rounded-[26px] focus:outline-none"
+        class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] mt-2  text-[#1890da] font-bold py-[10px] py-[7px] px-[18px] md:px-[26px] rounded-[26px] focus:outline-none"
         >Home
       </a>
     </div>
     <div
-      class="p-4 h-[calc(100vh-62px)] flex justify-center flex-col gap-6 items-center"
+      class="p-4 flex justify-center flex-col gap-6 items-center"
     >
       <div
         class="rounded-lg flex items-center justify-center max-w-[1120px] sm:px-[20px] bg-img w-full"
@@ -43,7 +43,7 @@
             <h1
               class="sm:text-[28px] text-[22px] font-bold mt-[20px] sm:mb-[50px] mb-[30px] text-[#1890da]"
             >
-              Register to your account
+              Employer/ IT Recruiter Registration
             </h1>
             <div
               v-if="validationError"
@@ -57,7 +57,7 @@
                   class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
                   for="field2"
                 >
-                Full Name
+                  Full Name
                 </label>
                 <input
                   class="border border-gray-400 rounded-lg py-2 px-4 mb-1 outline-[#264dd9] focus:shadow-outline w-full"
@@ -334,8 +334,9 @@
               >
                 Submit
               </button>
-              <div class="text-[14px] mt-1">It may take 1 – 2 mins to receive the OTP in email.</div>
-
+              <div class="text-[14px] mt-1">
+                It may take 1 – 2 mins to receive the OTP in email.
+              </div>
             </div>
           </div>
         </div>
@@ -428,64 +429,64 @@ export default {
     const someCountry = ref([]);
 
     someCountry.value = [
-            {
-                name: "United States",
-                isoCode: "US",
-            },
-            {
-                name: "Canada",
-                isoCode: "CA",
-            },
-            {
-                name: "United Kingdom",
-                isoCode: "GB",
-            },
-            {
-                name: "Australia",
-                isoCode: "AU",
-            },
-            {
-                name: "Singapore",
-                isoCode: "SG",
-            },
-            {
-                name: "France",
-                isoCode: "FR",
-            },
-            {
-                name: "Germany",
-                isoCode: "DE",
-            },
-            {
-                name: "China",
-                isoCode: "CN",
-            },
-            {
-                name: "India",
-                isoCode: "IN",
-            },
-            {
-                name: "Japan",
-                isoCode: "JP",
-            },
-            {
-                name: "Saudi Arabia",
-                isoCode: "SA",
-            },
-            {
-                name: "Brazil",
-                isoCode: "BR",
-            },
-        ];
+      {
+        name: "United States",
+        isoCode: "US",
+      },
+      {
+        name: "Canada",
+        isoCode: "CA",
+      },
+      {
+        name: "United Kingdom",
+        isoCode: "GB",
+      },
+      {
+        name: "Australia",
+        isoCode: "AU",
+      },
+      {
+        name: "Singapore",
+        isoCode: "SG",
+      },
+      {
+        name: "France",
+        isoCode: "FR",
+      },
+      {
+        name: "Germany",
+        isoCode: "DE",
+      },
+      {
+        name: "China",
+        isoCode: "CN",
+      },
+      {
+        name: "India",
+        isoCode: "IN",
+      },
+      {
+        name: "Japan",
+        isoCode: "JP",
+      },
+      {
+        name: "Saudi Arabia",
+        isoCode: "SA",
+      },
+      {
+        name: "Brazil",
+        isoCode: "BR",
+      },
+    ];
 
-        function IsEmail(email) {
-        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (emailRegex.test(email)) {
-           return false;
-        }else{
-           return true;
-        }
+    function IsEmail(email) {
+      var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (emailRegex.test(email)) {
+        return false;
+      } else {
+        return true;
       }
+    }
 
     const registerEmployer = async () => {
       try {
@@ -512,12 +513,11 @@ export default {
 
         var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (emailRegex.test(email.value) == false) {
-            emailError.value = "Please valid Email";
-            return false;
-        }else{
-            emailError.value = "";
+          emailError.value = "Please valid Email";
+          return false;
+        } else {
+          emailError.value = "";
         }
-
 
         if (password.value == null || password.value == "") {
           passwordError.value = "Please Enter Password";
@@ -688,7 +688,7 @@ export default {
     });
 
     return {
-        IsEmail,
+      IsEmail,
       stateError,
       companyname,
       companynameError,

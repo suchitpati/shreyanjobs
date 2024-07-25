@@ -12,13 +12,21 @@ class consultantsController extends Controller
     public function addConsultantsDetails(Request $request){
 
 
+        $consultantas = consultantas::latest()->first();
+        $consultant_id = $consultantas->id+1;
         if ($request->file('resume')) {
 
             $allowedExtensions = ['pdf', 'doc', 'docx'];
             // $maxFileSize = 3 * 1024;
 
+
+            $shortFullname = str_replace(' ', '', substr($request->fullname, 0, 15));
+            $shortprimary_skill = str_replace(' ', '', substr($request->primary_skill, 0, 15));
+
+
             if (in_array($request->file('resume')->getClientOriginalExtension(), $allowedExtensions)) {
-                $fileName = time() . '.' . $request->file('resume')->getClientOriginalExtension();
+                $fileName = "Resume_" . $shortFullname . '_' . $shortprimary_skill . '_' . $consultant_id . '.' . $request->file('resume')->getClientOriginalExtension();
+
                 $request->file('resume')->move(public_path('pdf'), $fileName);
             } else {
                 return response()->json([
@@ -26,6 +34,19 @@ class consultantsController extends Controller
                     'error' => 100,
                 ]);
             }
+
+
+
+
+            // if (in_array($request->file('resume')->getClientOriginalExtension(), $allowedExtensions)) {
+            //     $fileName = time() . '.' . $request->file('resume')->getClientOriginalExtension();
+            //     $request->file('resume')->move(public_path('pdf'), $fileName);
+            // } else {
+            //     return response()->json([
+            //         'message' => 'Only PDF and DOC files are allowed, and the file must be less than 3MB.',
+            //         'error' => 100,
+            //     ]);
+            // }
 
 
 
@@ -76,8 +97,15 @@ class consultantsController extends Controller
         // $maxFileSize = 3 * 1024;
         if ($request->hasFile('pdf')) {
 
+
+            $shortFullname = str_replace(' ', '', substr($Constant->fullname, 0, 15));
+            $shortprimary_skill = str_replace(' ', '', substr($Constant->primary_skill, 0, 15));
+
+
             if (in_array($request->file('pdf')->getClientOriginalExtension(), $allowedExtensions)) {
                 $fileName = time() . '.' . $request->file('pdf')->getClientOriginalExtension();
+                $fileName = "Resume_" . $shortFullname . '_' . $shortprimary_skill . '_' . $request->consultant_id . '.' . $request->file('pdf')->getClientOriginalExtension();
+
                 $request->file('pdf')->move(public_path('pdf'), $fileName);
             } else {
                 return response()->json([
