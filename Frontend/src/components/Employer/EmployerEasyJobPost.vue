@@ -164,6 +164,7 @@ export default {
     const err_remote = ref("");
     const err = ref("");
     const email = ref("");
+    const job_email = ref("");
     const contact_number1 = ref("");
     const contact_number = ref("");
     const someCountry = ref([]);
@@ -311,7 +312,7 @@ export default {
       state.value = "";
       additional_detail.value = "";
       skill.value = "";
-      email.value = "";
+      job_email.value = "";
       year_of_experience.value = "";
       contact_number1.value = "";
       technical_skill.value = "";
@@ -382,7 +383,7 @@ export default {
           }
 
           if (key.toLowerCase().includes("email")) {
-            email.value = value;
+            job_email.value = value;
           }
 
           if (
@@ -452,6 +453,21 @@ export default {
       }
 
 
+      year_of_experience.value = year_of_experience.value.replace(/\D/g, '');
+
+
+      if (year_of_experience.value == "") {
+        year_of_experience.value = 7;
+      }
+
+      if (job_email.value == "") {
+        job_email.value = email.value;
+      }
+      if (employment_type.value == "") {
+        employment_type.value = "contract-others";
+      }
+
+
       const authToken = localStorage.getItem("employer_tocken");
       country.value = "US";
       remote.value = 0;
@@ -480,22 +496,25 @@ export default {
         short_description: short_description.value,
         detailed_description: job_details1.value,
         job_title: job_title.value,
-        email: email.value,
+        email: job_email.value,
         contact_number: contact_number1.value,
         additional_detail: additional_detail.value,
         technical_skill: technical_skill.value,
         paid: paid.value,
         job_owner_id: localStorage.getItem("employer_id"),
       };
+      isLoading.value = true;
 
       const response = await axios.post(
         `${apiUrl}/easy-jobs`,
         requestData,
         config
       );
+      isLoading.value = false;
+
       if(response.data.success == 200)
       {
-          window.location.reload();
+            window.location.reload();
             window.scrollTo(0, 0);
             localStorage.setItem("addJobMessage", true);
             localStorage.setItem("addJobMessageStatus", true);
@@ -696,6 +715,7 @@ export default {
       err_job,
       err_remote,
       email,
+      job_email,
       contact_number,
       defaultSelectedState,
       remaining_additional_detail,

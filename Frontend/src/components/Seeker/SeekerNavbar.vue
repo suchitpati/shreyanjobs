@@ -82,7 +82,8 @@ export default {
         );
         localStorage.removeItem("seeker_tocken");
         localStorage.removeItem("seeker_id");
-
+        localStorage.setItem("logoutMessage", true);
+        localStorage.setItem("logoutMessageStatus", true);
         console.log(response.data.message,'response.data.message');
         if (response.data.message) {
           successMessage.value = response.data.message;

@@ -547,7 +547,7 @@
                   v-if="!viewContactStatus && contact_id != person.id"
                   @click="openConfirmationmodel(person.id)"
                 >
-                  <p class="underline cursor-pointer">View Contact Detail</p>
+                  <p class="underline cursor-pointer">{{person.get_recruiter  ? "Sales Recruiter Contact" : "View Contact Detail"}}</p>
                 </div>
 
                 <div v-else-if="contact_id == person.id">
@@ -855,6 +855,10 @@ export default {
         : "";
     };
 
+    const defaultState = async()=>
+    {
+        states.value = State.getStatesOfCountry("US");
+    }
     const closeSuccessModal = () => {
       showSuccessModal.value = false;
     };
@@ -1128,6 +1132,7 @@ export default {
       selectedCountry.value = "US";
       //   fetchSeeker();
       getEmployerDeatails();
+      defaultState();
     });
 
     return {

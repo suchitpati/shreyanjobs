@@ -26,13 +26,13 @@
             v-if="isEmployerLogged == true"
             class="sm:w-full xs:w-auto w-full flex flex-col sm:flex-row justify-center sm:justify-end gap-[10px]"
           >
-            <router-link to="/add-job">
+            <!-- <router-link to="/add-job">
               <button
                 class="border-[#1890da] hover:bg-[#f7f7f9] border-[1px] w-max sm:ml-auto text-[#1890da] font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] focus:outline-none focus:shadow-outline"
               >
                 Easy Post Job
               </button>
-            </router-link>
+            </router-link> -->
 
             <router-link to="/add-job">
               <button
@@ -373,7 +373,7 @@
               class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
               for="field2"
             >
-              Employee Type
+            Employment Type
             </label>
             <select
               class="border text-sm rounded-lg bg-white py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
@@ -435,7 +435,7 @@
               <option value="1">Last 24 Hours</option>
               <option value="3">Last 3 days</option>
               <option value="7">Last 7 days</option>
-              <option value="30">Last 30 days</option>
+              <!-- <option value="30">Last 30 days</option> -->
             </select>
           </div>
 
@@ -1720,6 +1720,8 @@ export default {
         );
         localStorage.removeItem("employer_tocken");
         localStorage.removeItem("employer_id");
+        localStorage.setItem("logoutMessage", true);
+        localStorage.setItem("logoutMessageStatus", true);
         isLoading.value = false;
 
         console.log(response.data, "responseresponse");
@@ -1758,6 +1760,9 @@ export default {
         );
         localStorage.removeItem("seeker_tocken");
         localStorage.removeItem("seeker_id");
+
+        localStorage.setItem("logoutMessage", true);
+        localStorage.setItem("logoutMessageStatus", true);
         console.log(response.data, "responseresponseresponseresponseresponse");
         if (response.data.message.length > 1) {
           setTimeout(() => {
@@ -1791,7 +1796,8 @@ export default {
         );
         localStorage.removeItem("recruiter_tocken");
         localStorage.removeItem("recruiter_id");
-
+        localStorage.setItem("logoutMessage", true);
+        localStorage.setItem("logoutMessageStatus", true);
         if (response.data.message) {
           setTimeout(() => {
             router.push("/");
