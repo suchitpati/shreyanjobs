@@ -234,6 +234,19 @@
         </div>
       </div>
     </div>
+    <div class="bg-[#fff] py-2">
+        <div class="max-w-[980px] text-[12px] w-full m-auto pr-3">
+          <div class="m-auto p-auto text-center">
+            <span
+            v-if="logoutMessageStatus === 'true'"
+
+              class="text-green-600 text-[16px]"
+              >You are Logged out successfully</span
+            >
+          </div>
+        </div>
+      </div>
+
     <div class="bg-[linear-gradient(180deg,#f5f4fa,rgba(251,251,253,0))] py-5">
       <div class="flex gap-5 max-w-[980px] mx-auto">
         <div class="w-[70%]">
@@ -774,6 +787,10 @@ export default {
     const remaining_cover_detail = ref(200);
     const mailSentMessage = ref(false);
     const mailSentMessageStatus = ref(false);
+    const logoutMessage = ref(false);
+    const logoutMessageStatus = ref(false);
+
+
     const skillModelStatus = ref(false);
 
     const skillInput = ref("");
@@ -1193,7 +1210,8 @@ export default {
         localStorage.removeItem("employer_tocken");
         localStorage.removeItem("employer_id");
         isLoading.value = false;
-
+        localStorage.setItem("logoutMessage", true);
+        localStorage.setItem("logoutMessageStatus", true);
         console.log(response.data, "responseresponse");
         window.location.reload();
         console.log(response);
@@ -1230,6 +1248,8 @@ export default {
         );
         localStorage.removeItem("seeker_tocken");
         localStorage.removeItem("seeker_id");
+        localStorage.setItem("logoutMessage", true);
+        localStorage.setItem("logoutMessageStatus", true);
         console.log(response.data.message.length,'response.data.message');
 
         window.location.reload();
@@ -1260,11 +1280,11 @@ export default {
         );
         localStorage.removeItem("recruiter_tocken");
         localStorage.removeItem("recruiter_id");
-
+        localStorage.setItem("logoutMessage", true);
+        localStorage.setItem("logoutMessageStatus", true);
         if (response.data.message) {
-          setTimeout(() => {
-            router.push("/recruiter-login");
-          }, 1000);
+            window.location.reload();
+
         }
 
         console.log(response);
@@ -1459,6 +1479,22 @@ export default {
       if (mailSentMessage.value && mailSentMessageStatus) {
         localStorage.setItem("mailSentMessageStatus", false);
       }
+
+
+      logoutMessage.value = localStorage.getItem("logoutMessage");
+      logoutMessageStatus.value = localStorage.getItem(
+        "logoutMessageStatus"
+      );
+
+      if (logoutMessage.value && !logoutMessageStatus.value) {
+        localStorage.setItem("logoutMessageStatus", true);
+      }
+
+      if (logoutMessage.value && logoutMessageStatus) {
+        localStorage.setItem("logoutMessageStatus", false);
+      }
+
+
     });
     return {
       seeker_display_profile_type,
@@ -1554,6 +1590,8 @@ export default {
       isSeekerLogged,
       isRecruiterLogged,
       fullname,
+      logoutMessage,
+    logoutMessageStatus
       // handleSearch
     };
   },

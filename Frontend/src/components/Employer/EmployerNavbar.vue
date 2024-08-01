@@ -32,12 +32,12 @@
         >
           Post Job
         </button>
-        <button
+        <!-- <button
           @click="easyJobPost"
           class="bg-blue-500 text-[15px] text-white font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] mb-2 md:mb-0"
         >
           Easy Post Job
-        </button>
+        </button> -->
         <button
           @click="viewJob"
           class="bg-blue-500 text-[15px] text-white font-bold md:py-[5px] py-[7px] px-[18px] md:px-[15px] rounded-[26px] mb-2 md:mb-0"
@@ -120,7 +120,8 @@ export default {
         localStorage.removeItem("employer_tocken");
         localStorage.removeItem("employer_id");
         localStorage.removeItem("employer_role");
-
+        localStorage.setItem("logoutMessage", true);
+        localStorage.setItem("logoutMessageStatus", true);
         isLoading.value = false;
         if (response.data.message) {
           successMessage.value = response.data.message;

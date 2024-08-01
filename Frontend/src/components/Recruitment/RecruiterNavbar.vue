@@ -98,6 +98,8 @@ export default {
           successMessage.value = response.data.message;
           showLogoutModal.value = true;
 
+          localStorage.setItem("logoutMessage", true);
+          localStorage.setItem("logoutMessageStatus", true);
           setTimeout(() => {
             router.push("/");
           }, 1000);

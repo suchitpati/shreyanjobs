@@ -38,6 +38,14 @@
           >
             Post a Job
           </h1>
+
+          <div
+          class="text-[#1890da] sm:text-[22px] text-[22px] font-semibold mt-[0px] sm:mb-[0px] mb-[25px] cursor-pointer underline"
+        >
+          <router-link to="/employer-easy-post"
+            >Easy Job Posting</router-link
+          >
+        </div>
           <div
             class="text-[#1890da] sm:text-[22px] text-[22px] font-semibold mt-[0px] sm:mb-[0px] mb-[25px] cursor-pointer underline"
           >

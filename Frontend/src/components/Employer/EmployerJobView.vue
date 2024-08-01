@@ -6,7 +6,7 @@
     <div class="text-right bg-[#ebf4ff]">
       <div class="text-[18px] max-w-[1080px] mx-auto">
         Welcome {{ employername }}
-        <br>
+        <br />
         (Employer/ IT Recruiter)
       </div>
     </div>
@@ -292,8 +292,18 @@
                         >
                         <span
                           class="text-[#474d6a]"
-                          v-if="job.employment_type == 'contract'"
-                          >Contract</span
+                          v-if="job.employment_type == 'contract-c2c'"
+                          >Contract-C2C</span
+                        >
+                        <span
+                          class="text-[#474d6a]"
+                          v-if="job.employment_type == 'contract-w2'"
+                          >Contract-W2</span
+                        >
+                        <span
+                          class="text-[#474d6a]"
+                          v-if="job.employment_type == 'contract-others'"
+                          >Contract-Others</span
                         >
                       </div>
                       <!-- <div
@@ -448,10 +458,10 @@
                   </p>
                 </div>
                 <div class="flex justify-end">
-                    <p class="text-yellow-700 font-bold text-xl">
-                      {{ job.paid == 1 ? "Premium" : "" }}
-                    </p>
-                  </div>
+                  <p class="text-yellow-700 font-bold text-xl">
+                    {{ job.paid == 1 ? "Premium" : "" }}
+                  </p>
+                </div>
               </div>
             </div>
             <div v-if="jobs.length == 0 && jobStatus == true">
