@@ -53,9 +53,7 @@
           </div>
         </div>
 
-        <span
-          v-if="addJobMessageStatus === 'true' "
-          class="text-green-600"
+        <span v-if="addJobMessageStatus === 'true'" class="text-green-600"
           >Your job is posted successfully.</span
         >
         <div
@@ -317,9 +315,7 @@ export default {
       contact_number1.value = "";
       technical_skill.value = "";
       job_details1.value = "";
-      short_description.value="";
-
-
+      short_description.value = "";
 
       lines.forEach((line) => {
         const trimmedLine = line.trim();
@@ -328,8 +324,15 @@ export default {
         }
 
         if (!reachedJobDescription && trimmedLine !== "") {
-          additional_detail.value += trimmedLine + "\n";
+          if (trimmedLine.toLowerCase().includes("email")) {
+                console.log(trimmedLine);
+          }
+          else
+          {
+              additional_detail.value += trimmedLine + "\n";
+          }
         }
+
         if (trimmedLine.includes(":")) {
           const [key, value] = trimmedLine
             .split(":")
@@ -373,8 +376,6 @@ export default {
             }
           }
 
-
-
           if (
             key.toLowerCase().includes("skill") &&
             !key.toLowerCase().includes("technical skill")
@@ -415,11 +416,11 @@ export default {
       });
       short_description.value =
         job_title.value +
-        "," +
+        "-" +
         city.value +
-        "," +
+        "-" +
         state.value +
-        "," +
+        "-" +
         employment_type.value;
       const employer_id = localStorage.getItem("employer_id");
 
@@ -437,7 +438,7 @@ export default {
         err.value = "";
       }
 
-      if (job_details1.value == "" ) {
+      if (job_details1.value == "") {
         err.value = "Job Description not found. Please correct and retry. ";
         return false;
       } else {
@@ -449,12 +450,10 @@ export default {
       }
 
       if (contact_number1.value == "") {
-        contact_number1.value = contact_number.value;
+        contact_number1.value = "";
       }
 
-
-      year_of_experience.value = year_of_experience.value.replace(/\D/g, '');
-
+      year_of_experience.value = year_of_experience.value.replace(/\D/g, "");
 
       if (year_of_experience.value == "") {
         year_of_experience.value = 7;
@@ -466,7 +465,6 @@ export default {
       if (employment_type.value == "") {
         employment_type.value = "contract-others";
       }
-
 
       const authToken = localStorage.getItem("employer_tocken");
       country.value = "US";
@@ -512,12 +510,15 @@ export default {
       );
       isLoading.value = false;
 
-      if(response.data.success == 200)
-      {
-            window.location.reload();
-            window.scrollTo(0, 0);
-            localStorage.setItem("addJobMessage", true);
-            localStorage.setItem("addJobMessageStatus", true);
+      if (response.data.success == 200) {
+        setTimeout(() => {
+          router.push("/employer-job-view");
+        }, 1000);
+
+        // window.location.reload();
+        // window.scrollTo(0, 0);
+        localStorage.setItem("addJobMessage", true);
+        localStorage.setItem("addJobMessageStatus", true);
       }
 
       console.log(response, "addEasyJob");
@@ -655,7 +656,7 @@ export default {
     });
 
     return {
-        contact_number1,
+      contact_number1,
       job_details1,
       err,
       addEasyJob,

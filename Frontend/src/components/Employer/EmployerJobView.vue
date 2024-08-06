@@ -23,6 +23,9 @@
       >
         View Past Jobs
       </div>
+      <span v-if="addJobMessageStatus === 'true'" class="text-green-600"
+        >Your job is posted successfully.</span
+      >
       <div class="max-w-[1080px] gap-6 w-full px mx-auto">
         <!-- Form with two parts -->
 
@@ -634,6 +637,8 @@ export default {
     const employer_role = ref("");
 
     const someCountry = ref([]);
+    const addJobMessageStatus = ref(false);
+    const addJobMessage = ref(false);
 
     someCountry.value = [
       {
@@ -963,6 +968,18 @@ export default {
 
     onMounted(() => {
       // countries_state.value = Country.getAllCountries();
+
+      addJobMessage.value = localStorage.getItem("addJobMessage");
+      addJobMessageStatus.value = localStorage.getItem("addJobMessageStatus");
+
+      if (addJobMessage.value && !addJobMessageStatus.value) {
+        localStorage.setItem("addJobMessageStatus", true);
+      }
+
+      if (addJobMessage.value && addJobMessageStatus) {
+        localStorage.setItem("addJobMessageStatus", false);
+      }
+
       countries_state.value = someCountry.value;
 
       console.log(countries_state.value, "countries_state");
@@ -971,6 +988,8 @@ export default {
       getEmployerDeatails();
     });
     return {
+      addJobMessageStatus,
+      addJobMessage,
       listMatchingResumes,
       employer_role,
       acct_balance,
