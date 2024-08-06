@@ -59,6 +59,10 @@ Route::post('/seeker-skill-delete', [SeekerController::class, 'seeker_deleteskil
 Route::post('/seeker-update-password',[SeekerController::class,'updatePassword']);
 Route::get('/seeker-contact-detail/{id}/{employe_id}',[SeekerController::class,'seekerContactDetail']);
 Route::get('/seeker-resume-detail/{id}/{employe_id}',[SeekerController::class,'seekerResumeDetail']);
+
+Route::get('/consultants-contact-detail/{id}/{employe_id}',[RecruiterController::class,'consultantsContactDetail']);
+Route::get('/consultants-resume-detail/{id}/{employe_id}',[RecruiterController::class,'consultantsResumeDetail']);
+
 Route::post('/apply-job-email',[SeekerController::class,'applyJobMail']);
 
 

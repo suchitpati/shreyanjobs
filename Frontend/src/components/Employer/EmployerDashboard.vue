@@ -36,16 +36,16 @@
     <EmployerNev />
     <div class="text-right bg-[#ebf4ff]">
       <div class="text-[18px] max-w-[1080px] mx-auto">
-        Welcome {{ employername }}<br>
+        Welcome {{ employername }}<br />
         (Employer/ IT Recruiter)
       </div>
     </div>
 
     <div class="text-right bg-[#ebf4ff]" v-if="employer_role != 1">
-        <div class="text-[18px] max-w-[1080px] mx-auto">
-            Account Balance : ${{ acct_balance }}
-        </div>
+      <div class="text-[18px] max-w-[1080px] mx-auto">
+        Account Balance : ${{ acct_balance }}
       </div>
+    </div>
 
     <div class="bg-[#ebf4ff] py-7">
       <div class="max-w-[1080px] mx-auto px-[20px]">
@@ -523,8 +523,11 @@
                 <div class="font-bold text-base">
                   Last Accessed date :
                   <span class="font-normal pl-1">{{
-                    person.get_recruiter  ? person.get_recruiter.last_accessed_date : person.last_accessed_date ? person.last_accessed_date : "-"
-
+                    person.get_recruiter
+                      ? person.get_recruiter.last_accessed_date
+                      : person.last_accessed_date
+                      ? person.last_accessed_date
+                      : "-"
                   }}</span>
                 </div>
               </div>
@@ -544,13 +547,40 @@
                   }}</span>
                 </div>
                 <div
-                  v-if="!viewContactStatus && contact_id != person.id"
-                  @click="openConfirmationmodel(person.id)"
+                  v-if="
+                    !viewContactStatus &&
+                    contact_id != person.id &&
+                    final_consultant_id != person.id
+                  "
                 >
-                  <p class="underline cursor-pointer">{{person.get_recruiter  ? "Sales Recruiter Contact" : "View Contact Detail"}}</p>
+                  <p
+                    class="underline cursor-pointer"
+                    v-if="person.get_recruiter"
+                    @click="
+                      openConsultantsConfirmationmodel(
+                        person.get_recruiter.id,
+                        person.id
+                      )
+                    "
+                  >
+                    Sales Recruiter Contact
+                  </p>
+                  <p
+                    class="underline cursor-pointer"
+                    @click="openConfirmationmodel(person.id)"
+                    v-else
+                  >
+                    View Contact Detail
+                  </p>
                 </div>
 
-                <div v-else-if="contact_id == person.id">
+                <div
+                  v-else-if="
+                    !person.get_recruiter &&
+                    final_consultant_id != person.id &&
+                    contact_id == person.id
+                  "
+                >
                   <div>{{ email }}(Verified)</div>
                   <div>{{ contact_number }}(Not Verified)</div>
                   <div class="text-[10px] text-[red]">
@@ -559,11 +589,40 @@
                   </div>
                 </div>
                 <div
-                  v-else
-                  class="cursor-pointer underline"
-                  @click="openConfirmationmodel(person.id)"
+                  v-else-if="
+                    person.get_recruiter &&
+                    person.get_recruiter.id == recruiter_id &&
+                    final_consultant_id == person.id &&
+                    contact_id != person.id
+                  "
                 >
-                  View Contact Detail
+                  <div>{{ email }}(Verified)</div>
+                  <div>{{ contact_number }}(Not Verified)</div>
+                  <div class="text-[10px] text-[red]">
+                    (Contact detail is displayed only once. Write it down for
+                    future use.)
+                  </div>
+                </div>
+                <div v-else class="cursor-pointer underline">
+                  <p
+                    class="underline cursor-pointer"
+                    v-if="person.get_recruiter"
+                    @click="
+                      openConsultantsConfirmationmodel(
+                        person.get_recruiter.id,
+                        person.id
+                      )
+                    "
+                  >
+                    Sales Recruiter Contact
+                  </p>
+                  <p
+                    class="underline cursor-pointer"
+                    @click="openConfirmationmodel(person.id)"
+                    v-else
+                  >
+                    View Contact Detail
+                  </p>
                 </div>
               </div>
               <div class="grid grid-cols-4 bg-white p-2">
@@ -578,20 +637,42 @@
                   </div>
                 </div>
                 <div class="font-bold text-base">
-                  Yrs of Exp:
+                  Yrs of Exp :
                   <span class="font-normal pl-1">
                     {{ person.secondary_skill_experience }}</span
                   >
                 </div>
                 <div
-                  v-if="!viewContactStatus && resume_contact_id != person.id"
+                  v-if="
+                    !viewContactStatus &&
+                    contact_id != person.id &&
+                    final_consultant_id != person.id
+                  "
                   class="cursor-pointer underline"
-                  @click="openResumeConfirmationmodel(person.id)"
                 >
-                  Download Resume
+                  <p
+                    class="underline cursor-pointer"
+                    v-if="person.get_recruiter"
+                    @click="openConsultantResumeConfirmationmodel(person.id)"
+                  >
+                    Download Resume Recruiter
+                  </p>
+                  <p
+                    class="underline cursor-pointer"
+                    @click="openResumeConfirmationmodel(person.id)"
+                    v-else
+                  >
+                    Download Resume
+                  </p>
                 </div>
                 <div
                   v-else-if="resume_contact_id == person.id"
+                  class="cursor-pointer underline"
+                >
+                  <div @click="downloadResume">Download Resume</div>
+                </div>
+                <div
+                  v-else-if="resume_consultant_contact_id == person.id"
                   class="cursor-pointer underline"
                 >
                   <div @click="downloadResume">Download Resume</div>
@@ -635,6 +716,31 @@
       </div>
     </div>
 
+    <div
+      class="modal fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center"
+      v-if="confirmConsultantModel"
+    >
+      <div class="bg-white p-8 rounded shadow-lg w-100">
+        <p class="mb-1">$0.50 will be deducted from your account balance.</p>
+        <p class="mb-3">Do you want to continue ?</p>
+
+        <div class="flex justify-end">
+          <button
+            class="mr-2 px-4 py-2 bg-gray-500 text-white rounded"
+            @click="openConsultantsConfirmationmodel"
+          >
+            No
+          </button>
+          <button
+            class="px-4 py-2 bg-green-500 text-white rounded"
+            @click="fetchConsultantDetails"
+          >
+            Yes
+          </button>
+        </div>
+      </div>
+    </div>
+
     <div class="">
       <FooterPage />
     </div>
@@ -658,6 +764,33 @@
           <button
             class="px-4 py-2 bg-green-500 text-white rounded"
             @click="fetchSeeekerResumeDetail"
+          >
+            Yes
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center"
+      v-if="confirmConsultantModelResume"
+    >
+      <div class="bg-white p-8 rounded shadow-lg w-100">
+        <p class="mb-1">
+          $0.5 will be deducted from your account balance Resume.
+        </p>
+        <p class="mb-3">Do you want to continue ?</p>
+
+        <div class="flex justify-end">
+          <button
+            class="mr-2 px-4 py-2 bg-gray-500 text-white rounded"
+            @click="closeConsultantResumeconfirmModel"
+          >
+            No
+          </button>
+          <button
+            class="px-4 py-2 bg-green-500 text-white rounded"
+            @click="fetchConsultantResumeDetail"
           >
             Yes
           </button>
@@ -741,14 +874,25 @@ export default {
     const work_visa = ref("");
     const target_id = ref("");
     const confirmModel = ref(false);
+    const confirmConsultantModel = ref(false);
 
     const allSeeker = ref({});
     const viewContactStatus = ref(false);
     const contact_id = ref("");
+    const recruiter_id = ref("");
+    const consultant_id = ref("");
+    const final_consultant_id = ref("");
+
     const target_resume_id = ref("");
+    const target_consultant_resume_id = ref("");
+
     const confirmModelResume = ref(false);
+    const confirmConsultantModelResume = ref(false);
+
     const download_resume = ref("");
     const resume_contact_id = ref("");
+    const resume_consultant_contact_id = ref("");
+
     const inputStatus = ref(false);
     const fetchJobStatus = ref(false);
 
@@ -855,10 +999,9 @@ export default {
         : "";
     };
 
-    const defaultState = async()=>
-    {
-        states.value = State.getStatesOfCountry("US");
-    }
+    const defaultState = async () => {
+      states.value = State.getStatesOfCountry("US");
+    };
     const closeSuccessModal = () => {
       showSuccessModal.value = false;
     };
@@ -877,6 +1020,20 @@ export default {
     };
     const closeConfirmationmodel = () => {
       confirmModel.value = !confirmModel.value;
+    };
+
+    const openConsultantsConfirmationmodel = async (id, consultant_ids) => {
+      consultant_id.value = consultant_ids;
+      target_id.value = id;
+      if (employer_role.value != 1) {
+        confirmConsultantModel.value = !confirmConsultantModel.value;
+      } else {
+        fetchConsultantDetails();
+      }
+    };
+
+    const closeConsultantsConfirmationmodel = () => {
+      confirmConsultantModel.value = !confirmConsultantModel.value;
     };
 
     const fetchSeeekerContactDetail = debounce(async () => {
@@ -906,7 +1063,44 @@ export default {
         email.value = response.data.seeker_details[0].email;
         contact_number.value = response.data.seeker_details[0].contact_number;
         contact_id.value = target_id.value;
+        final_consultant_id.value = null;
         console.log(email.value, "response");
+      } catch (error) {
+        console.error(error);
+      }
+    });
+
+    const fetchConsultantDetails = debounce(async () => {
+      try {
+        const authToken = localStorage.getItem("employer_tocken");
+        const employer_id = localStorage.getItem("employer_id");
+
+        const formData = new FormData();
+        formData.append("searchInput", searchInput.value);
+        const response = await axios.get(
+          `${apiUrl}/consultants-contact-detail/${target_id.value}/${employer_id}`,
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+            },
+          }
+        );
+        if (employer_role.value != 1) {
+          confirmConsultantModel.value = !confirmConsultantModel.value;
+        }
+        if (response.data.code == 100) {
+          showSuccessModal.value = true;
+          return false;
+        }
+        viewContactStatus.value = !viewContactStatus.value;
+        console.log(response.data.consultantas_details[0].emailid, "response");
+        email.value = response.data.consultantas_details[0].emailid;
+        contact_number.value = response.data.consultantas_details[0].contactno;
+        recruiter_id.value = target_id.value;
+        final_consultant_id.value = consultant_id.value;
+        contact_id.value = null;
+        acct_balance.value = response.data.employer.acct_balance;
       } catch (error) {
         console.error(error);
       }
@@ -921,9 +1115,29 @@ export default {
       }
       console.log(target_resume_id, "target_idtarget_idtarget_idtarget_id");
     };
+
+    const openConsultantResumeConfirmationmodel = async (id) => {
+      target_consultant_resume_id.value = id;
+      console.log(
+        target_consultant_resume_id.value,
+        "target_consultant_resume_id"
+      );
+      if (employer_role.value != 1) {
+        confirmConsultantModelResume.value =
+          !confirmConsultantModelResume.value;
+      } else {
+        fetchConsultantResumeDetail();
+      }
+    };
+
     const closeResumeconfirmModel = () => {
       confirmModelResume.value = false;
     };
+
+    const closeConsultantResumeconfirmModel = () => {
+      confirmConsultantModelResume.value = false;
+    };
+
     const downloadResume = async () => {
       const fileName = download_resume.value;
       const fileUrl = `https://shreyanjobs.com/backend/public/pdf/${fileName}`;
@@ -966,7 +1180,7 @@ export default {
         } else {
           download_resume.value = response.data.seeker_details[0].resume;
           resume_contact_id.value = target_resume_id.value;
-
+          resume_consultant_contact_id.value = null;
           const fileName = download_resume.value;
           const fileUrl = `https://shreyanjobs.com/backend/public/pdf/${fileName}`;
           // const fileUrl = `http://127.0.0.1:8000/pdf/${fileName}`;
@@ -983,6 +1197,52 @@ export default {
         console.error(error);
       }
     });
+
+    const fetchConsultantResumeDetail = debounce(async () => {
+      try {
+        const authToken = localStorage.getItem("employer_tocken");
+        const employer_id = localStorage.getItem("employer_id");
+        const response = await axios.get(
+          `${apiUrl}/consultants-resume-detail/${target_consultant_resume_id.value}/${employer_id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+            },
+          }
+        );
+        if (employer_role.value != 1) {
+          confirmConsultantModelResume.value =
+            !confirmConsultantModelResume.value;
+        }
+        if (response.data.code == 100) {
+          showSuccessModal.value = true;
+          return false;
+        }
+        viewContactStatus.value = !viewContactStatus.value;
+        console.log(response, "response");
+        if (response.data.status == "not") {
+          showResumeModal.value = true;
+        } else {
+          download_resume.value = response.data.consultantas_details[0].resume;
+          resume_consultant_contact_id.value = target_resume_id.value;
+          resume_contact_id.value = null;
+          const fileName = download_resume.value;
+          const fileUrl = `https://shreyanjobs.com/backend/public/pdf/${fileName}`;
+          // const fileUrl = `http://127.0.0.1:8000/pdf/${fileName}`;
+
+          const link = document.createElement("a");
+          link.href = fileUrl;
+          link.download = fileName;
+          link.target = "_blank";
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    });
+
     const getEmployerDeatails = async () => {
       const employer_id = localStorage.getItem("employer_id");
       const authToken = localStorage.getItem("employer_tocken");
@@ -1136,6 +1396,9 @@ export default {
     });
 
     return {
+      consultant_id,
+      fetchConsultantDetails,
+      fetchSeeekerContactDetail,
       employer_role,
       closeResumeErrorModal,
       showResumeModal,
@@ -1147,19 +1410,28 @@ export default {
       closeConfirmationmodel,
       getEmployerDeatails,
       resume_contact_id,
+      resume_consultant_contact_id,
       downloadResume,
       confirmModelResume,
+      confirmConsultantModelResume,
       download_resume,
       closeResumeconfirmModel,
+      closeConsultantResumeconfirmModel,
       target_resume_id,
+      target_consultant_resume_id,
       fetchSeeekerResumeDetail,
+      fetchConsultantResumeDetail,
       openResumeConfirmationmodel,
+      openConsultantResumeConfirmationmodel,
       contact_id,
+      recruiter_id,
       viewContactStatus,
-      fetchSeeekerContactDetail,
       confirmModel,
+      confirmConsultantModel,
       target_id,
       openConfirmationmodel,
+      openConsultantsConfirmationmodel,
+      closeConsultantsConfirmationmodel,
       work_visa,
       primary_skill_experience,
       secondary_skill_experience,
@@ -1214,8 +1486,8 @@ export default {
       err_remote,
       email,
       contact_number,
-      acct_balance ,
-
+      acct_balance,
+      final_consultant_id,
     };
   },
 };

@@ -10,8 +10,10 @@ use App\Mail\RecruiterOtpMail;
 use App\Models\AdminJob;
 use App\Models\consultantas;
 use App\Models\Employer;
+use App\Models\EmployerTransactionHistory;
 use App\Models\Seeker;
 use Carbon\Carbon;
+use Consultants;
 use Exception;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -307,5 +309,109 @@ class RecruiterController extends Controller
             'message' => 'password updated sucessfully',
             'success' => $request->all(),
         ]);
+    }
+
+
+    public function consultantsContactDetail($id, $employe_id)
+    {
+        $consultantas = Recruiter::where('id', $id)->get(['emailid', 'contactno']);
+
+        $employer = Employer::find($employe_id);
+        if ($employer->role != 1) {
+
+            if ($employer->acct_balance < 0.5) {
+                return response()->json([
+                    'code' => 100,
+                    'message' => "Insufficient balance",
+                    'status' => 'error'
+                ]);
+            }
+            $begin_balance = $employer->acct_balance;
+            $end_balance = $employer->acct_balance - 0.50;
+
+            $employer->acct_balance = $end_balance;
+            $employer->save();
+            $employer = Employer::where('id',$employe_id)->select('acct_balance')->first();
+
+            EmployerTransactionHistory::create([
+                'employer_id' => $employe_id,
+                'begin_balance' => $begin_balance,
+                'transaction_amount' => 0.50,
+                'end_balance' => $end_balance,
+                'transaction_date' => Carbon::now(),
+                'action_name' => 'View Contact',
+                'job_seeker_id' => $id
+            ]);
+        }
+        return response()->json([
+            'message' => 'Details fetch successfully',
+            'success' => 200,
+            'consultantas_details' => $consultantas,
+            'employer' => $employer
+
+        ]);
+    }
+
+
+    public function consultantsResumeDetail($id,$employe_id)
+    {
+        $consultantas = consultantas::where('id', $id)->get(['resume']);
+
+        $employer = Employer::find($employe_id);
+        if ($employer->role != 1) {
+
+            if ($employer->acct_balance < 0.5) {
+                return response()->json([
+                    'code' => 100,
+                    'message' => "Insufficient balance",
+                    'status' => 'error'
+                ]);
+            }
+            $begin_balance = $employer->acct_balance;
+            $end_balance = $employer->acct_balance - 0.50;
+
+            $employer->acct_balance = $end_balance;
+            $employer->save();
+            $employer = Employer::where('id',$employe_id)->select('acct_balance')->first();
+
+            EmployerTransactionHistory::create([
+                'employer_id' => $employe_id,
+                'begin_balance' => $begin_balance,
+                'transaction_amount' => 0.50,
+                'end_balance' => $end_balance,
+                'transaction_date' => Carbon::now(),
+                'action_name' => 'View Resume',
+                'job_seeker_id' => $id
+            ]);
+        }
+
+
+        return response()->json([
+            'message' => 'Details fetch successfully',
+            'success' => 200,
+            'consultantas_details' => $consultantas,
+            'status' => 'exist'
+
+        ]);
+        // $test = url('/pdf/' . $seeker[0]->resume);
+        $filePath = public_path('pdf/' . $consultantas[0]->resume);
+
+        if (is_file($filePath)) {
+            return response()->json([
+                'message' => 'Details fetch successfully',
+                'success' => 200,
+                'seeker_details' => $consultantas,
+                'status' => 'exist',
+                'employer' => $employer
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'Details fetch successfully',
+                'success' => 200,
+                'seeker_details' => $consultantas,
+                'status' => 'not'
+
+            ]);
+        }
     }
 }
