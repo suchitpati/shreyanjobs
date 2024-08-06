@@ -349,12 +349,20 @@ export default {
             job_title.value = value;
           }
           if (key.toLowerCase().includes("location")) {
-            const [city1, stateAndRest] = value.split(",");
-            const state1 = stateAndRest ? stateAndRest.trim().slice(0, 2) : "";
-            console.log("statestate", state1);
-            // result["location"] = `${city.trim()}, ${state}`;
-            city.value = city1.trim();
-            state.value = state1.trim();
+            if(value.toLowerCase() == "remote")
+          {
+            remote.value = 1;
+          }
+          else
+          {
+              const [city1, stateAndRest] = value.split(",");
+              const state1 = stateAndRest ? stateAndRest.trim().slice(0, 2) : "";
+              console.log("statestate", state1);
+              // result["location"] = `${city.trim()}, ${state}`;
+              city.value = city1.trim();
+              state.value = state1.trim();
+              remote.value = 0;
+            }
           }
 
           if (
@@ -431,7 +439,7 @@ export default {
         err.value = "";
       }
 
-      if (city.value == "" || state.value == "") {
+      if ((city.value == "" && state.value == "" ) && remote.value != 1) {
         err.value = "Location not found. Please correct and retry. ";
         return false;
       } else {
@@ -468,7 +476,6 @@ export default {
 
       const authToken = localStorage.getItem("employer_tocken");
       country.value = "US";
-      remote.value = 0;
       paid.value = 0;
 
       if (!authToken) {
