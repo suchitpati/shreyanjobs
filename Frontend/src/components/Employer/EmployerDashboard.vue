@@ -655,7 +655,7 @@
                     v-if="person.get_recruiter"
                     @click="openConsultantResumeConfirmationmodel(person.id)"
                   >
-                    Download Resume Recruiter
+                    Download Resume
                   </p>
                   <p
                     class="underline cursor-pointer"
@@ -680,9 +680,23 @@
                 <div v-else class="cursor-pointer underline">
                   <div
                     class="cursor-pointer"
-                    @click="openResumeConfirmationmodel(person.id)"
                   >
-                    <a><u>Download Resume</u></a>
+                  <p
+                  class="underline cursor-pointer"
+                  v-if="person.get_recruiter"
+                  @click="openConsultantResumeConfirmationmodel(person.id)"
+                >
+                  Download Resume
+                </p>
+                <p
+                  class="underline cursor-pointer"
+                  @click="openResumeConfirmationmodel(person.id)"
+                  v-else
+                >
+                  Download Resume
+                </p>
+
+                    <!-- <a><u>Download Resume</u></a> -->
                   </div>
                 </div>
               </div>
