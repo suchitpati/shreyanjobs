@@ -32,6 +32,8 @@ import EmployerJobView from "./components/Employer/EmployerJobView.vue";
 import EmployerJobEdit from "./components/Employer/EmployerJobEdit.vue";
 import ListMatchingResumes from "./components/Employer/ListMatchingResumes.vue";
 import EmployerEasyjob from "./components/Employer/EmployerEasyJobPost.vue";
+import EmployerEasyJobPostPreview from "./components/Employer/EmployerEasyJobPostPreview.vue";
+
 import HomePage from "../src/components/HomePage.vue";
 
 const loggedIn = localStorage.getItem("accessToken");
@@ -148,6 +150,11 @@ const routes = [
         path: "/employer-easy-post",
         name: "employer-easy-post",
         component: EmployerEasyjob,
+    },
+    {
+        path: "/employer-easy-post-preview/",
+        name: "employer-easy-post-preview",
+        component: EmployerEasyJobPostPreview,
     },
     {
         path: "/recruiter-login",

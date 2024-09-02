@@ -5,11 +5,18 @@
     <div class="bg-[#ebf4ff] py-7 overflow-y-auto">
       <div class="max-w-[1080px] w-full mx-auto px-[20px]">
         <div class="text-right bg-[#ebf4ff]">
-            <div class="text-[18px] max-w-[1080px] mx-auto">
+            <div class="text-[18px] max-w-[1080px] mx-auto" v-if="employer_role != 1">
               Welcome {{ employername }}
               <br>
               (Employer/ IT Recruiter)
             </div>
+
+            <div class="text-[18px] max-w-[1080px] mx-auto" v-else>
+                Welcome {{ employername }}
+                <br>
+                (Admin)
+              </div>
+
           </div>
           <div class="text-right bg-[#ebf4ff]" v-if="employer_role != 1">
             <div class="text-[18px] max-w-[1080px] mx-auto">

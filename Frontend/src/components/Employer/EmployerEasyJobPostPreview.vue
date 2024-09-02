@@ -6,7 +6,7 @@
       class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-75"
     >
       <div class="bg-white p-8 rounded-lg shadow-lg">
-        <h2 class="text-2xl font-bold mb-4">Insuficience balance</h2>
+        <h2 class="text-2xl font-bold mb-4">Job Added Successfully!</h2>
         <button
           @click="closeSuccessModal"
           class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -16,51 +16,21 @@
       </div>
     </div>
     <EmployerNev />
-    <div class="text-right bg-[#ebf4ff]">
-      <div class="text-[18px] max-w-[1080px] mx-auto" v-if="employer_role != 1">
-        Welcome {{ employername }}
-        <br>
-        (Employer/ IT Recruiter)
-      </div>
-
-      <div class="text-[18px] max-w-[1080px] mx-auto" v-else>
-        Welcome {{ employername }}
-        <br>
-        (Admin)
-      </div>
-
+    <div class="text-right pr-[105px] bg-[#ebf4ff] text-[18px]">
+      Welcome {{ employername }} (Employer)
     </div>
 
-    <div class="text-right bg-[#ebf4ff]" v-if="employer_role != 1">
-      <div class="text-[18px] max-w-[1080px] mx-auto">
-        Account Balance : ${{ acct_balance }}
-      </div>
-    </div>
-
-    <div class="bg-[#ebf4ff] py-0">
-      <div class="max-w-[980px] w-full mx-auto px-[20px]">
-        <div class="flex justify-between items-center mb-5">
-          <h1
-            class="text-[#1890da] sm:text-[22px] text-[22px] font-semibold mt-[0px] sm:mb-[0px] mb-[25px]"
-          >
-            Post a Job
-          </h1>
-
-          <div
-          class="text-[#1890da] sm:text-[22px] text-[22px] font-semibold mt-[0px] sm:mb-[0px] mb-[25px] cursor-pointer underline"
+    <div class="bg-[#ebf4ff] py-0 h-[calc(100vh-80px)] overflow-y-auto">
+      <div class="max-w-[1080px] w-full mx-auto px-[20px]">
+        <h1
+          class="text-[#1890da] sm:text-[26px] text-[22px] font-semibold mt-[0px] sm:mb-[0px] mb-[25px]"
         >
-          <router-link to="/employer-easy-post"
-            >Easy Job Posting</router-link
-          >
-        </div>
-          <div
-            class="text-[#1890da] sm:text-[22px] text-[22px] font-semibold mt-[0px] sm:mb-[0px] mb-[25px] cursor-pointer underline"
-          >
-            <router-link to="/employer-job-view"
-              >View/ Edit Past Jobs</router-link
-            >
-          </div>
-        </div>
+          Preview a Job
+        </h1>
+        <span v-if="addJobMessageStatus === 'true'" class="text-green-600"
+          >Job is updated successfully</span
+        >
+
         <span
           v-if="addJobMessageStatus === 'true' && lastJobPaidStatus === 'true'"
           class="text-green-600"
@@ -91,11 +61,12 @@
               </div>
             </div>
             <div class="flex justify-start gap-2" v-if="employer_role != 1">
-              <input type="checkbox" v-model="paid" />
+              <input type="checkbox" v-model="paid" :checked="paid" />
               <p class="text-[#1890da]">
                 <b>Make it Premium job ($1 Posting fee)</b>
               </p>
             </div>
+
             <fieldset
               class="border border-gray-400 px-3 pb-[10px] rounded sm:mb-4 mb-7"
             >
@@ -108,7 +79,7 @@
                     id="check"
                     type="checkbox"
                     class="w-[20px] h-[20px] border border-gray-400"
-                    :checked="remote"
+                    :checked="remote == 1"
                     v-model="remote"
                   />
                   <label
@@ -140,7 +111,6 @@
                       :key="country.isoCode"
                       :value="country.isoCode"
                       class="flex items-center"
-                      :selected="country.isoCode === 'US'"
                     >
                       <span
                         class="flag-icon flag-icon-{{ country.isoCode.toLowerCase() }} inline-block w-4 h-4 mr-2"
@@ -167,7 +137,7 @@
                     v-model="selectedState"
                     class="block w-full bg-white border text-sm rounded-lg p-2"
                     :disabled="remote"
-                    :selected="country.isoCode === 'US'"
+                    :selected="state.isoCode === 'GJ'"
                     @change="setSelectedState"
                   >
                     <option value="">Select State</option>
@@ -222,8 +192,8 @@
                   <option value="contracttohire">Contract to Hire</option>
                   <option value="contract-others">Contract-Others</option>
                   <!-- <option value="third-party contract">
-                                        Third-Party Contract
-                                    </option> -->
+                                            Third-Party Contract
+                                        </option> -->
                 </select>
                 <div
                   class="text-red-600 block text-[14px] text-left"
@@ -440,18 +410,16 @@
           </button>
         </div>
       </div>
-      <div class="">
-        <FooterPage />
-      </div>
     </div>
     <div
-      class="fixed inset-0 flex items-center justify-center"
+      class="absolute inset-0 flex items-center justify-center"
       v-if="isLoading"
     >
       <div
         class="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"
       ></div>
     </div>
+
     <div
       class="modal fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center"
       v-if="confirmModel"
@@ -504,7 +472,7 @@
   </div>
 </template>
 
-<script>
+    <script>
 import { reactive, ref, watch, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
@@ -513,21 +481,18 @@ import SuccessModal from "../SuccessModal.vue";
 import { debounce } from "lodash";
 import { State } from "country-state-city";
 import EmployerNev from "../Employer/EmployerNavbar.vue";
-import FooterPage from "../FooterPage.vue";
 
 export default {
   components: {
     SuccessModal,
     EmployerNev,
-    FooterPage,
   },
   setup() {
     const data = reactive({});
-    const selectedCountry = ref("US");
+    const selectedCountry = ref("");
     const country = ref("");
     const state = ref("");
     const remote = ref(false);
-    const paid = ref(false);
     const skill = ref("");
     const year_of_experience = ref("");
     const employment_type = ref("");
@@ -559,16 +524,15 @@ export default {
     const additional_detail = ref("");
     const technical_skill = ref("");
     const addJobMessage = ref(false);
-    const lastJobPaidStatus = ref(false);
-    const lastJobFreeStatus = ref(false);
     const addJobMessageStatus = ref(false);
     const employername = ref("");
-    const employer_role = ref("");
-    const acct_balance = ref("");
-
     const city = ref("");
+    const paid = ref(false);
     const confirmModel = ref(false);
     const freeJobConfirmModel = ref(false);
+    const employer_role = ref("");
+    const lastJobPaidStatus = ref(false);
+    const lastJobFreeStatus = ref(false);
 
     someCountry.value = [
       {
@@ -628,14 +592,12 @@ export default {
 
     const router = useRouter();
 
-    const route = useRouter();
-
     const onCountryChange = async () => {
-      console.log("selectedCountry.value", selectedCountry.value);
+      //   console.log("selectedCountry.value", selectedCountry.value);
       const selectedCountryObj = await countries_state.value.find(
         (countrys) => countrys.isoCode === selectedCountry.value
       );
-      console.log("selectedCountryObj", selectedCountryObj);
+      //   console.log("selectedCountryObj", selectedCountryObj);
 
       country.value = selectedCountryObj
         ? JSON.parse(JSON.stringify(selectedCountryObj)).name
@@ -649,12 +611,12 @@ export default {
     };
 
     const setSelectedState = async () => {
-      console.log(selectedState.value, "selectedState.value");
+      //   console.log(selectedState.value, "selectedState.value");
       const selectedStateObj = states.value.find((statess) => {
         return statess.isoCode == selectedState.value;
       });
 
-      console.log("state.value,selectedStateObj", selectedStateObj);
+      //   console.log("state.value,selectedStateObj", selectedStateObj);
       selectedState_main.value = JSON.parse(
         JSON.stringify(selectedStateObj)
       ).name;
@@ -672,7 +634,7 @@ export default {
       country.value = selectedCountryObj
         ? JSON.parse(JSON.stringify(selectedCountryObj)).name
         : "";
-      console.log(paid.value, "paid.value");
+      //   console.log(paid.value, "paid.value");
 
       if (employer_role.value != 1) {
         if (freeJobConfirmModel.value == true) {
@@ -710,7 +672,7 @@ export default {
           paid: paid.value,
           job_owner_id: localStorage.getItem("employer_id"),
         };
-        console.log("requestData", requestData);
+        // console.log("requestData", requestData);
         isLoading.value = true;
         const response = await axios.post(
           `${apiUrl}/admin-jobs`,
@@ -718,7 +680,7 @@ export default {
           config
         );
         if (paid.value == true) {
-          console.log("paid.value", paid.value);
+          //   console.log("paid.value", paid.value);
           localStorage.setItem("lastJobPaidStatus", true);
         } else {
           localStorage.setItem("lastJobFreeStatus", true);
@@ -729,7 +691,7 @@ export default {
           showSuccessModal.value = true;
           return false;
         }
-        console.log(response, "job ===>");
+        // console.log(response, "job ===>");
         (country.value = ""),
           (state.value = ""),
           (remote.value = false),
@@ -742,6 +704,8 @@ export default {
           (selectedCountry.value = ""),
           (selectedState_main.value = ""),
           (job_title.value = "");
+        localStorage.removeItem("job_data");
+
         window.location.reload();
         window.scrollTo(0, 0);
         // setTimeout(() => {
@@ -753,10 +717,6 @@ export default {
       }
     };
 
-    const closeSuccessModal = () => {
-      showSuccessModal.value = false;
-    };
-
     const makePremiumJob = () => {
       paid.value = true;
       addJob();
@@ -765,57 +725,9 @@ export default {
       paid.value = false;
       addJob();
     };
-    const fetchCountries = debounce(async () => {
-      await axios
-        .get(`${apiUrl}/countries`)
-        .then((response) => {
-          countries.value = response.data;
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    });
 
-    const adminProfile = async () => {
-      router.push("/admin-profile");
-    };
-
-    const adminLogout = async () => {
-      try {
-        const authToken = localStorage.getItem("accessToken");
-
-        if (!authToken) {
-          console.log("Authentication token is missing.");
-          return;
-        }
-
-        const config = {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        };
-        const response = await axios.post(
-          `${apiUrl}/admin/logout`,
-          null,
-          config
-        );
-        localStorage.removeItem("accessToken");
-        if (response.data.message) {
-          successMessage.value = response.data.message;
-          showLogoutModal.value = true;
-
-          setTimeout(() => {
-            router.push("/admin-login");
-          }, 1000);
-        }
-
-        console.log(response);
-      } catch (error) {
-        console.log(error);
-      }
-    };
     const opemConfirmationmodel = async () => {
-      console.log("paid.valu", paid.value);
+      //   console.log("paid.valu", paid.value);
       if (selectedCountry.value == null || selectedCountry.value == "") {
         err_country.value = "The country field is required";
         return false;
@@ -857,6 +769,103 @@ export default {
         confirmModel.value = !confirmModel.value;
       }
     };
+    const fetchJob = async () => {
+      // const job_id = route.params.id;
+      // const response = await axios.get(`${apiUrl}/admin-jobs/${job_id}`);
+
+      const response = JSON.parse(localStorage.getItem("job_data"));
+      paid.value = response.paid;
+      //   console.log(paid.value,'paidpaidpaidpaid');
+      job_title.value = response.job_title;
+      //   console.log(job_title.value, "job_titlejob_title");
+      year_of_experience.value = response.year_of_experience;
+      skill.value = response.skill;
+      short_description.value = response.short_description;
+      detailed_description.value = response.detailed_description;
+      additional_detail.value = response.additional_detail;
+      technical_skill.value = response.technical_skill;
+      selectedCountry.value = response.country;
+      employment_type.value = response.employment_type;
+      //   console.log(selectedCountry.value, "selectedCountryoutside");
+      email.value = response.email;
+      contact_number.value = response.contact_number;
+      someCountry.value.forEach((element) => {
+        // console.log(element.name, "selectedCountryIn", selectedCountry.value);
+        if (element.name == selectedCountry.value)
+          selectedCountry.value = element.isoCode;
+      });
+      selectedState.value = response.state;
+      states.value = countries.value
+        ? State.getStatesOfCountry(selectedCountry.value)
+        : "";
+
+        selectedState_main.value = response.state;
+
+      states.value.forEach((element) => {
+        if (element.name == selectedState.value)
+          selectedState.value = element.isoCode;
+      });
+
+      city.value = response.city;
+      remote.value = response.remote;
+      //   console.log(response, "responseresponse");
+    };
+
+    const closeSuccessModal = () => {
+      showSuccessModal.value = false;
+    };
+
+    const fetchCountries = debounce(async () => {
+      await axios
+        .get(`${apiUrl}/countries`)
+        .then((response) => {
+          countries.value = response.data;
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    });
+
+    const adminProfile = async () => {
+      router.push("/admin-profile");
+    };
+
+    const getCountryCode = async () => {};
+
+    const adminLogout = async () => {
+      try {
+        const authToken = localStorage.getItem("accessToken");
+
+        if (!authToken) {
+          console.log("Authentication token is missing.");
+          return;
+        }
+
+        const config = {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        };
+        const response = await axios.post(
+          `${apiUrl}/admin/logout`,
+          null,
+          config
+        );
+        localStorage.removeItem("accessToken");
+        if (response.data.message) {
+          successMessage.value = response.data.message;
+          showLogoutModal.value = true;
+
+          setTimeout(() => {
+            router.push("/admin-login");
+          }, 1000);
+        }
+
+        // console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
+    };
     const getEmployerDeatails = async () => {
       const employer_id = localStorage.getItem("employer_id");
 
@@ -880,24 +889,20 @@ export default {
         config
       );
 
-      email.value = response.data.employer_details.emailid;
-      contact_number.value = response.data.employer_details.contactno;
       employername.value = response.data.employer_details.employername;
-      acct_balance.value = response.data.employer_details.acct_balance;
-
-      employer_role.value = response.data.employer_details.role;
-      console.log("employer_role", employer_role.value);
     };
+    watch(additional_detail, (newValue) => {
+      if (newValue != null) {
+        remaining_additional_detail.value = 500 - newValue.length;
+      }
+    });
     watch(detailed_description, (newValue) => {
       remaining.value = 2000 - newValue.length;
     });
 
     watch(technical_skill, (newValue) => {
-      remaining_technical_skill.value = 2000 - newValue.length;
-    });
-    watch(additional_detail, (newValue) => {
       if (newValue != null) {
-        remaining_additional_detail.value = 500 - newValue.length;
+        remaining_technical_skill.value = 2000 - newValue.length;
       }
     });
     watch(
@@ -931,6 +936,17 @@ export default {
       addJobMessageStatus.value = localStorage.getItem("addJobMessageStatus");
       lastJobPaidStatus.value = localStorage.getItem("lastJobPaidStatus");
       lastJobFreeStatus.value = localStorage.getItem("lastJobFreeStatus");
+      if (localStorage.getItem("job_data") != null) {
+        fetchJob();
+      }
+    //   else{
+    //     router.push("/employer-easy-post");
+
+    //   }
+      getCountryCode();
+      // console.log(router,'router')
+      addJobMessage.value = localStorage.getItem("addJobMessage");
+      addJobMessageStatus.value = localStorage.getItem("addJobMessageStatus");
 
       if (addJobMessage.value && !addJobMessageStatus.value) {
         localStorage.setItem("addJobMessageStatus", true);
@@ -940,12 +956,7 @@ export default {
         localStorage.setItem("addJobMessageStatus", false);
         localStorage.setItem("lastJobPaidStatus", false);
         localStorage.setItem("lastJobFreeStatus", false);
-
       }
-
-      console.log(lastJobPaidStatus.value, "lastJobPaidStatus");
-      console.log(lastJobFreeStatus.value, "lastJobFreeStatus");
-
       // countries_state.value = Country.getAllCountries();
       countries_state.value = someCountry.value;
 
@@ -957,13 +968,7 @@ export default {
     return {
       lastJobFreeStatus,
       lastJobPaidStatus,
-      makePremiumJob,
-      paid,
-      acct_balance,
-      employer_role,
-      opemConfirmationmodel,
-      confirmModel,
-      freeJobConfirmModel,
+      fetchJob,
       addJobMessageStatus,
       city,
       addJobMessage,
@@ -973,7 +978,6 @@ export default {
       getEmployerDeatails,
       data,
       addJob,
-      makeFreeJob,
       country,
       state,
       remote,
@@ -991,7 +995,6 @@ export default {
       adminLogout,
       adminProfile,
       router,
-      route,
       remaining,
       remaining_technical_skill,
       job_title,
@@ -1017,9 +1020,16 @@ export default {
       defaultSelectedState,
       remaining_additional_detail,
       employername,
+      opemConfirmationmodel,
+      confirmModel,
+      freeJobConfirmModel,
+      makePremiumJob,
+      paid,
+
+      makeFreeJob,
     };
   },
 };
 </script>
 
-<style></style>
+    <style></style>

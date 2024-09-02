@@ -205,7 +205,7 @@
         <div class="text-[18px] max-w-[1080px] mx-auto">
           Welcome {{ employername }}
           <br />
-          (Employer/ IT Recruiter)
+          <div v-if="employer_role != 1">(Employer/ IT Recruiter)</div><div v-else>(Admin)</div>
         </div>
       </div>
       <div
@@ -373,7 +373,7 @@
               class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
               for="field2"
             >
-            Employment Type
+              Employment Type
             </label>
             <select
               class="border text-sm rounded-lg bg-white py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
