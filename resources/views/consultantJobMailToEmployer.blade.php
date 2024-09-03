@@ -28,7 +28,7 @@
     <b>Additional Note from the Bench Sales Recruiter:</b> {!! $cover_letter ? nl2br($cover_letter) : '-' !!}
     <br>
     <br>
-    <b>Thanks & Regards, <b>
+    <b>Thanks & Regards, </b>
             <br>
             <br>
             {{ $recruiter_name }}

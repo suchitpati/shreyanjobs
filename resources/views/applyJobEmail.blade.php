@@ -13,18 +13,35 @@
     Hi,
     <br>
     <br>
-    Job Application for {{ $job_title }} From shreyanjobs.com for the below job.
+    Job Application for <b>{{ $job_title }}</b> From shreyanjobs.com
     <br>
     <br>
     <b>Applicant Name</b> : {{ $fullname }} (Resume Attached)
     <br>
     <br>
-    ( ** Note : This candidate does not belong to shreyanjobs.com. The candidate or Bench Sales Recruiter email ID is in
-    CC on this email. Please communicate with that email directly).    <br>
-    *** shreyanjobs.com is an IT Job Portal - Connecting Job Seekers & Employers/ Recruiters
+    Please find attached my resume for the below job Position. Please review my resume and let me know
+    your feedback. My Email ID is in CC of this email.
     <br>
     <br>
-    <b>Message from Applicant</b> :{{ $cover_letter }}
+    <b>My Detail</b>
+    <br>
+    Name:{{ $fullname }},
+    <br>
+    Location : {{$seeker_city}},{{$seeker_state}} ,{{$seeker_country}}
+    <br>
+    Visa:{{$seeker_work_authorization}}
+    <br>
+    Linkedin URL:{{$seeker_linkedin_url}}
+    <br>
+    <br>
+    <b>Additional Note from the Candidate:</b> :{{ $cover_letter }}
+    <br>
+    <br>
+    <b>Thanks & Regards,</b>
+    <br>
+    {{ $fullname }}
+    <br>
+    {{$email}}
     <br>
     <br>
     <b>Job Title</b> : {{ $job_title }} ,

@@ -159,7 +159,7 @@
             <div
               class="w-full flex sm:flex-row flex-col justify-between sm:gap-6 gap-2"
             >
-              <div class="sm:w-[33%] mb-4">
+              <div class="sm:w-[50%] mb-4">
                 <label
                   class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
                   for="field1"
@@ -178,6 +178,27 @@
                   v-if="err_work_authorization != ''"
                 >
                   {{ err_work_authorization }}
+                </div>
+              </div>
+              <div class="sm:w-[50%] mb-4">
+                <label
+                  class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
+                  for="field1"
+                >
+                  Linkedin URL
+                </label>
+                <input
+                  class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
+                  type="text"
+                  id="field1"
+                  v-model="linkedin_url"
+                  placeholder="Enter Linkedin URL"
+                />
+                <div
+                  class="text-red-600 block text-[14px] text-left"
+                  v-if="err_linkedin_url != ''"
+                >
+                  {{ err_linkedin_url }}
                 </div>
               </div>
             </div>
@@ -373,6 +394,8 @@ export default {
 
     const fullname = ref("");
     const work_authorization = ref("");
+    const linkedin_url = ref("");
+
     const primary_skill = ref("");
     const primary_skill_experience = ref("");
     const all_skill = ref([]);
@@ -412,6 +435,8 @@ export default {
     const city = ref("");
     const resume = ref("");
     const err_work_authorization = ref("");
+    const err_linkedin_url = ref("");
+
 
     const err_primary_skill = ref("");
     const err_primary_skill_experience = ref("");
@@ -572,6 +597,9 @@ export default {
 
       work_authorization.value =
         response.data.consultant_details.work_authorization;
+        linkedin_url.value =
+        response.data.consultant_details.linkedin_url;
+
       primary_skill.value = response.data.consultant_details.primary_skill;
       primary_skill_experience.value =
         response.data.consultant_details.primary_skill_experience;
@@ -623,6 +651,18 @@ export default {
           return false;
         } else {
           err_work_authorization.value = "";
+        }
+
+
+        if (
+          linkedin_url.value == null ||
+          linkedin_url.value == ""
+        ) {
+          err_linkedin_url.value =
+            "The Linkedin URL field is required";
+          return false;
+        } else {
+            err_linkedin_url.value = "";
         }
         //   if (total_experience.value == null || total_experience.value == "") {
         //     err_total_experience.value = "The Total Experience field is required";
@@ -712,6 +752,8 @@ export default {
         formData.append("state", selectedState.value);
         formData.append("city", city.value);
         formData.append("work_authorization", work_authorization.value);
+        formData.append("linkedin_url", linkedin_url.value);
+
         formData.append("relocate", relocate.value ? 1 : 0);
         formData.append("primary_skill", primary_skill.value);
         formData.append(
@@ -845,6 +887,7 @@ export default {
       states,
       setSelectedState,
       selectedState_main,
+      linkedin_url,
       err_country,
       err_skill,
       err_exp,
@@ -855,6 +898,7 @@ export default {
       err_remote,
       err_state,
       err_work_authorization,
+      err_linkedin_url,
       err_primary_skill,
       err_primary_skill_experience,
       err_secondary_skill,

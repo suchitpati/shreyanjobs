@@ -104,6 +104,33 @@
                         <div
                             class="w-full flex sm:flex-row flex-col justify-between sm:gap-6 gap-2"
                         >
+                            <div class="sm:w-[100%] mb-4">
+                                <label
+                                    class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
+                                    for="field1"
+                                >
+                                Linkedin URL
+                                </label>
+                                <input
+                                    class="border border-gray-400 rounded-lg py-2 px-4 outline-[#264dd9] focus:shadow-outline w-full"
+                                    type="text"
+                                    id="field1"
+                                    v-model="linkedin_url"
+
+                                />
+                                <div
+                                class="text-red-600 block text-[14px] text-left"
+                                v-if="err_linkedin_url != ''"
+                            >
+                                {{ err_linkedin_url }}
+                            </div>
+
+                            </div>
+
+                        </div>
+                        <div
+                            class="w-full flex sm:flex-row flex-col justify-between sm:gap-6 gap-2"
+                        >
                             <div class="sm:w-[100%] mb-4 flex">
                                 <label
                                     class="block text-gray-700 font-bold mb-1 text-start text-[14px] mr-3"
@@ -531,6 +558,7 @@ export default {
     setup() {
         const data = reactive({});
         const fullname = ref("");
+        const linkedin_url = ref("");
         const gender = ref("");
         const work_authorization = ref("");
         const total_experience = ref("");
@@ -588,6 +616,7 @@ export default {
         const err_primary_skill_experience = ref("");
         const err_secondary_skill = ref("");
         const err_secondary_skill_experience = ref("");
+        const err_linkedin_url = ref("");
         const empCountry = ref("");
         const empState = ref("");
         const employernameError = ref("");
@@ -746,6 +775,7 @@ export default {
 
             console.log("response", response.value);
             fullname.value = response.data.seeker_details.fullname;
+            linkedin_url.value = response.data.seeker_details.linkedin_url;
             email.value = response.data.seeker_details.email;
             contactno.value = response.data.seeker_details.contact_number;
             work_authorization.value =
@@ -823,6 +853,18 @@ export default {
             section.value = 1;
         };
         const updateProfile = async () => {
+
+            if (
+                linkedin_url.value == null ||
+                linkedin_url.value == ""
+            ) {
+                err_linkedin_url.value =
+                    "The Linkdin URL field is required";
+                return false;
+            } else {
+                err_linkedin_url.value = "";
+            }
+
             if (gender.value == null || gender.value == "") {
                 err_gender.value = "Enter name";
             } else {
@@ -951,6 +993,7 @@ export default {
 
             const formData = new FormData();
             formData.append("contactno", contactno.value);
+            formData.append("linkedin_url", linkedin_url.value);
             formData.append("country", selectedCountry.value);
             formData.append("state", selectedState.value);
             formData.append("city", city.value);
@@ -1040,6 +1083,7 @@ export default {
             changeSection,
             section,
             fullname,
+            linkedin_url,
             gender,
             work_authorization,
             total_experience,
@@ -1102,6 +1146,7 @@ export default {
             contact_number,
             defaultSelectedState,
             apiUrl,
+            err_linkedin_url
         };
     },
 };
