@@ -43,7 +43,6 @@
         Welcome {{ employername }}<br />
         (Admin)
       </div>
-
     </div>
 
     <div class="text-right bg-[#ebf4ff]" v-if="employer_role != 1">
@@ -101,7 +100,7 @@
               class="rounded-2xl p-4 sm:p-7 top-[10px] m-auto max-w-[1080px] w-full bg-[#d3ddff4f] shadow-[0px_0px_14px_0px_rgba(255,255,255,1);] transition-[.5s] mt-4"
             >
               <div
-                class="grid grid-cols-8 md:gap-4 gap-3 max-w-[1200px] m-auto items-end"
+                class="grid grid-cols-5 md:gap-4 gap-3 max-w-[1200px] m-auto items-end"
               >
                 <div class="">
                   <label
@@ -144,7 +143,7 @@
                   <select
                     v-model="selectedCountry"
                     @change="onCountryChange"
-                    class="block w-full bg-white border text-sm rounded-lg p-2"
+                    class="block w-full bg-white border text-sm rounded-lg p-2 outline-[#264dd9] focus-visible:shadow-outline"
                   >
                     <option value="">Select Country</option>
                     <option
@@ -173,7 +172,7 @@
                   </div>
                   <select
                     v-model="selectedState"
-                    class="block w-full bg-white border text-sm rounded-lg p-2"
+                    class="block w-full bg-white border text-sm rounded-lg p-2 outline-[#264dd9] focus-visible:shadow-outline"
                     @change="setSelectedState"
                   >
                     <option value="">Select State</option>
@@ -214,7 +213,7 @@
                   </div>
                   <select
                     v-model="relocate"
-                    class="block w-full bg-white border text-sm rounded-lg p-2"
+                    class="block w-full bg-white border text-sm rounded-lg p-2 outline-[#264dd9] focus-visible:shadow-outline"
                   >
                     <option value="">Select One</option>
                     <option value="true">Yes</option>
@@ -297,7 +296,7 @@
                   </div>
                   <select
                     v-model="last_accessed"
-                    class="block w-full bg-white border text-sm rounded-lg p-2"
+                    class="block w-full bg-white border text-sm rounded-lg p-2 outline-[#264dd9] focus-visible:shadow-outline"
                   >
                     <option value="">Select One</option>
                     <option value="3">3 days</option>
@@ -306,7 +305,29 @@
                     <option value="90">3 months</option>
                   </select>
                 </div>
-
+                <div class="">
+                  <div class="flex justify-between">
+                    <div>
+                      <label
+                        class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
+                        for="field2"
+                      >
+                        Candidate type
+                      </label>
+                    </div>
+                  </div>
+                  <select
+                    v-model="candidate_type"
+                    class="block w-full bg-white border text-sm rounded-lg p-2 outline-[#264dd9] focus-visible:shadow-outline"
+                  >
+                    <option value="">Select One</option>
+                    <option value="both" checked>All</option>
+                    <option value="independent">Independent Job Seeker</option>
+                    <option value="consultant">
+                      Marketed by Sales Recruiter
+                    </option>
+                  </select>
+                </div>
                 <div class="w-full flex justify-between gap-6"></div>
               </div>
             </div>
@@ -683,23 +704,21 @@
                   <div @click="downloadResume">Download Resume</div>
                 </div>
                 <div v-else class="cursor-pointer underline">
-                  <div
-                    class="cursor-pointer"
-                  >
-                  <p
-                  class="underline cursor-pointer"
-                  v-if="person.get_recruiter"
-                  @click="openConsultantResumeConfirmationmodel(person.id)"
-                >
-                  Download Resume
-                </p>
-                <p
-                  class="underline cursor-pointer"
-                  @click="openResumeConfirmationmodel(person.id)"
-                  v-else
-                >
-                  Download Resume
-                </p>
+                  <div class="cursor-pointer">
+                    <p
+                      class="underline cursor-pointer"
+                      v-if="person.get_recruiter"
+                      @click="openConsultantResumeConfirmationmodel(person.id)"
+                    >
+                      Download Resume
+                    </p>
+                    <p
+                      class="underline cursor-pointer"
+                      @click="openResumeConfirmationmodel(person.id)"
+                      v-else
+                    >
+                      Download Resume
+                    </p>
 
                     <!-- <a><u>Download Resume</u></a> -->
                   </div>
@@ -877,6 +896,7 @@ export default {
     const contactnoError = ref("");
     const searchInput = ref("");
     const last_accessed = ref("");
+    const candidate_type = ref("");
     const acct_balance = ref("");
 
     const city = ref("");
@@ -1342,6 +1362,8 @@ export default {
         );
         formData.append("work_visa", work_visa.value);
         formData.append("last_accessed", last_accessed.value);
+        formData.append("candidate_type", candidate_type.value);
+
 
         // // formData.append(
         // //   "primary_skill_experience",
@@ -1400,6 +1422,7 @@ export default {
         city,
         work_visa,
         last_accessed,
+        candidate_type,
       ],
       () => {
         fetchSeeker();
@@ -1507,6 +1530,7 @@ export default {
       contact_number,
       acct_balance,
       final_consultant_id,
+      candidate_type,
     };
   },
 };

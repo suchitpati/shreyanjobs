@@ -178,6 +178,16 @@ class SeekerController extends Controller
                 $consultantasQuery = $consultantasQuery->where('relocate', $request->relocate == 'true' ? 1 : 0);
             }
 
+            if (($request->candidate_type != null) &&  ($request->candidate_type != 'both') ) {
+                if ($request->candidate_type == "independent") {
+                    $consultantasQuery = $consultantasQuery->whereRaw('1 = 0');
+                }
+
+                if ($request->candidate_type == "consultant") {
+                    $seekerQuery = $seekerQuery->whereRaw('1 = 0');
+                }
+            }
+
             if ($request->work_visa != null) {
                 $seekerQuery = $seekerQuery->where('work_authorization', 'like', '%' . $request->work_visa . '%');
                 $consultantasQuery = $consultantasQuery->where('work_authorization', 'like', '%' . $request->work_visa . '%');
@@ -869,7 +879,7 @@ class SeekerController extends Controller
                 $fileStatus = 0;
             }
 
-            applyJobEmail::dispatch($fileStatus, $adminemail, $email, $job_title, $fullname, $employername, $city, $country, $additional_detail, $resume_file, $detailed_description, $state, $cover_letter, $emailid, $remote,$seeker_country,$seeker_state,$seeker_city,$seeker_work_authorization,$seeker_linkedin_url);
+            applyJobEmail::dispatch($fileStatus, $adminemail, $email, $job_title, $fullname, $employername, $city, $country, $additional_detail, $resume_file, $detailed_description, $state, $cover_letter, $emailid, $remote, $seeker_country, $seeker_state, $seeker_city, $seeker_work_authorization, $seeker_linkedin_url);
             // if($request->file('pdf'))
             // {
             //     File::delete($resume_file);
