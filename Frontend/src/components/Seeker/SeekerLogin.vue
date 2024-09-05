@@ -114,6 +114,11 @@
                 >Register here</router-link
               >
             </div>
+            <span
+            class="text-green-600"
+            v-if="addJobMessageStatus === 'true'"
+            >Your profile registration is completed successfully.<br> Please login.</span
+          >
             <div
               v-if="validationError"
               class="text-red-600 block text-[20px] text-center"
@@ -187,7 +192,7 @@
 </template>
 
   <script>
-import { reactive, ref } from "vue";
+import { reactive, ref ,onMounted} from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
 import apiUrl from "../../api";
@@ -208,6 +213,9 @@ export default {
 
     const router = useRouter();
     const route = useRouter();
+    const addJobMessageStatus = ref(false);
+    const addJobMessage = ref(false);
+
 
     const closeSuccessModal = () => {
       showSuccessModal.value = false;
@@ -266,7 +274,30 @@ export default {
       }
     };
 
+    onMounted(() => {
+      addJobMessageStatus.value = localStorage.getItem("addJobMessageStatus");
+
+      addJobMessage.value = localStorage.getItem("addJobMessage");
+
+
+
+      if (addJobMessage.value && !addJobMessageStatus.value) {
+        localStorage.setItem("addJobMessageStatus", true);
+      }
+
+      if (addJobMessage.value && addJobMessageStatus) {
+        localStorage.setItem("addJobMessageStatus", false);
+        localStorage.setItem("lastJobPaidStatus", false);
+        localStorage.setItem("lastJobFreeStatus", false);
+      }
+
+    });
+
+
+
     return {
+      addJobMessage,
+      addJobMessageStatus,
       data,
       adminPage,
       email,

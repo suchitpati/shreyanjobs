@@ -27,9 +27,9 @@
         >
           Preview a Job
         </h1>
-        <span v-if="addJobMessageStatus === 'true'" class="text-green-600"
+        <!-- <span v-if="addJobMessageStatus === 'true'" class="text-green-600"
           >Job is updated successfully</span
-        >
+        > -->
 
         <span
           v-if="addJobMessageStatus === 'true' && lastJobPaidStatus === 'true'"

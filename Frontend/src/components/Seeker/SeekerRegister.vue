@@ -1061,7 +1061,8 @@ export default {
             } else {
               localStorage.removeItem("seeker_id");
               localStorage.removeItem("is_active");
-
+              localStorage.setItem("addJobMessage", true);
+              localStorage.setItem("addJobMessageStatus", true);
               showSuccessModal.value = true;
               setTimeout(() => {
                 router.push("/seeker-login");
