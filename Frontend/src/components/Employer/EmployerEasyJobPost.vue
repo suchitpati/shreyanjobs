@@ -46,7 +46,7 @@
           </h1>
           <div class="underline text-blue-600 text-[14px] cursor-pointer">
             <a
-              href="https://shreyanjobs.com/easy_job_post/Easy_Job_Posting_Guidelines.pdf"
+              href="https://shreyanjobs.com/backend/public/easy_job_post/Easy_Job_Posting_Guidelines.pdf"
               target="_blank"
             >
               Download instruction guide on how to use "Easy Job Posting"(PDF

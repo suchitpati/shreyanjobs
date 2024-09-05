@@ -16,8 +16,18 @@
       </div>
     </div>
     <EmployerNev />
-    <div class="text-right pr-[105px] bg-[#ebf4ff] text-[18px]">
-      Welcome {{ employername }} (Employer)
+    <div class="text-right bg-[#ebf4ff]">
+      <div class="text-[18px] max-w-[1080px] mx-auto" v-if="employer_role != 1">
+        Welcome {{ employername }}
+        <br />
+        (Employer/ IT Recruiter)
+      </div>
+
+      <div class="text-[18px] max-w-[1080px] mx-auto" v-else>
+        Welcome {{ employername }}
+        <br />
+        (Admin)
+      </div>
     </div>
 
     <div class="bg-[#ebf4ff] py-0 h-[calc(100vh-80px)] overflow-y-auto">
@@ -799,7 +809,7 @@ export default {
         ? State.getStatesOfCountry(selectedCountry.value)
         : "";
 
-        selectedState_main.value = response.state;
+      selectedState_main.value = response.state;
 
       states.value.forEach((element) => {
         if (element.name == selectedState.value)
@@ -939,10 +949,10 @@ export default {
       if (localStorage.getItem("job_data") != null) {
         fetchJob();
       }
-    //   else{
-    //     router.push("/employer-easy-post");
+      //   else{
+      //     router.push("/employer-easy-post");
 
-    //   }
+      //   }
       getCountryCode();
       // console.log(router,'router')
       addJobMessage.value = localStorage.getItem("addJobMessage");
