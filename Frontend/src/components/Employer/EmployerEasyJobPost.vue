@@ -17,10 +17,16 @@
     </div>
     <EmployerNev />
     <div class="text-right bg-[#ebf4ff]">
-      <div class="text-[18px] max-w-[1080px] mx-auto">
+      <div class="text-[18px] max-w-[1080px] mx-auto"  v-if="employer_role != 1">
         Welcome {{ employername }}
         <br />
         (Employer/ IT Recruiter)
+      </div>
+
+      <div class="text-[18px] max-w-[1080px] mx-auto" v-else>
+        Welcome {{ employername }}
+        <br />
+        (Admin)
       </div>
     </div>
 
@@ -38,12 +44,16 @@
           >
             Easy Job Posting
           </h1>
-          <div
-            class="text-red-600 block text-[14px] text-left"
-            v-if="err != ''"
-          >
-            {{ err }}
+          <div class="underline text-blue-600 text-[14px] cursor-pointer">
+            <a
+              href="https://shreyanjobs.com/easy_job_post/Easy_Job_Posting_Guidelines.pdf"
+              target="_blank"
+            >
+              Download instruction guide on how to use "Easy Job Posting"(PDF
+              File)</a
+            >
           </div>
+
           <div
             class="text-[#1890da] sm:text-[22px] text-[22px] font-semibold mt-[0px] sm:mb-[0px] mb-[25px] cursor-pointer underline"
           >
@@ -53,12 +63,25 @@
           </div>
         </div>
 
+        <div
+          class="text-red-600 block text-[14px] text-center"
+          v-if="err != ''"
+        >
+          {{ err }}
+        </div>
+
         <span v-if="addJobMessageStatus === 'true'" class="text-green-600"
           >Your job is posted successfully.</span
         >
         <div
           class="bg-[#d3ddff4f] rounded-lg py-4 sm:px-8 px-4 w-full shadow-[rgba(100,_100,_111,_0.2)_0px_0px_10px_0px] hover:shadow-[rgba(100,_100,_111,_0.2)_0px_0px_20px_0px] transition-[.5s]"
         >
+          <div class="flex justify-start gap-2 mb-2" v-if="employer_role != 1">
+            <input type="checkbox" v-model="paid" />
+            <p class="text-[#1890da]">
+              <b>Make it Premium job ($1 Posting fee)</b>
+            </p>
+          </div>
           <div>
             <label
               class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
@@ -92,7 +115,7 @@
             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-8 mb-4 mt-4 rounded-full focus:outline-none focus:shadow-outline"
             @click="addEasyJob"
           >
-            Submit
+            Post your Job
           </button>
         </div>
       </div>
@@ -242,11 +265,11 @@ export default {
     const route = useRouter();
 
     const onCountryChange = async () => {
-      console.log("selectedCountry.value", selectedCountry.value);
+      ////console.log("selectedCountry.value", selectedCountry.value);
       const selectedCountryObj = await countries_state.value.find(
         (countrys) => countrys.isoCode === selectedCountry.value
       );
-      console.log("selectedCountryObj", selectedCountryObj);
+      ////console.log("selectedCountryObj", selectedCountryObj);
 
       country.value = selectedCountryObj
         ? JSON.parse(JSON.stringify(selectedCountryObj)).name
@@ -260,12 +283,12 @@ export default {
     };
 
     const setSelectedState = async () => {
-      console.log(selectedState.value, "selectedState.value");
+      ////console.log(selectedState.value, "selectedState.value");
       const selectedStateObj = states.value.find((statess) => {
         return statess.isoCode == selectedState.value;
       });
 
-      console.log("state.value,selectedStateObj", selectedStateObj);
+      ////console.log("state.value,selectedStateObj", selectedStateObj);
       selectedState_main.value = JSON.parse(
         JSON.stringify(selectedStateObj)
       ).name;
@@ -325,11 +348,9 @@ export default {
 
         if (!reachedJobDescription && trimmedLine !== "") {
           if (trimmedLine.toLowerCase().includes("email")) {
-                console.log(trimmedLine);
-          }
-          else
-          {
-              additional_detail.value += trimmedLine + "\n";
+            //console.log(trimmedLine);
+          } else {
+            additional_detail.value += trimmedLine + "\n";
           }
         }
 
@@ -339,7 +360,7 @@ export default {
             .map((part) => part.trim());
           currentKey = key;
           //   result[currentKey.toLowerCase()] = value;
-          console.log(key.toLowerCase(), "key");
+          //console.log(key.toLowerCase(), "key");
           if (
             key.toLowerCase().includes("job title") ||
             key.toLowerCase().includes("job role") ||
@@ -349,12 +370,19 @@ export default {
             job_title.value = value;
           }
           if (key.toLowerCase().includes("location")) {
-            const [city1, stateAndRest] = value.split(",");
-            const state1 = stateAndRest ? stateAndRest.trim().slice(0, 2) : "";
-            console.log("statestate", state1);
-            // result["location"] = `${city.trim()}, ${state}`;
-            city.value = city1.trim();
-            state.value = state1.trim();
+            if (value.toLowerCase() == "remote") {
+              remote.value = 1;
+            } else {
+              const [city1, stateAndRest] = value.split(",");
+              const state1 = stateAndRest
+                ? stateAndRest.trim().slice(0, 2)
+                : "";
+              //console.log("statestate", state1);
+              // result["location"] = `${city.trim()}, ${state}`;
+              city.value = city1.trim();
+              state.value = state1.trim();
+              remote.value = 0;
+            }
           }
 
           if (
@@ -401,7 +429,7 @@ export default {
             contact_number1.value = value;
           }
         } else if (currentKey) {
-          console.log(currentKey, "currentKey");
+          //console.log(currentKey, "currentKey");
 
           if (currentKey.toLowerCase().includes("technical skill")) {
             technical_skill.value += "\n" + trimmedLine;
@@ -414,14 +442,23 @@ export default {
           //   result[currentKey] += "\n" + trimmedLine;
         }
       });
+      console.log(employment_type.value, "employment_typeemployment_type");
+
       short_description.value =
-        job_title.value +
-        "-" +
-        city.value +
-        "-" +
-        state.value +
-        "-" +
-        employment_type.value;
+        job_title.value + "-" + city.value + "," + state.value;
+      if(remote.value == 0)
+      {
+        short_description.value =
+        job_title.value + "-" + city.value + "," + state.value;
+      }
+      else
+      {
+        short_description.value =
+        job_title.value + "- Remote";
+      }
+      if (employment_type.value != "") {
+        short_description.value += "-" + employment_type.value;
+      }
       const employer_id = localStorage.getItem("employer_id");
 
       if (job_title.value == "") {
@@ -431,7 +468,7 @@ export default {
         err.value = "";
       }
 
-      if (city.value == "" || state.value == "") {
+      if (city.value == "" && state.value == "" && remote.value != 1) {
         err.value = "Location not found. Please correct and retry. ";
         return false;
       } else {
@@ -468,20 +505,18 @@ export default {
 
       const authToken = localStorage.getItem("employer_tocken");
       country.value = "US";
-      remote.value = 0;
-      paid.value = 0;
 
       if (!authToken) {
-        console.log("Authentication token is missing.");
+        // //console.log("Authentication token is missing.");
         return;
       }
 
-      const config = {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      };
-
+      //   const config = {
+      //     headers: {
+      //       Authorization: `Bearer ${authToken}`,
+      //     },
+      //   };
+      ////console.log(paid.value,'paidpaidpaidpaid');
       const requestData = {
         employer_id: employer_id.value,
         country: country.value,
@@ -503,25 +538,31 @@ export default {
       };
       isLoading.value = true;
 
-      const response = await axios.post(
-        `${apiUrl}/easy-jobs`,
-        requestData,
-        config
-      );
-      isLoading.value = false;
+      localStorage.setItem("job_data", JSON.stringify(requestData));
 
-      if (response.data.success == 200) {
-        setTimeout(() => {
-          router.push("/employer-job-view");
-        }, 1000);
+      router.push({
+        name: "employer-easy-post-preview",
+      });
 
-        // window.location.reload();
-        // window.scrollTo(0, 0);
-        localStorage.setItem("addJobMessage", true);
-        localStorage.setItem("addJobMessageStatus", true);
-      }
+      //   const response = await axios.post(
+      //     `${apiUrl}/easy-jobs`,
+      //     requestData,
+      //     config
+      //   );
+      //   isLoading.value = false;
 
-      console.log(response, "addEasyJob");
+      //   if (response.data.success == 200) {
+      //     setTimeout(() => {
+      //       router.push("/employer-job-view");
+      //     }, 1000);
+
+      //     // window.location.reload();
+      //     // window.scrollTo(0, 0);
+      //     localStorage.setItem("addJobMessage", true);
+      //     localStorage.setItem("addJobMessageStatus", true);
+      //   }
+
+      //   ////console.log(response, "addEasyJob");
     };
 
     const adminLogout = async () => {
@@ -529,7 +570,7 @@ export default {
         const authToken = localStorage.getItem("accessToken");
 
         if (!authToken) {
-          console.log("Authentication token is missing.");
+          ////console.log("Authentication token is missing.");
           return;
         }
 
@@ -553,9 +594,9 @@ export default {
           }, 1000);
         }
 
-        console.log(response);
+        ////console.log(response);
       } catch (error) {
-        console.log(error);
+        ////console.log(error);
       }
     };
 
@@ -565,7 +606,7 @@ export default {
       const authToken = localStorage.getItem("employer_tocken");
 
       if (!authToken) {
-        console.log("Authentication token is missing.");
+        ////console.log("Authentication token is missing.");
         return;
       }
 
@@ -588,7 +629,7 @@ export default {
       acct_balance.value = response.data.employer_details.acct_balance;
 
       employer_role.value = response.data.employer_details.role;
-      console.log("employer_role", employer_role.value);
+      ////console.log("employer_role", employer_role.value);
     };
     watch(job_details, (newValue) => {
       remaining.value = 5000 - newValue.length;
@@ -629,6 +670,8 @@ export default {
     );
 
     onMounted(() => {
+        localStorage.removeItem('job_data');
+
       addJobMessage.value = localStorage.getItem("addJobMessage");
       addJobMessageStatus.value = localStorage.getItem("addJobMessageStatus");
       lastJobPaidStatus.value = localStorage.getItem("lastJobPaidStatus");
@@ -644,8 +687,8 @@ export default {
         localStorage.setItem("lastJobFreeStatus", false);
       }
 
-      console.log(lastJobPaidStatus.value, "lastJobPaidStatus");
-      console.log(lastJobFreeStatus.value, "lastJobFreeStatus");
+      ////console.log(lastJobPaidStatus.value, "lastJobPaidStatus");
+      ////console.log(lastJobFreeStatus.value, "lastJobFreeStatus");
 
       // countries_state.value = Country.getAllCountries();
       countries_state.value = someCountry.value;

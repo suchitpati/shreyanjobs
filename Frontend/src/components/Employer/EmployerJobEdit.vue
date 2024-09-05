@@ -118,7 +118,7 @@
                     v-model="selectedState"
                     class="block w-full bg-white border text-sm rounded-lg p-2"
                     :disabled="remote"
-                    :selected="state.isoCode === 'GJ'"
+                    :selected="state.isoCode === 'US'"
                     @change="setSelectedState"
                   >
                     <option value="">Select State</option>
@@ -605,7 +605,7 @@ export default {
             Authorization: `Bearer ${authToken}`,
           },
         };
-        console.log("");
+        console.log("selectedState_main.value",selectedState_main.value);
         const requestData = {
           country: country.value,
           state: selectedState_main.value,
@@ -676,6 +676,7 @@ export default {
           selectedCountry.value = element.isoCode;
       });
       selectedState.value = response.data.state;
+      selectedState_main.value = response.data.state;
       states.value = countries.value
         ? State.getStatesOfCountry(selectedCountry.value)
         : "";

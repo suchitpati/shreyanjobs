@@ -23,7 +23,8 @@ class consultantas extends Model
         'resume',
         'is_active',
         'new_job_report_time',
-        'recruiter_id'
+        'recruiter_id',
+        'linkedin_url'
     ];
 
 

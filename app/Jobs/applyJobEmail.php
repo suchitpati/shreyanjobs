@@ -40,8 +40,17 @@ class applyJobEmail implements ShouldQueue
     protected $email;
     protected $adminemail;
     protected $fileStatus;
+    protected $seeker_country;
+    protected $seeker_state;
+    protected $seeker_city;
+    protected $seeker_work_authorization;
+    protected $seeker_linkedin_url;
 
-    public function __construct($fileStatus,$adminemail,$email,$job_title,$fullname,$employername,$city,$country,$additional_detail,$resume,$detailed_description,$state,$cover_letter,$emailid,$remote)
+
+
+
+
+    public function __construct($fileStatus,$adminemail,$email,$job_title,$fullname,$employername,$city,$country,$additional_detail,$resume,$detailed_description,$state,$cover_letter,$emailid,$remote,$seeker_country,$seeker_state,$seeker_city,$seeker_work_authorization,$seeker_linkedin_url)
     {
         Log::info('Email sent successfully.');
         $this->job_title = $job_title;
@@ -60,9 +69,11 @@ class applyJobEmail implements ShouldQueue
         $this->adminemail = $adminemail;
         $this->fileStatus = $fileStatus;
 
-
-
-
+        $this->seeker_country = $seeker_country;
+        $this->seeker_state = $seeker_state;
+        $this->seeker_city = $seeker_city;
+        $this->seeker_work_authorization = $seeker_work_authorization;
+        $this->seeker_linkedin_url = $seeker_linkedin_url;
 
     }
 
@@ -75,7 +86,7 @@ class applyJobEmail implements ShouldQueue
     {
         {
             try{
-                Mail::to($this->adminemail)->send(new SeekerMail($this->adminemail,$this->email,$this->job_title,$this->fullname,$this->employername,$this->city,$this->country,$this->additional_detail,$this->resume,$this->detailed_description,$this->state,$this->cover_letter,$this->emailid,$this->remote,));
+                Mail::to($this->adminemail)->send(new SeekerMail($this->adminemail,$this->email,$this->job_title,$this->fullname,$this->employername,$this->city,$this->country,$this->additional_detail,$this->resume,$this->detailed_description,$this->state,$this->cover_letter,$this->emailid,$this->remote,$this->seeker_country,$this->seeker_state,$this->seeker_city,$this->seeker_work_authorization,$this->seeker_linkedin_url));
 
                 $fileStatus = $this->fileStatus;
                 $resume = $this->resume;

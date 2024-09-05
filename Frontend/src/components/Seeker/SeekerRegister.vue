@@ -116,6 +116,27 @@
                   {{ passwordError }}
                 </div>
               </div>
+              <div class="w-full mt-[10px]">
+                <label
+                  class="block text-gray-700 font-bold mb-1 text-start text-[14px]"
+                  for="field2"
+                >
+                Linkedin URL
+                </label>
+                <input
+                  class="border border-gray-400 rounded-lg py-2 px-4 mb-1 outline-[#264dd9] focus:shadow-outline w-full"
+                  type="text"
+                  id="field1"
+                  placeholder="Linkedin URL"
+                  v-model="linkedin_url"
+                />
+                <div
+                  v-if="linkedinUrlError"
+                  class="text-red-600 block text-[14px] text-left"
+                >
+                  {{ linkedinUrlError }}
+                </div>
+              </div>
               <div class="w-full mt-[10px] flex gap-2 items-center">
                 <label
                   class="block text-gray-700 font-bold text-start text-[14px]"
@@ -520,6 +541,12 @@
                       </div>
                     </div>
                   </div>
+                  <div
+                  class="text-red-600 block text-[14px] text-center"
+                  v-if="err_complete_regestration != ''"
+                >
+                  {{ err_complete_regestration }}
+                </div>
                   <button
                     class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-8 mb-4 mt-4 rounded-full focus:outline-none focus:shadow-outline"
                     @click="addSeekerDetails"
@@ -564,7 +591,9 @@ export default {
     const email = ref("");
     const emailError = ref("");
     const passwordError = ref("");
+    const linkedinUrlError = ref("");
     const password = ref("");
+    const linkedin_url = ref("");
     const gender = ref("");
     const genderError = ref("");
     const validationError = ref("");
@@ -598,6 +627,7 @@ export default {
     const secondary_skill = ref("");
     const secondary_experience = ref("");
     const err_country = ref("");
+    const err_complete_regestration = ref("");
     const err_state = ref("");
     const err_contact_number = ref("");
     const err_work_authorization = ref("");
@@ -684,39 +714,60 @@ export default {
 
         if (email.value == null || email.value == "") {
           emailError.value = "Please Enter Email";
+
           return false;
         } else {
           emailError.value = "";
+
         }
 
         var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (emailRegex.test(email.value) == false) {
           emailError.value = "Please valid Email";
+
           return false;
         } else {
           emailError.value = "";
+
         }
 
         if (password.value == null || password.value == "") {
           passwordError.value = "Please Enter Password";
+
           return false;
         } else {
           passwordError.value = "";
+
         }
         const regex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
 
         if (regex.test(password.value) == false) {
           passwordError.value =
             "Enter At least 8 characters long with one capital and one number ";
+
           return false;
         } else {
           passwordError.value = "";
+
         }
+
+        if (linkedin_url.value == null || linkedin_url.value == "") {
+            linkedinUrlError.value = "Please Enter Linkedin Url";
+
+          return false;
+        } else {
+            linkedinUrlError.value = "";
+
+        }
+
         if (gender.value == null || gender.value == "") {
           genderError.value = "Please select Gender";
+
           return false;
         } else {
           genderError.value = "";
+          err_complete_regestration.value ="";
+
         }
 
         console.log(relocate.value, "relocaterelocate");
@@ -727,6 +778,7 @@ export default {
             fullname: fullname.value,
             email: email.value,
             password: password.value,
+            linkedin_url:linkedin_url.value,
             gender: gender.value,
           })
           .then((response) => {
@@ -790,40 +842,65 @@ export default {
     const addSeekerDetails = async () => {
       if (selectedCountry.value == null || selectedCountry.value == "") {
         err_country.value = "The country field is required";
+        err_complete_regestration.value = "Some fields have missing value. Please correct and retry";
+
         return false;
       } else {
         err_country.value = "";
+        err_complete_regestration.value = "";
+
+
       }
       if (selectedState.value == null || selectedState.value == "") {
         err_state.value = "The State field is required";
+        err_complete_regestration.value = "Some fields have missing value. Please correct and retry";
+
         return false;
       } else {
         err_state.value = "";
+        err_complete_regestration.value = "";
+
       }
       if (city.value == null || city.value == "") {
         err_city.value = "The City field is required";
+        err_complete_regestration.value = "Some fields have missing value. Please correct and retry";
+
         return false;
       } else {
         err_city.value = "";
+        err_complete_regestration.value = "";
+
       }
       if (contact_number.value == null || contact_number.value == "") {
         err_contact_number.value = "The field is required";
+        err_complete_regestration.value = "Some fields have missing value. Please correct and retry";
+
         return false;
       } else {
         err_contact_number.value = "";
+        err_complete_regestration.value = "";
+
       }
       if (work_authorization.value == null || work_authorization.value == "") {
         err_work_authorization.value =
           "The work authorization field is required";
+          err_complete_regestration.value = "Some fields have missing value. Please correct and retry";
+
         return false;
       } else {
         err_work_authorization.value = "";
+        err_complete_regestration.value = "";
+
       }
       if (total_experience.value == null || total_experience.value == "") {
         err_total_experience.value = "The Total Experience field is required";
+        err_complete_regestration.value = "Some fields have missing value. Please correct and retry";
+
         return false;
       } else {
         err_total_experience.value = "";
+        err_complete_regestration.value = "";
+
       }
       if (
         parseInt(total_experience.value) < 0 ||
@@ -831,23 +908,35 @@ export default {
       ) {
         err_total_experience.value =
           "Please enter Total Experience greater then 0 ";
+          err_complete_regestration.value = "Some fields have missing value. Please correct and retry";
+
         return false;
       } else {
         err_total_experience.value = "";
+        err_complete_regestration.value = "";
+
       }
 
       if (primary_skill.value == null || primary_skill.value == "") {
         err_primary_skill.value = "The Primary skill is required";
+        err_complete_regestration.value = "Some fields have missing value. Please correct and retry";
+
         return false;
       } else {
         err_primary_skill.value = "";
+        err_complete_regestration.value = "";
+
       }
       if (primary_experience.value == null || primary_experience.value == "") {
         err_primary_experience.value =
           "The primary experience field is required";
+          err_complete_regestration.value = "Some fields have missing value. Please correct and retry";
+
         return false;
       } else {
         err_primary_experience.value = "";
+        err_complete_regestration.value = "";
+
       }
       if (
         parseInt(primary_experience.value) < 0 ||
@@ -855,15 +944,23 @@ export default {
       ) {
         err_primary_experience.value =
           "Please enter primary Experience greater then 0 ";
+          err_complete_regestration.value = "Some fields have missing value. Please correct and retry";
+
         return false;
       } else {
         err_primary_experience.value = "";
+        err_complete_regestration.value = "";
+
       }
       if (secondary_skill.value == null || secondary_skill.value == "") {
         err_secondary_skill.value = "The secondary skill field is required";
+        err_complete_regestration.value = "Some fields have missing value. Please correct and retry";
+
         return false;
       } else {
         err_secondary_skill.value = "";
+        err_complete_regestration.value = "";
+
       }
       if (
         secondary_experience.value == null ||
@@ -871,9 +968,13 @@ export default {
       ) {
         err_secondary_experience.value =
           "The secondary experience field is required";
+          err_complete_regestration.value = "Some fields have missing value. Please correct and retry";
+
         return false;
       } else {
         err_secondary_experience.value = "";
+        err_complete_regestration.value = "";
+
       }
 
     //   if (skill.value == null || skill.value == "") {
@@ -907,15 +1008,23 @@ export default {
       ) {
         err_secondary_experience.value =
           "Please enter secondary Experience greater then 0 ";
+          err_complete_regestration.value = "Some fields have missing value. Please correct and retry";
+
         return false;
       } else {
         err_secondary_experience.value = "";
+        err_complete_regestration.value = "";
+
       }
       if (file.value == null || file.value == "") {
         err_file.value = "Pleas select file";
+        err_complete_regestration.value = "Some fields have missing value. Please correct and retry";
+
         return false;
       } else {
         err_file.value = "";
+        err_complete_regestration.value = "";
+
       }
 
       if (relocate.value == true) {
@@ -952,7 +1061,8 @@ export default {
             } else {
               localStorage.removeItem("seeker_id");
               localStorage.removeItem("is_active");
-
+              localStorage.setItem("addJobMessage", true);
+              localStorage.setItem("addJobMessageStatus", true);
               showSuccessModal.value = true;
               setTimeout(() => {
                 router.push("/seeker-login");
@@ -1031,6 +1141,8 @@ export default {
       route,
       emailError,
       passwordError,
+      linkedinUrlError,
+      linkedin_url,
       seekerRegister,
       validationError,
       steps,
@@ -1052,6 +1164,7 @@ export default {
       secondary_skill,
       secondary_experience,
       addSeekerDetails,
+      err_complete_regestration,
       err_country,
       err_state,
       err_contact_number,

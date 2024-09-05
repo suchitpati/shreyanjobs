@@ -178,6 +178,16 @@ class SeekerController extends Controller
                 $consultantasQuery = $consultantasQuery->where('relocate', $request->relocate == 'true' ? 1 : 0);
             }
 
+            if (($request->candidate_type != null) &&  ($request->candidate_type != 'both') ) {
+                if ($request->candidate_type == "independent") {
+                    $consultantasQuery = $consultantasQuery->whereRaw('1 = 0');
+                }
+
+                if ($request->candidate_type == "consultant") {
+                    $seekerQuery = $seekerQuery->whereRaw('1 = 0');
+                }
+            }
+
             if ($request->work_visa != null) {
                 $seekerQuery = $seekerQuery->where('work_authorization', 'like', '%' . $request->work_visa . '%');
                 $consultantasQuery = $consultantasQuery->where('work_authorization', 'like', '%' . $request->work_visa . '%');
@@ -459,6 +469,7 @@ class SeekerController extends Controller
             Seeker::where('email', $request->email)->update([
                 'fullname' => $request->fullname,
                 'password' => Hash::make($request->password),
+                'linkedin_url' => $request->linkedin_url,
                 'gender' => $request->gender,
                 'is_active' => 0,
                 'otp' => $otp
@@ -477,6 +488,7 @@ class SeekerController extends Controller
                 'fullname' => $request->fullname,
                 'password' => Hash::make($request->password),
                 'gender' => $request->gender,
+                'linkedin_url' => $request->linkedin_url,
                 'is_active' => 0,
                 'otp' => $otp
             ]);
@@ -495,6 +507,7 @@ class SeekerController extends Controller
                 'password' => Hash::make($request->password),
                 'gender' => $request->gender,
                 'is_active' => 0,
+                'linkedin_url' => $request->linkedin_url,
                 'relocate' => $request->relocate,
                 'otp' => $otp
             ]);
@@ -549,6 +562,26 @@ class SeekerController extends Controller
             //     ]);
             // }
 
+
+            Seeker::where('id', $request->seeker_id)
+                ->update([
+                    'country' => $request->country,
+                    'state' => $request->state,
+                    'city' => $request->city,
+                    'contact_number' => $request->contact_number,
+                    'work_authorization' => $request->work_authorization,
+                    'total_experience' => $request->total_experience,
+                    'primary_skill' => $request->primary_skill,
+                    'primary_skill_experience' => $request->primary_experience,
+                    'secondary_skill' => $request->secondary_skill,
+                    'secondary_skill_experience' => $request->secondary_experience,
+                    'relocate' => $request->relocate,
+                    'is_active' => 2
+                ]);
+
+
+
+
             $seeker = Seeker::find($request->seeker_id);
             $shortFullname = str_replace(' ', '', substr($seeker->fullname, 0, 15));
             $shortprimary_skill = str_replace(' ', '', substr($seeker->primary_skill, 0, 15));
@@ -574,21 +607,8 @@ class SeekerController extends Controller
 
             Seeker::where('id', $request->seeker_id)
                 ->update([
-                    'country' => $request->country,
-                    'state' => $request->state,
-                    'city' => $request->city,
-                    'contact_number' => $request->contact_number,
-                    'work_authorization' => $request->work_authorization,
-                    'total_experience' => $request->total_experience,
-                    'primary_skill' => $request->primary_skill,
-                    'primary_skill_experience' => $request->primary_experience,
-                    'secondary_skill' => $request->secondary_skill,
-                    'secondary_skill_experience' => $request->secondary_experience,
                     'resume' => $fileName,
-                    'relocate' => $request->relocate,
-                    'is_active' => 2
                 ]);
-
             // Subscription::create([
             //     'skill' => $request->skill,
             //     'seeker_id' => $request->seeker_id
@@ -693,8 +713,6 @@ class SeekerController extends Controller
                     'error' => 100,
                 ]);
             }
-
-
         } else {
             $fileName = $request->resume;
         }
@@ -710,6 +728,7 @@ class SeekerController extends Controller
 
 
         Seeker::where('id', $request->seeker_id)->update([
+            'linkedin_url' => $request->linkedin_url,
             'country' => $request->country,
             'state' => $request->state,
             'city' => $request->city,
@@ -838,6 +857,13 @@ class SeekerController extends Controller
 
         $job_title = $adminjob->job_title;
         $fullname = $Seeker->fullname;
+        $seeker_country = $Seeker->country;
+        $seeker_state = $Seeker->state;
+        $seeker_city = $Seeker->city;
+        $seeker_work_authorization = $Seeker->work_authorization;
+        $seeker_linkedin_url = $Seeker->linkedin_url;
+
+
         $employername = $employer->employername;
         $emailid = $employer->emailid;
         $city = $adminjob->city;
@@ -852,7 +878,8 @@ class SeekerController extends Controller
             if ($request->file('pdf')) {
                 $fileStatus = 0;
             }
-            applyJobEmail::dispatch($fileStatus, $adminemail, $email, $job_title, $fullname, $employername, $city, $country, $additional_detail, $resume_file, $detailed_description, $state, $cover_letter, $emailid, $remote);
+
+            applyJobEmail::dispatch($fileStatus, $adminemail, $email, $job_title, $fullname, $employername, $city, $country, $additional_detail, $resume_file, $detailed_description, $state, $cover_letter, $emailid, $remote, $seeker_country, $seeker_state, $seeker_city, $seeker_work_authorization, $seeker_linkedin_url);
             // if($request->file('pdf'))
             // {
             //     File::delete($resume_file);
