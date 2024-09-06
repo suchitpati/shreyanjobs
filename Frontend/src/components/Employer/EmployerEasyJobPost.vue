@@ -115,7 +115,7 @@
             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-8 mb-4 mt-4 rounded-full focus:outline-none focus:shadow-outline"
             @click="addEasyJob"
           >
-            Post your Job
+          Preview the job
           </button>
         </div>
       </div>
@@ -445,19 +445,19 @@ export default {
       console.log(employment_type.value, "employment_typeemployment_type");
 
       short_description.value =
-        job_title.value + "-" + city.value + "," + state.value;
+        job_title.value + " - " + city.value + ", " + state.value;
       if(remote.value == 0)
       {
         short_description.value =
-        job_title.value + "-" + city.value + "," + state.value;
+        job_title.value + " - " + city.value + ", " + state.value;
       }
       else
       {
         short_description.value =
-        job_title.value + "- Remote";
+        job_title.value + " - Remote";
       }
       if (employment_type.value != "") {
-        short_description.value += "-" + employment_type.value;
+        short_description.value += " - " + employment_type.value;
       }
       const employer_id = localStorage.getItem("employer_id");
 
