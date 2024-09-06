@@ -30,6 +30,12 @@
       </div>
     </div>
 
+    <div class="text-right bg-[#ebf4ff]" v-if="employer_role != 1">
+        <div class="text-[18px] max-w-[1080px] mx-auto">
+          Account Balance : ${{ acct_balance }}
+        </div>
+      </div>
+
     <div class="bg-[#ebf4ff] py-0 h-[calc(100vh-80px)] overflow-y-auto">
       <div class="max-w-[1080px] w-full mx-auto px-[20px]">
         <h1
@@ -416,7 +422,7 @@
             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-8 mb-4 mt-4 rounded-full focus:outline-none focus:shadow-outline"
             @click="opemConfirmationmodel"
           >
-            Submit
+          Post the Job
           </button>
         </div>
       </div>
@@ -543,6 +549,9 @@ export default {
     const employer_role = ref("");
     const lastJobPaidStatus = ref(false);
     const lastJobFreeStatus = ref(false);
+
+    const acct_balance = ref("");
+
 
     someCountry.value = [
       {
@@ -716,9 +725,10 @@ export default {
           (job_title.value = "");
         localStorage.removeItem("job_data");
 
-        window.location.reload();
-        window.scrollTo(0, 0);
+        // window.location.reload();
+        // window.scrollTo(0, 0);
         // setTimeout(() => {
+            router.push("/employer-job-view");
         // }, 2000);
         localStorage.setItem("addJobMessage", true);
         localStorage.setItem("addJobMessageStatus", true);
@@ -900,6 +910,10 @@ export default {
       );
 
       employername.value = response.data.employer_details.employername;
+      employer_role.value = response.data.employer_details.role;
+      acct_balance.value = response.data.employer_details.acct_balance;
+
+
     };
     watch(additional_detail, (newValue) => {
       if (newValue != null) {
@@ -1035,7 +1049,8 @@ export default {
       freeJobConfirmModel,
       makePremiumJob,
       paid,
-
+      employer_role,
+      acct_balance,
       makeFreeJob,
     };
   },
