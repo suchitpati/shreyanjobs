@@ -354,13 +354,13 @@ export default {
           }
         }
 
-        if (trimmedLine.includes(":")) {
+        if (trimmedLine.includes(":") && (trimmedLine.toLowerCase().includes("job description") || trimmedLine.toLowerCase().includes("job title") || trimmedLine.toLowerCase().includes("job role") || trimmedLine.toLowerCase().includes("role") || trimmedLine.toLowerCase().includes("title") || trimmedLine.toLowerCase().includes("location") || trimmedLine.toLowerCase().includes("type") || trimmedLine.toLowerCase().includes("job type") || trimmedLine.toLowerCase().includes("employment type") || trimmedLine.toLowerCase().includes("contract type")  || trimmedLine.toLowerCase().includes("skill")  || trimmedLine.toLowerCase().includes("email")  || trimmedLine.toLowerCase().includes("yrs. of exp") ||  trimmedLine.toLowerCase().includes("exp")  ||  trimmedLine.toLowerCase().includes("contact number")  ||  trimmedLine.toLowerCase().includes("employer contact number") )) {
           const [key, value] = trimmedLine
             .split(":")
             .map((part) => part.trim());
           currentKey = key;
           //   result[currentKey.toLowerCase()] = value;
-          //console.log(key.toLowerCase(), "key");
+          console.log(key.toLowerCase(), "key");
           if (
             key.toLowerCase().includes("job title") ||
             key.toLowerCase().includes("job role") ||
@@ -429,7 +429,7 @@ export default {
             contact_number1.value = value;
           }
         } else if (currentKey) {
-          //console.log(currentKey, "currentKey");
+          console.log(currentKey, "currentKey");
 
           if (currentKey.toLowerCase().includes("technical skill")) {
             technical_skill.value += "\n" + trimmedLine;
